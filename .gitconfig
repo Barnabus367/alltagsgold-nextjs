@@ -1,0 +1,6 @@
+[user]
+	name = AlltagsGold
+	email = hallo@alltagsgold.ch
+[core]
+	autocrlf = input
+	safecrlf = true

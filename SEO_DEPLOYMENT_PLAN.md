@@ -24,22 +24,31 @@
 
 ## 🚀 Live-Deployment Strategie
 
-### Phase 1: Vercel Build & Deploy (Sofort verfügbar)
+### Phase 1: GitHub Push → Vercel Auto-Deploy (Sofort verfügbar)
 ```bash
-# 1. Production Build erstellen
-npm run build
+# 1. Lokale Validierung (optional)
+node scripts/seo-deploy-checklist.js
+npm run build # Test build lokal
 
-# 2. Build-Validation
-npm run start # Test lokal
+# 2. Git Commit & Push
+git add .
+git commit -m "feat: SEO optimization complete - 95% coverage, multi-part sitemap, meta-descriptions"
+git push origin main
 
-# 3. Vercel Deployment
-vercel --prod
+# 3. Vercel Auto-Deploy
+# Vercel erkennt automatisch den GitHub Push
+# Deploy-Status: https://vercel.com/[ihr-account]/alltagsgold-nextjs
 ```
 
 **Erwartete Ergebnisse:**
+- Automatisches Vercel-Deployment triggert durch GitHub Push
 - Alle SEO-Meta-Tags live auf https://alltagsgold.ch
 - Sitemap verfügbar unter https://alltagsgold.ch/sitemap.xml
 - Robots.txt aktiv unter https://alltagsgold.ch/robots.txt
+
+**Vercel Deploy-Monitoring:**
+- Build-Logs in Vercel Dashboard überwachen
+- Deploy-Zeit: ca. 2-3 Minuten für SEO-optimierte Version
 
 ### Phase 2: Search Console Konfiguration (Tag 1-2)
 ```

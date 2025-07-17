@@ -172,16 +172,19 @@ function generateDeploymentCommands() {
   log('\n🚀 Deployment Commands:', 'blue');
   log('', 'reset');
   
-  log('1. Production Build:', 'bold');
+  log('1. Local Validation (optional):', 'bold');
   log('   npm run build', 'green');
   log('', 'reset');
   
-  log('2. Local Test (optional):', 'bold');
-  log('   npm run start', 'green');
+  log('2. Git Commit & Push:', 'bold');
+  log('   git add .', 'green');
+  log('   git commit -m "feat: SEO optimization - 95% coverage, sitemaps, meta-descriptions"', 'green');
+  log('   git push origin main', 'green');
   log('', 'reset');
   
-  log('3. Vercel Deployment:', 'bold');
-  log('   vercel --prod', 'green');
+  log('3. Vercel Auto-Deploy:', 'bold');
+  log('   # Vercel detects GitHub push automatically', 'green');
+  log('   # Monitor: https://vercel.com/dashboard', 'green');
   log('', 'reset');
   
   log('4. Post-Deployment Validation:', 'bold');

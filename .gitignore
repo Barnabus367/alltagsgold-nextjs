@@ -7,7 +7,7 @@ yarn-error.log*
 # Next.js
 .next/
 out/
-
+ 
 # Environment variables
 .env*.local
 .env.production

@@ -1,0 +1,112 @@
+{
+  "lastUpdated": "2025-06-22T16:31:59.798Z",
+  "totalProducts": 94,
+  "totalCollections": 15,
+  "productsByType": {
+    "0": 5,
+    "Beleuchtung": 10,
+    "Haushalt": 4,
+    "Hautpflege": 9,
+    "Küchengadgets": 1,
+    "Büro": 1,
+    "Licht": 1,
+    "Gesundheit": 1,
+    "Kosmetik": 1,
+    "Dekoration": 4,
+    "Luftbefeuchter": 2,
+    "Zubehör": 2,
+    "Haustier": 1,
+    "Insektenschutz": 2,
+    "Haustierpflege": 2,
+    "Küchenhelfer": 3,
+    "Reinigung": 4,
+    "Küche": 14,
+    "Sport": 1,
+    "Gadget": 1,
+    "Auto": 2,
+    "Wohnaccessoires": 1,
+    "Klimaanlagen": 1,
+    "Deko": 1,
+    "Handschuhe": 1,
+    "Lampen": 2,
+    "Spielzeug": 1,
+    "Bad": 1,
+    "Aufbewahrung": 1,
+    "Schlaf": 1,
+    "Accessoires": 2,
+    "Kissen": 1,
+    "Wanddeko": 1,
+    "Wandkunst": 3,
+    "Räucherwerk": 1,
+    "Gesichtspflege": 1,
+    "Pflege": 1,
+    "Haarentfernung": 1,
+    "Beauty": 1,
+    "Küchenregale": 1
+  },
+  "productsByVendor": {
+    "Alltagsgold": 94
+  },
+  "collectionsWithProductCount": [
+    {
+      "handle": "sale",
+      "title": "Sale"
+    },
+    {
+      "handle": "bestseller",
+      "title": "Bestseller"
+    },
+    {
+      "handle": "kuchengerate-1",
+      "title": "Küchenhelfer & Gadgets"
+    },
+    {
+      "handle": "haushaltsgerate",
+      "title": "Haushaltsgeräte"
+    },
+    {
+      "handle": "reinigungsgerate",
+      "title": "Reinigungsgeräte"
+    },
+    {
+      "handle": "luftreiniger-luftbefeuchter",
+      "title": "Luftbefeuchter & Raumklima"
+    },
+    {
+      "handle": "technik-gadgets",
+      "title": "Technik & Gadgets"
+    },
+    {
+      "handle": "bbq-grill",
+      "title": "BBQ & Grill"
+    },
+    {
+      "handle": "aufbewahrung-organisation",
+      "title": "Aufbewahrung & Organisation"
+    },
+    {
+      "handle": "selfcare-beauty",
+      "title": "Selfcare & Beauty"
+    },
+    {
+      "handle": "dekoration",
+      "title": "Dekoration"
+    },
+    {
+      "handle": "beleuchtung",
+      "title": "Beleuchtung & Lampen"
+    },
+    {
+      "handle": "led-produkte",
+      "title": "LED-Produkte"
+    },
+    {
+      "handle": "haustierbedarf-alles-fuer-dein-haustier",
+      "title": "Haustierbedarf & Zubehör – Alles für dein Haustier"
+    },
+    {
+      "handle": "wellness-entspannung",
+      "title": "Wellness & Entspannung"
+    }
+  ]
+}

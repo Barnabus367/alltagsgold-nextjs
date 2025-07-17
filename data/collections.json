@@ -1,0 +1,202 @@
+[
+  {
+    "id": "gid://shopify/Collection/656397828439",
+    "title": "Sale",
+    "description": "",
+    "descriptionHtml": "",
+    "handle": "sale",
+    "image": null,
+    "seo": {
+      "title": null,
+      "description": null
+    },
+    "updatedAt": "2025-06-16T04:33:08Z"
+  },
+  {
+    "id": "gid://shopify/Collection/656584048983",
+    "title": "Bestseller",
+    "description": "Unsere beliebtesten Alltagsgold-Produkte - bewährt und von Kunden geliebt.",
+    "descriptionHtml": "Unsere beliebtesten Alltagsgold-Produkte - bewährt und von Kunden geliebt.",
+    "handle": "bestseller",
+    "image": null,
+    "seo": {
+      "title": null,
+      "description": null
+    },
+    "updatedAt": "2025-06-16T04:32:48Z"
+  },
+  {
+    "id": "gid://shopify/Collection/656688906583",
+    "title": "Küchenhelfer & Gadgets",
+    "description": "Hochwertige Küchengeräte für den modernen Haushalt. Entdecken Sie effiziente Helfer, die Ihre Kochprozesse vereinfachen und professionelle Ergebnisse liefern.",
+    "descriptionHtml": "<p class=\"_p_1x4t5_68\"><span>Hochwertige Küchengeräte für den modernen Haushalt. Entdecken Sie effiziente Helfer, die Ihre Kochprozesse vereinfachen und professionelle Ergebnisse liefern.</span></p>",
+    "handle": "kuchengerate-1",
+    "image": null,
+    "seo": {
+      "title": null,
+      "description": null
+    },
+    "updatedAt": "2025-06-22T08:31:01Z"
+  },
+  {
+    "id": "gid://shopify/Collection/656689496407",
+    "title": "Haushaltsgeräte",
+    "description": "Qualitativ hochwertige Haushaltsgeräte für mehr Effizienz im Alltag. Innovative Lösungen, die Zeit sparen und den Komfort in Ihrem Zuhause steigern.",
+    "descriptionHtml": "<p class=\"_p_1x4t5_68\"><span>Qualitativ hochwertige Haushaltsgeräte für mehr Effizienz im Alltag. Innovative Lösungen, die Zeit sparen und den Komfort in Ihrem Zuhause steigern.</span></p>",
+    "handle": "haushaltsgerate",
+    "image": null,
+    "seo": {
+      "title": null,
+      "description": null
+    },
+    "updatedAt": "2025-06-19T13:31:08Z"
+  },
+  {
+    "id": "gid://shopify/Collection/656689922391",
+    "title": "Reinigungsgeräte",
+    "description": "Technologie für effiziente und gründliche Reinigung in jedem Bereich Ihres Zuhauses.\"",
+    "descriptionHtml": "<p class=\"_p_1x4t5_68\"><span>Technologie für effiziente und gründliche Reinigung in jedem Bereich Ihres Zuhauses.\"</span></p>",
+    "handle": "reinigungsgerate",
+    "image": null,
+    "seo": {
+      "title": null,
+      "description": null
+    },
+    "updatedAt": "2025-06-16T04:31:34Z"
+  },
+  {
+    "id": "gid://shopify/Collection/656690086231",
+    "title": "Luftbefeuchter & Raumklima",
+    "description": "Hocheffiziente Luftreiniger und Luftbefeuchter für ein gesundes Raumklima. Verbessern Sie Ihre Luftqualität und schaffen Sie ein angenehmes Wohnambiente.",
+    "descriptionHtml": "<p class=\"_p_1x4t5_68\"><span>Hocheffiziente Luftreiniger und Luftbefeuchter für ein gesundes Raumklima. Verbessern Sie Ihre Luftqualität und schaffen Sie ein angenehmes Wohnambiente.</span></p>",
+    "handle": "luftreiniger-luftbefeuchter",
+    "image": null,
+    "seo": {
+      "title": null,
+      "description": null
+    },
+    "updatedAt": "2025-06-19T14:02:41Z"
+  },
+  {
+    "id": "gid://shopify/Collection/656690315607",
+    "title": "Technik & Gadgets",
+    "description": "Innovative Technik und praktische Gadgets für den modernen Lebensstil. Entdecken Sie smarte Lösungen, die Ihren Alltag bereichern.",
+    "descriptionHtml": "<p class=\"_p_1x4t5_68\"><span>Innovative Technik und praktische Gadgets für den modernen Lebensstil. Entdecken Sie smarte Lösungen, die Ihren Alltag bereichern.</span></p>",
+    "handle": "technik-gadgets",
+    "image": null,
+    "seo": {
+      "title": null,
+      "description": null
+    },
+    "updatedAt": "2025-06-16T04:33:03Z"
+  },
+  {
+    "id": "gid://shopify/Collection/656690512215",
+    "title": "BBQ & Grill",
+    "description": "Hochwertige BBQ- und Grillprodukte für das perfekte Grillerlebnis. Professionelles Zubehör für Grillfans und Outdoor-Köche.",
+    "descriptionHtml": "<p class=\"_p_1x4t5_68\"><span>Hochwertige BBQ- und Grillprodukte für das perfekte Grillerlebnis. Professionelles Zubehör für Grillfans und Outdoor-Köche.</span></p>",
+    "handle": "bbq-grill",
+    "image": {
+      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/barbeque_1.jpg?v=1750350296",
+      "altText": null,
+      "width": 600,
+      "height": 305
+    },
+    "seo": {
+      "title": null,
+      "description": null
+    },
+    "updatedAt": "2025-06-19T16:24:56Z"
+  },
+  {
+    "id": "gid://shopify/Collection/656691495255",
+    "title": "Aufbewahrung & Organisation",
+    "description": "Durchdachte Aufbewahrungs- und Organisationslösungen für ein aufgeräumtes Zuhause. Maximieren Sie Ihren Raum mit funktionalen und ästhetischen Produkten.",
+    "descriptionHtml": "<p class=\"_p_1x4t5_68\"><span>Durchdachte Aufbewahrungs- und Organisationslösungen für ein aufgeräumtes Zuhause. Maximieren Sie Ihren Raum mit funktionalen und ästhetischen Produkten.</span></p>",
+    "handle": "aufbewahrung-organisation",
+    "image": null,
+    "seo": {
+      "title": null,
+      "description": null
+    },
+    "updatedAt": "2025-06-16T04:31:30Z"
+  },
+  {
+    "id": "gid://shopify/Collection/656929227095",
+    "title": "Selfcare & Beauty",
+    "description": "",
+    "descriptionHtml": "",
+    "handle": "selfcare-beauty",
+    "image": null,
+    "seo": {
+      "title": null,
+      "description": null
+    },
+    "updatedAt": "2025-06-16T04:30:29Z"
+  },
+  {
+    "id": "gid://shopify/Collection/657211294039",
+    "title": "Dekoration",
+    "description": "",
+    "descriptionHtml": "",
+    "handle": "dekoration",
+    "image": null,
+    "seo": {
+      "title": "De",
+      "description": null
+    },
+    "updatedAt": "2025-06-22T06:42:22Z"
+  },
+  {
+    "id": "gid://shopify/Collection/657213718871",
+    "title": "Beleuchtung & Lampen",
+    "description": "",
+    "descriptionHtml": "",
+    "handle": "beleuchtung",
+    "image": null,
+    "seo": {
+      "title": null,
+      "description": null
+    },
+    "updatedAt": "2025-06-22T06:57:13Z"
+  },
+  {
+    "id": "gid://shopify/Collection/657213784407",
+    "title": "LED-Produkte",
+    "description": "Entdecken Sie unsere große Auswahl an hochwertigen LED-Produkten für jeden Bedarf. Ob LED-Lampen, LED-Strips, Panels oder Leuchten – hier finden Sie energieeffiziente Beleuchtungslösungen für Ihr Zuhause, Büro oder Gewerbe. Unsere LED-Produkte bieten langlebige Qualität, moderne Technik und sparen Stromkosten. Perfekt für Innen- und Außenbereiche, einfache Montage und zuverlässige Performance. Jetzt passende LEDs finden und Licht neu erleben.",
+    "descriptionHtml": "<p data-start=\"111\" data-end=\"557\">Entdecken Sie unsere große Auswahl an hochwertigen LED-Produkten für jeden Bedarf. Ob LED-Lampen, LED-Strips, Panels oder Leuchten – hier finden Sie energieeffiziente Beleuchtungslösungen für Ihr Zuhause, Büro oder Gewerbe. Unsere LED-Produkte bieten langlebige Qualität, moderne Technik und sparen Stromkosten. Perfekt für Innen- und Außenbereiche, einfache Montage und zuverlässige Performance. Jetzt passende LEDs finden und Licht neu erleben.</p>",
+    "handle": "led-produkte",
+    "image": null,
+    "seo": {
+      "title": null,
+      "description": null
+    },
+    "updatedAt": "2025-06-22T06:57:13Z"
+  },
+  {
+    "id": "gid://shopify/Collection/657362878807",
+    "title": "Haustierbedarf & Zubehör – Alles für dein Haustier",
+    "description": "Entdecke unser vielseitiges Sortiment an Haustierzubehör für Hund, Katze & Co. Von hochwertigem Futter über kuschelige Schlafplätze bis hin zu praktischem Pflegezubehör und spannendem Spielzeug – hier findest du alles, was dein Haustier braucht. Wir wählen alle Produkte sorgfältig aus, damit dein Liebling nur das Beste bekommt. Egal, ob du deinen Hund verwöhnen, deine Katze beschäftigen oder einfach für mehr Wohlbefinden sorgen möchtest: Bei Alltagsgold gibt’s die passenden Lösungen für deinen tierischen Alltag.",
+    "descriptionHtml": "<p data-start=\"155\" data-end=\"672\">Entdecke unser vielseitiges Sortiment an Haustierzubehör für Hund, Katze &amp; Co. Von hochwertigem Futter über kuschelige Schlafplätze bis hin zu praktischem Pflegezubehör und spannendem Spielzeug – hier findest du alles, was dein Haustier braucht. Wir wählen alle Produkte sorgfältig aus, damit dein Liebling nur das Beste bekommt. Egal, ob du deinen Hund verwöhnen, deine Katze beschäftigen oder einfach für mehr Wohlbefinden sorgen möchtest: Bei Alltagsgold gibt’s die passenden Lösungen für deinen tierischen Alltag.</p>",
+    "handle": "haustierbedarf-alles-fuer-dein-haustier",
+    "image": null,
+    "seo": {
+      "title": "Haustierzubehör & Tierbedarf für Hund, Katze & mehr ",
+      "description": "Alles für dein Haustier: Spielzeug, Futter, Pflege & Zubehör für Hund, Katze & Co. Jetzt hochwertige Haustierodukte bei Alltagsgold online kaufen.\n\n"
+    },
+    "updatedAt": "2025-06-19T13:59:32Z"
+  },
+  {
+    "id": "gid://shopify/Collection/657395614039",
+    "title": "Wellness & Entspannung",
+    "description": "",
+    "descriptionHtml": "",
+    "handle": "wellness-entspannung",
+    "image": null,
+    "seo": {
+      "title": null,
+      "description": null
+    },
+    "updatedAt": "2025-06-22T08:17:31Z"
+  }
+]

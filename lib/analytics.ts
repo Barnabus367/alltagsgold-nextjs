@@ -7,7 +7,8 @@
 export const ANALYTICS_CONFIG = {
   META_PIXEL_ID: '1408203506889853',
   TIKTOK_PIXEL_ID: 'D0QIT2BC77U5V5P7175G',
-  GTM_CONTAINER_ID: 'GTM-T5C8R8MK'
+  GTM_CONTAINER_ID: 'GTM-T5C8R8MK',
+  LINKEDIN_PARTNER_ID: '6847265'
 };
 
 // Event Types
@@ -42,6 +43,8 @@ declare global {
     ttq: any;
     dataLayer: any[];
     gtag: any;
+    lintrk: any;
+    _linkedin_data_partner_ids: string[];
   }
 }
 
@@ -74,6 +77,13 @@ export function initializeAnalytics() {
     if (window.gtag && typeof window.gtag === 'function') {
       if (process.env.NODE_ENV === 'development') {
         console.log('Google Tag Manager initialized');
+      }
+    }
+    
+    // Initialize LinkedIn Insight Tag if loaded
+    if (window.lintrk && typeof window.lintrk === 'function') {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('LinkedIn Insight Tag initialized');
       }
     }
   }, 1000);
@@ -341,7 +351,14 @@ export function trackPurchase(purchaseData: PurchaseData) {
     });
   }
   
-  console.log('📊 Purchase tracked:', purchaseData);
+  // LinkedIn Insight Tag Purchase
+  if (window.lintrk) {
+    window.lintrk('track', { conversion_id: 16619601 });
+  }
+  
+  if (process.env.NODE_ENV === 'development') {
+    console.log('📊 Purchase tracked:', purchaseData);
+  }
 }
 
 /**
@@ -401,7 +418,14 @@ export function trackContact(formData: { form_name: string; method?: string }) {
     });
   }
   
-  console.log('📊 Contact tracked:', formData);
+  // LinkedIn Insight Tag Contact/Lead
+  if (window.lintrk) {
+    window.lintrk('track', { conversion_id: 16619609 });
+  }
+  
+  if (process.env.NODE_ENV === 'development') {
+    console.log('📊 Contact tracked:', formData);
+  }
 }
 
 /**

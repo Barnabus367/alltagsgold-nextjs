@@ -26,7 +26,7 @@ args = "AlltagsGold Production Ready"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Sitemap Generator"
+args = "Generate Sitemaps"
 
 [[workflows.workflow]]
 name = "Migration Tool Setup"
@@ -54,7 +54,7 @@ args = "npm run dev -- --port 5000 --hostname 0.0.0.0"
 waitForPort = 5000
 
 [[workflows.workflow]]
-name = "Sitemap Generator"
+name = "Generate Sitemaps"
 author = "agent"
 
 [[workflows.workflow.tasks]]

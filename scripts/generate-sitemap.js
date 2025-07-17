@@ -5,8 +5,15 @@ const path = require('path');
 
 // Configuration
 const SITE_URL = 'https://www.alltagsgold.ch';
-const OUTPUT_FILE = path.join(__dirname, '../public/sitemap.xml');
+const PUBLIC_DIR = path.join(__dirname, '../public');
 const CURRENT_DATE = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+
+// Sitemap file paths
+const SITEMAP_INDEX = path.join(PUBLIC_DIR, 'sitemap.xml');
+const SITEMAP_PAGES = path.join(PUBLIC_DIR, 'sitemap-pages.xml');
+const SITEMAP_COLLECTIONS = path.join(PUBLIC_DIR, 'sitemap-collections.xml');
+const SITEMAP_PRODUCTS = path.join(PUBLIC_DIR, 'sitemap-products.xml');
+const SITEMAP_BLOG = path.join(PUBLIC_DIR, 'sitemap-blog.xml');
 
 /**
  * Generate XML-safe content
@@ -23,13 +30,49 @@ function escapeXml(str) {
 /**
  * Create URL entry for sitemap
  */
-function createUrlEntry(loc, lastmod = CURRENT_DATE, changefreq = 'monthly', priority = '0.5') {
+function createUrlEntry(loc, lastmod = CURRENT_DATE, changefreq = 'monthly', priority = '0.5', images = []) {
+  let imageXml = '';
+  if (images.length > 0) {
+    imageXml = images.map(img => `
+    <image:image>
+      <image:loc>${escapeXml(img.url)}</image:loc>
+      ${img.title ? `<image:title>${escapeXml(img.title)}</image:title>` : ''}
+    </image:image>`).join('');
+  }
+  
   return `  <url>
     <loc>${escapeXml(loc)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>${changefreq}</changefreq>
-    <priority>${priority}</priority>
+    <priority>${priority}</priority>${imageXml}
   </url>`;
+}
+
+/**
+ * Create sitemap index entry
+ */
+function createSitemapEntry(loc, lastmod = CURRENT_DATE) {
+  return `  <sitemap>
+    <loc>${escapeXml(loc)}</loc>
+    <lastmod>${lastmod}</lastmod>
+  </sitemap>`;
+}
+
+/**
+ * Generate XML header for sitemap
+ */
+function generateXmlHeader(includeImages = false) {
+  const imageNamespace = includeImages ? ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"' : '';
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"${imageNamespace}>`;
+}
+
+/**
+ * Generate XML header for sitemap index
+ */
+function generateIndexHeader() {
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 }
 
 /**
@@ -40,7 +83,6 @@ function getStaticPages() {
     { url: '/', changefreq: 'daily', priority: '1.0' },
     { url: '/products', changefreq: 'daily', priority: '0.8' },
     { url: '/collections', changefreq: 'weekly', priority: '0.8' },
-    { url: '/blog', changefreq: 'daily', priority: '0.7' },
     { url: '/contact', changefreq: 'monthly', priority: '0.6' },
     { url: '/impressum', changefreq: 'yearly', priority: '0.3' },
     { url: '/datenschutz', changefreq: 'yearly', priority: '0.3' },
@@ -48,6 +90,19 @@ function getStaticPages() {
   ];
 
   return staticPages.map(page => 
+    createUrlEntry(`${SITE_URL}${page.url}`, CURRENT_DATE, page.changefreq, page.priority)
+  );
+}
+
+/**
+ * Get blog pages
+ */
+function getBlogPages() {
+  const blogPages = [
+    { url: '/blog', changefreq: 'daily', priority: '0.7' }
+  ];
+
+  return blogPages.map(page => 
     createUrlEntry(`${SITE_URL}${page.url}`, CURRENT_DATE, page.changefreq, page.priority)
   );
 }
@@ -68,7 +123,15 @@ function getProducts() {
       if (productMatches) {
         productMatches.forEach(match => {
           const url = match.replace(/<\/?loc>/g, '').replace('https://www.alltagsgold.ch', '');
-          productUrls.push(createUrlEntry(`${SITE_URL}${url}`, CURRENT_DATE, 'weekly', '0.9'));
+          const handle = url.replace('/products/', '');
+          
+          // Extract images for products with basic image URL pattern
+          const images = [{
+            url: `https://res.cloudinary.com/ddshn3a6o/image/upload/f_auto,q_auto,w_800/alltagsgold/${handle}`,
+            title: handle.replace(/-/g, ' ')
+          }];
+          
+          productUrls.push(createUrlEntry(`${SITE_URL}${url}`, CURRENT_DATE, 'weekly', '0.9', images));
         });
       }
       
@@ -88,11 +151,19 @@ function getProducts() {
           if (Array.isArray(data)) {
             data.forEach(product => {
               if (product.handle) {
-                products.push(createUrlEntry(`${SITE_URL}/products/${product.handle}`, CURRENT_DATE, 'weekly', '0.9'));
+                const images = product.image ? [{
+                  url: product.image.url || product.image,
+                  title: product.title || product.handle
+                }] : [];
+                products.push(createUrlEntry(`${SITE_URL}/products/${product.handle}`, CURRENT_DATE, 'weekly', '0.9', images));
               }
             });
           } else if (data.handle) {
-            products.push(createUrlEntry(`${SITE_URL}/products/${data.handle}`, CURRENT_DATE, 'weekly', '0.9'));
+            const images = data.image ? [{
+              url: data.image.url || data.image,
+              title: data.title || data.handle
+            }] : [];
+            products.push(createUrlEntry(`${SITE_URL}/products/${data.handle}`, CURRENT_DATE, 'weekly', '0.9', images));
           }
         } catch (error) {
           console.warn(`Could not parse product file ${file}:`, error.message);
@@ -167,48 +238,68 @@ function getCollections() {
 }
 
 /**
- * Generate complete sitemap XML
+ * Write sitemap to file
  */
-function generateSitemap() {
-  console.log('🗺️  Generating sitemap.xml...');
-  
-  const staticPages = getStaticPages();
-  const products = getProducts();
-  const collections = getCollections();
-  
-  const allUrls = [
-    ...staticPages,
-    ...collections,
-    ...products
-  ];
-  
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${allUrls.join('\n')}
+function writeSitemap(filePath, urls, includeImages = false) {
+  const xml = `${generateXmlHeader(includeImages)}
+${urls.join('\n')}
 </urlset>`;
-
-  // Ensure public directory exists
-  const publicDir = path.dirname(OUTPUT_FILE);
-  if (!fs.existsSync(publicDir)) {
-    fs.mkdirSync(publicDir, { recursive: true });
-  }
   
-  // Write sitemap file
-  fs.writeFileSync(OUTPUT_FILE, xml, 'utf8');
-  
-  const urlCount = allUrls.length;
-  console.log(`✅ Sitemap generated successfully!`);
-  console.log(`📊 URLs included: ${urlCount} total`);
-  console.log(`   - Static pages: ${staticPages.length}`);
-  console.log(`   - Collections: ${collections.length}`);
-  console.log(`   - Products: ${products.length}`);
-  console.log(`📄 Output: ${OUTPUT_FILE}`);
-  
-  return urlCount;
+  fs.writeFileSync(filePath, xml, 'utf8');
+  return urls.length;
 }
 
 /**
- * Update robots.txt to include sitemap reference
+ * Generate all sitemaps (split by content type)
+ */
+function generateSitemaps() {
+  console.log('🗺️  Generating multi-part sitemap...');
+  
+  // Ensure public directory exists
+  if (!fs.existsSync(PUBLIC_DIR)) {
+    fs.mkdirSync(PUBLIC_DIR, { recursive: true });
+  }
+  
+  const staticPages = getStaticPages();
+  const blogPages = getBlogPages();
+  const products = getProducts();
+  const collections = getCollections();
+  
+  // Generate individual sitemaps
+  const pageCount = writeSitemap(SITEMAP_PAGES, staticPages);
+  const blogCount = writeSitemap(SITEMAP_BLOG, blogPages);
+  const collectionCount = writeSitemap(SITEMAP_COLLECTIONS, collections);
+  const productCount = writeSitemap(SITEMAP_PRODUCTS, products, true); // Include images for products
+  
+  // Generate sitemap index
+  const indexEntries = [
+    createSitemapEntry(`${SITE_URL}/sitemap-pages.xml`),
+    createSitemapEntry(`${SITE_URL}/sitemap-blog.xml`),
+    createSitemapEntry(`${SITE_URL}/sitemap-collections.xml`),
+    createSitemapEntry(`${SITE_URL}/sitemap-products.xml`)
+  ];
+  
+  const indexXml = `${generateIndexHeader()}
+${indexEntries.join('\n')}
+</sitemapindex>`;
+  
+  fs.writeFileSync(SITEMAP_INDEX, indexXml, 'utf8');
+  
+  const totalUrls = pageCount + blogCount + collectionCount + productCount;
+  
+  console.log(`✅ Multi-part sitemap generated successfully!`);
+  console.log(`📊 URLs included: ${totalUrls} total`);
+  console.log(`   - Static pages: ${pageCount} (sitemap-pages.xml)`);
+  console.log(`   - Blog pages: ${blogCount} (sitemap-blog.xml)`);
+  console.log(`   - Collections: ${collectionCount} (sitemap-collections.xml)`);
+  console.log(`   - Products: ${productCount} (sitemap-products.xml) with images`);
+  console.log(`📄 Main sitemap: ${SITEMAP_INDEX}`);
+  
+  return totalUrls;
+}
+
+/**
+ * Update robots.txt to include sitemap reference and validate
  */
 function updateRobotsTxt() {
   const robotsPath = path.join(__dirname, '../public/robots.txt');
@@ -231,24 +322,40 @@ Sitemap: ${sitemapUrl}`;
   }
   
   fs.writeFileSync(robotsPath, robotsContent, 'utf8');
+  
+  // Validate robots.txt content
+  const lines = robotsContent.split('\n');
+  const hasSitemap = lines.some(line => line.trim().startsWith('Sitemap:'));
+  const hasUserAgent = lines.some(line => line.trim().startsWith('User-agent:'));
+  
   console.log(`🤖 Updated robots.txt with sitemap reference`);
+  console.log(`   ✅ User-agent directive: ${hasUserAgent ? 'Present' : 'Missing'}`);
+  console.log(`   ✅ Sitemap directive: ${hasSitemap ? 'Present' : 'Missing'}`);
+  console.log(`   📄 Sitemap URL: ${sitemapUrl}`);
+  
+  if (!hasSitemap || !hasUserAgent) {
+    console.warn(`⚠️  robots.txt validation failed - please check manually`);
+  }
 }
 
 // Main execution
 if (require.main === module) {
   try {
-    const urlCount = generateSitemap();
+    const urlCount = generateSitemaps();
     updateRobotsTxt();
     
-    console.log(`\n🚀 Sitemap generation complete!`);
-    console.log(`   Generated ${urlCount} URLs for ${SITE_URL}`);
+    console.log(`\n🚀 Multi-part sitemap generation complete!`);
+    console.log(`   Generated ${urlCount} URLs across 4 sitemaps for ${SITE_URL}`);
+    console.log(`   🖼️  Product images included for enhanced SEO`);
+    console.log(`   🎯 Optimized for Google crawling efficiency`);
+    console.log(`   📋 Main index: sitemap.xml`);
     console.log(`   Ready for search engine indexing`);
     
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error generating sitemap:', error);
+    console.error('❌ Error generating sitemaps:', error);
     process.exit(1);
   }
 }
 
-module.exports = { generateSitemap, updateRobotsTxt };
+module.exports = { generateSitemaps, updateRobotsTxt };

@@ -2,8 +2,10 @@ import { GetStaticProps } from 'next';
 import { useState } from 'react';
 import { Home } from './Home';
 import { Layout } from '../components/layout/Layout';
+import { SEOHead } from '../components/seo/SEOHead';
 import { ShopifyProduct, ShopifyCollection } from '../types/shopify';
 import { getProducts, getCollections } from '../lib/shopify';
+import { generateStaticPageSEO } from '../lib/seo';
 
 interface HomePageProps {
   featuredProducts: ShopifyProduct[];
@@ -13,10 +15,16 @@ interface HomePageProps {
 export default function HomePage({ featuredProducts, collections }: HomePageProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Generate SEO metadata for homepage
+  const seoData = generateStaticPageSEO('home');
+
   return (
-    <Layout onSearch={setSearchQuery}>
-      <Home searchQuery={searchQuery} preloadedProducts={featuredProducts} preloadedCollections={collections} />
-    </Layout>
+    <>
+      <SEOHead seo={seoData} canonicalUrl="/" />
+      <Layout onSearch={setSearchQuery}>
+        <Home searchQuery={searchQuery} preloadedProducts={featuredProducts} preloadedCollections={collections} />
+      </Layout>
+    </>
   );
 }
 

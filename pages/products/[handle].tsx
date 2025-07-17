@@ -2,9 +2,11 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
 import { ProductDetail } from '../ProductDetail';
 import { Layout } from '../../components/layout/Layout';
+import { SEOHead } from '../../components/seo/SEOHead';
 import { useState } from 'react';
 import { ShopifyProduct } from '../../types/shopify';
 import { getAllProductHandles, getProductByHandle } from '../../lib/shopify';
+import { generateProductSEO } from '../../lib/seo';
 
 interface ProductDetailPageProps {
   product: ShopifyProduct | null;
@@ -21,10 +23,16 @@ export default function ProductDetailPage({ product, handle }: ProductDetailPage
     return <div>Loading...</div>;
   }
 
+  // Generate SEO metadata
+  const seoData = generateProductSEO(product);
+
   return (
-    <Layout onSearch={setSearchQuery}>
-      <ProductDetail preloadedProduct={product} />
-    </Layout>
+    <>
+      <SEOHead seo={seoData} canonicalUrl={`/products/${handle}`} />
+      <Layout onSearch={setSearchQuery}>
+        <ProductDetail preloadedProduct={product} />
+      </Layout>
+    </>
   );
 }
 

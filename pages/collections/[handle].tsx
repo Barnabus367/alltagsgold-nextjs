@@ -2,9 +2,11 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
 import { CollectionDetail } from '../CollectionDetail';
 import { Layout } from '../../components/layout/Layout';
+import { SEOHead } from '../../components/seo/SEOHead';
 import { useState } from 'react';
 import { ShopifyCollection } from '../../types/shopify';
 import { getAllCollectionHandles, getCollectionByHandle } from '../../lib/shopify';
+import { generateCollectionSEO } from '../../lib/seo';
 
 interface CollectionDetailPageProps {
   collection: ShopifyCollection | null;
@@ -21,10 +23,16 @@ export default function CollectionDetailPage({ collection, handle }: CollectionD
     return <div>Loading...</div>;
   }
 
+  // Generate SEO metadata
+  const seoData = generateCollectionSEO(collection);
+
   return (
-    <Layout onSearch={setSearchQuery}>
-      <CollectionDetail preloadedCollection={collection} />
-    </Layout>
+    <>
+      <SEOHead seo={seoData} canonicalUrl={`/collections/${handle}`} />
+      <Layout onSearch={setSearchQuery}>
+        <CollectionDetail preloadedCollection={collection} />
+      </Layout>
+    </>
   );
 }
 

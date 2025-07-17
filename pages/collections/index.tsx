@@ -1,9 +1,11 @@
 import { GetStaticProps } from 'next';
 import { Collections } from '../../components/collections/CollectionsList';
 import { Layout } from '../../components/layout/Layout';
+import { SEOHead } from '../../components/seo/SEOHead';
 import { useState } from 'react';
 import { ShopifyCollection } from '../../types/shopify';
 import { getCollections } from '../../lib/shopify';
+import { generateStaticPageSEO } from '../../lib/seo';
 
 interface CollectionsPageProps {
   collections: ShopifyCollection[];
@@ -12,10 +14,16 @@ interface CollectionsPageProps {
 export default function CollectionsPage({ collections }: CollectionsPageProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Generate SEO metadata for collections page
+  const seoData = generateStaticPageSEO('collections');
+
   return (
-    <Layout onSearch={setSearchQuery}>
-      <Collections preloadedCollections={collections} />
-    </Layout>
+    <>
+      <SEOHead seo={seoData} canonicalUrl="/collections" />
+      <Layout onSearch={setSearchQuery}>
+        <Collections preloadedCollections={collections} />
+      </Layout>
+    </>
   );
 }
 

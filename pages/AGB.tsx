@@ -1,14 +1,13 @@
-import { SEOHelmet } from '@/components/SEOHelmet';
+import { SEOHead } from '../components/seo/SEOHead';
+import { generateStaticPageSEO } from '../lib/seo';
 
 export function AGB() {
+  // Generate SEO metadata for AGB page
+  const seoData = generateStaticPageSEO('agb');
+
   return (
     <div className="min-h-screen bg-white pt-16">
-      <SEOHelmet 
-        title="AGB - Allgemeine Geschäftsbedingungen"
-        description="Lesen Sie unsere Allgemeinen Geschäftsbedingungen für den Kauf bei AlltagsGold. Rechtliche Bestimmungen, Lieferbedingungen und Rückgaberecht."
-        canonicalUrl="/agb"
-        type="article"
-      />
+      <SEOHead seo={seoData} canonicalUrl="/agb" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px:8 py-16">
         <div className="prose prose-gray max-w-none">

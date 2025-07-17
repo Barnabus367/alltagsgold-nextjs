@@ -1,14 +1,13 @@
-import { SEOHelmet } from '@/components/SEOHelmet';
+import { SEOHead } from '../components/seo/SEOHead';
+import { generateStaticPageSEO } from '../lib/seo';
 
 export function Impressum() {
+  // Generate SEO metadata for Impressum page
+  const seoData = generateStaticPageSEO('impressum');
+
   return (
     <div className="min-h-screen bg-white pt-16">
-      <SEOHelmet 
-        title="Impressum - Rechtliche Angaben"
-        description="Impressum und rechtliche Angaben zu AlltagsGold. Kontaktdaten, Verantwortliche und gesetzlich vorgeschriebene Informationen zum Unternehmen."
-        canonicalUrl="/impressum"
-        type="article"
-      />
+      <SEOHead seo={seoData} canonicalUrl="/impressum" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="prose prose-gray max-w-none">

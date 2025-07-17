@@ -1,11 +1,12 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { SEOHelmet } from '@/components/SEOHelmet';
+import { SEOHead } from '../components/seo/SEOHead';
 import { Mail, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
 import { apiRequest } from '@/lib/queryClient';
 import { trackContact } from '@/lib/analytics';
 import { Layout } from '@/components/layout/Layout';
+import { generateStaticPageSEO } from '../lib/seo';
 
 export function Contact() {
   const heroRef = useRef(null);

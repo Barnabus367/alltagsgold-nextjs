@@ -9,7 +9,7 @@ const PUBLIC_DIR = path.join(__dirname, '../public');
 const CURRENT_DATE = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
 
 // Sitemap file paths
-const SITEMAP_INDEX = path.join(PUBLIC_DIR, 'sitemap.xml');
+const SITEMAP_INDEX = path.join(PUBLIC_DIR, 'sitemap-index.xml');
 const SITEMAP_PAGES = path.join(PUBLIC_DIR, 'sitemap-pages.xml');
 const SITEMAP_COLLECTIONS = path.join(PUBLIC_DIR, 'sitemap-collections.xml');
 const SITEMAP_PRODUCTS = path.join(PUBLIC_DIR, 'sitemap-products.xml');

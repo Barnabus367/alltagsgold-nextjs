@@ -14,7 +14,7 @@ export function AGB() {
           <h1 className="text-4xl font-light text-black mb-8">Allgemeine Geschäftsbedingungen (AGB)</h1>
 
           <div className="space-y-8">
-            <section>
+            <section> 
               <h2 className="text-2xl font-light text-black mb-4">§ 1 Geltungsbereich</h2>
               <div className="space-y-4 text-gray-700">
                 <p>

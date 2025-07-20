@@ -13,6 +13,7 @@ const SITE_URL = 'https://www.alltagsgold.ch';
 const PUBLIC_DIR = path.join(__dirname, '../public');
 const CURRENT_DATE = new Date().toISOString().split('T')[0];
 
+
 // Environment variables (same as Shopify lib)
 const SHOPIFY_STORE_DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
 const SHOPIFY_STOREFRONT_ACCESS_TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN;
@@ -131,6 +132,14 @@ async function fetchShopifyCollections() {
   console.log(`✅ Fetched ${collections.length} collections from Shopify`);
   return collections;
 }
+
+// Sitemap file paths
+const SITEMAP_INDEX = path.join(PUBLIC_DIR, 'sitemap-index.xml');
+const SITEMAP_PAGES = path.join(PUBLIC_DIR, 'sitemap-pages.xml');
+const SITEMAP_COLLECTIONS = path.join(PUBLIC_DIR, 'sitemap-collections.xml');
+const SITEMAP_PRODUCTS = path.join(PUBLIC_DIR, 'sitemap-products.xml');
+const SITEMAP_BLOG = path.join(PUBLIC_DIR, 'sitemap-blog.xml');
+
 
 /**
  * Generate XML-safe content

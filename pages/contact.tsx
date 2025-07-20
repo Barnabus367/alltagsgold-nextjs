@@ -1,6 +1,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { SEOHelmet } from '../components/SEOHelmet';
 import { SEOHead } from '../components/seo/SEOHead';
 import { Mail, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
 import { apiRequest } from '@/lib/queryClient';

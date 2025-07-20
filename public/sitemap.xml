@@ -2,7 +2,9 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>https://www.alltagsgold.ch/sitemap-pages.xml</loc>
+<<<<<<< HEAD
     <lastmod>2025-07-20</lastmod>
+>>>>>>> e8d2a5a9e4fc1f8f13b81f67bfc6dc3845a6078e
   </sitemap>
   <sitemap>
     <loc>https://www.alltagsgold.ch/sitemap-blog.xml</loc>

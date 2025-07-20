@@ -25,6 +25,9 @@ function sendToAnalytics(metric: WebVitalsMetric) {
     });
   }
 
+  // Send to Vercel Analytics (Web Vitals are automatically tracked by @vercel/analytics/next)
+  // Vercel Analytics captures Web Vitals automatically when using the Analytics component
+
   // Development logging
   if (process.env.NODE_ENV === 'development') {
     console.log(`Web Vitals [${metric.name}]:`, {

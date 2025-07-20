@@ -3,6 +3,29 @@
 const fs = require('fs');
 const path = require('path');
 
+// Load environment variables from .env.local manually
+function loadEnvLocal() {
+  const envPath = path.join(__dirname, '../.env.local');
+  try {
+    const envContent = fs.readFileSync(envPath, 'utf8');
+    const lines = envContent.split('\n');
+    
+    lines.forEach(line => {
+      const trimmed = line.trim();
+      if (trimmed && !trimmed.startsWith('#')) {
+        const [key, value] = trimmed.split('=', 2);
+        if (key && value) {
+          process.env[key] = value;
+        }
+      }
+    });
+  } catch (error) {
+    console.warn('⚠️  Could not load .env.local:', error.message);
+  }
+}
+
+loadEnvLocal();
+
 // Node.js 18+ fetch polyfill
 if (!global.fetch) {
   global.fetch = require('node-fetch');
@@ -13,10 +36,14 @@ const SITE_URL = 'https://www.alltagsgold.ch';
 const PUBLIC_DIR = path.join(__dirname, '../public');
 const CURRENT_DATE = new Date().toISOString().split('T')[0];
 
-
 // Environment variables (same as Shopify lib)
 const SHOPIFY_STORE_DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
 const SHOPIFY_STOREFRONT_ACCESS_TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+
+// Debug environment variables
+console.log('🔍 Environment variables:');
+console.log('STORE_DOMAIN:', SHOPIFY_STORE_DOMAIN);
+console.log('ACCESS_TOKEN:', SHOPIFY_STOREFRONT_ACCESS_TOKEN ? '***set***' : 'missing');
 
 /**
  * Shopify API fetch function (compatible with lib/shopify.ts)

@@ -1,6 +1,6 @@
 /**
  * Web Vitals Integration für Next.js Performance-Monitoring
- * Trackt Core Web Vitals und sendet sie an Analytics-Plattformen
+ * Trackt Core Web Vitals und sendet sie an Meta Pixel und Vercel Analytics
  */
 
 import { onCLS, onINP, onFCP, onLCP, onTTFB, type Metric } from 'web-vitals';
@@ -14,15 +14,7 @@ export type WebVitalsMetric = Metric;
 function sendToAnalytics(metric: WebVitalsMetric) {
   if (typeof window === 'undefined') return;
 
-  // Send to Google Analytics 4 (GTM)
-  if (window.gtag && typeof window.gtag === 'function') {
-    window.gtag('event', metric.name, {
-      event_category: 'Web Vitals',
-      event_label: metric.id,
-      value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
-      non_interaction: true,
-    });
-  }
+
 
   // Send to Meta Pixel (Custom Event)
   if (window.fbq && typeof window.fbq === 'function') {

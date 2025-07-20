@@ -3,7 +3,7 @@ import { Products } from '../ProductsList';
 import { Layout } from '../../components/layout/Layout';
 import { SEOHead } from '../../components/seo/SEOHead';
 import { useState } from 'react';
-import { ShopifyProduct } from '../../types/shopify';
+import { ShopifyProduct } from '../../types/shopify'; 
 import { getProducts } from '../../lib/shopify';
 import { generateStaticPageSEO } from '../../lib/seo';
 

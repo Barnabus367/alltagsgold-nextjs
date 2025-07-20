@@ -22,21 +22,38 @@ export interface SEOMetadata {
 }
 
 /**
- * Fallback-Descriptions für verschiedene Seitentypen
+ * Brand-optimierte SEO-Templates nach neuem Schema
  */
-const FALLBACK_DESCRIPTIONS = {
-  default: "AlltagsGold – Dein Shop für moderne Alltagsprodukte in der Schweiz.",
-  products: "Entdecke praktische Haushalts-Gadgets bei AlltagsGold – funktional, modern & schnell geliefert.",
-  collections: "Hochwertige Produkte für deinen Alltag – entdecke unsere kuratierten Kollektionen bei AlltagsGold.",
-  home: "AlltagsGold bietet innovative Haushalts- und Lifestyle-Produkte für einen modernen Alltag in der Schweiz.",
-  contact: "Kontaktiere AlltagsGold – dein Schweizer Shop für moderne Alltagsprodukte. Schnelle Hilfe und Beratung.",
-  blog: "Tipps und Inspiration für einen modernen Alltag – der AlltagsGold Blog mit nützlichen Produktratgebern."
+const SEO_TEMPLATES = {
+  brand: "alltagsgold",
+  productTitleSuffix: "Jetzt entdecken",
+  collectionTitleSuffix: "Clever & stilvoll",
+  productDescriptionSuffix: "Jetzt online kaufen bei alltagsgold – moderne Alltagslösungen & stylische Gadgets.",
+  collectionDescriptionTemplate: (name: string) => `Entdecke unsere ${name}-Highlights – handverlesen für deinen Alltag. Jetzt stöbern & inspirieren lassen.`,
+  fallbacks: {
+    default: "Innovative Lifestyle-Produkte für deinen Alltag. Entdeckt, modern & praktisch. Jetzt entdecken auf alltagsgold.ch.",
+    products: "Moderne Alltagslösungen & stylische Gadgets. Jetzt online kaufen bei alltagsgold.",
+    collections: "Handverlesene Produkte für deinen Alltag. Jetzt stöbern & inspirieren lassen bei alltagsgold.",
+    home: "Innovative Lifestyle-Produkte für deinen Alltag. Entdeckt, modern & praktisch. Jetzt entdecken auf alltagsgold.ch.",
+    contact: "Kontaktiere alltagsgold – moderne Alltagslösungen & stylische Gadgets. Schnelle Hilfe und Beratung.",
+    blog: "Tipps und Inspiration für einen modernen Alltag – der alltagsgold Blog mit nützlichen Produktratgebern."
+  }
 };
 
 /**
- * Bereinigt und optimiert Description-Text
+ * Generiert Brand-konformen Title mit Pipe-Trennung
  */
-function sanitizeDescription(text: string, maxLength: number = 160): string {
+function generateBrandTitle(pageName: string, suffix?: string): string {
+  if (!suffix) {
+    return `${SEO_TEMPLATES.brand} | ${pageName}`;
+  }
+  return `${SEO_TEMPLATES.brand} | ${pageName} | ${suffix}`;
+}
+
+/**
+ * Bereinigt und optimiert Description-Text (auf 150 Zeichen reduziert)
+ */
+function sanitizeDescription(text: string, maxLength: number = 150): string {
   if (!text) return '';
   
   // HTML-Tags entfernen
@@ -61,23 +78,43 @@ function sanitizeDescription(text: string, maxLength: number = 160): string {
 }
 
 /**
- * Generiert SEO-Metadata für Produktseiten
+ * Erstellt optimierte Product-Description mit Brand-Suffix
  */
-export function generateProductSEO(product: any): SEOMetadata {
-  const title = product?.title || 'Produkt';
-  const baseDescription = product?.description || product?.excerpt || '';
-  
-  let description = sanitizeDescription(baseDescription);
-  
-  // Fallback mit Produktname falls keine Description vorhanden
-  if (!description) {
-    description = `${title} bei AlltagsGold kaufen – moderne Qualitätsprodukte für deinen Alltag in der Schweiz.`;
-    description = sanitizeDescription(description);
+function createProductDescription(productDescription: string, productTitle: string): string {
+  if (!productDescription) {
+    return `${productTitle}. ${SEO_TEMPLATES.productDescriptionSuffix}`;
   }
   
-  // Fallback falls immer noch zu lang
+  const cleanDesc = sanitizeDescription(productDescription, 100); // Platz für Suffix lassen
+  const suffixLength = SEO_TEMPLATES.productDescriptionSuffix.length + 2; // +2 für ". "
+  
+  if ((cleanDesc.length + suffixLength) <= 150) {
+    return `${cleanDesc}. ${SEO_TEMPLATES.productDescriptionSuffix}`;
+  }
+  
+  // Kürze Description um Platz für Suffix zu schaffen
+  const maxDescLength = 150 - suffixLength;
+  const shortenedDesc = sanitizeDescription(productDescription, maxDescLength);
+  return `${shortenedDesc}. ${SEO_TEMPLATES.productDescriptionSuffix}`;
+}
+
+/**
+ * Generiert SEO-Metadata für Produktseiten (neues Schema)
+ */
+export function generateProductSEO(product: any): SEOMetadata {
+  const productTitle = product?.title || 'Produkt';
+  
+  // Neues Title-Schema: alltagsgold | {Produktname} | Jetzt entdecken
+  const title = generateBrandTitle(productTitle, SEO_TEMPLATES.productTitleSuffix);
+  
+  const baseDescription = product?.description || product?.excerpt || '';
+  
+  // Neue Description mit Brand-Suffix
+  let description = createProductDescription(baseDescription, productTitle);
+  
+  // Fallback falls keine sinnvolle Description erstellt werden kann
   if (!description || description.length < 50) {
-    description = FALLBACK_DESCRIPTIONS.products;
+    description = SEO_TEMPLATES.fallbacks.products;
   }
 
   const imageUrl = product?.image?.url || product?.featuredImage?.url;
@@ -102,23 +139,42 @@ export function generateProductSEO(product: any): SEOMetadata {
 }
 
 /**
- * Generiert SEO-Metadata für Collection-Seiten
+ * Generiert SEO-Metadata für Collection-Seiten (neues Schema)
  */
 export function generateCollectionSEO(collection: any): SEOMetadata {
-  const title = collection?.title || 'Kollektion';
+  const collectionTitle = collection?.title || 'Kollektion';
+  
+  // Neues Title-Schema: alltagsgold | {Kollektionsname} | Clever & stilvoll
+  const title = generateBrandTitle(collectionTitle, SEO_TEMPLATES.collectionTitleSuffix);
+  
   const baseDescription = collection?.description || '';
   
-  let description = sanitizeDescription(baseDescription);
+  let description: string;
   
-  // Fallback mit Collection-Name
-  if (!description) {
-    description = `${title} – Entdecke hochwertige Produkte in dieser Kategorie bei AlltagsGold.`;
-    description = sanitizeDescription(description);
+  // Prüfe ob eigene Description vorhanden und sinnvoll nutzbar
+  if (baseDescription && baseDescription.length > 20) {
+    const cleanDesc = sanitizeDescription(baseDescription, 100);
+    const template = SEO_TEMPLATES.collectionDescriptionTemplate(collectionTitle);
+    
+    // Wenn Template + Description zu lang, nutze nur Template
+    if ((cleanDesc.length + template.length + 3) <= 150) {
+      description = `${cleanDesc}. ${template}`;
+    } else {
+      description = template;
+    }
+  } else {
+    // Verwende Template mit Collection-Name
+    description = SEO_TEMPLATES.collectionDescriptionTemplate(collectionTitle);
   }
   
-  // Fallback falls immer noch nicht passend
+  // Fallback falls Template zu lang
+  if (description.length > 150) {
+    description = sanitizeDescription(description, 150);
+  }
+  
+  // Final fallback
   if (!description || description.length < 50) {
-    description = FALLBACK_DESCRIPTIONS.collections;
+    description = SEO_TEMPLATES.fallbacks.collections;
   }
 
   const imageUrl = collection?.image?.url || collection?.featuredImage?.url;
@@ -143,60 +199,65 @@ export function generateCollectionSEO(collection: any): SEOMetadata {
 }
 
 /**
- * Generiert SEO-Metadata für statische Seiten
+ * Generiert SEO-Metadata für statische Seiten (neues Schema)
  */
 export function generateStaticPageSEO(pageType: string, customTitle?: string, customDescription?: string): SEOMetadata {
-  const staticPageData: Record<string, { title: string; description: string }> = {
+  const staticPageData: Record<string, { pageName: string; description: string; suffix?: string }> = {
     home: {
-      title: "AlltagsGold – Moderne Alltagsprodukte für die Schweiz",
-      description: FALLBACK_DESCRIPTIONS.home
+      pageName: "Clever bestellt. Clever geliefert. Alltag bereichert",
+      description: SEO_TEMPLATES.fallbacks.home
     },
     contact: {
-      title: "Kontakt – AlltagsGold",
-      description: FALLBACK_DESCRIPTIONS.contact
+      pageName: "Kontakt",
+      description: SEO_TEMPLATES.fallbacks.contact
     },
     impressum: {
-      title: "Impressum – AlltagsGold",
-      description: "Rechtliche Informationen und Impressum von AlltagsGold, deinem Schweizer Shop für moderne Alltagsprodukte."
+      pageName: "Impressum",
+      description: "Rechtliche Informationen und Impressum von alltagsgold – moderne Alltagslösungen & stylische Gadgets."
     },
     datenschutz: {
-      title: "Datenschutz – AlltagsGold", 
-      description: "Datenschutzerklärung von AlltagsGold – Transparente Informationen zum Umgang mit deinen Daten."
+      pageName: "Datenschutz", 
+      description: "Datenschutzerklärung von alltagsgold – Transparente Informationen zum Umgang mit deinen Daten."
     },
     agb: {
-      title: "AGB – AlltagsGold",
-      description: "Allgemeine Geschäftsbedingungen von AlltagsGold – Alle wichtigen Infos zu Bestellung und Versand."
+      pageName: "AGB",
+      description: "Allgemeine Geschäftsbedingungen von alltagsgold – Alle wichtigen Infos zu Bestellung und Versand."
     },
     blog: {
-      title: "Blog – AlltagsGold",
-      description: FALLBACK_DESCRIPTIONS.blog
+      pageName: "Blog",
+      description: SEO_TEMPLATES.fallbacks.blog
     },
     products: {
-      title: "Alle Produkte – AlltagsGold",
-      description: FALLBACK_DESCRIPTIONS.products
+      pageName: "Alle Produkte",
+      description: SEO_TEMPLATES.fallbacks.products
     },
     collections: {
-      title: "Kategorien – AlltagsGold", 
-      description: FALLBACK_DESCRIPTIONS.collections
+      pageName: "Kategorien", 
+      description: SEO_TEMPLATES.fallbacks.collections
     }
   };
 
   const pageData = staticPageData[pageType] || {
-    title: customTitle || "AlltagsGold",
-    description: customDescription || FALLBACK_DESCRIPTIONS.default
+    pageName: customTitle || "Seite",
+    description: customDescription || SEO_TEMPLATES.fallbacks.default
   };
 
+  // Generiere Title nach neuem Schema
+  const title = pageType === 'home' 
+    ? generateBrandTitle(pageData.pageName) // Startseite ohne Suffix
+    : generateBrandTitle(pageData.pageName, pageData.suffix);
+
   return {
-    title: pageData.title,
+    title,
     description: sanitizeDescription(pageData.description),
     openGraph: {
-      title: pageData.title,
+      title,
       description: pageData.description,
       url: pageType === 'home' ? '/' : `/${pageType}`
     },
     twitter: {
       card: 'summary',
-      title: pageData.title,
+      title,
       description: pageData.description
     }
   };
@@ -226,21 +287,34 @@ export function generatePageMetadata(seoData: SEOMetadata) {
 }
 
 /**
- * Validierung für Build-Zeit: Prüft ob alle wichtigen SEO-Felder vorhanden sind
+ * Validierung für Build-Zeit: Prüft neues SEO-Schema (150 Zeichen Limit)
  */
 export function validateSEOMetadata(metadata: SEOMetadata, pagePath: string): boolean {
   const issues: string[] = [];
+  const warnings: string[] = [];
   
   if (!metadata.title) {
     issues.push('Missing title');
+  } else {
+    // Prüfe Brand-Schema: alltagsgold | Inhalt | Suffix
+    if (!metadata.title.startsWith('alltagsgold |')) {
+      warnings.push('Title should follow brand schema: alltagsgold | Content | Suffix');
+    }
+    if (metadata.title.length > 60) {
+      warnings.push(`Title long (${metadata.title.length} chars, optimal < 60)`);
+    }
   }
   
   if (!metadata.description) {
     issues.push('Missing description');
-  } else if (metadata.description.length > 160) {
-    issues.push(`Description too long (${metadata.description.length} chars, max 160)`);
+  } else if (metadata.description.length > 150) {
+    issues.push(`Description too long (${metadata.description.length} chars, max 150)`);
   } else if (metadata.description.length < 50) {
     issues.push(`Description too short (${metadata.description.length} chars, min 50)`);
+  }
+  
+  if (warnings.length > 0) {
+    console.log(`SEO warnings for ${pagePath}:`, warnings.join(', '));
   }
   
   if (issues.length > 0) {

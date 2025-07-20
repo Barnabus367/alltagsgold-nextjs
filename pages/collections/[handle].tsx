@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { CollectionDetail } from '../CollectionDetail';
 import { Layout } from '../../components/layout/Layout';
 import { SEOHead } from '../../components/seo/SEOHead';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ShopifyCollection } from '../../types/shopify';
 import { getAllCollectionHandles, getCollectionByHandle } from '../../lib/shopify';
 import { generateCollectionSEO } from '../../lib/seo';
@@ -17,6 +17,13 @@ export default function CollectionDetailPage({ collection, handle }: CollectionD
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Scroll reset when component mounts
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
   // If the page is not yet generated, this will be displayed
   // until getStaticProps() finishes running
   if (router.isFallback) {
@@ -29,7 +36,7 @@ export default function CollectionDetailPage({ collection, handle }: CollectionD
   return (
     <>
       <SEOHead seo={seoData} canonicalUrl={`/collections/${handle}`} />
-      <Layout onSearch={setSearchQuery}>
+      <Layout key={handle} onSearch={setSearchQuery}>
         <CollectionDetail preloadedCollection={collection} />
       </Layout>
     </>

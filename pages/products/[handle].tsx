@@ -29,7 +29,7 @@ export default function ProductDetailPage({ product, handle }: ProductDetailPage
   return (
     <>
       <SEOHead seo={seoData} canonicalUrl={`/products/${handle}`} />
-      <Layout onSearch={setSearchQuery}>
+      <Layout key={handle} onSearch={setSearchQuery}>
         <ProductDetail preloadedProduct={product} />
       </Layout>
     </>

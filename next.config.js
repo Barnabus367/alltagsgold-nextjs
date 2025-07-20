@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false, // Disable to prevent double mounting issues
+  reactStrictMode: true, // Enable for proper component lifecycle behavior
   swcMinify: true,
   compress: true,
   poweredByHeader: false,

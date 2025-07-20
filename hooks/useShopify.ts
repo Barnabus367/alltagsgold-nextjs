@@ -18,7 +18,8 @@ export function useProduct(handle: string, options?: { enabled?: boolean; initia
     queryKey: ['product', handle],
     queryFn: () => getProductByHandle(handle),
     enabled: options?.enabled !== false && !!handle,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 60 * 1000, // Reduced from 5 minutes to 1 minute
+    refetchOnMount: true,
     initialData: options?.initialData,
   });
 }
@@ -38,7 +39,8 @@ export function useCollection(handle: string, options?: { enabled?: boolean; ini
     queryKey: ['collection', handle],
     queryFn: () => getCollectionByHandle(handle),
     enabled: options?.enabled !== false && !!handle,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 60 * 1000, // Reduced from 5 minutes to 1 minute
+    refetchOnMount: true,
     initialData: options?.initialData,
   });
 }

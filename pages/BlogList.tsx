@@ -48,7 +48,7 @@ export default function Blog() {
         <SEOHelmet
           title="Blog - AlltagsGold"
           description="Entdecken Sie hilfreiche Tipps, Produktneuheiten und Lifestyle-Inspiration im AlltagsGold Blog."
-          canonicalUrl="https://alltagsgold.ch/blog"
+          canonicalUrl="/blog"
           type="website"
         />
         <div className="max-w-6xl mx-auto px-6 py-12">
@@ -68,6 +68,7 @@ export default function Blog() {
       <SEOHelmet
         title="Blog - AlltagsGold"
         description="Entdecken Sie hilfreiche Tipps, Produktneuheiten und Lifestyle-Inspiration im AlltagsGold Blog."
+        canonicalUrl="/blog"
         type="website"
       />
       

@@ -8,6 +8,20 @@ import { trackContact } from '@/lib/analytics';
 import { Layout } from '@/components/layout/Layout';
 import { generateStaticPageSEO } from '../lib/seo';
 
+export default function ContactPage() {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Generate SEO metadata for contact page
+  const seoData = generateStaticPageSEO('contact');
+
+  return (
+    <Layout onSearch={setSearchQuery}>
+      <SEOHead seo={seoData} canonicalUrl="/contact" />
+      <Contact />
+    </Layout>
+  );
+}
+
 export function Contact() {
   const heroRef = useRef(null);
   const formRef = useRef(null);
@@ -81,6 +95,7 @@ export function Contact() {
       <SEOHelmet 
         title="Kontakt - Wir sind für Sie da"
         description="Kontaktieren Sie uns bei Fragen zu unseren Premium-Produkten. Unser Kundenservice steht Ihnen gerne zur Verfügung. Schnelle und professionelle Beratung."
+        canonicalUrl="/contact"
         type="website"
       />
       

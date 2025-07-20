@@ -15,7 +15,7 @@ function Cart() {
   const [mounted, setMounted] = useState(false);
 
   // Generate SEO metadata for cart page
-  const seoData = generateStaticPageSEO('cart', 'Warenkorb - AlltagsGold', 'Ihr Warenkorb bei AlltagsGold. Überprüfen Sie Ihre Artikel und schließen Sie Ihre Bestellung sicher ab.');
+  const seoData = generateStaticPageSEO('cart', 'Warenkorb', 'Ihr Warenkorb bei alltagsgold. Überprüfen Sie Ihre Artikel und schließen Sie Ihre Bestellung sicher ab.');
 
   // Verhindert Hydration-Fehler durch client-only rendering
   useEffect(() => {

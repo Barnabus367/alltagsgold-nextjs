@@ -5,6 +5,7 @@
 
 import { Helmet } from 'react-helmet-async';
 import { SEOMetadata } from '../../lib/seo';
+import { generateCanonicalUrl, SITE_URL } from '../../lib/canonical';
 
 interface SEOHeadProps {
   seo: SEOMetadata;
@@ -12,8 +13,10 @@ interface SEOHeadProps {
 }
 
 export function SEOHead({ seo, canonicalUrl }: SEOHeadProps) {
-  const siteUrl = 'https://www.alltagsgold.ch';
-  const fullCanonicalUrl = canonicalUrl ? `${siteUrl}${canonicalUrl}` : siteUrl;
+  // Generiere optimierte Canonical URL
+  const fullCanonicalUrl = canonicalUrl 
+    ? generateCanonicalUrl(canonicalUrl.startsWith('/') ? canonicalUrl.slice(1) : canonicalUrl)
+    : SITE_URL;
 
   return (
     <Helmet>
@@ -29,7 +32,7 @@ export function SEOHead({ seo, canonicalUrl }: SEOHeadProps) {
       <meta property="og:title" content={seo.openGraph?.title || seo.title} />
       <meta property="og:description" content={seo.openGraph?.description || seo.description} />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={seo.openGraph?.url ? `${siteUrl}${seo.openGraph.url}` : fullCanonicalUrl} />
+      <meta property="og:url" content={seo.openGraph?.url ? generateCanonicalUrl(seo.openGraph.url) : fullCanonicalUrl} />
       <meta property="og:site_name" content="AlltagsGold" />
       <meta property="og:locale" content="de_CH" />
       {seo.openGraph?.image && (
@@ -58,8 +61,8 @@ export function SEOHead({ seo, canonicalUrl }: SEOHeadProps) {
           "@context": "https://schema.org",
           "@type": "Organization",
           "name": "AlltagsGold",
-          "url": siteUrl,
-          "logo": `${siteUrl}/logo.png`,
+          "url": SITE_URL,
+          "logo": `${SITE_URL}/logo.png`,
           "description": "Moderne Alltagsprodukte für die Schweiz",
           "address": {
             "@type": "PostalAddress",

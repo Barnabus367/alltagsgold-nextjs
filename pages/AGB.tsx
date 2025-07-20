@@ -4,7 +4,7 @@ import { generateStaticPageSEO } from '../lib/seo';
 export function AGB() {
   // Generate SEO metadata for AGB page
   const seoData = generateStaticPageSEO('agb');
-
+ 
   return (
     <div className="min-h-screen bg-white pt-16">
       <SEOHead seo={seoData} canonicalUrl="/agb" />

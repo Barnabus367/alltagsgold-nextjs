@@ -28,6 +28,10 @@ args = "AlltagsGold Production Ready"
 task = "workflow.run"
 args = "Generate Sitemaps"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Generate Shopify Sitemaps"
+
 [[workflows.workflow]]
 name = "Migration Tool Setup"
 author = "agent"
@@ -60,6 +64,14 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "node scripts/generate-sitemap.js"
+
+[[workflows.workflow]]
+name = "Generate Shopify Sitemaps"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node scripts/generate-sitemap-shopify.js"
 
 [[ports]]
 localPort = 3000

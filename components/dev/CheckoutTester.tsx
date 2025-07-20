@@ -4,7 +4,7 @@ import { useCart } from '@/hooks/useCart';
 import { useCheckout } from '@/hooks/useCheckout';
 import { generateCheckoutUrl, validateCheckoutUrl } from '@/lib/checkout';
 
-export function CheckoutTester() {
+export function CheckoutTester() { 
   const { cart } = useCart();
   const { getCheckoutUrl } = useCheckout();
   const [testResults, setTestResults] = useState<string[]>([]);

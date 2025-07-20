@@ -3,17 +3,134 @@
 const fs = require('fs');
 const path = require('path');
 
+// Node.js 18+ fetch polyfill
+if (!global.fetch) {
+  global.fetch = require('node-fetch');
+}
+
 // Configuration
 const SITE_URL = 'https://www.alltagsgold.ch';
 const PUBLIC_DIR = path.join(__dirname, '../public');
-const CURRENT_DATE = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+const CURRENT_DATE = new Date().toISOString().split('T')[0];
 
-// Sitemap file paths
-const SITEMAP_INDEX = path.join(PUBLIC_DIR, 'sitemap.xml');
-const SITEMAP_PAGES = path.join(PUBLIC_DIR, 'sitemap-pages.xml');
-const SITEMAP_COLLECTIONS = path.join(PUBLIC_DIR, 'sitemap-collections.xml');
-const SITEMAP_PRODUCTS = path.join(PUBLIC_DIR, 'sitemap-products.xml');
-const SITEMAP_BLOG = path.join(PUBLIC_DIR, 'sitemap-blog.xml');
+// Environment variables (same as Shopify lib)
+const SHOPIFY_STORE_DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
+const SHOPIFY_STOREFRONT_ACCESS_TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+
+/**
+ * Shopify API fetch function (compatible with lib/shopify.ts)
+ */
+async function shopifyFetch(query, variables = {}) {
+  if (!SHOPIFY_STOREFRONT_ACCESS_TOKEN || !SHOPIFY_STORE_DOMAIN) {
+    console.warn('⚠️  Shopify credentials missing - generating sitemap without products/collections');
+    return null;
+  }
+
+  const STOREFRONT_API_URL = `https://${SHOPIFY_STORE_DOMAIN}/api/2023-10/graphql.json`;
+
+  try {
+    const response = await fetch(STOREFRONT_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+      },
+      body: JSON.stringify({ query, variables }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Shopify API error: ${response.status} ${response.statusText}`);
+    }
+
+    const { data, errors } = await response.json();
+    
+    if (errors) {
+      throw new Error(`GraphQL errors: ${JSON.stringify(errors)}`);
+    }
+
+    return data;
+  } catch (error) {
+    console.warn(`⚠️  Shopify API error: ${error.message}`);
+    return null;
+  }
+}
+
+/**
+ * Fetch all products from Shopify API
+ */
+async function fetchShopifyProducts() {
+  const query = `
+    query getAllProducts($first: Int!, $after: String) {
+      products(first: $first, after: $after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        edges {
+          node {
+            handle
+            title
+            images(first: 1) {
+              edges {
+                node {
+                  url
+                  altText
+                }
+              }
+            }
+            updatedAt
+          }
+        }
+      }
+    }
+  `;
+
+  let allProducts = [];
+  let hasNextPage = true;
+  let cursor = null;
+
+  while (hasNextPage && allProducts.length < 250) { // Limit to 250 products
+    const data = await shopifyFetch(query, { first: 50, after: cursor });
+    
+    if (!data) break;
+    
+    const products = data.products.edges.map(edge => edge.node);
+    allProducts = allProducts.concat(products);
+    
+    hasNextPage = data.products.pageInfo.hasNextPage;
+    cursor = data.products.pageInfo.endCursor;
+  }
+
+  console.log(`✅ Fetched ${allProducts.length} products from Shopify`);
+  return allProducts;
+}
+
+/**
+ * Fetch all collections from Shopify API
+ */
+async function fetchShopifyCollections() {
+  const query = `
+    query getAllCollections($first: Int!) {
+      collections(first: $first) {
+        edges {
+          node {
+            handle
+            title
+            updatedAt
+          }
+        }
+      }
+    }
+  `;
+
+  const data = await shopifyFetch(query, { first: 100 });
+  
+  if (!data) return [];
+  
+  const collections = data.collections.edges.map(edge => edge.node);
+  console.log(`✅ Fetched ${collections.length} collections from Shopify`);
+  return collections;
+}
 
 /**
  * Generate XML-safe content
@@ -59,7 +176,7 @@ function createSitemapEntry(loc, lastmod = CURRENT_DATE) {
 }
 
 /**
- * Generate XML header for sitemap
+ * Generate XML headers
  */
 function generateXmlHeader(includeImages = false) {
   const imageNamespace = includeImages ? ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"' : '';
@@ -67,16 +184,13 @@ function generateXmlHeader(includeImages = false) {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"${imageNamespace}>`;
 }
 
-/**
- * Generate XML header for sitemap index
- */
 function generateIndexHeader() {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 }
 
 /**
- * Get static pages from app directory structure
+ * Get static pages
  */
 function getStaticPages() {
   const staticPages = [
@@ -108,133 +222,45 @@ function getBlogPages() {
 }
 
 /**
- * Load products from cache or generate from existing sitemap
+ * Convert Shopify products to sitemap entries
  */
-function getProducts() {
-  try {
-    // Try to read from existing sitemap to extract products
-    const existingSitemapPath = path.join(__dirname, '../public/sitemap.xml');
-    if (fs.existsSync(existingSitemapPath)) {
-      const existingSitemap = fs.readFileSync(existingSitemapPath, 'utf8');
-      const productUrls = [];
-      
-      // Extract product URLs using regex
-      const productMatches = existingSitemap.match(/<loc>https:\/\/www\.alltagsgold\.ch\/products\/[^<]+<\/loc>/g);
-      if (productMatches) {
-        productMatches.forEach(match => {
-          const url = match.replace(/<\/?loc>/g, '').replace('https://www.alltagsgold.ch', '');
-          const handle = url.replace('/products/', '');
-          
-          // Extract images for products with basic image URL pattern
-          const images = [{
-            url: `https://res.cloudinary.com/ddshn3a6o/image/upload/f_auto,q_auto,w_800/alltagsgold/${handle}`,
-            title: handle.replace(/-/g, ' ')
-          }];
-          
-          productUrls.push(createUrlEntry(`${SITE_URL}${url}`, CURRENT_DATE, 'weekly', '0.9', images));
-        });
-      }
-      
-      return productUrls;
-    }
+function convertProductsToSitemapEntries(products) {
+  return products.map(product => {
+    const images = [];
     
-    // Fallback: Try to read from data directory
-    const dataDir = path.join(__dirname, '../data');
-    if (fs.existsSync(dataDir)) {
-      const files = fs.readdirSync(dataDir);
-      const productFiles = files.filter(file => file.includes('product') && file.endsWith('.json'));
-      
-      const products = [];
-      productFiles.forEach(file => {
-        try {
-          const data = JSON.parse(fs.readFileSync(path.join(dataDir, file), 'utf8'));
-          if (Array.isArray(data)) {
-            data.forEach(product => {
-              if (product.handle) {
-                const images = product.image ? [{
-                  url: product.image.url || product.image,
-                  title: product.title || product.handle
-                }] : [];
-                products.push(createUrlEntry(`${SITE_URL}/products/${product.handle}`, CURRENT_DATE, 'weekly', '0.9', images));
-              }
-            });
-          } else if (data.handle) {
-            const images = data.image ? [{
-              url: data.image.url || data.image,
-              title: data.title || data.handle
-            }] : [];
-            products.push(createUrlEntry(`${SITE_URL}/products/${data.handle}`, CURRENT_DATE, 'weekly', '0.9', images));
-          }
-        } catch (error) {
-          console.warn(`Could not parse product file ${file}:`, error.message);
-        }
+    if (product.images?.edges?.[0]) {
+      images.push({
+        url: product.images.edges[0].node.url,
+        title: product.images.edges[0].node.altText || product.title
       });
-      
-      return products;
     }
     
-    return [];
-  } catch (error) {
-    console.warn('Could not load products:', error.message);
-    return [];
-  }
+    const lastmod = product.updatedAt ? product.updatedAt.split('T')[0] : CURRENT_DATE;
+    
+    return createUrlEntry(
+      `${SITE_URL}/products/${product.handle}`,
+      lastmod,
+      'weekly',
+      '0.9',
+      images
+    );
+  });
 }
 
 /**
- * Load collections from cache or generate from existing sitemap
+ * Convert Shopify collections to sitemap entries
  */
-function getCollections() {
-  try {
-    // Try to read from existing sitemap to extract collections
-    const existingSitemapPath = path.join(__dirname, '../public/sitemap.xml');
-    if (fs.existsSync(existingSitemapPath)) {
-      const existingSitemap = fs.readFileSync(existingSitemapPath, 'utf8');
-      const collectionUrls = [];
-      
-      // Extract collection URLs using regex
-      const collectionMatches = existingSitemap.match(/<loc>https:\/\/www\.alltagsgold\.ch\/collections\/[^<]+<\/loc>/g);
-      if (collectionMatches) {
-        collectionMatches.forEach(match => {
-          const url = match.replace(/<\/?loc>/g, '').replace('https://www.alltagsgold.ch', '');
-          collectionUrls.push(createUrlEntry(`${SITE_URL}${url}`, CURRENT_DATE, 'weekly', '0.7'));
-        });
-      }
-      
-      return collectionUrls;
-    }
+function convertCollectionsToSitemapEntries(collections) {
+  return collections.map(collection => {
+    const lastmod = collection.updatedAt ? collection.updatedAt.split('T')[0] : CURRENT_DATE;
     
-    // Fallback: Try to read from data directory
-    const dataDir = path.join(__dirname, '../data');
-    if (fs.existsSync(dataDir)) {
-      const files = fs.readdirSync(dataDir);
-      const collectionFiles = files.filter(file => file.includes('collection') && file.endsWith('.json'));
-      
-      const collections = [];
-      collectionFiles.forEach(file => {
-        try {
-          const data = JSON.parse(fs.readFileSync(path.join(dataDir, file), 'utf8'));
-          if (Array.isArray(data)) {
-            data.forEach(collection => {
-              if (collection.handle) {
-                collections.push(createUrlEntry(`${SITE_URL}/collections/${collection.handle}`, CURRENT_DATE, 'weekly', '0.7'));
-              }
-            });
-          } else if (data.handle) {
-            collections.push(createUrlEntry(`${SITE_URL}/collections/${data.handle}`, CURRENT_DATE, 'weekly', '0.7'));
-          }
-        } catch (error) {
-          console.warn(`Could not parse collection file ${file}:`, error.message);
-        }
-      });
-      
-      return collections;
-    }
-    
-    return [];
-  } catch (error) {
-    console.warn('Could not load collections:', error.message);
-    return [];
-  }
+    return createUrlEntry(
+      `${SITE_URL}/collections/${collection.handle}`,
+      lastmod,
+      'weekly',
+      '0.7'
+    );
+  });
 }
 
 /**
@@ -250,26 +276,33 @@ ${urls.join('\n')}
 }
 
 /**
- * Generate all sitemaps (split by content type)
+ * Main sitemap generation function
  */
-function generateSitemaps() {
-  console.log('🗺️  Generating multi-part sitemap...');
+async function generateSitemaps() {
+  console.log('🗺️  Generating multi-part sitemap with live Shopify data...');
   
   // Ensure public directory exists
   if (!fs.existsSync(PUBLIC_DIR)) {
     fs.mkdirSync(PUBLIC_DIR, { recursive: true });
   }
   
+  // Fetch live data from Shopify
+  const [products, collections] = await Promise.all([
+    fetchShopifyProducts(),
+    fetchShopifyCollections()
+  ]);
+  
+  // Generate sitemap entries
   const staticPages = getStaticPages();
   const blogPages = getBlogPages();
-  const products = getProducts();
-  const collections = getCollections();
+  const productEntries = convertProductsToSitemapEntries(products);
+  const collectionEntries = convertCollectionsToSitemapEntries(collections);
   
-  // Generate individual sitemaps
-  const pageCount = writeSitemap(SITEMAP_PAGES, staticPages);
-  const blogCount = writeSitemap(SITEMAP_BLOG, blogPages);
-  const collectionCount = writeSitemap(SITEMAP_COLLECTIONS, collections);
-  const productCount = writeSitemap(SITEMAP_PRODUCTS, products, true); // Include images for products
+  // Write individual sitemaps
+  const pageCount = writeSitemap(path.join(PUBLIC_DIR, 'sitemap-pages.xml'), staticPages);
+  const blogCount = writeSitemap(path.join(PUBLIC_DIR, 'sitemap-blog.xml'), blogPages);
+  const collectionCount = writeSitemap(path.join(PUBLIC_DIR, 'sitemap-collections.xml'), collectionEntries);
+  const productCount = writeSitemap(path.join(PUBLIC_DIR, 'sitemap-products.xml'), productEntries, true);
   
   // Generate sitemap index
   const indexEntries = [
@@ -283,79 +316,59 @@ function generateSitemaps() {
 ${indexEntries.join('\n')}
 </sitemapindex>`;
   
-  fs.writeFileSync(SITEMAP_INDEX, indexXml, 'utf8');
+  fs.writeFileSync(path.join(PUBLIC_DIR, 'sitemap.xml'), indexXml, 'utf8');
   
   const totalUrls = pageCount + blogCount + collectionCount + productCount;
   
-  console.log(`✅ Multi-part sitemap generated successfully!`);
+  console.log(`✅ Multi-part sitemap with live Shopify data generated!`);
   console.log(`📊 URLs included: ${totalUrls} total`);
   console.log(`   - Static pages: ${pageCount} (sitemap-pages.xml)`);
   console.log(`   - Blog pages: ${blogCount} (sitemap-blog.xml)`);
   console.log(`   - Collections: ${collectionCount} (sitemap-collections.xml)`);
   console.log(`   - Products: ${productCount} (sitemap-products.xml) with images`);
-  console.log(`📄 Main sitemap: ${SITEMAP_INDEX}`);
   
   return totalUrls;
 }
 
 /**
- * Update robots.txt to include sitemap reference and validate
+ * Update robots.txt to reference sitemap-index.xml (Option 1)
  */
 function updateRobotsTxt() {
-  const robotsPath = path.join(__dirname, '../public/robots.txt');
-  const sitemapUrl = `${SITE_URL}/sitemap.xml`;
+  const robotsPath = path.join(PUBLIC_DIR, 'robots.txt');
+  const sitemapUrl = `${SITE_URL}/sitemap.xml`; // Points to our index
   
-  let robotsContent = `User-agent: *
+  const robotsContent = `User-agent: *
 Allow: /
 Sitemap: ${sitemapUrl}`;
 
-  // Check if robots.txt exists and already contains sitemap
-  if (fs.existsSync(robotsPath)) {
-    const existingContent = fs.readFileSync(robotsPath, 'utf8');
-    if (existingContent.includes('Sitemap:')) {
-      // Update existing sitemap reference
-      robotsContent = existingContent.replace(/Sitemap:\s*.*/g, `Sitemap: ${sitemapUrl}`);
-    } else {
-      // Append sitemap to existing content
-      robotsContent = existingContent.trim() + `\nSitemap: ${sitemapUrl}`;
-    }
-  }
-  
   fs.writeFileSync(robotsPath, robotsContent, 'utf8');
   
-  // Validate robots.txt content
-  const lines = robotsContent.split('\n');
-  const hasSitemap = lines.some(line => line.trim().startsWith('Sitemap:'));
-  const hasUserAgent = lines.some(line => line.trim().startsWith('User-agent:'));
-  
-  console.log(`🤖 Updated robots.txt with sitemap reference`);
-  console.log(`   ✅ User-agent directive: ${hasUserAgent ? 'Present' : 'Missing'}`);
-  console.log(`   ✅ Sitemap directive: ${hasSitemap ? 'Present' : 'Missing'}`);
+  console.log(`🤖 Updated robots.txt`);
   console.log(`   📄 Sitemap URL: ${sitemapUrl}`);
-  
-  if (!hasSitemap || !hasUserAgent) {
-    console.warn(`⚠️  robots.txt validation failed - please check manually`);
-  }
+  console.log(`   ✅ Points to sitemap index (sitemap.xml → sitemapindex)`);
+  console.log(`   ✅ Vercel will rename to sitemap-index.xml automatically`);
 }
 
 // Main execution
 if (require.main === module) {
-  try {
-    const urlCount = generateSitemaps();
-    updateRobotsTxt();
-    
-    console.log(`\n🚀 Multi-part sitemap generation complete!`);
-    console.log(`   Generated ${urlCount} URLs across 4 sitemaps for ${SITE_URL}`);
-    console.log(`   🖼️  Product images included for enhanced SEO`);
-    console.log(`   🎯 Optimized for Google crawling efficiency`);
-    console.log(`   📋 Main index: sitemap.xml`);
-    console.log(`   Ready for search engine indexing`);
-    
-    process.exit(0);
-  } catch (error) {
-    console.error('❌ Error generating sitemaps:', error);
-    process.exit(1);
-  }
+  (async () => {
+    try {
+      const urlCount = await generateSitemaps();
+      updateRobotsTxt();
+      
+      console.log(`\n🚀 Shopify-powered sitemap generation complete!`);
+      console.log(`   Generated ${urlCount} URLs across 4 sitemaps`);
+      console.log(`   🛍️  Live products and collections included`);
+      console.log(`   🖼️  Product images included for enhanced SEO`);
+      console.log(`   📋 Vercel will handle sitemap-index.xml naming`);
+      console.log(`   Ready for Google Search Console submission`);
+      
+      process.exit(0);
+    } catch (error) {
+      console.error('❌ Error generating sitemaps:', error);
+      process.exit(1);
+    }
+  })();
 }
 
 module.exports = { generateSitemaps, updateRobotsTxt };

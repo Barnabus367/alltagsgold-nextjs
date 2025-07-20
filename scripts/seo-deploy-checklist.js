@@ -249,7 +249,7 @@ function main() {
     log('❌ DEPLOYMENT BLOCKED - Fix issues above before deploying', 'red');
     log('', 'reset');
     log('🔧 Required Actions:', 'bold');
-    log('1. Run: node scripts/generate-sitemap.js', 'yellow');
+    log('1. Run: node scripts/generate-sitemap.js (Shopify-integrated)', 'yellow');
     log('2. Fix any SEO validation errors', 'yellow');
     log('3. Re-run this checklist', 'yellow');
     

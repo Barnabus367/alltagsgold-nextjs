@@ -137,7 +137,7 @@ git push origin main
 node scripts/validate-seo.js
 
 # 2. Sitemap-Generation testen
-node scripts/generate-sitemap.js
+node scripts/generate-sitemap.js  # Now with live Shopify data
 
 # 3. Production Build
 npm run build

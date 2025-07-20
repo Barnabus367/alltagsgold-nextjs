@@ -81,7 +81,7 @@ export const getStaticProps: GetStaticProps<CollectionDetailPageProps> = async (
         collection,
         handle,
       },
-      revalidate: 60 * 60 * 2, // Revalidate every 2 hours for consistent updates
+      revalidate: 60 * 60 * 12, // Revalidate every 12 hours (collections change moderately)
     };
   } catch (error) {
     console.error('Error in getStaticProps:', error);

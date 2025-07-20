@@ -84,7 +84,7 @@ export const getStaticProps: GetStaticProps<ProductDetailPageProps> = async ({ p
         product,
         handle,
       },
-      revalidate: 60 * 60, // Revalidate every 1 hour for faster content updates
+      revalidate: 60 * 60 * 24, // Revalidate every 24 hours (products change less frequently)
     };
   } catch (error) {
     console.error('Error in getStaticProps:', error);

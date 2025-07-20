@@ -61,9 +61,9 @@ The application follows a modern React component architecture with:
 3. **Persistence**: LocalStorage maintains cart across sessions
 
 ### Analytics Integration
-1. **Multi-platform Tracking**: Facebook Pixel, TikTok Pixel, Google Analytics
-2. **E-commerce Events**: Purchase tracking, view content, add to cart
-3. **Performance Monitoring**: Web Vitals and Core Web Vitals tracking
+1. **Dual-platform Tracking**: Meta Pixel for marketing, Vercel Analytics for performance
+2. **E-commerce Events**: Purchase tracking, view content, add to cart (Meta Pixel)
+3. **Performance Monitoring**: Web Vitals and Core Web Vitals tracking (Vercel Analytics)
 
 ## External Dependencies
 
@@ -74,10 +74,8 @@ The application follows a modern React component architecture with:
 - **Neon Database**: Database connection (prepared for future use)
 
 ### Analytics & Marketing
-- **Meta Pixel**: Facebook advertising and conversion tracking
-- **TikTok Pixel**: TikTok advertising integration
-- **Google Tag Manager**: Universal analytics container
-- **LinkedIn Insight Tag**: B2B marketing tracking
+- **Meta Pixel**: Facebook advertising and conversion tracking (ID: 1408203506889853)
+- **Vercel Analytics**: Performance monitoring and user analytics
 
 ### Development Tools
 - **ESLint & TypeScript**: Code quality and type checking
@@ -112,9 +110,10 @@ The application currently uses a hybrid approach:
 - **CORS Configuration**: Restricted to allowed domains
 
 ### Monitoring & Analytics
-- **Web Vitals Tracking**: Performance metrics to multiple platforms
-- **Error Tracking**: Console logging for development, analytics for production
-- **A/B Testing Ready**: Analytics foundation supports conversion optimization
+- **Web Vitals Tracking**: Performance metrics through Vercel Analytics
+- **Error Tracking**: Console logging for development, Vercel Analytics for production
+- **Conversion Tracking**: Meta Pixel for advertising campaign optimization
+- **Performance Monitoring**: Vercel Analytics provides comprehensive user behavior insights
 - **Swiss Market Focus**: German language content and CHF pricing throughout
 
 The architecture supports the specific needs of a Swiss e-commerce business with multi-platform marketing, performance optimization, and seamless Shopify integration while maintaining flexibility for future database integration and feature expansion.

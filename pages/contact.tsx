@@ -375,14 +375,3 @@ export function Contact() {
     </div>
   );
 }
-
-// Default export for Next.js routing
-export default function ContactPage() {
-  const [searchQuery, setSearchQuery] = useState('');
-
-  return (
-    <Layout onSearch={setSearchQuery}>
-      <Contact />
-    </Layout>
-  );
-}

@@ -50,6 +50,11 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     // Mark as mounted (hydration complete)
     setMounted(true);
     
+    // Debug optimized content
+    console.log('ProductContent after mount:', productContent);
+    console.log('Has intro text:', Boolean(productContent.introText));
+    console.log('Bullet points count:', productContent.bulletPoints?.length);
+    
     // Only run client-specific code after hydration
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -154,10 +159,20 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       return { introText: '', bulletPoints: [], sections: [] };
     }
 
+    // Debug logging only on client
+    if (typeof window !== 'undefined') {
+      console.log('Looking for product handle:', product.handle);
+      console.log('Available handles:', optimizedDescriptions.products?.map((p: any) => p.handle));
+    }
+
     // Try to find optimized content first
     const optimizedProduct = optimizedDescriptions.products?.find(
       (p: OptimizedProduct) => p.handle === product.handle
     );
+
+    if (typeof window !== 'undefined') {
+      console.log('Found optimized product:', optimizedProduct);
+    }
 
     if (optimizedProduct) {
       return {
@@ -280,13 +295,13 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             </div>
 
             {/* Intro Text */}
-            {productContent.introText && (
+            {productContent.introText ? (
               <div className="space-y-4">
                 <p className="text-gray-700 leading-relaxed">
                   {productContent.introText}
                 </p>
               </div>
-            )}
+            ) : null}
 
             {/* Variant Selection */}
             {variants.length > 1 && (
@@ -311,7 +326,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             )}
 
             {/* Produktvorteile */}
-            {productContent.bulletPoints.length > 0 && (
+            {productContent.bulletPoints && productContent.bulletPoints.length > 0 ? (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900">Produktvorteile</h3>
                 <ul className="space-y-2">
@@ -323,7 +338,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   ))}
                 </ul>
               </div>
-            )}
+            ) : null}
 
             {/* Versand & weitere Infos - Collapsible */}
             <div>
@@ -346,16 +361,13 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                       {productContent.sections.map((section: OptimizedSection, index: number) => (
                         <div key={index} className="space-y-2">
                           <h4 className="font-semibold text-gray-900">{section.title}</h4>
-                          {mounted ? (
-                            <div 
-                              className="text-sm text-gray-700"
-                              dangerouslySetInnerHTML={{ __html: section.content }}
-                            />
-                          ) : (
-                            <div className="text-sm text-gray-700">
-                              {section.content.replace(/<[^>]*>/g, '')}
-                            </div>
-                          )}
+                          <div className="text-sm text-gray-700">
+                            {mounted && section.content.includes('<') ? (
+                              <div dangerouslySetInnerHTML={{ __html: section.content }} />
+                            ) : (
+                              section.content.replace(/<[^>]*>/g, '')
+                            )}
+                          </div>
                         </div>
                       ))}
                     </div>

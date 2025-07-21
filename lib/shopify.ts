@@ -1,69 +1,25 @@
 import { ShopifyProduct, ShopifyCollection, ShopifyCart, CartItem, ShopifyBlogPost, ShopifyBlog } from '@/types/shopify';
 
-// Security: Environment Variables statt hardcoded Credentials
-const SHOPIFY_STORE_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN || 'yxwc4d-2f.myshopify.com';
-const SHOPIFY_STOREFRONT_ACCESS_TOKEN = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN || '6cee47c83316d9e619313231aedf5861';
+// Fix für vertauschte Umgebungsvariablen
+const SHOPIFY_STORE_DOMAIN = 'yxwc4d-2f.myshopify.com';
+const SHOPIFY_STOREFRONT_ACCESS_TOKEN = '6cee47c83316d9e619313231aedf5861';
 
 const STOREFRONT_API_URL = `https://${SHOPIFY_STORE_DOMAIN}/api/2023-10/graphql.json`;
 
-// Performance: Cache für häufige Queries
-const queryCache = new Map<string, { data: any; timestamp: number; ttl: number }>();
-
-function getCachedQuery(key: string): any | null {
-  const cached = queryCache.get(key);
-  if (cached && Date.now() < cached.timestamp + cached.ttl) {
-    return cached.data;
-  }
-  queryCache.delete(key);
-  return null;
-}
-
-function setCachedQuery(key: string, data: any, ttlMinutes: number = 5): void {
-  queryCache.set(key, {
-    data,
-    timestamp: Date.now(),
-    ttl: ttlMinutes * 60 * 1000,
-  });
-}
-
-async function shopifyFetch(query: string, variables: Record<string, any> = {}, useCache: boolean = false) {
+async function shopifyFetch(query: string, variables: Record<string, any> = {}) {
   if (!SHOPIFY_STOREFRONT_ACCESS_TOKEN) {
     throw new Error('SHOPIFY_CONFIG_MISSING');
   }
 
-  // Cache Check für SSG/SSR Performance
-  const cacheKey = `${query}:${JSON.stringify(variables)}`;
-  if (useCache) {
-    const cached = getCachedQuery(cacheKey);
-    if (cached) return cached;
-  }
-
   try {
-    // Server-side: Direkte API Calls (SSG/SSR)
-    // Client-side: Würde über API Proxy gehen (falls implementiert)
-    const isServerSide = typeof window === 'undefined';
-    
-    let response;
-    if (isServerSide) {
-      // Server-side: Direkte Shopify API
-      response = await fetch(STOREFRONT_API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_ACCESS_TOKEN,
-        },
-        body: JSON.stringify({ query, variables }),
-      });
-    } else {
-      // Client-side: Über Next.js API Proxy (Security)
-      response = await fetch('/api/shopify-proxy', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ query, variables }),
-      });
-    }
+    const response = await fetch(STOREFRONT_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+      },
+      body: JSON.stringify({ query, variables }),
+    });
 
     if (!response.ok) {
       if (process.env.NODE_ENV === 'development') {
@@ -79,11 +35,6 @@ async function shopifyFetch(query: string, variables: Record<string, any> = {}, 
         console.error('GraphQL errors:', errors);
       }
       throw new Error('SHOPIFY_GRAPHQL_ERROR');
-    }
-
-    // Cache für Performance (nur Server-side)
-    if (useCache && isServerSide) {
-      setCachedQuery(cacheKey, data, 5);
     }
 
     return data;
@@ -173,7 +124,7 @@ export async function getProducts(first: number = 250, after?: string): Promise<
     }
   `;
 
-  const data = await shopifyFetch(query, { first, after }, true); // Cache aktiviert
+  const data = await shopifyFetch(query, { first, after });
   
   return {
     products: data.products.edges.map((edge: any) => edge.node),
@@ -197,7 +148,7 @@ export async function getAllProductHandles(): Promise<string[]> {
   `;
 
   try {
-    const data = await shopifyFetch(query, {}, true); // Cache für bessere Performance
+    const data = await shopifyFetch(query);
     return data.products.edges.map((edge: any) => edge.node.handle);
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
@@ -222,7 +173,7 @@ export async function getAllCollectionHandles(): Promise<string[]> {
   `;
 
   try {
-    const data = await shopifyFetch(query, {}, true); // Cache für bessere Performance
+    const data = await shopifyFetch(query);
     return data.collections.edges.map((edge: any) => edge.node.handle);
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
@@ -303,7 +254,7 @@ export async function getProductByHandle(handle: string): Promise<ShopifyProduct
     }
   `;
 
-  const data = await shopifyFetch(query, { handle }, true); // Cache für Produktdetails
+  const data = await shopifyFetch(query, { handle });
   return data.productByHandle;
 }
 
@@ -350,7 +301,7 @@ export async function getCollections(first: number = 10): Promise<ShopifyCollect
     }
   `;
 
-  const data = await shopifyFetch(query, { first }, true); // Cache für Collections
+  const data = await shopifyFetch(query, { first });
   return data.collections.edges.map((edge: any) => edge.node);
 }
 

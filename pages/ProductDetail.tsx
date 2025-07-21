@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Minus, Plus, Heart, ShoppingCart, ChevronDown, ChevronUp } from 'lucide-react';
@@ -8,8 +8,8 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { useProduct } from '@/hooks/useShopify';
 import { useCart } from '@/hooks/useCart';
 import { ShopifyVariant, ShopifyProduct } from '@/types/shopify';
-// Import optimized descriptions
-import optimizedDescriptions from '../data/optimized-descriptions.json';
+// Fallback for missing optimized descriptions
+const optimizedDescriptions: Record<string, any> = {};
 import { ShopifyError } from '@/components/common/ShopifyError';
 import { SEOHelmet } from '@/components/SEOHelmet';
 import { trackViewContent, trackAddToCart } from '@/lib/analytics';
@@ -39,17 +39,18 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-  const [isMobile, setIsMobile] = useState<boolean | null>(null);
-  const [isClient, setIsClient] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Set page title
   usePageTitle(product ? formatPageTitle(product.title) : 'Produkt wird geladen...');
 
-  // Client-side hydration setup
+  // Set default variant and check mobile when product loads
   useEffect(() => {
-    setIsClient(true);
+    if (product && !selectedVariant) {
+      setSelectedVariant(product.variants.edges[0]?.node || null);
+    }
     
-    // Check if mobile (client-side only)
+    // Check if mobile
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -58,13 +59,6 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     window.addEventListener('resize', checkMobile);
     
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Set default variant when product loads
-  useEffect(() => {
-    if (product && !selectedVariant) {
-      setSelectedVariant(product.variants.edges[0]?.node || null);
-    }
   }, [product, selectedVariant]);
 
   // Track ViewContent when product loads
@@ -128,53 +122,78 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     setQuantity(prev => Math.max(1, prev + delta));
   };
 
-  // Define interfaces for clean type safety
-  interface OptimizedSection {
-    title: string;
-    content: string;
-  }
+  // Get optimized description from OpenAI if available
+  const optimizedProduct = optimizedDescriptions.products?.find((p: any) => p.handle === product?.handle);
+  const useOptimizedDescription = optimizedProduct?.optimizedDescription;
 
-  interface OptimizedProduct {
-    handle: string;
-    introText: string;
-    bulletPoints: string[];
-    sections: OptimizedSection[];
-  }
-
-  interface ProductContent {
-    introText: string;
-    bulletPoints: string[];
-    sections: OptimizedSection[];
-  }
-
-  // Safe content retrieval - Server/Client consistent
-  const productContent: ProductContent = useMemo(() => {
-    if (!product) {
-      return { introText: '', bulletPoints: [], sections: [] };
+  // Parse optimized HTML description
+  const parseOptimizedDescription = (htmlDescription: string) => {
+    if (!htmlDescription) return { introText: '', benefits: [], sections: [] };
+    
+    // Remove ```html wrapper if present
+    const cleanedHtml = htmlDescription.replace(/^```html\s*/, '').replace(/\s*```$/, '');
+    
+    // Create temporary div to parse HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = cleanedHtml;
+    
+    let introText = '';
+    let benefits: string[] = [];
+    let sections: Array<{ title: string; content: string[] }> = [];
+    
+    // Extract intro paragraphs - collect all <p> tags that come before the first <h3>
+    const allElements = Array.from(tempDiv.children);
+    const firstHeadingIndex = allElements.findIndex(el => el.tagName === 'H3');
+    
+    // Get all paragraphs before first heading
+    const introParas: string[] = [];
+    for (let i = 0; i < (firstHeadingIndex === -1 ? allElements.length : firstHeadingIndex); i++) {
+      const element = allElements[i];
+      if (element.tagName === 'P') {
+        const text = element.textContent?.trim();
+        if (text) {
+          introParas.push(text);
+        }
+      }
     }
-
-    // Try to find optimized content first
-    const optimizedProduct = optimizedDescriptions.products?.find(
-      (p: OptimizedProduct) => p.handle === product.handle
-    );
-
-    if (optimizedProduct) {
-      return {
-        introText: optimizedProduct.introText || '',
-        bulletPoints: optimizedProduct.bulletPoints || [],
-        sections: optimizedProduct.sections || []
-      };
-    }
-
-    // Fallback to Shopify description
-    return {
-      introText: product.description || '',
-      bulletPoints: [],
-      sections: []
-    };
-  }, [product]);
-  
-  const hasOptimizedDescription = Boolean(productContent.introText);
+    introText = introParas.join(' ');
+    
+    // Extract sections with headings
+    const headings = tempDiv.querySelectorAll('h3');
+    headings.forEach(heading => {
+      const title = heading.textContent?.trim() || '';
+      const content: string[] = [];
+      
+      // Get next sibling elements until next heading
+      let nextElement = heading.nextElementSibling;
+      while (nextElement && nextElement.tagName !== 'H3') {
+        if (nextElement.tagName === 'UL') {
+          const listItems = nextElement.querySelectorAll('li');
+          listItems.forEach(li => {
+            const text = li.textContent?.trim();
+            if (text) {
+              // Check if it's benefits section
+              if (title.toLowerCase().includes('vorteil') || title.toLowerCase().includes('produktvorteile')) {
+                benefits.push(text);
+              } else {
+                content.push(text);
+              }
+            }
+          });
+        } else if (nextElement.tagName === 'P') {
+          const text = nextElement.textContent?.trim();
+          if (text) content.push(text);
+        }
+        nextElement = nextElement.nextElementSibling;
+      }
+      
+      if (content.length > 0 && !title.toLowerCase().includes('vorteil')) {
+        sections.push({ title, content });
+      }
+    });
+    
+    return { introText, benefits, sections };
+  };
 
   if (isLoading) {
     return (
@@ -201,13 +220,16 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
 
   const primaryImage = product.images.edges[0]?.node;
   
-  // Content is now safely retrieved via getProductContent()
+  // Parse optimized description or fallback to Shopify description
+  const optimizedContent = useOptimizedDescription ? 
+    parseOptimizedDescription(useOptimizedDescription) : 
+    { introText: product.description || '', benefits: [], sections: [] };
   
   return (
     <div className="min-h-screen bg-white pt-16">
       <SEOHelmet 
         title={product.title}
-        description={`${productContent.introText.slice(0, 155)}... Jetzt bei AlltagsGold bestellen.`}
+        description={`${optimizedContent.introText.slice(0, 155)}... Jetzt bei AlltagsGold bestellen.`}
         ogImage={primaryImage?.url}
         product={product}
         type="product"
@@ -278,10 +300,10 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             </div>
 
             {/* Intro Text */}
-            {productContent.introText && (
+            {optimizedContent.introText && (
               <div className="space-y-4">
                 <p className="text-gray-700 leading-relaxed">
-                  {productContent.introText}
+                  {optimizedContent.introText}
                 </p>
               </div>
             )}
@@ -309,11 +331,11 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             )}
 
             {/* Produktvorteile */}
-            {productContent.bulletPoints.length > 0 && (
+            {optimizedContent.benefits.length > 0 && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900">Produktvorteile</h3>
                 <ul className="space-y-2">
-                  {productContent.bulletPoints.map((benefit: string, index: number) => (
+                  {optimizedContent.benefits.map((benefit, index) => (
                     <li key={index} className="flex items-start space-x-2 text-gray-700">
                       <span className="text-green-600 mt-1 text-sm">✓</span>
                       <span className="text-sm leading-relaxed">{benefit}</span>
@@ -338,22 +360,26 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               <CollapsibleContent className="mt-4">
                 <div className="space-y-4 border rounded-lg p-4 bg-gray-50">
                   {/* Structured sections */}
-                  {productContent.sections.length > 0 && (
+                  {optimizedContent.sections.length > 0 && (
                     <div className="space-y-4">
-                      {productContent.sections.map((section: OptimizedSection, index: number) => (
+                      {optimizedContent.sections.map((section, index) => (
                         <div key={index} className="space-y-2">
                           <h4 className="font-semibold text-gray-900">{section.title}</h4>
-                          <div 
-                            className="text-sm text-gray-700"
-                            dangerouslySetInnerHTML={{ __html: section.content }}
-                          />
+                          <ul className="space-y-1">
+                            {section.content.map((item, itemIndex) => (
+                              <li key={itemIndex} className="text-sm text-gray-700 flex items-start space-x-2">
+                                <span className="text-gray-400 mt-1">•</span>
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
                       ))}
                     </div>
                   )}
 
                   {/* Versand- und Service-Informationen */}
-                  <div className={`${productContent.sections.length > 0 ? 'border-t pt-4' : ''}`}>
+                  <div className={`${optimizedContent.sections.length > 0 ? 'border-t pt-4' : ''}`}>
                     <h4 className="font-semibold text-gray-900 mb-3">Versand & Service</h4>
                     <div className="space-y-2 text-sm text-gray-700">
                       <p><span className="font-semibold">Kostenloser Versand</span> ab CHF 50 Bestellwert</p>
@@ -366,12 +392,11 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               </CollapsibleContent>
             </Collapsible>
 
-            {/* Quantity and Add to Cart - Client-safe rendering */}
-            {isClient && (
-              <div className="space-y-4">
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center border rounded-lg">
-                    <button
+            {/* Quantity and Add to Cart */}
+            <div className="space-y-4">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center border rounded-lg">
+                  <button
                     onClick={() => adjustQuantity(-1)}
                     className="p-2 hover:bg-gray-50 disabled:opacity-50"
                     disabled={quantity <= 1}
@@ -420,8 +445,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   </>
                 )}
               </Button>
-              </div>
-            )}
+            </div>
 
 
           </div>

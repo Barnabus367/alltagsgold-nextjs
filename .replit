@@ -14,19 +14,35 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
+args = "Migration Tool Setup"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "test_migration_tool"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
 args = "AlltagsGold Production Ready"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
 args = "Generate Sitemaps"
 
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Production Build"
+[[workflows.workflow]]
+name = "Migration Tool Setup"
+author = "agent"
 
 [[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Sitemap Generation"
+task = "shell.exec"
+args = "npm install && chmod +x index.js"
+
+[[workflows.workflow]]
+name = "test_migration_tool"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm install commander fs-extra chalk @babel/parser @babel/traverse @babel/generator @babel/types glob && node index.js --help"
 
 [[workflows.workflow]]
 name = "AlltagsGold Production Ready"
@@ -39,22 +55,6 @@ waitForPort = 5000
 
 [[workflows.workflow]]
 name = "Generate Sitemaps"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "node scripts/generate-sitemap.js"
-
-[[workflows.workflow]]
-name = "Production Build"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "npm run build"
-
-[[workflows.workflow]]
-name = "Sitemap Generation"
 author = "agent"
 
 [[workflows.workflow.tasks]]

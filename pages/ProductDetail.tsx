@@ -133,31 +133,34 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     const introMatch = description.match(/^[^Produktvorteile]*(?=Produktvorteile|$)/);
     const introText = introMatch ? introMatch[0].trim() : '';
     
-    // Extract product benefits
+    // Extract product benefits - improved parsing
     let benefits: string[] = [];
-    const benefitsMatch = description.match(/Produktvorteile[\s\S]*(.*?)(?=Technische Details|$)/);
+    const benefitsMatch = description.match(/Produktvorteile\s*([\s\S]*?)(?=Technische Details|$)/);
     if (benefitsMatch) {
-      benefits = benefitsMatch[1]
-        .split(/[–\-•]\s*/)
-        .filter((benefit: string) => benefit.trim().length > 0)
-        .map((benefit: string) => benefit.trim().replace(/\n/g, ' '));
+      const benefitsText = benefitsMatch[1];
+      // Split by common patterns like dashes, bullets, or line breaks
+      benefits = benefitsText
+        .split(/(?:[–\-•]|\r?\n)\s*/)
+        .filter((benefit: string) => benefit.trim().length > 5) // Filter out empty or very short strings
+        .map((benefit: string) => benefit.trim().replace(/\s+/g, ' ')) // Normalize whitespace
+        .filter((benefit: string) => benefit.length > 0);
     }
     
-    // Extract technical details
+    // Extract technical details - improved parsing
     const technicalDetails: string[] = [];
-    const techMatch = description.match(/Technische Details[\s\S]*(.*?)$/);
+    const techMatch = description.match(/Technische Details\s*([\s\S]*)$/);
     if (techMatch) {
       const techText = techMatch[1];
       
-      // Parse common technical patterns
+      // Parse common technical patterns with flexible line breaks
       const specs = [
-        { pattern: /Masse:\s*([^\\n]*)/i, format: 'Abmessungen: $1' },
-        { pattern: /Material:\s*([^\\n]*)/i, format: 'Material: $1' },
-        { pattern: /Stromversorgung:\s*([^\\n]*)/i, format: 'Stromversorgung: $1' },
-        { pattern: /Gewicht:\s*([^\\n]*)/i, format: 'Gewicht: $1' },
-        { pattern: /Leistung:\s*([^\\n]*)/i, format: 'Leistung: $1' },
-        { pattern: /Spannung:\s*([^\\n]*)/i, format: 'Spannung: $1' },
-        { pattern: /Kapazität:\s*([^\\n]*)/i, format: 'Kapazität: $1' }
+        { pattern: /Masse:\s*([^\r\n]+)/i, format: 'Abmessungen: $1' },
+        { pattern: /Material:\s*([^\r\n]+)/i, format: 'Material: $1' },
+        { pattern: /Stromversorgung:\s*([^\r\n]+)/i, format: 'Stromversorgung: $1' },
+        { pattern: /Gewicht:\s*([^\r\n]+)/i, format: 'Gewicht: $1' },
+        { pattern: /Leistung:\s*([^\r\n]+)/i, format: 'Leistung: $1' },
+        { pattern: /Spannung:\s*([^\r\n]+)/i, format: 'Spannung: $1' },
+        { pattern: /Kapazität:\s*([^\r\n]+)/i, format: 'Kapazität: $1' }
       ];
       
       specs.forEach(spec => {

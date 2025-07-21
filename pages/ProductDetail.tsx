@@ -173,9 +173,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       sections: []
     };
   }, [product]);
+  
   const hasOptimizedDescription = Boolean(productContent.introText);
-
-
 
   if (isLoading) {
     return (
@@ -367,11 +366,12 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               </CollapsibleContent>
             </Collapsible>
 
-            {/* Quantity and Add to Cart */}
-            <div className="space-y-4">
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center border rounded-lg">
-                  <button
+            {/* Quantity and Add to Cart - Client-safe rendering */}
+            {isClient && (
+              <div className="space-y-4">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center border rounded-lg">
+                    <button
                     onClick={() => adjustQuantity(-1)}
                     className="p-2 hover:bg-gray-50 disabled:opacity-50"
                     disabled={quantity <= 1}
@@ -420,7 +420,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   </>
                 )}
               </Button>
-            </div>
+              </div>
+            )}
 
 
           </div>

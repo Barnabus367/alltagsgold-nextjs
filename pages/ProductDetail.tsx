@@ -122,69 +122,69 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     setQuantity(prev => Math.max(1, prev + delta));
   };
 
-  // Generate enhanced product content
-  const generateProductContent = () => {
-    if (!product) return { introText: '', benefits: [], sections: [] };
+  // Parse real Shopify product content
+  const parseShopifyContent = () => {
+    if (!product || !product.description) return { introText: '', benefits: [], sections: [] };
     
-    // Get product tags
-    const tags = product.tags || [];
-    
-    // Generate intro text
-    const introText = getProductIntroduction(product.title);
-    
-    // Generate benefits from features
-    const benefits = getProductFeatures(product.title, tags);
-    
-    // Generate technical sections based on product data
+    const description = product.description;
     const sections: Array<{ title: string; content: string[] }> = [];
     
-    // Add technical specifications if we have variant data
-    if (product.variants.edges.length > 0) {
-      const variant = product.variants.edges[0].node;
-      const technicalDetails: string[] = [];
+    // Extract intro text (first paragraph)
+    const introMatch = description.match(/^[^Produktvorteile]*(?=Produktvorteile|$)/);
+    const introText = introMatch ? introMatch[0].trim() : '';
+    
+    // Extract product benefits
+    let benefits: string[] = [];
+    const benefitsMatch = description.match(/Produktvorteile[\s\S]*(.*?)(?=Technische Details|$)/);
+    if (benefitsMatch) {
+      benefits = benefitsMatch[1]
+        .split(/[–\-•]\s*/)
+        .filter((benefit: string) => benefit.trim().length > 0)
+        .map((benefit: string) => benefit.trim().replace(/\n/g, ' '));
+    }
+    
+    // Extract technical details
+    const technicalDetails: string[] = [];
+    const techMatch = description.match(/Technische Details[\s\S]*(.*?)$/);
+    if (techMatch) {
+      const techText = techMatch[1];
       
-      // Add weight if available
-      if (variant.weight) {
-        technicalDetails.push(`Gewicht: ${variant.weight}g`);
-      }
+      // Parse common technical patterns
+      const specs = [
+        { pattern: /Masse:\s*([^\\n]*)/i, format: 'Abmessungen: $1' },
+        { pattern: /Material:\s*([^\\n]*)/i, format: 'Material: $1' },
+        { pattern: /Stromversorgung:\s*([^\\n]*)/i, format: 'Stromversorgung: $1' },
+        { pattern: /Gewicht:\s*([^\\n]*)/i, format: 'Gewicht: $1' },
+        { pattern: /Leistung:\s*([^\\n]*)/i, format: 'Leistung: $1' },
+        { pattern: /Spannung:\s*([^\\n]*)/i, format: 'Spannung: $1' },
+        { pattern: /Kapazität:\s*([^\\n]*)/i, format: 'Kapazität: $1' }
+      ];
       
-      // Add dimensions from tags or product data
-      const dimensionTags = tags.filter((tag: string) => 
-        tag.toLowerCase().includes('cm') || 
-        tag.toLowerCase().includes('mm') ||
-        tag.toLowerCase().includes('size') ||
-        tag.toLowerCase().includes('grösse')
-      );
+      specs.forEach(spec => {
+        const match = techText.match(spec.pattern);
+        if (match) {
+          technicalDetails.push(spec.format.replace('$1', match[1].trim()));
+        }
+      });
       
-      if (dimensionTags.length > 0) {
-        dimensionTags.forEach((tag: string) => {
-          technicalDetails.push(`Abmessungen: ${tag}`);
-        });
-      }
-      
-      // Add material information from tags
-      const materialTags = tags.filter((tag: string) => 
-        tag.toLowerCase().includes('gold') ||
-        tag.toLowerCase().includes('silber') ||
-        tag.toLowerCase().includes('edelstahl') ||
-        tag.toLowerCase().includes('material')
-      );
-      
-      if (materialTags.length > 0) {
-        materialTags.forEach((tag: string) => {
-          technicalDetails.push(`Material: ${tag}`);
-        });
-      }
-      
-      if (technicalDetails.length > 0) {
-        sections.push({
-          title: 'Technische Details',
-          content: technicalDetails
-        });
+      // Add price information from variant
+      if (product.variants.edges.length > 0) {
+        const variant = product.variants.edges[0].node;
+        const price = parseFloat(variant.price.amount);
+        const currency = variant.price.currencyCode || 'CHF';
+        technicalDetails.push(`Preis: ${price.toFixed(2)} ${currency}`);
       }
     }
     
-    // Add care instructions
+    // Add technical details section if we have any
+    if (technicalDetails.length > 0) {
+      sections.push({
+        title: 'Technische Details',
+        content: technicalDetails
+      });
+    }
+    
+    // Add care instructions section
     sections.push({
       title: 'Pflege & Wartung',
       content: [
@@ -223,8 +223,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
 
   const primaryImage = product.images.edges[0]?.node;
   
-  // Generate enhanced product content
-  const optimizedContent = generateProductContent();
+  // Parse real Shopify product content
+  const optimizedContent = parseShopifyContent();
   
   return (
     <div className="min-h-screen bg-white pt-16">
@@ -336,7 +336,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900">Produktvorteile</h3>
                 <ul className="space-y-2">
-                  {optimizedContent.benefits.map((benefit, index) => (
+                  {optimizedContent.benefits.map((benefit: string, index: number) => (
                     <li key={index} className="flex items-start space-x-2 text-gray-700">
                       <span className="text-gray-400 mt-1">•</span>
                       <span className="text-sm leading-relaxed">{benefit}</span>
@@ -363,11 +363,11 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   {/* Structured sections */}
                   {optimizedContent.sections.length > 0 && (
                     <div className="space-y-4">
-                      {optimizedContent.sections.map((section, index) => (
+                      {optimizedContent.sections.map((section: any, index: number) => (
                         <div key={index} className="space-y-2">
                           <h4 className="font-semibold text-gray-900">{section.title}</h4>
                           <ul className="space-y-1">
-                            {section.content.map((item, itemIndex) => (
+                            {section.content.map((item: string, itemIndex: number) => (
                               <li key={itemIndex} className="text-sm text-gray-700 flex items-start space-x-2">
                                 <span className="text-gray-400 mt-1">•</span>
                                 <span>{item}</span>

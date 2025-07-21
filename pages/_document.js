@@ -1,6 +1,5 @@
 import { Html, Head, Main, NextScript } from 'next/document'
 import Image from 'next/image';
-import { Analytics } from '@vercel/analytics/next'
 import { fontVariables } from '../lib/fonts-optimized'
 
 export default function Document() {
@@ -63,7 +62,6 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
-        <Analytics />
       </body>
     </Html>
   )

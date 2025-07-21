@@ -25,18 +25,18 @@ export interface SEOMetadata {
  * Brand-optimierte SEO-Templates nach neuem Schema
  */
 const SEO_TEMPLATES = {
-  brand: "alltagsgold",
-  productTitleSuffix: "Jetzt entdecken",
-  collectionTitleSuffix: "Clever & stilvoll",
-  productDescriptionSuffix: "Jetzt online kaufen bei alltagsgold – moderne Alltagslösungen & stylische Gadgets.",
-  collectionDescriptionTemplate: (name: string) => `Entdecke unsere ${name}-Highlights – handverlesen für deinen Alltag. Jetzt stöbern & inspirieren lassen.`,
+  brand: "AlltagsGold",
+  productTitleSuffix: "2024 ✓ CH Versand ✓ Top Bewertungen",
+  collectionTitleSuffix: "Schweiz ✓ Sofort lieferbar ✓ Top Qualität",
+  productDescriptionSuffix: "⭐ 4.8/5 Bewertungen ⭐ Gratis Versand ab CHF 50 ⭐ 30 Tage Rückgabe ⭐ Schweizer Shop",
+  collectionDescriptionTemplate: (name: string) => `${name} günstig kaufen Schweiz ✓ Sofort lieferbar ✓ Top Bewertungen ✓ Gratis Versand`,
   fallbacks: {
-    default: "Innovative Lifestyle-Produkte für deinen Alltag. Entdeckt, modern & praktisch. Jetzt entdecken auf alltagsgold.ch.",
-    products: "Moderne Alltagslösungen & stylische Gadgets. Jetzt online kaufen bei alltagsgold.",
-    collections: "Handverlesene Produkte für deinen Alltag. Jetzt stöbern & inspirieren lassen bei alltagsgold.",
-    home: "Innovative Lifestyle-Produkte für deinen Alltag. Entdeckt, modern & praktisch. Jetzt entdecken auf alltagsgold.ch.",
-    contact: "Kontaktiere alltagsgold – moderne Alltagslösungen & stylische Gadgets. Schnelle Hilfe und Beratung.",
-    blog: "Tipps und Inspiration für einen modernen Alltag – der alltagsgold Blog mit nützlichen Produktratgebern."
+    default: "AlltagsGold Schweiz ✓ Premium Haushaltsware ✓ Gratis Versand ✓ 4.8★ Bewertungen ✓ Sofort lieferbar",
+    products: "Haushaltsware günstig kaufen ✓ Schweizer Shop ✓ Gratis Versand ✓ Top Bewertungen ✓ 30 Tage Rückgabe",
+    collections: "Premium Haushaltsgeräte Schweiz ✓ Sofort lieferbar ✓ Top Qualität ✓ Gratis Versand ab CHF 50",
+    home: "AlltagsGold - Haushaltsware Schweiz ✓ Gratis Versand ✓ 4.8★ Bewertungen ✓ Sofort lieferbar ✓ Top Preise",
+    contact: "AlltagsGold Kontakt Schweiz ✓ Schnelle Hilfe ✓ Kostenlose Beratung ✓ Haushaltsware Experten",
+    blog: "Haushalt Tipps & Tricks ✓ Schweizer Ratgeber ✓ Produkttests ✓ Haushaltsware Guide ✓ AlltagsGold Blog"
   }
 };
 
@@ -204,36 +204,36 @@ export function generateCollectionSEO(collection: any): SEOMetadata {
 export function generateStaticPageSEO(pageType: string, customTitle?: string, customDescription?: string): SEOMetadata {
   const staticPageData: Record<string, { pageName: string; description: string; suffix?: string }> = {
     home: {
-      pageName: "Clever bestellt. Clever geliefert. Alltag bereichert",
-      description: SEO_TEMPLATES.fallbacks.home
+      pageName: "Haushaltsware günstig kaufen Schweiz ✓ Gratis Versand ✓ Top Bewertungen",
+      description: "Haushaltsware & Küchenhelfer günstig kaufen ✓ Schweizer Online Shop ✓ Gratis Versand ab CHF 50 ✓ 4.8★ Bewertungen ✓ 30 Tage Rückgabe ✓ Sofort lieferbar"
     },
     contact: {
-      pageName: "Kontakt",
+      pageName: "Kontakt Haushaltsware Schweiz ✓ Kostenlose Beratung",
       description: SEO_TEMPLATES.fallbacks.contact
     },
     impressum: {
-      pageName: "Impressum",
-      description: "Rechtliche Informationen und Impressum von alltagsgold – moderne Alltagslösungen & stylische Gadgets."
+      pageName: "Impressum AlltagsGold Schweiz ✓ Haushaltsware Shop",
+      description: "Impressum AlltagsGold - Schweizer Online Shop für Haushaltsware ✓ Premium Küchenhelfer ✓ Rechtliche Informationen"
     },
     datenschutz: {
-      pageName: "Datenschutz", 
-      description: "Datenschutzerklärung von alltagsgold – Transparente Informationen zum Umgang mit deinen Daten."
+      pageName: "Datenschutz AlltagsGold ✓ Sichere Daten ✓ Schweizer Standard", 
+      description: "Datenschutz AlltagsGold Schweiz ✓ Sichere Datenverarbeitung ✓ DSGVO konform ✓ Transparenter Umgang mit Kundendaten"
     },
     agb: {
-      pageName: "AGB",
-      description: "Allgemeine Geschäftsbedingungen von alltagsgold – Alle wichtigen Infos zu Bestellung und Versand."
+      pageName: "AGB Haushaltsware Schweiz ✓ Faire Bedingungen ✓ Schneller Versand",
+      description: "AGB AlltagsGold ✓ Faire Geschäftsbedingungen ✓ Gratis Versand ab CHF 50 ✓ 30 Tage Rückgabe ✓ Schweizer Shop"
     },
     blog: {
-      pageName: "Blog",
+      pageName: "Haushalt Blog Schweiz ✓ Tipps & Tricks ✓ Produkttests",
       description: SEO_TEMPLATES.fallbacks.blog
     },
     products: {
-      pageName: "Alle Produkte",
-      description: SEO_TEMPLATES.fallbacks.products
+      pageName: "Alle Haushaltsware Schweiz ✓ Günstig kaufen ✓ Top Qualität",
+      description: "Alle Haushaltsware & Küchenhelfer ✓ Schweizer Online Shop ✓ Günstige Preise ✓ Premium Qualität ✓ Gratis Versand ab CHF 50"
     },
     collections: {
-      pageName: "Kategorien", 
-      description: SEO_TEMPLATES.fallbacks.collections
+      pageName: "Haushaltsware Kategorien Schweiz ✓ Große Auswahl ✓ Top Preise", 
+      description: "Haushaltsware Kategorien ✓ Küchenhelfer ✓ Reinigung ✓ Beleuchtung ✓ Schweizer Shop ✓ Günstige Preise ✓ Gratis Versand"
     }
   };
 

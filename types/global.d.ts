@@ -10,6 +10,7 @@ declare global {
     dataLayer?: any[];
     fbq?: (...args: any[]) => void;
     clarity?: (...args: any[]) => void;
+    va?: (event: string, properties?: Record<string, any>) => void;
   }
 }
 

@@ -211,6 +211,11 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     if (techMatch && techMatch[1]) {
       const techText = techMatch[1].trim();
       
+      // Debug logging for technical details
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🔧 Raw tech text:', techText);
+      }
+      
       // Parse known patterns with flexible whitespace handling (no line breaks)
       const patterns = [
         { regex: /Masse:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Abmessungen' },
@@ -221,15 +226,30 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
         { regex: /Kapazität:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Kapazität' }
       ];
       
-      patterns.forEach(pattern => {
+      // Try improved parsing with simpler approach
+      const simplifiedPatterns = [
+        { regex: /Masse:\s*([^A-Z]*?)(?=\s+[A-Z]|$)/i, label: 'Abmessungen' },
+        { regex: /Material:\s*([^A-Z]*?)(?=\s+[A-Z]|$)/i, label: 'Material' },
+        { regex: /Stromversorgung:\s*([^A-Z]*?)(?=\s+[A-Z]|$)/i, label: 'Stromversorgung' }
+      ];
+      
+      const addedLabels = new Set<string>();
+      
+      simplifiedPatterns.forEach(pattern => {
         const match = techText.match(pattern.regex);
-        if (match && match[1]) {
+        if (match && match[1] && !addedLabels.has(pattern.label)) {
           const value = match[1].trim().replace(/\s+/g, ' '); // Normalize spaces
-          if (value) {
+          if (value && value.length > 1) {
             technicalDetails.push(`${pattern.label}: ${value}`);
+            addedLabels.add(pattern.label);
           }
         }
       });
+      
+      // Debug logging for technical details
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🔧 Found technical details:', technicalDetails);
+      }
       
       // Always add price as consistent element
       if (product.variants.edges.length > 0) {
@@ -240,11 +260,24 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       }
     }
     
-    // Always add technical details section for consistency
-    sections.push({
-      title: 'Technische Details',
-      content: technicalDetails.length > 0 ? technicalDetails : ['Qualitätskontrolle nach Swiss Standards']
-    });
+    // Always add technical details section for consistency - IMMER mit Fallback-Inhalten
+    if (technicalDetails.length > 0) {
+      sections.push({
+        title: 'Technische Details',
+        content: technicalDetails
+      });
+    } else {
+      // Fallback technical details wenn keine geparst werden können
+      sections.push({
+        title: 'Technische Details',
+        content: [
+          'Hochwertige Materialien und Verarbeitung',
+          'Qualitätskontrolle nach Swiss Standards',
+          'Benutzerfreundliches Design',
+          'Langlebige Konstruktion'
+        ]
+      });
+    }
     
     // Always add care instructions section for consistency
     sections.push({
@@ -410,7 +443,37 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               </div>
             )}
 
-            {/* Variant Selection */}
+            {/* Produktvorteile - JETZT VOR Varianten */}
+            {optimizedContent.benefits.length > 0 && (
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-900">Produktvorteile</h3>
+                <ul className="space-y-2">
+                  {optimizedContent.benefits.map((benefit: string, index: number) => (
+                    <li key={index} className="flex items-start space-x-2 text-gray-700">
+                      <span className="text-gray-400 mt-1">•</span>
+                      <span className="text-sm leading-relaxed">{benefit}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Technische Details - IMMER SICHTBAR vor Varianten */}
+            {optimizedContent.sections.length > 0 && (
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-900">Technische Details</h3>
+                <ul className="space-y-2">
+                  {optimizedContent.sections[0].content.map((detail: string, index: number) => (
+                    <li key={index} className="flex items-start space-x-2 text-gray-700">
+                      <span className="text-gray-400 mt-1">•</span>
+                      <span className="text-sm leading-relaxed">{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Variant Selection - JETZT NACH Produktvorteilen */}
             {variants.length > 1 && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900">Varianten</h3>
@@ -429,21 +492,6 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                     </button>
                   ))}
                 </div>
-              </div>
-            )}
-
-            {/* Produktvorteile */}
-            {optimizedContent.benefits.length > 0 && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Produktvorteile</h3>
-                <ul className="space-y-2">
-                  {optimizedContent.benefits.map((benefit: string, index: number) => (
-                    <li key={index} className="flex items-start space-x-2 text-gray-700">
-                      <span className="text-gray-400 mt-1">•</span>
-                      <span className="text-sm leading-relaxed">{benefit}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
             )}
 

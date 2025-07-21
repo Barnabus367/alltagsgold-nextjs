@@ -36,7 +36,7 @@ export interface SearchData {
 // Global Analytics Functions werden in types/global.d.ts definiert
 
 /**
- * Initialize Meta Pixel
+ * Initialize Meta Pixel and Vercel Analytics
  */
 export function initializeAnalytics() {
   if (typeof window === 'undefined') return;
@@ -49,11 +49,18 @@ export function initializeAnalytics() {
         console.log('Meta Pixel initialized');
       }
     }
+
+    // Initialize Vercel Analytics if loaded
+    if (window.va && typeof window.va === 'function') {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Vercel Analytics initialized');
+      }
+    }
   }, 1000);
 }
 
 /**
- * Track Page View with Meta Pixel
+ * Track Page View with Meta Pixel and Vercel Analytics
  */
 export function trackPageView(pageUrl?: string, pageTitle?: string) {
   if (typeof window === 'undefined') return;
@@ -68,6 +75,21 @@ export function trackPageView(pageUrl?: string, pageTitle?: string) {
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
         console.error('Meta Pixel error:', error);
+      }
+    }
+  }
+
+  // Vercel Analytics PageView
+  if (window.va && typeof window.va === 'function') {
+    try {
+      window.va('pageview', {
+        path: url,
+        title: title,
+        referrer: document.referrer || undefined
+      });
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Vercel Analytics error:', error);
       }
     }
   }

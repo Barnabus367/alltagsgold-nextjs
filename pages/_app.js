@@ -12,6 +12,8 @@ import { initializeWebVitalsMonitoring } from '../lib/web-vitals-monitor';
 import { useTouchOptimization, useMobilePerformanceMonitor } from '../lib/mobile-optimization';
 import { PWAProvider } from '../components/PWAProvider';
 import { loadCriticalCSS } from '../lib/critical-css';
+import { Analytics } from '@vercel/analytics/react';
+import { VercelAnalytics } from '../components/VercelAnalytics';
 
 export default function App({ Component, pageProps }) {
   // Performance Optimizations Hook
@@ -50,6 +52,8 @@ export default function App({ Component, pageProps }) {
             <QueryClientProvider client={queryClient}>
               <TooltipProvider>
                 <Component {...pageProps} />
+                <Analytics />
+                <VercelAnalytics />
               </TooltipProvider>
             </QueryClientProvider>
           </AnalyticsProvider>

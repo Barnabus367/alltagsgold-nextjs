@@ -143,6 +143,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     }
     
     const description = product.description;
+    
+    // Shopify data successfully loaded and parsed
     const sections: Array<{ title: string; content: string[] }> = [];
     
     // Extract intro text (first paragraph before Produktvorteile)
@@ -154,43 +156,44 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       introText = product.title;
     }
     
-    // Extract product benefits with stable parsing
+    // Extract product benefits with stable parsing for concatenated text
     let benefits: string[] = [];
     const benefitsMatch = description.match(/Produktvorteile\s*([\s\S]*?)(?=Technische Details|$)/);
     if (benefitsMatch && benefitsMatch[1]) {
       const benefitsText = benefitsMatch[1].trim();
       if (benefitsText) {
-        // Split by line breaks and filter meaningful content
+        // Split by sentence patterns since no line breaks in Shopify data
         benefits = benefitsText
-          .split(/\r?\n/)
-          .map((line: string) => line.trim())
-          .filter((line: string) => line.length > 10 && !line.match(/^[–\-•\s]*$/))
-          .map((line: string) => line.replace(/^[–\-•\s]+/, '').trim())
-          .filter((line: string) => line.length > 0)
-          .slice(0, 6); // Limit to 6 benefits for consistency
+          .split(/(?<=[.!?])\s+(?=[A-ZÄÖÜ])/) // Split by sentence endings followed by capital letters
+          .map((sentence: string) => sentence.trim())
+          .filter((sentence: string) => sentence.length > 15) // Filter meaningful sentences
+          .slice(0, 5); // Limit for display
       }
     }
     
-    // Extract technical details with stable parsing
+    // Extract technical details with stable parsing for concatenated text
     const technicalDetails: string[] = [];
     const techMatch = description.match(/Technische Details\s*([\s\S]*)$/);
     if (techMatch && techMatch[1]) {
       const techText = techMatch[1].trim();
       
-      // Parse known patterns consistently
+      // Parse known patterns with flexible whitespace handling (no line breaks)
       const patterns = [
-        { regex: /Masse:\s*([^\r\n]+)/i, label: 'Abmessungen' },
-        { regex: /Material:\s*([^\r\n]+)/i, label: 'Material' },
-        { regex: /Stromversorgung:\s*([^\r\n]+)/i, label: 'Stromversorgung' },
-        { regex: /Gewicht:\s*([^\r\n]+)/i, label: 'Gewicht' },
-        { regex: /Leistung:\s*([^\r\n]+)/i, label: 'Leistung' },
-        { regex: /Kapazität:\s*([^\r\n]+)/i, label: 'Kapazität' }
+        { regex: /Masse:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Abmessungen' },
+        { regex: /Material:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Material' },
+        { regex: /Stromversorgung:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Stromversorgung' },
+        { regex: /Gewicht:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Gewicht' },
+        { regex: /Leistung:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Leistung' },
+        { regex: /Kapazität:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Kapazität' }
       ];
       
       patterns.forEach(pattern => {
         const match = techText.match(pattern.regex);
         if (match && match[1]) {
-          technicalDetails.push(`${pattern.label}: ${match[1].trim()}`);
+          const value = match[1].trim().replace(/\s+/g, ' '); // Normalize spaces
+          if (value) {
+            technicalDetails.push(`${pattern.label}: ${value}`);
+          }
         }
       });
       

@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useBlogPost, formatBlogDate, getReadingTime } from '@/hooks/useBlog';
 import { usePageTitle } from '@/hooks/usePageTitle';
@@ -159,11 +160,13 @@ export default function BlogPost() {
         {post.image && (
           <div className="mb-12">
             <div className="aspect-video overflow-hidden rounded-sm">
-              <img
-                src={getCloudinaryUrl(post.image.url)}
-                alt={post.image.altText || post.title}
-                className="w-full h-full object-cover"
-              />
+              <Image
+      src={""}
+      alt="AlltagsGold Produktbild"
+      width={600}
+      height={400}
+      className="w-full h-full object-cover"
+    />
             </div>
           </div>
         )}

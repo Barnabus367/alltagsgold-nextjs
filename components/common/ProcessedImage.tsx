@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useBackgroundRemoval } from '@/lib/imageProcessing';
 
 interface ProcessedImageProps {
@@ -43,13 +44,14 @@ export function ProcessedImage({
 
   return (
     <div className={`relative ${className}`}>
-      <img
-        src={imageSrc}
-        alt={alt}
-        className={`w-full h-full object-cover ${isProcessing ? 'opacity-90' : 'opacity-100'} transition-opacity duration-300`}
-        onError={handleError}
+      <Image
+        src={imageSrc || fallbackSrc || ''}
+        alt={alt || 'AlltagsGold Produktbild'}
+        width={600}
+        height={400}
         onLoad={handleLoad}
-        loading="lazy"
+        onError={handleError}
+        className="w-full h-full object-cover"
       />
       
       {isProcessing && (

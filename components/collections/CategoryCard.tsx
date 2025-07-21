@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, ShoppingBag, Home, Utensils, Shirt, Heart, Gamepad2, Lightbulb, Coffee, Sofa, Car, Baby } from 'lucide-react';
 import { ShopifyCollection } from '../../types/shopify';
@@ -53,11 +54,12 @@ export function CategoryCard({ collection, className = '' }: CategoryCardProps) 
         <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
           {hasRealImage ? (
             <>
-              <img
+              <Image
                 src={categoryImage}
-                alt={collection.title}
+                alt={`${collection.title} - AlltagsGold Produktkategorien`}
+                width={600}
+                height={400}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
               />
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors duration-300" />
             </>
@@ -109,11 +111,12 @@ export function CompactCategoryCard({ collection, className = '' }: CategoryCard
         <div className="aspect-square relative bg-gradient-to-br from-gray-100 to-gray-200">
           {hasRealImage ? (
             <>
-              <img
+              <Image
                 src={categoryImage}
-                alt={collection.title}
+                alt={`${collection.title} - AlltagsGold Produktkategorien`}
+                width={600}
+                height={400}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             </>
@@ -149,11 +152,12 @@ export function HeroCategoryCard({ collection, className = '' }: CategoryCardPro
       <div className="relative h-64 md:h-80 bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
         {hasRealImage ? (
           <>
-            <img
+            <Image
               src={categoryImage}
-              alt={collection.title}
+              alt={`${collection.title} - AlltagsGold Produktkategorien`}
+              width={600}
+              height={400}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
           </>

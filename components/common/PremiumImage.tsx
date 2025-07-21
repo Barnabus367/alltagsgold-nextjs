@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface PremiumImageProps {
   src: string;
@@ -40,17 +41,15 @@ export function PremiumImage({ src, alt, className = "", productTitle = "" }: Pr
     <div className={`relative ${className}`}>
       {isValidUrl && !imageError ? (
         <>
-          <img
+          <Image
             src={imageUrl}
-            alt={alt}
-            className={`
-              w-full h-full object-cover
-              transition-all duration-300 ease-out
-              ${imageLoaded ? 'opacity-100' : 'opacity-0'}
-            `}
+            alt={alt || `${productTitle} Produktbild`}
+            width={800}
+            height={800}
             onLoad={handleImageLoad}
             onError={handleImageError}
-            loading="lazy"
+            className="w-full h-full object-cover"
+            priority={true}
           />
           
           {/* Loading state */}

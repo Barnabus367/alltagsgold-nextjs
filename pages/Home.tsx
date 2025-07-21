@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { HighlightProductCard } from '@/components/product/HighlightProductCard';
 import { ShopifyError } from '@/components/common/ShopifyError';
@@ -79,12 +80,14 @@ export function Home({ searchQuery = '', preloadedProducts, preloadedCollections
       <section className="relative overflow-hidden min-h-screen flex items-center justify-center">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <img 
-            src="https://res.cloudinary.com/dwrk3iihw/image/upload/w_1920,h_1080,c_fill,g_center,q_auto:best,f_webp,dpr_auto/v1750622438/pexels-silverkblack-23224720_ft2x1y.jpg" 
-            alt="Premium Package auf Teppich"
-            className="w-full h-full object-cover"
-            loading="eager"
-          />
+          <Image
+      src={"https://res.cloudinary.com/dwrk3iihw/image/upload/w_1920,h_1080,c_fill,g_center,q_auto:best,f_webp,dpr_auto/v1750622438/pexels-silverkblack-23224720_ft2x1y.jpg"}
+      alt="Premium Package auf Teppich"
+      width={1200}
+      height={600}
+      className="w-full h-full object-cover"
+      priority
+    />
           {/* Semi-transparent dark overlay for contrast */}
           <div className="absolute inset-0 bg-black bg-opacity-40" />
         </div>
@@ -164,10 +167,13 @@ export function Home({ searchQuery = '', preloadedProducts, preloadedCollections
                       <div className="relative h-64 md:h-80 rounded-xl overflow-hidden">
                         {/* Hero Background Image */}
                         {heroImage ? (
-                          <img
+                          <Image
                             src={heroImage}
-                            alt={collection.title}
+                            alt={`${collection.title} - AlltagsGold Kollektion`}
+                            width={1200}
+                            height={600}
                             className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                            priority
                           />
                         ) : (
                           <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300" />
@@ -276,11 +282,14 @@ export function Home({ searchQuery = '', preloadedProducts, preloadedCollections
             </div>
             <div>
               <div className="aspect-square bg-gray-100 overflow-hidden rounded-sm">
-                <img 
-                  src="https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750202828/pexels-rdne-7563654_ioqgj1.jpg"
-                  alt="Qualitätsprodukte für den Alltag - Premium Lifestyle"
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                />
+                <Image
+      src={"https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750202828/pexels-rdne-7563654_ioqgj1.jpg"}
+      alt="Qualitätsprodukte für den Alltag - Premium Lifestyle"
+      width={1200}
+      height={600}
+      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+      priority
+    />
               </div>
             </div>
           </div>

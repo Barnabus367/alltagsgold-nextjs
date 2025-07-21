@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Button } from '@/components/ui/button';
@@ -77,11 +78,14 @@ export function Header({ onSearch }: HeaderProps) {
 
           {/* Center Logo */}
           <Link href="/" className="absolute left-1/2 transform -translate-x-1/2">
-            <img 
-              src="/alltagsgold-logo.png" 
-              alt="AlltagsGold" 
-              className="h-12 w-auto object-contain"
-            />
+            <Image
+      src={"/alltagsgold-logo.png"}
+      alt="AlltagsGold"
+      width={200}
+      height={60}
+      className="h-12 w-auto object-contain"
+      priority
+    />
           </Link>
 
           {/* Right Actions */}

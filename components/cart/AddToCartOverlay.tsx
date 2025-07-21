@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import Image from 'next/image';
 import { Check, X, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/hooks/useCart';
@@ -63,9 +64,11 @@ export function AddToCartOverlay() {
           <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
             {merchandise.product.featuredImage?.url && 
              getCloudinaryUrl(merchandise.product.featuredImage.url).includes('res.cloudinary.com') ? (
-              <img
+              <Image
                 src={getCloudinaryUrl(merchandise.product.featuredImage.url)}
-                alt={merchandise.product.featuredImage?.altText || merchandise.product.title}
+                alt={merchandise.product.title}
+                width={150}
+                height={150}
                 className="w-full h-full object-cover"
               />
             ) : (

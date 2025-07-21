@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { useBlogPosts, formatBlogDate, getReadingTime } from '@/hooks/useBlog';
 import { usePageTitle } from '@/hooks/usePageTitle';
 import { getCloudinaryUrl } from '@/lib/cloudinary';
@@ -105,11 +106,13 @@ export default function Blog() {
                       {/* Featured Image */}
                       {post.image && (
                         <div className="aspect-video overflow-hidden">
-                          <img
-                            src={getCloudinaryUrl(post.image.url)}
-                            alt={post.image.altText || post.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                          />
+                          <Image
+      src={""}
+      alt="AlltagsGold Produktbild"
+      width={600}
+      height={400}
+      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+    />
                         </div>
                       )}
                       

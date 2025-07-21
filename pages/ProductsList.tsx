@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import Image from 'next/image';
 import { useProducts, useCollections } from '@/hooks/useShopify';
 import { ProductCard } from '@/components/product/ProductCard';
 import { ImprovedProductFilterBar } from '@/components/product/ImprovedProductFilterBar';
@@ -76,11 +77,13 @@ export function Products({ preloadedProducts }: ProductsProps) {
       {/* Hero Section */}
       <section className="relative h-[45vh] bg-gradient-to-br from-blue-900 via-gray-900 to-black flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-black/30 to-black/50 z-10"></div>
-        <img 
-          src="https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750348380/pexels-alexasfotos-2255441_njetbg.jpg"
-          alt="Alle Produkte"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <Image
+      src={"https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750348380/pexels-alexasfotos-2255441_njetbg.jpg"}
+      alt="Alle Produkte"
+      width={600}
+      height={400}
+      className="absolute inset-0 w-full h-full object-cover"
+    />
         <div className="relative z-20 text-center text-white max-w-5xl mx-auto px-6">
           <h1 className="text-5xl md:text-7xl font-light tracking-tight mb-6">
             Alle Produkte

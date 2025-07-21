@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Trash2, Plus, Minus, ShoppingBag, ExternalLink, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -214,11 +215,13 @@ function Cart() {
                       <div className="w-28 h-28 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl overflow-hidden flex-shrink-0 shadow-inner">
                         {item.merchandise.product.featuredImage?.url && 
                          getCloudinaryUrl(item.merchandise.product.featuredImage.url).includes('res.cloudinary.com') ? (
-                          <img
-                            src={getCloudinaryUrl(item.merchandise.product.featuredImage.url)}
-                            alt={item.merchandise.product.featuredImage?.altText || item.merchandise.product.title}
-                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
-                          />
+                          <Image
+      src={""}
+      alt="AlltagsGold Produktbild"
+      width={150}
+      height={150}
+      className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+    />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
                             <div className="text-center">

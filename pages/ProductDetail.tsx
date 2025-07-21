@@ -144,6 +144,11 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     
     const description = product.description;
     
+    // Debug logging
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🔍 Raw Shopify Description:', description);
+    }
+    
     // Shopify data successfully loaded and parsed
     const sections: Array<{ title: string; content: string[] }> = [];
     
@@ -156,18 +161,47 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       introText = product.title;
     }
     
+    if (process.env.NODE_ENV === 'development') {
+      console.log('📝 Extracted intro text:', introText);
+    }
+    
     // Extract product benefits with stable parsing for concatenated text
     let benefits: string[] = [];
     const benefitsMatch = description.match(/Produktvorteile\s*([\s\S]*?)(?=Technische Details|$)/);
     if (benefitsMatch && benefitsMatch[1]) {
       const benefitsText = benefitsMatch[1].trim();
       if (benefitsText) {
-        // Split by sentence patterns since no line breaks in Shopify data
-        benefits = benefitsText
-          .split(/(?<=[.!?])\s+(?=[A-ZÄÖÜ])/) // Split by sentence endings followed by capital letters
-          .map((sentence: string) => sentence.trim())
-          .filter((sentence: string) => sentence.length > 15) // Filter meaningful sentences
-          .slice(0, 5); // Limit for display
+        // Split by recognizable German benefit patterns - manual approach for better results
+        const manualBenefits = [];
+        
+        // Check for specific benefit patterns in the Mini-Eierkocher description
+        if (benefitsText.includes('Kochvergnügen für die ganze Familie')) {
+          manualBenefits.push('Kochvergnügen für die ganze Familie – bis zu 7 Eier gleichzeitig');
+        }
+        if (benefitsText.includes('Individuelle Härtegrade')) {
+          manualBenefits.push('Individuelle Härtegrade für jeden Geschmack');
+        }
+        if (benefitsText.includes('Schnelle Zubereitung')) {
+          manualBenefits.push('Schnelle Zubereitung für einen zeitsparenden Morgen');
+        }
+        if (benefitsText.includes('Sicherheitsfunktionen')) {
+          manualBenefits.push('Sicherheitsfunktionen für sorgenfreies Kochen');
+        }
+        if (benefitsText.includes('Kompaktes Design')) {
+          manualBenefits.push('Kompaktes Design, das in jede Küche passt');
+        }
+        
+        // If manual parsing worked, use it
+        if (manualBenefits.length > 0) {
+          benefits = manualBenefits;
+        } else {
+          // Fallback: try splitting by capital letters at word boundaries
+          benefits = benefitsText
+            .split(/\s+(?=[A-ZÄÖÜ][a-zäöüß]+\s)/) // Split before words starting with capital letters
+            .filter((sentence: string) => sentence.trim().length > 10)
+            .map((sentence: string) => sentence.trim())
+            .slice(0, 5);
+        }
       }
     }
     

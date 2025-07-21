@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCollection, useProducts } from '@/hooks/useShopify';
 import { ProductCard } from '@/components/product/ProductCard';
@@ -185,11 +186,13 @@ export function CollectionDetail({ preloadedCollection }: CollectionDetailProps)
 
       {/* Swiss Premium Collection Hero */}
       <section className="relative h-[50vh] min-h-[600px] bg-gradient-to-br from-gray-900 to-black overflow-hidden">
-        <img
-          src={categoryImage}
-          alt={collection.title}
-          className="absolute inset-0 w-full h-full object-cover filter saturate-75 brightness-90"
-        />
+        <Image
+      src={""}
+      alt="AlltagsGold Produktbild"
+      width={600}
+      height={400}
+      className="absolute inset-0 w-full h-full object-cover filter saturate-75 brightness-90"
+    />
         <div className={`absolute inset-0 bg-gradient-to-br ${getCollectionOverlay(collection.handle)}`} />
         
         {/* Elegant Centered Content */}

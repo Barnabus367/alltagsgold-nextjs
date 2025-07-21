@@ -1,4 +1,5 @@
 import { X, Minus, Plus, Trash2 } from 'lucide-react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
@@ -50,9 +51,11 @@ export function CartSidebar() {
                   <div key={line.id} className="flex items-center space-x-4 bg-muted/50 p-4 rounded-lg">
                     {line.merchandise.product.featuredImage?.url && 
                      getCloudinaryUrl(line.merchandise.product.featuredImage.url).includes('res.cloudinary.com') ? (
-                      <img
+                      <Image
                         src={getCloudinaryUrl(line.merchandise.product.featuredImage.url)}
-                        alt={line.merchandise.product.featuredImage?.altText || line.merchandise.product.title}
+                        alt={line.merchandise.product.title}
+                        width={150}
+                        height={150}
                         className="w-16 h-16 object-cover rounded-lg"
                       />
                     ) : (

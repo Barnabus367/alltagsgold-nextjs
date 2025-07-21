@@ -33,12 +33,7 @@ export interface SearchData {
   content_category?: string;
 }
 
-// Global Analytics Functions
-declare global {
-  interface Window {
-    fbq: any;
-  }
-}
+// Global Analytics Functions werden in types/global.d.ts definiert
 
 /**
  * Initialize Meta Pixel

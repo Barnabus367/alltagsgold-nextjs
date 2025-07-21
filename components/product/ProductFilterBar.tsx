@@ -238,7 +238,14 @@ export function ProductFilterBar({
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     
-    const newFilters = { ...filters };
+    // Starte mit Standard-Filtern anstatt der aktuellen
+    const newFilters: FilterCriteria = {
+      collections: [],
+      tags: [],
+      priceRange: [0, 1000],
+      colors: [],
+      materials: []
+    };
     
     if (params.get('kategorie')) {
       newFilters.collections = params.get('kategorie')!.split(',');
@@ -258,7 +265,7 @@ export function ProductFilterBar({
     }
     
     setFilters(newFilters);
-  }, []);
+  }, []); // Nur beim ersten Mount ausführen
 
   // Aktive Filter für Chip-Anzeige
   const activeFilters: ActiveFilter[] = useMemo(() => {

@@ -39,7 +39,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   // Set page title
@@ -50,10 +50,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     // Mark as mounted (hydration complete)
     setMounted(true);
     
-    // Debug optimized content
-    console.log('ProductContent after mount:', productContent);
-    console.log('Has intro text:', Boolean(productContent.introText));
-    console.log('Bullet points count:', productContent.bulletPoints?.length);
+    // Debug optimized content only on client (removed for production)
     
     // Only run client-specific code after hydration
     const checkMobile = () => {
@@ -159,20 +156,14 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       return { introText: '', bulletPoints: [], sections: [] };
     }
 
-    // Debug logging only on client
-    if (typeof window !== 'undefined') {
-      console.log('Looking for product handle:', product.handle);
-      console.log('Available handles:', optimizedDescriptions.products?.map((p: any) => p.handle));
-    }
+    // Looking for optimized content
 
     // Try to find optimized content first
     const optimizedProduct = optimizedDescriptions.products?.find(
       (p: OptimizedProduct) => p.handle === product.handle
     );
 
-    if (typeof window !== 'undefined') {
-      console.log('Found optimized product:', optimizedProduct);
-    }
+    // Found optimized product data
 
     if (optimizedProduct) {
       return {
@@ -362,11 +353,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                         <div key={index} className="space-y-2">
                           <h4 className="font-semibold text-gray-900">{section.title}</h4>
                           <div className="text-sm text-gray-700">
-                            {mounted && section.content.includes('<') ? (
-                              <div dangerouslySetInnerHTML={{ __html: section.content }} />
-                            ) : (
-                              section.content.replace(/<[^>]*>/g, '')
-                            )}
+                            {section.content.replace(/<[^>]*>/g, '')}
                           </div>
                         </div>
                       ))}

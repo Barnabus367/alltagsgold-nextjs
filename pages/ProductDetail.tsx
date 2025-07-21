@@ -122,78 +122,25 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     setQuantity(prev => Math.max(1, prev + delta));
   };
 
-  // Get optimized description from OpenAI if available
+  // Get optimized description from updated JSON structure
   const optimizedProduct = optimizedDescriptions.products?.find((p: any) => p.handle === product?.handle);
-  const useOptimizedDescription = optimizedProduct?.optimizedDescription;
-
-  // Parse optimized HTML description
-  const parseOptimizedDescription = (htmlDescription: string) => {
-    if (!htmlDescription) return { introText: '', benefits: [], sections: [] };
+  
+  // Use structured optimized description data directly
+  const getOptimizedContent = () => {
+    if (!optimizedProduct) return null;
     
-    // Remove ```html wrapper if present
-    const cleanedHtml = htmlDescription.replace(/^```html\s*/, '').replace(/\s*```$/, '');
-    
-    // Create temporary div to parse HTML
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = cleanedHtml;
-    
-    let introText = '';
-    let benefits: string[] = [];
-    let sections: Array<{ title: string; content: string[] }> = [];
-    
-    // Extract intro paragraphs - collect all <p> tags that come before the first <h3>
-    const allElements = Array.from(tempDiv.children);
-    const firstHeadingIndex = allElements.findIndex(el => el.tagName === 'H3');
-    
-    // Get all paragraphs before first heading
-    const introParas: string[] = [];
-    for (let i = 0; i < (firstHeadingIndex === -1 ? allElements.length : firstHeadingIndex); i++) {
-      const element = allElements[i];
-      if (element.tagName === 'P') {
-        const text = element.textContent?.trim();
-        if (text) {
-          introParas.push(text);
-        }
-      }
-    }
-    introText = introParas.join(' ');
-    
-    // Extract sections with headings
-    const headings = tempDiv.querySelectorAll('h3');
-    headings.forEach(heading => {
-      const title = heading.textContent?.trim() || '';
-      const content: string[] = [];
-      
-      // Get next sibling elements until next heading
-      let nextElement = heading.nextElementSibling;
-      while (nextElement && nextElement.tagName !== 'H3') {
-        if (nextElement.tagName === 'UL') {
-          const listItems = nextElement.querySelectorAll('li');
-          listItems.forEach(li => {
-            const text = li.textContent?.trim();
-            if (text) {
-              // Check if it's benefits section
-              if (title.toLowerCase().includes('vorteil') || title.toLowerCase().includes('produktvorteile')) {
-                benefits.push(text);
-              } else {
-                content.push(text);
-              }
-            }
-          });
-        } else if (nextElement.tagName === 'P') {
-          const text = nextElement.textContent?.trim();
-          if (text) content.push(text);
-        }
-        nextElement = nextElement.nextElementSibling;
-      }
-      
-      if (content.length > 0 && !title.toLowerCase().includes('vorteil')) {
-        sections.push({ title, content });
-      }
-    });
-    
-    return { introText, benefits, sections };
+    return {
+      introText: optimizedProduct.introText || '',
+      bulletPoints: optimizedProduct.bulletPoints || [],
+      sections: optimizedProduct.sections || []
+    };
   };
+
+  const optimizedContent = getOptimizedContent();
+  const hasOptimizedDescription = Boolean(optimizedContent);
+  const hasDescription = product?.description && product.description.trim() !== '';
+
+
 
   if (isLoading) {
     return (
@@ -220,16 +167,15 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
 
   const primaryImage = product.images.edges[0]?.node;
   
-  // Parse optimized description or fallback to Shopify description
-  const optimizedContent = useOptimizedDescription ? 
-    parseOptimizedDescription(useOptimizedDescription) : 
-    { introText: product.description || '', benefits: [], sections: [] };
+  // Use optimized content or fallback to Shopify description parsing
+  const finalContent = optimizedContent ? optimizedContent : 
+    { introText: product.description || '', bulletPoints: [], sections: [] };
   
   return (
     <div className="min-h-screen bg-white pt-16">
       <SEOHelmet 
         title={product.title}
-        description={`${optimizedContent.introText.slice(0, 155)}... Jetzt bei AlltagsGold bestellen.`}
+        description={`${finalContent.introText.slice(0, 155)}... Jetzt bei AlltagsGold bestellen.`}
         ogImage={primaryImage?.url}
         product={product}
         type="product"
@@ -300,10 +246,10 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             </div>
 
             {/* Intro Text */}
-            {optimizedContent.introText && (
+            {finalContent.introText && (
               <div className="space-y-4">
                 <p className="text-gray-700 leading-relaxed">
-                  {optimizedContent.introText}
+                  {finalContent.introText}
                 </p>
               </div>
             )}
@@ -331,11 +277,11 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             )}
 
             {/* Produktvorteile */}
-            {optimizedContent.benefits.length > 0 && (
+            {finalContent.bulletPoints && finalContent.bulletPoints.length > 0 && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900">Produktvorteile</h3>
                 <ul className="space-y-2">
-                  {optimizedContent.benefits.map((benefit, index) => (
+                  {finalContent.bulletPoints.map((benefit: string, index: number) => (
                     <li key={index} className="flex items-start space-x-2 text-gray-700">
                       <span className="text-green-600 mt-1 text-sm">✓</span>
                       <span className="text-sm leading-relaxed">{benefit}</span>
@@ -360,26 +306,22 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               <CollapsibleContent className="mt-4">
                 <div className="space-y-4 border rounded-lg p-4 bg-gray-50">
                   {/* Structured sections */}
-                  {optimizedContent.sections.length > 0 && (
+                  {finalContent.sections && finalContent.sections.length > 0 && (
                     <div className="space-y-4">
-                      {optimizedContent.sections.map((section, index) => (
+                      {finalContent.sections.map((section: any, index: number) => (
                         <div key={index} className="space-y-2">
                           <h4 className="font-semibold text-gray-900">{section.title}</h4>
-                          <ul className="space-y-1">
-                            {section.content.map((item, itemIndex) => (
-                              <li key={itemIndex} className="text-sm text-gray-700 flex items-start space-x-2">
-                                <span className="text-gray-400 mt-1">•</span>
-                                <span>{item}</span>
-                              </li>
-                            ))}
-                          </ul>
+                          <div 
+                            className="text-sm text-gray-700"
+                            dangerouslySetInnerHTML={{ __html: section.content }}
+                          />
                         </div>
                       ))}
                     </div>
                   )}
 
                   {/* Versand- und Service-Informationen */}
-                  <div className={`${optimizedContent.sections.length > 0 ? 'border-t pt-4' : ''}`}>
+                  <div className={`${finalContent.sections && finalContent.sections.length > 0 ? 'border-t pt-4' : ''}`}>
                     <h4 className="font-semibold text-gray-900 mb-3">Versand & Service</h4>
                     <div className="space-y-2 text-sm text-gray-700">
                       <p><span className="font-semibold">Kostenloser Versand</span> ab CHF 50 Bestellwert</p>

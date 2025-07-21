@@ -129,9 +129,15 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     const description = product.description;
     const sections: Array<{ title: string; content: string[] }> = [];
     
-    // Extract intro text (first paragraph)
-    const introMatch = description.match(/^[^Produktvorteile]*(?=Produktvorteile|$)/);
-    const introText = introMatch ? introMatch[0].trim() : '';
+    // Extract intro text (first paragraph before Produktvorteile)
+    const introMatch = description.match(/^([\s\S]*?)(?=Produktvorteile|$)/);
+    let introText = introMatch ? introMatch[1].trim() : '';
+    
+    // If no intro text found, use the full description up to first section
+    if (!introText || introText.length < 20) {
+      const firstSentences = description.split(/(?:Produktvorteile|Technische Details)/)[0];
+      introText = firstSentences ? firstSentences.trim() : product.title;
+    }
     
     // Extract product benefits - improved parsing
     let benefits: string[] = [];

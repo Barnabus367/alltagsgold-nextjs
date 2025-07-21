@@ -40,16 +40,17 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState<boolean | null>(null);
-  const [isClient, setIsClient] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   // Set page title
   usePageTitle(product ? formatPageTitle(product.title) : 'Produkt wird geladen...');
 
-  // Client-side hydration setup
+  // Hydration-safe client setup
   useEffect(() => {
-    setIsClient(true);
+    // Mark as mounted (hydration complete)
+    setMounted(true);
     
-    // Check if mobile (client-side only)
+    // Only run client-specific code after hydration
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -325,18 +326,19 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             )}
 
             {/* Versand & weitere Infos - Collapsible */}
-            <Collapsible open={isDescriptionExpanded} onOpenChange={setIsDescriptionExpanded}>
-              <CollapsibleTrigger asChild>
-                <Button variant="outline" className="w-full justify-between">
-                  <span>Versand & weitere Infos</span>
-                  {isDescriptionExpanded ? (
-                    <ChevronUp className="h-4 w-4" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4" />
-                  )}
-                </Button>
-              </CollapsibleTrigger>
-              <CollapsibleContent className="mt-4">
+            <div>
+              <Collapsible open={isDescriptionExpanded} onOpenChange={setIsDescriptionExpanded}>
+                <CollapsibleTrigger asChild>
+                  <Button variant="outline" className="w-full justify-between">
+                    <span>Versand & weitere Infos</span>
+                    {isDescriptionExpanded ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="mt-4">
                 <div className="space-y-4 border rounded-lg p-4 bg-gray-50">
                   {/* Structured sections */}
                   {productContent.sections.length > 0 && (
@@ -344,10 +346,16 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                       {productContent.sections.map((section: OptimizedSection, index: number) => (
                         <div key={index} className="space-y-2">
                           <h4 className="font-semibold text-gray-900">{section.title}</h4>
-                          <div 
-                            className="text-sm text-gray-700"
-                            dangerouslySetInnerHTML={{ __html: section.content }}
-                          />
+                          {mounted ? (
+                            <div 
+                              className="text-sm text-gray-700"
+                              dangerouslySetInnerHTML={{ __html: section.content }}
+                            />
+                          ) : (
+                            <div className="text-sm text-gray-700">
+                              {section.content.replace(/<[^>]*>/g, '')}
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -365,7 +373,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   </div>
                 </div>
               </CollapsibleContent>
-            </Collapsible>
+              </Collapsible>
+            </div>
 
             {/* Quantity and Add to Cart */}
             <div className="space-y-4">

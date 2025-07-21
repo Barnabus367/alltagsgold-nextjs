@@ -338,7 +338,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                 <ul className="space-y-2">
                   {optimizedContent.benefits.map((benefit, index) => (
                     <li key={index} className="flex items-start space-x-2 text-gray-700">
-                      <span className="text-green-600 mt-1 text-sm">✓</span>
+                      <span className="text-gray-400 mt-1">•</span>
                       <span className="text-sm leading-relaxed">{benefit}</span>
                     </li>
                   ))}
@@ -369,7 +369,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                           <ul className="space-y-1">
                             {section.content.map((item, itemIndex) => (
                               <li key={itemIndex} className="text-sm text-gray-700 flex items-start space-x-2">
-                                <span className="text-green-600 mt-1 text-sm">✓</span>
+                                <span className="text-gray-400 mt-1">•</span>
                                 <span>{item}</span>
                               </li>
                             ))}

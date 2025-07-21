@@ -9,7 +9,7 @@ import { useProduct } from '@/hooks/useShopify';
 import { useCart } from '@/hooks/useCart';
 import { ShopifyVariant, ShopifyProduct } from '@/types/shopify';
 // Import optimized descriptions
-import optimizedDescriptions from '../../data/optimized-descriptions.json';
+import optimizedDescriptions from '../data/optimized-descriptions.json';
 import { ShopifyError } from '@/components/common/ShopifyError';
 import { SEOHelmet } from '@/components/SEOHelmet';
 import { trackViewContent, trackAddToCart } from '@/lib/analytics';

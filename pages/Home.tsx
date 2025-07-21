@@ -261,15 +261,15 @@ export function Home({ searchQuery = '', preloadedProducts, preloadedCollections
               </p>
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full mt-3 flex-shrink-0"></div>
+                  <span className="text-green-600 mt-1 text-sm flex-shrink-0">✓</span>
                   <p className="text-gray-600">Schweizer Qualitätsstandards und schneller Versand</p>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full mt-3 flex-shrink-0"></div>
+                  <span className="text-green-600 mt-1 text-sm flex-shrink-0">✓</span>
                   <p className="text-gray-600">Handverlesene Produkte für einen effizienten Alltag</p>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full mt-3 flex-shrink-0"></div>
+                  <span className="text-green-600 mt-1 text-sm flex-shrink-0">✓</span>
                   <p className="text-gray-600">Persönlicher Support und 14-tägiges Rückgaberecht</p>
                 </div>
               </div>

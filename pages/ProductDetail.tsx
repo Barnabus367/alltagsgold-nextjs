@@ -8,8 +8,8 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { useProduct } from '@/hooks/useShopify';
 import { useCart } from '@/hooks/useCart';
 import { ShopifyVariant, ShopifyProduct } from '@/types/shopify';
-// Fallback for missing optimized descriptions
-const optimizedDescriptions: Record<string, any> = {};
+// Import product description generators
+import { getProductIntroduction, getProductFeatures } from '@/lib/productDescriptions';
 import { ShopifyError } from '@/components/common/ShopifyError';
 import { SEOHelmet } from '@/components/SEOHelmet';
 import { trackViewContent, trackAddToCart } from '@/lib/analytics';
@@ -122,74 +122,77 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     setQuantity(prev => Math.max(1, prev + delta));
   };
 
-  // Get optimized description from OpenAI if available
-  const optimizedProduct = optimizedDescriptions.products?.find((p: any) => p.handle === product?.handle);
-  const useOptimizedDescription = optimizedProduct?.optimizedDescription;
-
-  // Parse optimized HTML description
-  const parseOptimizedDescription = (htmlDescription: string) => {
-    if (!htmlDescription) return { introText: '', benefits: [], sections: [] };
+  // Generate enhanced product content
+  const generateProductContent = () => {
+    if (!product) return { introText: '', benefits: [], sections: [] };
     
-    // Remove ```html wrapper if present
-    const cleanedHtml = htmlDescription.replace(/^```html\s*/, '').replace(/\s*```$/, '');
+    // Get product tags
+    const tags = product.tags || [];
     
-    // Create temporary div to parse HTML
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = cleanedHtml;
+    // Generate intro text
+    const introText = getProductIntroduction(product.title);
     
-    let introText = '';
-    let benefits: string[] = [];
-    let sections: Array<{ title: string; content: string[] }> = [];
+    // Generate benefits from features
+    const benefits = getProductFeatures(product.title, tags);
     
-    // Extract intro paragraphs - collect all <p> tags that come before the first <h3>
-    const allElements = Array.from(tempDiv.children);
-    const firstHeadingIndex = allElements.findIndex(el => el.tagName === 'H3');
+    // Generate technical sections based on product data
+    const sections: Array<{ title: string; content: string[] }> = [];
     
-    // Get all paragraphs before first heading
-    const introParas: string[] = [];
-    for (let i = 0; i < (firstHeadingIndex === -1 ? allElements.length : firstHeadingIndex); i++) {
-      const element = allElements[i];
-      if (element.tagName === 'P') {
-        const text = element.textContent?.trim();
-        if (text) {
-          introParas.push(text);
-        }
+    // Add technical specifications if we have variant data
+    if (product.variants.edges.length > 0) {
+      const variant = product.variants.edges[0].node;
+      const technicalDetails: string[] = [];
+      
+      // Add weight if available
+      if (variant.weight) {
+        technicalDetails.push(`Gewicht: ${variant.weight}g`);
+      }
+      
+      // Add dimensions from tags or product data
+      const dimensionTags = tags.filter((tag: string) => 
+        tag.toLowerCase().includes('cm') || 
+        tag.toLowerCase().includes('mm') ||
+        tag.toLowerCase().includes('size') ||
+        tag.toLowerCase().includes('grösse')
+      );
+      
+      if (dimensionTags.length > 0) {
+        dimensionTags.forEach((tag: string) => {
+          technicalDetails.push(`Abmessungen: ${tag}`);
+        });
+      }
+      
+      // Add material information from tags
+      const materialTags = tags.filter((tag: string) => 
+        tag.toLowerCase().includes('gold') ||
+        tag.toLowerCase().includes('silber') ||
+        tag.toLowerCase().includes('edelstahl') ||
+        tag.toLowerCase().includes('material')
+      );
+      
+      if (materialTags.length > 0) {
+        materialTags.forEach((tag: string) => {
+          technicalDetails.push(`Material: ${tag}`);
+        });
+      }
+      
+      if (technicalDetails.length > 0) {
+        sections.push({
+          title: 'Technische Details',
+          content: technicalDetails
+        });
       }
     }
-    introText = introParas.join(' ');
     
-    // Extract sections with headings
-    const headings = tempDiv.querySelectorAll('h3');
-    headings.forEach(heading => {
-      const title = heading.textContent?.trim() || '';
-      const content: string[] = [];
-      
-      // Get next sibling elements until next heading
-      let nextElement = heading.nextElementSibling;
-      while (nextElement && nextElement.tagName !== 'H3') {
-        if (nextElement.tagName === 'UL') {
-          const listItems = nextElement.querySelectorAll('li');
-          listItems.forEach(li => {
-            const text = li.textContent?.trim();
-            if (text) {
-              // Check if it's benefits section
-              if (title.toLowerCase().includes('vorteil') || title.toLowerCase().includes('produktvorteile')) {
-                benefits.push(text);
-              } else {
-                content.push(text);
-              }
-            }
-          });
-        } else if (nextElement.tagName === 'P') {
-          const text = nextElement.textContent?.trim();
-          if (text) content.push(text);
-        }
-        nextElement = nextElement.nextElementSibling;
-      }
-      
-      if (content.length > 0 && !title.toLowerCase().includes('vorteil')) {
-        sections.push({ title, content });
-      }
+    // Add care instructions
+    sections.push({
+      title: 'Pflege & Wartung',
+      content: [
+        'Trocken und staubfrei lagern',
+        'Mit weichem Tuch reinigen',
+        'Vor Feuchtigkeit schützen',
+        'Bei Nichtgebrauch sicher aufbewahren'
+      ]
     });
     
     return { introText, benefits, sections };
@@ -220,10 +223,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
 
   const primaryImage = product.images.edges[0]?.node;
   
-  // Parse optimized description or fallback to Shopify description
-  const optimizedContent = useOptimizedDescription ? 
-    parseOptimizedDescription(useOptimizedDescription) : 
-    { introText: product.description || '', benefits: [], sections: [] };
+  // Generate enhanced product content
+  const optimizedContent = generateProductContent();
   
   return (
     <div className="min-h-screen bg-white pt-16">
@@ -368,7 +369,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                           <ul className="space-y-1">
                             {section.content.map((item, itemIndex) => (
                               <li key={itemIndex} className="text-sm text-gray-700 flex items-start space-x-2">
-                                <span className="text-gray-400 mt-1">•</span>
+                                <span className="text-green-600 mt-1 text-sm">✓</span>
                                 <span>{item}</span>
                               </li>
                             ))}

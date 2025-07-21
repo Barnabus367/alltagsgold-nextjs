@@ -39,20 +39,17 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   // Set page title
   usePageTitle(product ? formatPageTitle(product.title) : 'Produkt wird geladen...');
 
-  // Hydration-safe client setup
+  // Client-side hydration setup
   useEffect(() => {
-    // Mark as mounted (hydration complete)
-    setMounted(true);
+    setIsClient(true);
     
-    // Debug optimized content only on client (removed for production)
-    
-    // Only run client-specific code after hydration
+    // Check if mobile (client-side only)
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -156,14 +153,10 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       return { introText: '', bulletPoints: [], sections: [] };
     }
 
-    // Looking for optimized content
-
     // Try to find optimized content first
     const optimizedProduct = optimizedDescriptions.products?.find(
       (p: OptimizedProduct) => p.handle === product.handle
     );
-
-    // Found optimized product data
 
     if (optimizedProduct) {
       return {
@@ -286,13 +279,13 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             </div>
 
             {/* Intro Text */}
-            {productContent.introText ? (
+            {productContent.introText && (
               <div className="space-y-4">
                 <p className="text-gray-700 leading-relaxed">
                   {productContent.introText}
                 </p>
               </div>
-            ) : null}
+            )}
 
             {/* Variant Selection */}
             {variants.length > 1 && (
@@ -317,7 +310,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             )}
 
             {/* Produktvorteile */}
-            {productContent.bulletPoints && productContent.bulletPoints.length > 0 ? (
+            {productContent.bulletPoints.length > 0 && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900">Produktvorteile</h3>
                 <ul className="space-y-2">
@@ -329,22 +322,21 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   ))}
                 </ul>
               </div>
-            ) : null}
+            )}
 
             {/* Versand & weitere Infos - Collapsible */}
-            <div>
-              <Collapsible open={isDescriptionExpanded} onOpenChange={setIsDescriptionExpanded}>
-                <CollapsibleTrigger asChild>
-                  <Button variant="outline" className="w-full justify-between">
-                    <span>Versand & weitere Infos</span>
-                    {isDescriptionExpanded ? (
-                      <ChevronUp className="h-4 w-4" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4" />
-                    )}
-                  </Button>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="mt-4">
+            <Collapsible open={isDescriptionExpanded} onOpenChange={setIsDescriptionExpanded}>
+              <CollapsibleTrigger asChild>
+                <Button variant="outline" className="w-full justify-between">
+                  <span>Versand & weitere Infos</span>
+                  {isDescriptionExpanded ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="mt-4">
                 <div className="space-y-4 border rounded-lg p-4 bg-gray-50">
                   {/* Structured sections */}
                   {productContent.sections.length > 0 && (
@@ -352,9 +344,10 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                       {productContent.sections.map((section: OptimizedSection, index: number) => (
                         <div key={index} className="space-y-2">
                           <h4 className="font-semibold text-gray-900">{section.title}</h4>
-                          <div className="text-sm text-gray-700">
-                            {section.content.replace(/<[^>]*>/g, '')}
-                          </div>
+                          <div 
+                            className="text-sm text-gray-700"
+                            dangerouslySetInnerHTML={{ __html: section.content }}
+                          />
                         </div>
                       ))}
                     </div>
@@ -372,8 +365,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   </div>
                 </div>
               </CollapsibleContent>
-              </Collapsible>
-            </div>
+            </Collapsible>
 
             {/* Quantity and Add to Cart */}
             <div className="space-y-4">

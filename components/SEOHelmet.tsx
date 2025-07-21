@@ -1,6 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 import { ShopifyProduct, ShopifyCollection } from '@/types/shopify';
 
+interface BreadcrumbItem {
+  name: string;
+  url: string;
+  position: number;
+}
+
 interface SEOHelmetProps {
   title: string;
   description: string;
@@ -11,6 +17,7 @@ interface SEOHelmetProps {
   type?: 'website' | 'product' | 'article';
   totalPages?: number;
   isProduct?: boolean;
+  breadcrumbs?: BreadcrumbItem[];
 }
 
 export function SEOHelmet({
@@ -22,7 +29,8 @@ export function SEOHelmet({
   collection,
   type = 'website',
   totalPages,
-  isProduct = false
+  isProduct = false,
+  breadcrumbs
 }: SEOHelmetProps) {
   const siteName = 'AlltagsGold';
   
@@ -107,6 +115,20 @@ export function SEOHelmet({
         "ratingValue": "4.8",
         "reviewCount": "127"
       }
+    };
+  };
+
+  // Generate breadcrumb structured data
+  const generateBreadcrumbStructuredData = (breadcrumbs: BreadcrumbItem[]) => {
+    return {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": breadcrumbs.map((breadcrumb) => ({
+        "@type": "ListItem",
+        "position": breadcrumb.position,
+        "name": breadcrumb.name,
+        "item": breadcrumb.url
+      }))
     };
   };
 
@@ -202,6 +224,13 @@ export function SEOHelmet({
               "numberOfItems": collection.products.edges.length
             }
           }, null, 2)}
+        </script>
+      )}
+
+      {/* Breadcrumb Structured Data */}
+      {breadcrumbs && breadcrumbs.length > 1 && (
+        <script type="application/ld+json">
+          {JSON.stringify(generateBreadcrumbStructuredData(breadcrumbs), null, 2)}
         </script>
       )}
 

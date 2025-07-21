@@ -78,6 +78,9 @@ The application follows a modern React component architecture with:
 - **Vercel Analytics**: Performance monitoring and user analytics (correctly implemented with @vercel/analytics/next)
 
 ### Recent Changes (Latest)
+- **2025-07-21**: **Breadcrumb Structured Data implemented** - Full Schema.org BreadcrumbList integration for enhanced SEO Rich Snippets
+- **2025-07-21**: Dynamic breadcrumb navigation with collection hierarchy: Home > Shop > Collection > Product
+- **2025-07-21**: ProductDetail pages now generate automatic SEO breadcrumbs with proper positioning and URLs
 - **2025-07-21**: Authentic Shopify data integration - all product content now uses real Shopify descriptions instead of synthetic data
 - **2025-07-21**: Product description bullet points changed to gray style (•) throughout all product benefits and technical details  
 - **2025-07-21**: Real product benefits extracted from Shopify: "Kochvergnügen für die ganze Familie – bis zu 7 Eier gleichzeitig" etc.

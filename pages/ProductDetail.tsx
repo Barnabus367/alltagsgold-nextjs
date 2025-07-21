@@ -253,6 +253,33 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   
   // Parse real Shopify product content
   const optimizedContent = parseShopifyContent();
+
+  // Generate breadcrumbs for SEO structured data
+  const breadcrumbs = [
+    { name: 'Home', url: 'https://www.alltagsgold.ch/', position: 1 },
+    { name: 'Shop', url: 'https://www.alltagsgold.ch/collections', position: 2 }
+  ];
+
+  // Add collection breadcrumb if product has collections
+  if (product.collections.edges.length > 0) {
+    const collection = product.collections.edges[0].node;
+    breadcrumbs.push({
+      name: collection.title,
+      url: `https://www.alltagsgold.ch/collections/${collection.handle}`,
+      position: 3
+    });
+    breadcrumbs.push({
+      name: product.title,
+      url: `https://www.alltagsgold.ch/products/${product.handle}`,
+      position: 4
+    });
+  } else {
+    breadcrumbs.push({
+      name: product.title,
+      url: `https://www.alltagsgold.ch/products/${product.handle}`,
+      position: 3
+    });
+  }
   
   return (
     <div className="min-h-screen bg-white pt-16">
@@ -263,9 +290,10 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
         product={product}
         type="product"
         isProduct={true}
+        breadcrumbs={breadcrumbs}
       />
       
-      {/* Breadcrumb Navigation */}
+      {/* Enhanced Breadcrumb Navigation with Collection */}
       <div className="py-4 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center space-x-2 text-sm text-gray-500">
@@ -276,8 +304,19 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             <Link href="/collections" className="hover:text-black transition-colors">
               Shop
             </Link>
+            {product.collections.edges.length > 0 && (
+              <>
+                <span>/</span>
+                <Link 
+                  href={`/collections/${product.collections.edges[0].node.handle}`}
+                  className="hover:text-black transition-colors"
+                >
+                  {product.collections.edges[0].node.title}
+                </Link>
+              </>
+            )}
             <span>/</span>
-            <span className="text-gray-900">{product.title}</span>
+            <span className="text-gray-900 font-medium">{product.title}</span>
           </nav>
         </div>
       </div>

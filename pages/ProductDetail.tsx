@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Minus, Plus, Heart, ShoppingCart, ChevronDown, ChevronUp } from 'lucide-react';
@@ -8,8 +8,8 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { useProduct } from '@/hooks/useShopify';
 import { useCart } from '@/hooks/useCart';
 import { ShopifyVariant, ShopifyProduct } from '@/types/shopify';
-// Fallback for missing optimized descriptions
-const optimizedDescriptions: Record<string, any> = {};
+// Import optimized descriptions
+import optimizedDescriptions from '../../data/optimized-descriptions.json';
 import { ShopifyError } from '@/components/common/ShopifyError';
 import { SEOHelmet } from '@/components/SEOHelmet';
 import { trackViewContent, trackAddToCart } from '@/lib/analytics';
@@ -122,23 +122,52 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     setQuantity(prev => Math.max(1, prev + delta));
   };
 
-  // Get optimized description from updated JSON structure
-  const optimizedProduct = optimizedDescriptions.products?.find((p: any) => p.handle === product?.handle);
-  
-  // Use structured optimized description data directly
-  const getOptimizedContent = () => {
-    if (!optimizedProduct) return null;
-    
-    return {
-      introText: optimizedProduct.introText || '',
-      bulletPoints: optimizedProduct.bulletPoints || [],
-      sections: optimizedProduct.sections || []
-    };
-  };
+  // Define interfaces for clean type safety
+  interface OptimizedSection {
+    title: string;
+    content: string;
+  }
 
-  const optimizedContent = getOptimizedContent();
-  const hasOptimizedDescription = Boolean(optimizedContent);
-  const hasDescription = product?.description && product.description.trim() !== '';
+  interface OptimizedProduct {
+    handle: string;
+    introText: string;
+    bulletPoints: string[];
+    sections: OptimizedSection[];
+  }
+
+  interface ProductContent {
+    introText: string;
+    bulletPoints: string[];
+    sections: OptimizedSection[];
+  }
+
+  // Safe content retrieval - Server/Client consistent
+  const productContent: ProductContent = useMemo(() => {
+    if (!product) {
+      return { introText: '', bulletPoints: [], sections: [] };
+    }
+
+    // Try to find optimized content first
+    const optimizedProduct = optimizedDescriptions.products?.find(
+      (p: OptimizedProduct) => p.handle === product.handle
+    );
+
+    if (optimizedProduct) {
+      return {
+        introText: optimizedProduct.introText || '',
+        bulletPoints: optimizedProduct.bulletPoints || [],
+        sections: optimizedProduct.sections || []
+      };
+    }
+
+    // Fallback to Shopify description
+    return {
+      introText: product.description || '',
+      bulletPoints: [],
+      sections: []
+    };
+  }, [product]);
+  const hasOptimizedDescription = Boolean(productContent.introText);
 
 
 
@@ -167,15 +196,13 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
 
   const primaryImage = product.images.edges[0]?.node;
   
-  // Use optimized content or fallback to Shopify description parsing
-  const finalContent = optimizedContent ? optimizedContent : 
-    { introText: product.description || '', bulletPoints: [], sections: [] };
+  // Content is now safely retrieved via getProductContent()
   
   return (
     <div className="min-h-screen bg-white pt-16">
       <SEOHelmet 
         title={product.title}
-        description={`${finalContent.introText.slice(0, 155)}... Jetzt bei AlltagsGold bestellen.`}
+        description={`${productContent.introText.slice(0, 155)}... Jetzt bei AlltagsGold bestellen.`}
         ogImage={primaryImage?.url}
         product={product}
         type="product"
@@ -246,10 +273,10 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             </div>
 
             {/* Intro Text */}
-            {finalContent.introText && (
+            {productContent.introText && (
               <div className="space-y-4">
                 <p className="text-gray-700 leading-relaxed">
-                  {finalContent.introText}
+                  {productContent.introText}
                 </p>
               </div>
             )}
@@ -277,11 +304,11 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             )}
 
             {/* Produktvorteile */}
-            {finalContent.bulletPoints && finalContent.bulletPoints.length > 0 && (
+            {productContent.bulletPoints.length > 0 && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900">Produktvorteile</h3>
                 <ul className="space-y-2">
-                  {finalContent.bulletPoints.map((benefit: string, index: number) => (
+                  {productContent.bulletPoints.map((benefit: string, index: number) => (
                     <li key={index} className="flex items-start space-x-2 text-gray-700">
                       <span className="text-green-600 mt-1 text-sm">✓</span>
                       <span className="text-sm leading-relaxed">{benefit}</span>
@@ -306,9 +333,9 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               <CollapsibleContent className="mt-4">
                 <div className="space-y-4 border rounded-lg p-4 bg-gray-50">
                   {/* Structured sections */}
-                  {finalContent.sections && finalContent.sections.length > 0 && (
+                  {productContent.sections.length > 0 && (
                     <div className="space-y-4">
-                      {finalContent.sections.map((section: any, index: number) => (
+                      {productContent.sections.map((section: OptimizedSection, index: number) => (
                         <div key={index} className="space-y-2">
                           <h4 className="font-semibold text-gray-900">{section.title}</h4>
                           <div 
@@ -321,7 +348,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   )}
 
                   {/* Versand- und Service-Informationen */}
-                  <div className={`${finalContent.sections && finalContent.sections.length > 0 ? 'border-t pt-4' : ''}`}>
+                  <div className={`${productContent.sections.length > 0 ? 'border-t pt-4' : ''}`}>
                     <h4 className="font-semibold text-gray-900 mb-3">Versand & Service</h4>
                     <div className="space-y-2 text-sm text-gray-700">
                       <p><span className="font-semibold">Kostenloser Versand</span> ab CHF 50 Bestellwert</p>

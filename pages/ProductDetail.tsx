@@ -39,18 +39,17 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   // Set page title
   usePageTitle(product ? formatPageTitle(product.title) : 'Produkt wird geladen...');
 
-  // Set default variant and check mobile when product loads
+  // Client-side hydration setup
   useEffect(() => {
-    if (product && !selectedVariant) {
-      setSelectedVariant(product.variants.edges[0]?.node || null);
-    }
+    setIsClient(true);
     
-    // Check if mobile
+    // Check if mobile (client-side only)
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -59,6 +58,13 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     window.addEventListener('resize', checkMobile);
     
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Set default variant when product loads
+  useEffect(() => {
+    if (product && !selectedVariant) {
+      setSelectedVariant(product.variants.edges[0]?.node || null);
+    }
   }, [product, selectedVariant]);
 
   // Track ViewContent when product loads

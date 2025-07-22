@@ -187,12 +187,13 @@ export function CollectionDetail({ preloadedCollection }: CollectionDetailProps)
       {/* Swiss Premium Collection Hero */}
       <section className="relative h-[50vh] min-h-[600px] bg-gradient-to-br from-gray-900 to-black overflow-hidden">
         <Image
-      src={""}
-      alt="AlltagsGold Produktbild"
-      width={600}
-      height={400}
-      className="absolute inset-0 w-full h-full object-cover filter saturate-75 brightness-90"
-    />
+          src={categoryImage}
+          alt={`${collection.title} Kollektion`}
+          width={1920}
+          height={1080}
+          className="absolute inset-0 w-full h-full object-cover filter saturate-75 brightness-90"
+          priority
+        />
         <div className={`absolute inset-0 bg-gradient-to-br ${getCollectionOverlay(collection.handle)}`} />
         
         {/* Elegant Centered Content */}

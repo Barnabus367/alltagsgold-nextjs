@@ -107,12 +107,12 @@ export default function Blog() {
                       {post.image && (
                         <div className="aspect-video overflow-hidden">
                           <Image
-      src={""}
-      alt="AlltagsGold Produktbild"
-      width={600}
-      height={400}
-      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-    />
+                            src={post.image.url}
+                            alt={post.image.altText || post.title}
+                            width={800}
+                            height={450}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                          />
                         </div>
                       )}
                       

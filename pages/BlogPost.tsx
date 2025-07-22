@@ -161,12 +161,12 @@ export default function BlogPost() {
           <div className="mb-12">
             <div className="aspect-video overflow-hidden rounded-sm">
               <Image
-      src={""}
-      alt="AlltagsGold Produktbild"
-      width={600}
-      height={400}
-      className="w-full h-full object-cover"
-    />
+                src={post.image.url}
+                alt={post.image.altText || post.title}
+                width={1200}
+                height={675}
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
         )}

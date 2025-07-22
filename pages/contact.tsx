@@ -159,28 +159,34 @@ export function Contact() {
                   <label className="block text-sm font-normal text-black mb-2 tracking-wide">
                     NAME *
                   </label>
+                  {/* Name Input - Mobile-optimiert */}
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 focus:border-black focus:outline-none font-light"
+                    className="w-full px-4 py-4 min-h-[44px] border border-gray-300 focus:border-black focus:outline-none font-light text-base touch-manipulation"
                     placeholder="Ihr vollständiger Name"
+                    inputMode="text"
+                    autoComplete="name"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-normal text-black mb-2 tracking-wide">
                     E-MAIL *
                   </label>
+                  {/* Email Input - Mobile-optimiert */}
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 focus:border-black focus:outline-none font-light"
+                    className="w-full px-4 py-4 min-h-[44px] border border-gray-300 focus:border-black focus:outline-none font-light text-base touch-manipulation"
                     placeholder="ihre.email@beispiel.ch"
+                    inputMode="email"
+                    autoComplete="email"
                   />
                 </div>
               </div>
@@ -189,14 +195,17 @@ export function Contact() {
                 <label className="block text-sm font-normal text-black mb-2 tracking-wide">
                   BETREFF *
                 </label>
+                {/* Subject Input - Mobile-optimiert */}
                 <input
                   type="text"
                   name="subject"
                   value={formData.subject}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 focus:border-black focus:outline-none font-light"
+                  className="w-full px-4 py-4 min-h-[44px] border border-gray-300 focus:border-black focus:outline-none font-light text-base touch-manipulation"
                   placeholder="Worum geht es bei Ihrem Anliegen?"
+                  inputMode="text"
+                  autoComplete="off"
                 />
               </div>
               
@@ -204,14 +213,16 @@ export function Contact() {
                 <label className="block text-sm font-normal text-black mb-2 tracking-wide">
                   NACHRICHT *
                 </label>
+                {/* Message Textarea - Mobile-optimiert */}
                 <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
                   required
                   rows={6}
-                  className="w-full px-4 py-3 border border-gray-300 focus:border-black focus:outline-none font-light resize-vertical"
+                  className="w-full px-4 py-4 min-h-[120px] border border-gray-300 focus:border-black focus:outline-none font-light resize-vertical text-base touch-manipulation"
                   placeholder="Teilen Sie uns mit, wie wir Ihnen helfen können..."
+                  inputMode="text"
                 />
               </div>
               
@@ -245,10 +256,11 @@ export function Contact() {
                 </motion.div>
               )}
               
+              {/* Submit Button - Mobile-optimiert */}
               <Button 
                 type="submit" 
                 disabled={isSubmitting || isSubmitted}
-                className="bg-black hover:bg-gray-800 text-white px-8 py-3 font-normal tracking-wide disabled:opacity-50"
+                className="bg-black hover:bg-gray-800 text-white px-8 py-4 min-h-[48px] font-normal tracking-wide disabled:opacity-50 touch-manipulation"
               >
                 {isSubmitting ? 'WIRD GESENDET...' : isSubmitted ? 'GESENDET ✓' : 'NACHRICHT SENDEN'}
               </Button>

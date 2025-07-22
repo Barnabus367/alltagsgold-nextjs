@@ -5,7 +5,7 @@ import { Trash2, Plus, Minus, ShoppingBag, ExternalLink, Loader2 } from 'lucide-
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/hooks/useCart';
 import { useCheckout } from '@/hooks/useCheckout';
-import { formatPrice } from '@/lib/shopify';
+import { formatPrice, formatSwissPrice, roundToSwissFrancs } from '@/lib/shopify';
 import { getCloudinaryUrl } from '@/lib/cloudinary';
 import { trackViewCart, trackInitiateCheckout } from '@/lib/analytics';
 import { SEOHead } from '../components/seo/SEOHead';
@@ -41,10 +41,27 @@ function Cart() {
   const remainingForFreeShipping = Math.max(0, freeShippingThreshold - currentTotal);
   const hasItem = cartItemCount > 0;
   
-  // Calculate correct total including shipping and VAT
+  // Calculate correct total including shipping and VAT with Swiss rounding
   const shippingCost = remainingForFreeShipping > 0 ? 8.90 : 0;
   const vatAmount = currentTotal * 0.077;
-  const finalTotal = currentTotal + shippingCost + vatAmount;
+  const subtotalWithShipping = currentTotal + shippingCost + vatAmount;
+  const finalTotal = roundToSwissFrancs(subtotalWithShipping);
+  
+  // Fallback für Gesamtsumme wenn finalTotal ungültig ist
+  const displayTotal = finalTotal && !isNaN(finalTotal) ? finalTotal : currentTotal;
+  
+  // Debug logging für Entwicklung
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Cart totals debug:', {
+      currentTotal,
+      shippingCost,
+      vatAmount,
+      subtotalWithShipping,
+      finalTotal,
+      displayTotal,
+      cartSubtotal
+    });
+  }
 
   // Track ViewCart when component loads and cart has items
   useEffect(() => {
@@ -56,12 +73,12 @@ function Cart() {
       }));
 
       trackViewCart({
-        value: currentTotal,
+        value: displayTotal,
         currency: 'CHF',
         contents: cartContents
       });
     }
-  }, [cart, hasItem, currentTotal]);
+  }, [cart, hasItem, displayTotal]);
 
   const handleCheckout = () => {
     if (cart && hasItem) {
@@ -73,7 +90,7 @@ function Cart() {
 
       // Track InitiateCheckout
       trackInitiateCheckout({
-        value: currentTotal,
+        value: displayTotal,
         currency: 'CHF',
         contents: cartContents
       });
@@ -110,21 +127,21 @@ function Cart() {
     <>
       <SEOHead seo={seoData} canonicalUrl="/cart" />
       <div className="min-h-screen bg-white pt-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         {/* Header */}
         <div className="mb-12">
-          <div className="flex items-center justify-between border-b border-gray-200 pb-6">
-            <div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">Warenkorb</h1>
-              <p className="text-gray-600 text-lg">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gray-200 pb-6 gap-4">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">Warenkorb</h1>
+              <p className="text-gray-600 text-base sm:text-lg">
                 {hasItem ? `${cartItemCount} ${cartItemCount === 1 ? 'Artikel' : 'Artikel'} in Ihrem Warenkorb` : 'Entdecken Sie unsere Premium-Kollektion'}
               </p>
             </div>
             {hasItem && (
-              <div className="text-right">
+              <div className="flex-shrink-0 text-left sm:text-right">
                 <p className="text-sm text-gray-500 uppercase tracking-wide">Total</p>
-                <p className="text-3xl font-bold text-gray-900">
-                  {finalTotal ? formatPrice(finalTotal.toFixed(2), 'CHF') : formatPrice(cartTotal, 'CHF')}
+                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 break-words">
+                  {displayTotal ? formatSwissPrice(displayTotal) : formatPrice(cartTotal, 'CHF')}
                 </p>
               </div>
             )}
@@ -253,11 +270,11 @@ function Cart() {
                             )}
                           </div>
 
-                          {/* Remove Button */}
+                          {/* Remove Button - Mobile-optimiert */}
                           <button
                             onClick={() => removeItem(item.id)}
                             disabled={isRemovingFromCart}
-                            className="text-gray-400 hover:text-red-600 transition-colors p-2 hover:bg-red-50 rounded-lg group"
+                            className="text-gray-400 hover:text-red-600 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-red-50 rounded-lg group touch-manipulation"
                             title="Artikel entfernen"
                           >
                             {isRemovingFromCart ? (
@@ -272,15 +289,16 @@ function Cart() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4">
                             <span className="text-sm font-medium text-gray-700">Menge:</span>
+                            {/* Quantity Controls - Mobile-optimiert */}
                             <div className="flex items-center border-2 border-gray-200 rounded-xl bg-white shadow-sm">
                               <button
                                 onClick={() => updateItemQuantity(item.id, Math.max(1, item.quantity - 1))}
                                 disabled={isUpdatingCart || item.quantity <= 1}
-                                className="w-10 h-10 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-l-xl transition-colors"
+                                className="min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-l-xl transition-colors touch-manipulation"
                               >
-                                <Minus className="w-4 h-4" />
+                                <Minus className="w-5 h-5" />
                               </button>
-                              <span className="w-14 text-center text-base font-semibold bg-gray-50">
+                              <span className="w-16 text-center text-base font-semibold bg-gray-50 min-h-[44px] flex items-center justify-center">
                                 {isUpdatingCart ? (
                                   <Loader2 className="w-4 h-4 animate-spin mx-auto" />
                                 ) : (
@@ -290,9 +308,9 @@ function Cart() {
                               <button
                                 onClick={() => updateItemQuantity(item.id, item.quantity + 1)}
                                 disabled={isUpdatingCart}
-                                className="w-10 h-10 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-r-xl transition-colors"
+                                className="min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-r-xl transition-colors touch-manipulation"
                               >
-                                <Plus className="w-4 h-4" />
+                                <Plus className="w-5 h-5" />
                               </button>
                             </div>
                           </div>
@@ -317,101 +335,99 @@ function Cart() {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 sticky top-24 shadow-lg border border-gray-200 overflow-hidden relative">
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-4 sm:p-6 lg:p-8 sticky top-24 shadow-lg border border-gray-200 overflow-hidden relative">
                 <div className="text-center mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Ihre Bestellung</h2>
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Ihre Bestellung</h2>
                   <div className="w-16 h-1 bg-gradient-to-r from-gray-400 to-gray-600 rounded-full mx-auto"></div>
                 </div>
                 
-                <div className="space-y-0 mb-8 relative">
-                  <div className="w-full py-4 border-b border-gray-200">
-                    <div className="grid grid-cols-2 gap-4 items-center">
-                      <span className="text-gray-700 font-medium">Zwischensumme</span>
-                      <span className="font-semibold text-lg text-gray-900 text-right">{formatPrice(cartSubtotal, 'CHF')}</span>
+                <div className="space-y-0 mb-6 sm:mb-8 relative">
+                  <div className="w-full py-3 sm:py-4 border-b border-gray-200">
+                    <div className="flex justify-between items-center gap-2">
+                      <span className="text-gray-700 font-medium text-sm sm:text-base flex-shrink-0">Zwischensumme</span>
+                      <span className="font-semibold text-base sm:text-lg text-gray-900 text-right min-w-0">{formatPrice(cartSubtotal, 'CHF')}</span>
                     </div>
                   </div>
                   
-                  <div className="w-full py-4 border-b border-gray-200">
-                    <div className="grid grid-cols-2 gap-4 items-center">
-                      <span className="text-gray-700 font-medium">Versand</span>
-                      <span className="font-semibold text-lg text-right">
+                  <div className="w-full py-3 sm:py-4 border-b border-gray-200">
+                    <div className="flex justify-between items-center gap-2">
+                      <span className="text-gray-700 font-medium text-sm sm:text-base flex-shrink-0">Versand</span>
+                      <span className="font-semibold text-base sm:text-lg text-right min-w-0">
                         {remainingForFreeShipping > 0 ? (
                           <span className="text-red-600">CHF 8.90</span>
                         ) : (
                           <span className="text-green-600 flex items-center justify-end gap-1">
-                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
-                            Kostenlos
+                            <span className="truncate">Kostenlos</span>
                           </span>
                         )}
                       </span>
                     </div>
                   </div>
                   
-                  <div className="w-full py-4 border-b border-gray-200">
-                    <div className="grid grid-cols-2 gap-4 items-center">
-                      <span className="text-gray-700 font-medium">MwSt (7.7%)</span>
-                      <span className="font-semibold text-lg text-gray-900 text-right">
+                  <div className="w-full py-3 sm:py-4 border-b border-gray-200">
+                    <div className="flex justify-between items-center gap-2">
+                      <span className="text-gray-700 font-medium text-sm sm:text-base flex-shrink-0">MwSt (7.7%)</span>
+                      <span className="font-semibold text-base sm:text-lg text-gray-900 text-right min-w-0">
                         {formatPrice((currentTotal * 0.077).toFixed(2), 'CHF')}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-xl p-6 mb-8 shadow-sm border-2 border-gray-300 overflow-hidden">
+                <div className="bg-white rounded-xl p-4 sm:p-6 mb-6 sm:mb-8 shadow-sm border-2 border-gray-300 overflow-hidden">
                   <div className="w-full">
-                    <div className="flex justify-between items-center">
-                      <span className="text-xl font-bold text-gray-900">Gesamtsumme</span>
-                    </div>
-                    <div className="text-right mt-1">
-                      <span className="text-2xl font-bold text-gray-900 inline-block">
-                        {finalTotal ? formatPrice(finalTotal.toFixed(2), 'CHF') : formatPrice(cartTotal, 'CHF')}
+                    <div className="flex flex-col gap-1 mb-2">
+                      <span className="text-lg sm:text-xl font-bold text-gray-900 text-center">Gesamtsumme</span>
+                      <span className="text-xl sm:text-2xl font-bold text-gray-900 text-center whitespace-nowrap">
+                        {displayTotal ? formatSwissPrice(displayTotal) : formatPrice(cartTotal, 'CHF')}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600 mt-3 text-center">inkl. MwSt und Versandkosten</p>
+                    <p className="text-xs sm:text-sm text-gray-600 text-center mt-2">inkl. MwSt und Versandkosten</p>
                   </div>
                 </div>
 
                 <Button
                   onClick={handleCheckout}
                   disabled={!canCheckout || isRedirecting || !hasItem}
-                  className="w-full bg-gradient-to-r from-gray-900 to-black hover:from-black hover:to-gray-800 text-white py-4 rounded-xl text-lg font-semibold flex items-center justify-center gap-3 shadow-lg transform hover:scale-105 transition-all duration-200"
+                  className="w-full bg-gradient-to-r from-gray-900 to-black hover:from-black hover:to-gray-800 text-white py-3 sm:py-4 rounded-xl text-base sm:text-lg font-semibold flex items-center justify-center gap-2 sm:gap-3 shadow-lg transform hover:scale-105 transition-all duration-200 min-h-[44px]"
                 >
                   {isRedirecting ? (
                     <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      Weiterleitung zur sicheren Kasse...
+                      <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin flex-shrink-0" />
+                      <span className="truncate">Weiterleitung zur sicheren Kasse...</span>
                     </>
                   ) : (
                     <>
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                       </svg>
-                      Jetzt bestellen
+                      <span>Jetzt bestellen</span>
                     </>
                   )}
                 </Button>
 
-                <div className="mt-6 pt-6 border-t border-gray-300">
-                  <div className="grid grid-cols-1 gap-3 text-sm text-gray-600">
+                <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-300">
+                  <div className="grid grid-cols-1 gap-2 sm:gap-3 text-xs sm:text-sm text-gray-600">
                     <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="font-medium">Sichere SSL-Verschlüsselung</span>
+                      <span className="font-medium truncate">Sichere SSL-Verschlüsselung</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="font-medium">30 Tage Geld-zurück-Garantie</span>
+                      <span className="font-medium truncate">30 Tage Geld-zurück-Garantie</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="font-medium">Premium-Versand aus der Schweiz</span>
+                      <span className="font-medium truncate">Premium-Versand aus der Schweiz</span>
                     </div>
                   </div>
                 </div>

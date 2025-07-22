@@ -1,11 +1,14 @@
 import { X, Minus, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
+import { useEffect, useRef, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/hooks/useCart';
+import { useMobileUX } from '@/hooks/useMobileUX';
 import { formatPrice } from '@/lib/shopify';
 import { getCloudinaryUrl } from '@/lib/cloudinary';
+import { FocusManager, announceToScreenReader } from '@/lib/accessibility';
 
 export function CartSidebar() {
   const {
@@ -20,24 +23,80 @@ export function CartSidebar() {
     isRemovingFromCart,
   } = useCart();
 
-  const cartLines = cart?.lines.edges || [];
+  const { capabilities, getTouchClasses } = useMobileUX();
+  const focusManager = useRef(new FocusManager());
+  const cartContentRef = useRef<HTMLDivElement>(null);
+
+  const cartLines = useMemo(() => cart?.lines.edges || [], [cart?.lines.edges]);
+
+  // Accessibility: Focus Management
+  useEffect(() => {
+    if (isCartOpen && cartContentRef.current) {
+      const cleanup = focusManager.current.trapFocus(cartContentRef.current);
+      announceToScreenReader(`Warenkorb geöffnet. ${cartLines.length} Artikel im Warenkorb.`);
+      
+      return cleanup;
+    }
+  }, [isCartOpen, cartLines.length]);
+
+  // Accessibility: Cart Updates Announcements
+  useEffect(() => {
+    if (cartLines.length > 0) {
+      const totalItems = cartLines.reduce((sum, { node }) => sum + node.quantity, 0);
+      announceToScreenReader(`Warenkorb aktualisiert. ${totalItems} Artikel, Gesamtpreis ${formatPrice(cartTotal, 'CHF')}`);
+    }
+  }, [cartLines, cartTotal]);
+
+  const handleQuantityUpdate = async (lineId: string, newQuantity: number, productTitle: string) => {
+    await updateItemQuantity(lineId, newQuantity);
+    announceToScreenReader(`${productTitle} Menge auf ${newQuantity} geändert`);
+    
+    // Haptic Feedback für Mobile
+    if (capabilities.hasVibration) {
+      navigator.vibrate(50);
+    }
+  };
+
+  const handleRemoveItem = async (lineId: string, productTitle: string) => {
+    await removeItem(lineId);
+    announceToScreenReader(`${productTitle} aus dem Warenkorb entfernt`);
+    
+    if (capabilities.hasVibration) {
+      navigator.vibrate(100);
+    }
+  };
 
   const handleCheckout = () => {
     if (cart?.webUrl) {
+      announceToScreenReader('Weiterleitung zur Kasse');
       window.location.href = cart.webUrl;
     }
   };
 
+  // Mobile-optimierte Container-Klassen
+  const containerClasses = `
+    ${getTouchClasses()}
+    ${capabilities.isMobile ? 'w-full max-w-none' : 'w-full sm:max-w-md'}
+    ${capabilities.isMobile ? 'h-full' : ''}
+  `;
+
   return (
     <Sheet open={isCartOpen} onOpenChange={closeCart}>
-      <SheetContent side="right" className="w-full sm:max-w-md">
+      <SheetContent 
+        side="right" 
+        className={containerClasses}
+        aria-label="Warenkorb"
+        ref={cartContentRef}
+      >
         <SheetHeader>
-          <SheetTitle>Warenkorb</SheetTitle>
+          <SheetTitle id="cart-title">
+            Warenkorb ({cartLines.length} {cartLines.length === 1 ? 'Artikel' : 'Artikel'})
+          </SheetTitle>
         </SheetHeader>
         
         <div className="flex flex-col h-full">
           {/* Cart Items */}
-          <div className="flex-1 overflow-y-auto py-6">
+          <div className="flex-1 overflow-y-auto py-6" role="region" aria-labelledby="cart-title">
             {cartLines.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground mb-4">Ihr Warenkorb ist leer</p>
@@ -46,20 +105,28 @@ export function CartSidebar() {
                 </Button>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-4" role="list" aria-label="Artikel im Warenkorb">
                 {cartLines.map(({ node: line }) => (
-                  <div key={line.id} className="flex items-center space-x-4 bg-muted/50 p-4 rounded-lg">
+                  <div 
+                    key={line.id} 
+                    className="flex items-center space-x-4 bg-muted/50 p-4 rounded-lg"
+                    role="listitem"
+                  >
                     {line.merchandise.product.featuredImage?.url && 
                      getCloudinaryUrl(line.merchandise.product.featuredImage.url).includes('res.cloudinary.com') ? (
                       <Image
                         src={getCloudinaryUrl(line.merchandise.product.featuredImage.url)}
-                        alt={line.merchandise.product.title}
+                        alt={`Produktbild: ${line.merchandise.product.title}`}
                         width={150}
                         height={150}
                         className="w-16 h-16 object-cover rounded-lg"
                       />
                     ) : (
-                      <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-500">
+                      <div 
+                        className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-500"
+                        role="img"
+                        aria-label="Produktbild wird geladen"
+                      >
                         Wird optimiert...
                       </div>
                     )}
@@ -77,26 +144,33 @@ export function CartSidebar() {
                         {formatPrice(line.merchandise.price.amount, line.merchandise.price.currencyCode)}
                       </p>
                       
-                      {/* Quantity Controls */}
+                      {/* Mobile-optimierte Quantity Controls */}
                       <div className="flex items-center gap-2 mt-2">
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => updateItemQuantity(line.id, line.quantity - 1)}
+                          onClick={() => handleQuantityUpdate(line.id, line.quantity - 1, line.merchandise.product.title)}
                           disabled={line.quantity <= 1 || isUpdatingCart}
-                          className="h-8 w-8 p-0"
+                          className={`${capabilities.isMobile ? 'min-h-[48px] min-w-[48px]' : 'h-8 w-8'} p-0 touch-target-small`}
+                          aria-label={`Menge von ${line.merchandise.product.title} verringern`}
                         >
-                          <Minus className="h-3 w-3" />
+                          <Minus className="h-3 w-3" aria-hidden="true" />
                         </Button>
-                        <span className="w-8 text-center text-sm">{line.quantity}</span>
+                        <span 
+                          className="w-8 text-center text-sm"
+                          aria-label={`Aktuelle Menge: ${line.quantity}`}
+                        >
+                          {line.quantity}
+                        </span>
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => updateItemQuantity(line.id, line.quantity + 1)}
+                          onClick={() => handleQuantityUpdate(line.id, line.quantity + 1, line.merchandise.product.title)}
                           disabled={isUpdatingCart}
-                          className="h-8 w-8 p-0"
+                          className={`${capabilities.isMobile ? 'min-h-[48px] min-w-[48px]' : 'h-8 w-8'} p-0 touch-target-small`}
+                          aria-label={`Menge von ${line.merchandise.product.title} erhöhen`}
                         >
-                          <Plus className="h-3 w-3" />
+                          <Plus className="h-3 w-3" aria-hidden="true" />
                         </Button>
                       </div>
                     </div>
@@ -109,11 +183,12 @@ export function CartSidebar() {
                       <Button
                         size="sm"
                         variant="ghost"
-                        onClick={() => removeItem(line.id)}
+                        onClick={() => handleRemoveItem(line.id, line.merchandise.product.title)}
                         disabled={isRemovingFromCart}
-                        className="mt-2 h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
+                        className={`${capabilities.isMobile ? 'min-h-[48px] min-w-[48px]' : 'h-8 w-8'} mt-2 p-0 text-muted-foreground hover:text-destructive touch-target-small`}
+                        aria-label={`${line.merchandise.product.title} aus dem Warenkorb entfernen`}
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <Trash2 className="h-4 w-4" aria-hidden="true" />
                       </Button>
                     </div>
                   </div>
@@ -126,35 +201,44 @@ export function CartSidebar() {
           {cartLines.length > 0 && (
             <>
               <Separator />
-              <div className="py-6 space-y-4">
+              <div className="py-6 space-y-4" role="region" aria-label="Bestellzusammenfassung">
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>Zwischensumme:</span>
-                    <span>{formatPrice(cartSubtotal, 'EUR')}</span>
+                    <span aria-label={`Zwischensumme ${formatPrice(cartSubtotal, 'CHF')}`}>
+                      {formatPrice(cartSubtotal, 'CHF')}
+                    </span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Versand:</span>
-                    <span>Kostenlos</span>
+                    <span aria-label="Versand kostenlos">Kostenlos</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between font-semibold">
                     <span>Gesamt:</span>
-                    <span>{formatPrice(cartTotal, 'EUR')}</span>
+                    <span aria-label={`Gesamtpreis ${formatPrice(cartTotal, 'CHF')}`}>
+                      {formatPrice(cartTotal, 'CHF')}
+                    </span>
                   </div>
                 </div>
                 
                 <Button 
                   onClick={handleCheckout}
-                  className="w-full bg-accent hover:bg-accent/90"
-                  size="lg"
+                  className={`w-full bg-accent hover:bg-accent/90 ${capabilities.isMobile ? 'min-h-[48px] text-lg' : ''}`}
+                  size={capabilities.isMobile ? "lg" : "default"}
+                  aria-describedby="checkout-total"
                 >
-                  Zur Kasse ({formatPrice(cartTotal, 'EUR')})
+                  <span id="checkout-total" className="sr-only">
+                    Zur Kasse gehen. Gesamtpreis: {formatPrice(cartTotal, 'CHF')}
+                  </span>
+                  Zur Kasse ({formatPrice(cartTotal, 'CHF')})
                 </Button>
                 
                 <Button 
                   variant="outline" 
                   onClick={closeCart}
-                  className="w-full"
+                  className={`w-full ${capabilities.isMobile ? 'min-h-[48px]' : ''}`}
+                  size={capabilities.isMobile ? "lg" : "default"}
                 >
                   Weiter einkaufen
                 </Button>

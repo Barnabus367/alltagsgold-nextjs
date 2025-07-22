@@ -564,21 +564,22 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   </button>
                 </div>
                 
+                {/* Wishlist Button - Mobile-optimiert */}
                 <Button
                   onClick={() => setIsWishlisted(!isWishlisted)}
                   variant="outline"
-                  size="icon"
-                  className="h-10 w-10"
+                  className="min-h-[44px] min-w-[44px] p-3 touch-manipulation"
                   aria-label={isWishlisted ? 'Von Wunschliste entfernen' : 'Zur Wunschliste hinzufügen'}
                 >
-                  <Heart className={`h-4 w-4 ${isWishlisted ? 'fill-current text-red-500' : ''}`} />
+                  <Heart className={`h-5 w-5 ${isWishlisted ? 'fill-current text-red-500' : ''}`} />
                 </Button>
               </div>
 
+              {/* Add to Cart Button - Mobile-optimiert */}
               <Button 
                 onClick={handleAddToCart}
                 disabled={!selectedVariant?.availableForSale || isAddingToCart}
-                className="w-full h-12 text-base font-semibold bg-black hover:bg-gray-900 text-white border border-black hover:border-gray-900 transition-all duration-200 shadow-sm hover:shadow-md"
+                className="w-full min-h-[48px] text-base font-semibold bg-black hover:bg-gray-900 text-white border border-black hover:border-gray-900 transition-all duration-200 shadow-sm hover:shadow-md touch-manipulation"
                 style={{
                   boxShadow: '0 0 0 1px rgba(200, 160, 100, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1)'
                 }}

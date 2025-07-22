@@ -78,7 +78,7 @@ export function Collections({ preloadedCollections }: CollectionsProps) {
       <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-6">
           {collectionsLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {[...Array(9)].map((_, i) => (
                 <div key={i} className="space-y-4">
                   <div className="h-48 bg-gray-200 animate-pulse rounded-lg"></div>

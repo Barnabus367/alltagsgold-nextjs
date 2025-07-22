@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Accessibility Styles */
+@import './accessibility.css';
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -196,6 +199,7 @@
   }
 }
 
+/* Mobile-First Touch Optimizations */
 @media (max-width: 768px) {
   .swiss-hero-headline {
     font-size: clamp(2rem, 8vw, 2.8rem);
@@ -210,5 +214,29 @@
   .swiss-ghost-button {
     padding: 0.875rem 2rem;
     font-size: 1rem;
+  }
+
+  /* Touch Target Optimizations */
+  button, 
+  [role="button"], 
+  a {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Input Optimizations */
+  input, 
+  textarea, 
+  select {
+    font-size: 16px; /* Prevent zoom on iOS */
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Improved scrolling on mobile */
+  * {
+    -webkit-overflow-scrolling: touch;
   }
 }

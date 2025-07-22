@@ -689,6 +689,21 @@ export function formatPrice(amount: string, currencyCode: string = 'CHF'): strin
   }).format(price);
 }
 
+// Schweizer 5-Rappen-Rundung für Gesamtsummen
+export function roundToSwissFrancs(amount: number): number {
+  // Auf nächste 5 Rappen runden (0.05 CHF)
+  return Math.round(amount * 20) / 20;
+}
+
+// Formatierung mit Schweizer Rundung
+export function formatSwissPrice(amount: number, currencyCode: string = 'CHF'): string {
+  const roundedAmount = roundToSwissFrancs(amount);
+  return new Intl.NumberFormat('de-CH', {
+    style: 'currency',
+    currency: currencyCode,
+  }).format(roundedAmount);
+}
+
 // Blog API Functions
 export async function getBlogPosts(first: number = 50): Promise<ShopifyBlogPost[]> {
   const query = `

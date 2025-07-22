@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Heart, Plus } from 'lucide-react';
@@ -7,6 +7,8 @@ import { formatPrice } from '@/lib/shopify';
 import { useCart } from '@/hooks/useCart';
 import { trackAddToCart } from '@/lib/analytics';
 import { PremiumImage } from '@/components/common/PremiumImage';
+import { announceToScreenReader } from '@/lib/accessibility';
+import { useMobileUX } from '@/hooks/useMobileUX';
 
 
 interface ProductCardProps {
@@ -15,7 +17,10 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [showQuickPreview, setShowQuickPreview] = useState(false);
   const { addItemToCart, isAddingToCart } = useCart();
+  const { capabilities, getTouchClasses, validateTouchTarget } = useMobileUX();
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const primaryImage = product.images.edges[0]?.node;
   const primaryVariant = product.variants.edges[0]?.node;
@@ -37,6 +42,9 @@ export function ProductCard({ product }: ProductCardProps) {
         handle: product.handle
       };
       
+      // Announce to screen readers
+      announceToScreenReader(`${product.title} wird zum Warenkorb hinzugefügt`);
+      
       // Track AddToCart event
       trackAddToCart({
         content_id: product.id,
@@ -52,41 +60,64 @@ export function ProductCard({ product }: ProductCardProps) {
       });
       
       await addItemToCart(primaryVariant.id, 1, productData);
+      announceToScreenReader(`${product.title} wurde zum Warenkorb hinzugefügt`);
     } catch (error) {
       console.error('Error adding to cart:', error);
+      announceToScreenReader('Fehler beim Hinzufügen zum Warenkorb');
     }
   };
 
   const toggleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsWishlisted(!isWishlisted);
+    const newState = !isWishlisted;
+    setIsWishlisted(newState);
+    
+    const message = newState 
+      ? `${product.title} zur Wunschliste hinzugefügt`
+      : `${product.title} von Wunschliste entfernt`;
+    announceToScreenReader(message);
   };
 
   return (
-    <Link href={`/products/${product.handle}`}>
-      <div className="product-card group cursor-pointer bg-white rounded-lg border border-gray-100 p-4 transition-all duration-300 hover:shadow-lg hover:shadow-gray-200/50 md:hover:scale-[1.025] hover:border-gray-200">
+    <article 
+      ref={cardRef}
+      className={`product-card group bg-white rounded-lg border border-gray-100 transition-all duration-300 hover:shadow-lg hover:shadow-gray-200/50 hover:border-gray-200 ${getTouchClasses()}`}
+      role="group"
+      aria-labelledby={`product-title-${product.id}`}
+      aria-describedby={`product-price-${product.id}`}
+    >
+      <Link 
+        href={`/products/${product.handle}`}
+        className="block p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
+        aria-label={`${product.title} - Produktdetails anzeigen`}
+      >
         {/* Produktbild mit Cloudinary-Optimierung */}
-        <div className="relative aspect-square overflow-hidden bg-white mb-4">
+        <div className="relative aspect-square overflow-hidden bg-white mb-4 rounded-md">
           <PremiumImage
             src={primaryImage?.url || 'https://via.placeholder.com/400x400?text=No+Image'}
             alt={primaryImage?.altText || product.title}
-            className="product-image w-full h-full"
+            className="product-image w-full h-full object-cover"
             productTitle={product.title}
           />
           
-          {/* Wishlist Button */}
+          {/* Wishlist Button - Mobile-optimiert */}
           <Button
             size="sm"
             variant="ghost"
-            className="absolute top-3 right-3 bg-white/90 hover:bg-white p-2 h-auto rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-sm"
+            className={`absolute top-2 right-2 bg-white/90 hover:bg-white rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-sm focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              capabilities.supportsTouch 
+                ? 'min-h-[44px] min-w-[44px] p-3 touch-manipulation' 
+                : 'h-8 w-8 p-1'
+            }`}
             onClick={toggleWishlist}
-            aria-label={isWishlisted ? 'Von Wunschliste entfernen' : 'Zur Wunschliste hinzufügen'}
+            aria-label={isWishlisted ? `${product.title} von Wunschliste entfernen` : `${product.title} zur Wunschliste hinzufügen`}
+            type="button"
           >
             <Heart 
-              className={`h-4 w-4 transition-colors ${
+              className={`transition-colors ${
                 isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-600 hover:text-red-500'
-              }`} 
+              } ${capabilities.supportsTouch ? 'h-5 w-5' : 'h-4 w-4'}`} 
             />
           </Button>
         </div>
@@ -94,28 +125,65 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Produktinfos */}
         <div className="space-y-3">
           {/* Produktname - maximal 2 Zeilen */}
-          <h3 className="font-medium text-gray-900 text-sm leading-tight line-clamp-2 min-h-[2.5rem]">
+          <h3 
+            id={`product-title-${product.id}`}
+            className="font-medium text-gray-900 text-sm leading-tight line-clamp-2 min-h-[2.5rem]"
+          >
             {product.title}
           </h3>
           
           {/* Preis groß und deutlich */}
           <div className="mb-3">
-            <span className="text-xl font-bold text-gray-900">
+            <span 
+              id={`product-price-${product.id}`}
+              className="text-xl font-bold text-gray-900"
+              aria-label={`Preis: ${price}`}
+            >
               {price}
             </span>
           </div>
           
-          {/* CTA-Button in Schwarz */}
-          <Button
-            onClick={handleAddToCart}
-            disabled={!primaryVariant?.availableForSale || isAddingToCart}
-            className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 shadow-sm hover:shadow-md"
-            aria-label={`${product.title} in den Warenkorb legen`}
-          >
-            {isAddingToCart ? 'Wird hinzugefügt...' : 'In den Warenkorb'}
-          </Button>
+          {/* Verfügbarkeitsstatus */}
+          {!primaryVariant?.availableForSale && (
+            <div className="text-sm text-red-600 font-medium" role="status">
+              Nicht verfügbar
+            </div>
+          )}
         </div>
+      </Link>
+      
+      {/* CTA-Button außerhalb des Links - Mobile-optimiert */}
+      <div className="px-4 pb-4">
+        <Button
+          onClick={handleAddToCart}
+          disabled={!primaryVariant?.availableForSale || isAddingToCart}
+          className={`w-full bg-black hover:bg-gray-800 text-white font-semibold rounded-lg transition-all duration-300 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${
+            capabilities.supportsTouch 
+              ? 'py-3 px-4 min-h-[44px] touch-manipulation text-base' 
+              : 'py-2 px-3 min-h-[36px] text-sm'
+          }`}
+          aria-label={`${product.title} in den Warenkorb legen${!primaryVariant?.availableForSale ? ' - nicht verfügbar' : ''}`}
+          aria-describedby={`product-title-${product.id} product-price-${product.id}`}
+          type="button"
+        >
+          {isAddingToCart ? (
+            <>
+              <span className="sr-only">Wird hinzugefügt...</span>
+              <div className="flex items-center justify-center">
+                <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                Wird hinzugefügt...
+              </div>
+            </>
+          ) : (
+            'In den Warenkorb'
+          )}
+        </Button>
       </div>
-    </Link>
+      
+      {/* Status-Region für Screen Reader */}
+      <div aria-live="polite" aria-atomic="true" className="sr-only">
+        {isAddingToCart && `${product.title} wird zum Warenkorb hinzugefügt`}
+      </div>
+    </article>
   );
 }

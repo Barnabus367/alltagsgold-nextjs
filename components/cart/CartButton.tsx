@@ -15,11 +15,11 @@ export function CartButton({ textClasses = "text-white hover:text-gray-300" }: C
     <Button 
       asChild
       variant="ghost"
-      className={`relative p-0 transition-colors ${textClasses}`}
+      className={`relative min-h-[44px] min-w-[44px] p-3 transition-colors touch-manipulation ${textClasses}`}
     >
       <Link href="/cart">
         <div className="flex items-center gap-1">
-          <ShoppingCart className="h-4 w-4" />
+          <ShoppingCart className="h-5 w-5" />
           <span className="text-sm font-normal tracking-wide">
             {cartItemCount}
           </span>

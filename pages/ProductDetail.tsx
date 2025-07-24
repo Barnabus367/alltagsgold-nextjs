@@ -26,9 +26,12 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   const router = useRouter();
   const { handle } = router.query as { handle: string };
   
+  // Hydration state management
+  const [isHydrated, setIsHydrated] = useState(false);
+  
   // Use preloaded data or fall back to client-side fetching
   const { data: clientProduct, isLoading, error } = useProduct(handle!, {
-    enabled: !preloadedProduct && !!handle,
+    enabled: !preloadedProduct && !!handle && isHydrated,
     initialData: preloadedProduct || undefined,
   });
   
@@ -41,6 +44,11 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Hydration fix
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   // Navigation Handler für saubere Product-Page-Navigation
   useProductNavigationCleanup();
@@ -300,6 +308,18 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     
     return { introText, benefits, sections };
   };
+
+  // Prevent hydration mismatch by waiting for client-side hydration
+  if (!isHydrated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
+          <p className="text-gray-600 font-light">Wird geladen...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (

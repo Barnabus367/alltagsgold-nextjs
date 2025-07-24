@@ -11,6 +11,7 @@ import {
   generateProductStructuredData, 
   generateBreadcrumbStructuredData 
 } from '../../lib/structured-data';
+import { SSRSafe } from '../../hooks/useHydrationSafe';
 
 interface ProductDetailPageProps {
   product: ShopifyProduct | null;
@@ -33,7 +34,7 @@ export default function ProductDetailPage({ product, handle }: ProductDetailPage
         referrer: document.referrer
       });
     }
-  }, [handle, product?.title, router.isReady]);
+  }, [handle, product, router.isReady]);
 
   // If the page is not yet generated, this will be displayed
   // until getStaticProps() finishes running
@@ -69,9 +70,11 @@ export default function ProductDetailPage({ product, handle }: ProductDetailPage
         includeOrganization={false} // Nicht bei Produkten, da wir Product Schema haben
       />
       <Layout key={handle} onSearch={setSearchQuery}>
-        <div data-page-type="product" data-handle={handle} data-source={product ? 'ssg' : 'client'}>
-          <ProductDetail preloadedProduct={product} />
-        </div>
+        <SSRSafe>
+          <div data-page-type="product" data-handle={handle} data-source={product ? 'ssg' : 'client'}>
+            <ProductDetail preloadedProduct={product} />
+          </div>
+        </SSRSafe>
       </Layout>
     </>
   );

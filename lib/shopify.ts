@@ -261,7 +261,7 @@ export async function getProductByHandle(handle: string): Promise<ShopifyProduct
 export async function getCollections(first: number = 10): Promise<ShopifyCollection[]> {
   const query = `
     query getCollections($first: Int!) {
-      collections(first: $first) {
+      collections(first: $first, sortKey: TITLE) {
         edges {
           node {
             id

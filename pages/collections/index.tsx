@@ -29,8 +29,8 @@ export default function CollectionsPage({ collections }: CollectionsPageProps) {
 
 export const getStaticProps: GetStaticProps<CollectionsPageProps> = async () => {
   try {
-    // Lade ALLE Kollektionen (erhöhtes Limit für vollständige Anzeige)
-    const collections = await getCollections(100);
+    // Lade ALLE 15 Kollektionen
+    const collections = await getCollections(20);
 
     return {
       props: {

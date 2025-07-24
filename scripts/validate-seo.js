@@ -27,8 +27,8 @@ function getAllPageFiles(dir = PAGES_DIR, allFiles = []) {
       // Rekursiv durch Unterverzeichnisse
       getAllPageFiles(fullPath, allFiles);
     } else if (file.endsWith('.tsx') || file.endsWith('.ts')) {
-      // Nur Page-Dateien, keine Komponenten
-      if (!file.startsWith('_') && !file.includes('.test.') && !file.includes('.spec.')) {
+      // Nur Page-Dateien, keine Komponenten und keine API routes
+      if (!file.startsWith('_') && !file.includes('.test.') && !file.includes('.spec.') && !fullPath.includes('/api/')) {
         allFiles.push(fullPath);
       }
     }
@@ -47,9 +47,9 @@ function validatePageFile(filePath) {
   const issues = [];
   const warnings = [];
   
-  // Prüfe auf SEOHead Import
-  if (!content.includes('SEOHead') && !content.includes('SEOHelmet')) {
-    issues.push('Missing SEOHead or SEOHelmet import');
+  // Prüfe auf SEOHead Import (unterstützt alle SEO-Komponenten)
+  if (!content.includes('SEOHead') && !content.includes('SEOHelmet') && !content.includes('NextSEOHead')) {
+    issues.push('Missing SEOHead, SEOHelmet, or NextSEOHead import');
   }
   
   // Prüfe auf generateSEO Import
@@ -59,13 +59,13 @@ function validatePageFile(filePath) {
     warnings.push('No SEO generation function imported');
   }
   
-  // Prüfe auf SEOHead Component Usage
-  if (!content.includes('<SEOHead') && !content.includes('<SEOHelmet')) {
-    issues.push('SEOHead component not used in JSX');
+  // Prüfe auf SEOHead Component Usage (unterstützt alle SEO-Komponenten)
+  if (!content.includes('<SEOHead') && !content.includes('<SEOHelmet') && !content.includes('<NextSEOHead')) {
+    issues.push('SEO component not used in JSX');
   }
   
   // Prüfe auf canonical URL
-  if (content.includes('<SEOHead') && !content.includes('canonicalUrl')) {
+  if ((content.includes('<SEOHead') || content.includes('<NextSEOHead')) && !content.includes('canonicalUrl')) {
     warnings.push('No canonical URL specified');
   }
   

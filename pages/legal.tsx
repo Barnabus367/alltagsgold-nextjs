@@ -1,6 +1,13 @@
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
+import { generateStaticPageSEO } from '@/lib/seo';
+
 export default function Legal() {
   return (
     <div className="min-h-screen bg-white pt-16">
+      <NextSEOHead 
+        seo={generateStaticPageSEO('impressum')}
+        canonicalUrl="/legal"
+      />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <h1 className="text-4xl font-light text-black mb-8">Impressum</h1>
         

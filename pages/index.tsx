@@ -2,7 +2,7 @@ import { GetStaticProps } from 'next';
 import { useState } from 'react';
 import { Home } from './Home';
 import { Layout } from '../components/layout/Layout';
-import { SEOHead } from '../components/seo/SEOHead';
+import { NextSEOHead } from '../components/seo/NextSEOHead';
 import { ShopifyProduct, ShopifyCollection } from '../types/shopify';
 import { getProducts, getCollections } from '../lib/shopify';
 import { generateStaticPageSEO } from '../lib/seo';
@@ -20,7 +20,12 @@ export default function HomePage({ featuredProducts, collections }: HomePageProp
 
   return (
     <>
-      <SEOHead seo={seoData} canonicalUrl="/" />
+      <NextSEOHead 
+        seo={seoData} 
+        canonicalUrl="/" 
+        includeOrganization={true}
+        includeWebSite={true}
+      />
       <Layout onSearch={setSearchQuery}>
         <Home searchQuery={searchQuery} preloadedProducts={featuredProducts} preloadedCollections={collections} />
       </Layout>

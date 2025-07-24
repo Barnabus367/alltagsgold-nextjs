@@ -2,11 +2,12 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
 import { CollectionDetail } from '../CollectionDetail';
 import { Layout } from '../../components/layout/Layout';
-import { SEOHead } from '../../components/seo/SEOHead';
+import { NextSEOHead } from '../../components/seo/NextSEOHead';
 import { useState, useEffect } from 'react';
 import { ShopifyCollection } from '../../types/shopify';
 import { getAllCollectionHandles, getCollectionByHandle } from '../../lib/shopify';
 import { generateCollectionSEO } from '../../lib/seo';
+import { generateBreadcrumbStructuredData } from '../../lib/structured-data';
 
 interface CollectionDetailPageProps {
   collection: ShopifyCollection | null;
@@ -32,10 +33,27 @@ export default function CollectionDetailPage({ collection, handle }: CollectionD
 
   // Generate SEO metadata
   const seoData = generateCollectionSEO(collection);
+  
+  // Generate Breadcrumb Schema für Collection
+  const structuredData = [];
+  
+  if (collection) {
+    const breadcrumbs = [
+      { name: 'Home', url: '/' },
+      { name: 'Kategorien', url: '/collections' },
+      { name: collection.title, url: `/collections/${handle}` }
+    ];
+    structuredData.push(generateBreadcrumbStructuredData(breadcrumbs));
+  }
 
   return (
     <>
-      <SEOHead seo={seoData} canonicalUrl={`/collections/${handle}`} />
+      <NextSEOHead 
+        seo={seoData} 
+        canonicalUrl={`/collections/${handle}`}
+        structuredData={structuredData}
+        includeOrganization={true}
+      />
       <Layout key={handle} onSearch={setSearchQuery}>
         <CollectionDetail preloadedCollection={collection} />
       </Layout>

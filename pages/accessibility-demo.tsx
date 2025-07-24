@@ -18,6 +18,8 @@ import {
 } from '@/components/ui/accessible-forms';
 import { announceToScreenReader } from '@/lib/accessibility';
 import { useMobileUX } from '@/hooks/useMobileUX';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
+import { generateStaticPageSEO } from '@/lib/seo';
 
 export default function AccessibilityDemo() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -46,6 +48,10 @@ export default function AccessibilityDemo() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <NextSEOHead 
+        seo={generateStaticPageSEO('accessibility-demo')}
+        canonicalUrl="/accessibility-demo"
+      />
       {/* Skip Links - nur mit Keyboard Navigation sichtbar */}
       <nav className="skip-links">
         <a href="#main-content" className="skip-link">

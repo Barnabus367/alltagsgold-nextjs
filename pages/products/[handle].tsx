@@ -2,11 +2,15 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
 import { ProductDetail } from '../ProductDetail';
 import { Layout } from '../../components/layout/Layout';
-import { SEOHead } from '../../components/seo/SEOHead';
+import { NextSEOHead } from '../../components/seo/NextSEOHead';
 import { useState } from 'react';
 import { ShopifyProduct } from '../../types/shopify';
 import { getAllProductHandles, getProductByHandle } from '../../lib/shopify';
 import { generateProductSEO } from '../../lib/seo';
+import { 
+  generateProductStructuredData, 
+  generateBreadcrumbStructuredData 
+} from '../../lib/structured-data';
 
 interface ProductDetailPageProps {
   product: ShopifyProduct | null;
@@ -25,10 +29,31 @@ export default function ProductDetailPage({ product, handle }: ProductDetailPage
 
   // Generate SEO metadata
   const seoData = generateProductSEO(product);
+  
+  // Generate Rich Snippets für Produkt
+  const structuredData = [];
+  
+  if (product) {
+    // Product Schema
+    structuredData.push(generateProductStructuredData(product));
+    
+    // Breadcrumb Schema
+    const breadcrumbs = [
+      { name: 'Home', url: '/' },
+      { name: 'Produkte', url: '/products' },
+      { name: product.title, url: `/products/${handle}` }
+    ];
+    structuredData.push(generateBreadcrumbStructuredData(breadcrumbs));
+  }
 
   return (
     <>
-      <SEOHead seo={seoData} canonicalUrl={`/products/${handle}`} />
+      <NextSEOHead 
+        seo={seoData} 
+        canonicalUrl={`/products/${handle}`}
+        structuredData={structuredData}
+        includeOrganization={false} // Nicht bei Produkten, da wir Product Schema haben
+      />
       <Layout key={handle} onSearch={setSearchQuery}>
         <ProductDetail preloadedProduct={product} />
       </Layout>

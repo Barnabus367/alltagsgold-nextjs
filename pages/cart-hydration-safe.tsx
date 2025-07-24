@@ -77,7 +77,8 @@ function Cart() {
       'cart', 
       'Warenkorb', 
       'Ihr Warenkorb bei alltagsgold. Überprüfen Sie Ihre Artikel und schließen Sie Ihre Bestellung sicher ab.'
-    )
+    ),
+    canonicalUrl: '/cart'
   };
 
   // Sichere Hydration

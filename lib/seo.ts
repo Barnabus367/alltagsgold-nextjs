@@ -204,7 +204,7 @@ export function generateCollectionSEO(collection: any): SEOMetadata {
 export function generateStaticPageSEO(pageType: string, customTitle?: string, customDescription?: string): SEOMetadata {
   const staticPageData: Record<string, { pageName: string; description: string; suffix?: string }> = {
     home: {
-      pageName: "Haushaltsware günstig kaufen Schweiz ✓ Gratis Versand ✓ Top Bewertungen",
+      pageName: "AlltagsGold | Haushaltsware Schweiz ✓ Gratis Versand ✓ Top Bewertungen",
       description: "Haushaltsware & Küchenhelfer günstig kaufen ✓ Schweizer Online Shop ✓ Gratis Versand ab CHF 50 ✓ 4.8★ Bewertungen ✓ 30 Tage Rückgabe ✓ Sofort lieferbar"
     },
     contact: {
@@ -234,6 +234,14 @@ export function generateStaticPageSEO(pageType: string, customTitle?: string, cu
     collections: {
       pageName: "Haushaltsware Kategorien Schweiz ✓ Große Auswahl ✓ Top Preise", 
       description: "Haushaltsware Kategorien ✓ Küchenhelfer ✓ Reinigung ✓ Beleuchtung ✓ Schweizer Shop ✓ Günstige Preise ✓ Gratis Versand"
+    },
+    'accessibility-demo': {
+      pageName: "Barrierefreiheit Demo ✓ Bessere Zugänglichkeit ✓ Mobile UX",
+      description: "Demo der neuen Barrierefreiheit und Mobile UX Features ✓ Verbesserte Zugänglichkeit ✓ Moderne Benutzerfreundlichkeit ✓ AlltagsGold"
+    },
+    cart: {
+      pageName: "Warenkorb ✓ Sichere Bestellung ✓ Haushaltsware Schweiz",
+      description: "Ihr Warenkorb bei AlltagsGold ✓ Sichere Bestellung ✓ Gratis Versand ab CHF 50 ✓ 30 Tage Rückgabe ✓ Schweizer Shop"
     }
   };
 

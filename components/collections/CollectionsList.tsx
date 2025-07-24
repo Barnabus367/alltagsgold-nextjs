@@ -93,7 +93,13 @@ export function Collections({ preloadedCollections }: CollectionsProps) {
               {collections.length > 0 && (() => {
                 // KONFIGURATION: Technik & Gadgets als erste und prominente Kollektion
                 const featuredCollectionHandle = 'technik-gadgets';
-                const featuredCollection = collections.find((c: any) => c.handle === featuredCollectionHandle) || collections[0];
+                const featuredCollection = collections.find((c: any) => c.handle === featuredCollectionHandle);
+                
+                // Fallback nur wenn Technik & Gadgets nicht gefunden wird
+                if (!featuredCollection) {
+                  console.warn('Technik & Gadgets Kollektion nicht gefunden!');
+                  return null;
+                }
                 
                 return (
                   <div className="mb-20">
@@ -113,14 +119,14 @@ export function Collections({ preloadedCollections }: CollectionsProps) {
                 );
               })()}
 
-              {/* Regular Collections Grid - ALLE Collections anzeigen (ohne die bereits gefeatured) */}
+              {/* Regular Collections Grid - ALLE Collections anzeigen (ohne die Featured) */}
               <div className="mb-12">
                 <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-8 text-center">
                   Alle Sortimente
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {collections
-                    .filter((collection: any) => collection.handle !== 'technik-gadgets') // Filtere die Featured Collection aus
+                    .filter((collection: any) => collection.handle !== 'technik-gadgets') // Technik & Gadgets ausschließen
                     .map((collection: any) => (
                       <CategoryCard 
                         key={collection.id} 

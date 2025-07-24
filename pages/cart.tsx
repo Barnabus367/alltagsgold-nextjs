@@ -334,7 +334,7 @@ function Cart() {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-4 sm:p-6 lg:p-8 sticky top-24 shadow-lg border border-gray-200 overflow-hidden relative">
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-4 sm:p-6 lg:p-8 sticky top-24 shadow-lg border border-gray-200 overflow-hidden">
                 <div className="text-center mb-6">
                   <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Ihre Bestellung</h2>
                   <div className="w-16 h-1 bg-gradient-to-r from-gray-400 to-gray-600 rounded-full mx-auto"></div>

@@ -29,7 +29,16 @@ function getCollectionHeadline(title: string, handle: string): string {
     'aufbewahrung-organisation': 'Ordnung trifft Design',
     'selfcare-beauty': 'Zeit für pure Entspannung',
     'dekoration': 'Ihr Zuhause, Ihr Stil',
-    'beleuchtung': 'Licht mit Charakter'
+    'beleuchtung': 'Licht mit Charakter',
+    
+    // Neue Kollektionen Headlines
+    'haustierbedarf-alles-fuer-dein-haustier': 'Für Ihre geliebten Vierbeiner',
+    'kueche': 'Küchenträume werden wahr',
+    'wellness-entspannung': 'Ihre persönliche Wellness-Oase',
+    'auto-zubehoer': 'Fahren mit Stil und Komfort',
+    'led-produkte': 'Licht der Zukunft',
+    'badezimmeraccessoires-und-textilien': 'Badezimmer-Luxus für jeden Tag',
+    'beleuchtung-lampen': 'Lichtkunst für Ihr Zuhause'
   };
   
   return headlines[handle] || `${title} - Premium Lifestyle`;
@@ -46,7 +55,16 @@ function getCollectionSubheadline(title: string, handle: string): string {
     'aufbewahrung-organisation': 'Intelligente Systeme für mehr Ordnung',
     'selfcare-beauty': 'Wellness und Pflege für zu Hause',
     'dekoration': 'Stilvolle Akzente für Ihr Ambiente',
-    'beleuchtung': 'Atmosphäre durch durchdachte Beleuchtung'
+    'beleuchtung': 'Atmosphäre durch durchdachte Beleuchtung',
+    
+    // Neue Kollektionen
+    'haustierbedarf-alles-fuer-dein-haustier': 'Alles für das Wohlbefinden Ihrer Lieblinge',
+    'kueche': 'Kulinarische Perfektion für Ihre Küche',
+    'wellness-entspannung': 'Entspannung und Erholung für Körper & Geist',
+    'auto-zubehoer': 'Premium Zubehör für Ihr Fahrzeug',
+    'led-produkte': 'Energieeffiziente LED-Technologie',
+    'badezimmeraccessoires-und-textilien': 'Komfort und Stil für Ihr Badezimmer',
+    'beleuchtung-lampen': 'Lichtdesign für jeden Raum'
   };
   
   return subheadlines[handle] || 'Entdecken Sie unsere kuratierte Auswahl';
@@ -64,7 +82,16 @@ function getCollectionOverlay(handle: string): string {
     'aufbewahrung-organisation': 'from-gray-900/50 via-zinc-800/40 to-yellow-900/25',
     'selfcare-beauty': 'from-stone-900/50 via-gray-800/40 to-amber-900/25',
     'dekoration': 'from-gray-900/50 via-slate-800/40 to-yellow-900/25',
-    'beleuchtung': 'from-zinc-900/50 via-gray-800/40 to-amber-900/25'
+    'beleuchtung': 'from-zinc-900/50 via-gray-800/40 to-amber-900/25',
+    
+    // Neue Kollektionen Overlays
+    'haustierbedarf-alles-fuer-dein-haustier': 'from-emerald-900/50 via-gray-800/40 to-amber-900/25',
+    'kueche': 'from-red-900/50 via-gray-800/40 to-yellow-900/25',
+    'wellness-entspannung': 'from-purple-900/50 via-gray-800/40 to-amber-900/25',
+    'auto-zubehoer': 'from-blue-900/50 via-gray-800/40 to-yellow-900/25',
+    'led-produkte': 'from-cyan-900/50 via-gray-800/40 to-amber-900/25',
+    'badezimmeraccessoires-und-textilien': 'from-teal-900/50 via-gray-800/40 to-yellow-900/25',
+    'beleuchtung-lampen': 'from-orange-900/50 via-gray-800/40 to-amber-900/25'
   };
   
   return overlays[handle] || 'from-gray-900/50 via-gray-800/40 to-yellow-900/25';
@@ -206,24 +233,26 @@ export function CollectionDetail({ preloadedCollection }: CollectionDetailProps)
             </h1>
             
             {/* Refined Subline */}
-            <p className="swiss-hero-subline text-gray-100 mb-16">
+            <p className="swiss-hero-subline text-gray-100 mb-12">
               {getCollectionSubheadline(collection.title, collection.handle)}
             </p>
             
-            {/* Ghost Button mit Goldrand */}
-            <button 
-              onClick={() => {
-                const productsSection = document.querySelector('#products-section');
-                productsSection?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="swiss-ghost-button"
-            >
-              Kollektion entdecken
-            </button>
+            {/* Optimierter Ghost Button mit besserer Positionierung */}
+            <div className="flex justify-center">
+              <button 
+                onClick={() => {
+                  const productsSection = document.querySelector('#products-section');
+                  productsSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="swiss-ghost-button"
+              >
+                Kollektion entdecken
+              </button>
+            </div>
             
-            {/* Dezenter Down Arrow */}
+            {/* Dezenter Down Arrow mit mehr Abstand */}
             {showScrollIndicator && (
-              <div className="mt-20">
+              <div className="mt-16">
                 <div className="swiss-scroll-indicator">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />

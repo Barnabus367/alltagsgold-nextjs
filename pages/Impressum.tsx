@@ -17,7 +17,7 @@ export function Impressum() {
             <section>
               <h2 className="text-2xl font-light text-black mb-4">Angaben zum Unternehmen</h2>
               <div className="space-y-4 text-gray-700">
-                <p><strong>Firmenname:</strong> Alltagsgold</p>
+                <p><strong>Firmenname:</strong> alltagsgold</p>
               </div>
             </section>
 
@@ -36,7 +36,7 @@ export function Impressum() {
                   Die Inhalte dieser Website wurden mit höchstmöglicher Sorgfalt erstellt. Gleichwohl übernimmt Alltagsgold keinerlei Gewähr für die Aktualität, Korrektheit, Vollständigkeit oder Qualität der bereitgestellten Informationen.
                 </p>
                 <p>
-                  Haftungsansprüche gegen Alltagsgold, welche sich auf Schäden materieller oder ideeller Art beziehen, die durch die Nutzung oder Nichtnutzung der dargebotenen Informationen bzw. durch die Nutzung fehlerhafter und unvollständiger Informationen verursacht wurden, sind grundsätzlich ausgeschlossen.
+                  Haftungsansprüche gegen alltagsgold, welche sich auf Schäden materieller oder ideeller Art beziehen, die durch die Nutzung oder Nichtnutzung der dargebotenen Informationen bzw. durch die Nutzung fehlerhafter und unvollständiger Informationen verursacht wurden, sind grundsätzlich ausgeschlossen.
                 </p>
               </div>
             </section>

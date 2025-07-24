@@ -195,12 +195,12 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
         if (manualBenefits.length > 0) {
           benefits = manualBenefits;
         } else {
-          // Fallback: try splitting by capital letters at word boundaries
+          // Fallback: try splitting by bullet points (•) or line breaks
           benefits = benefitsText
-            .split(/\s+(?=[A-ZÄÖÜ][a-zäöüß]+\s)/) // Split before words starting with capital letters
+            .split(/•|\n/) // Split by bullet points or line breaks
             .filter((sentence: string) => sentence.trim().length > 10)
             .map((sentence: string) => sentence.trim())
-            .slice(0, 5);
+            .slice(0, 6);
         }
       }
     }
@@ -216,35 +216,39 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
         console.log('🔧 Raw tech text:', techText);
       }
       
-      // Parse known patterns with flexible whitespace handling (no line breaks)
-      const patterns = [
-        { regex: /Masse:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Abmessungen' },
-        { regex: /Material:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Material' },
-        { regex: /Stromversorgung:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Stromversorgung' },
-        { regex: /Gewicht:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Gewicht' },
-        { regex: /Leistung:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Leistung' },
-        { regex: /Kapazität:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Kapazität' }
-      ];
+      // Try parsing by bullet points first
+      const bulletPoints = techText
+        .split(/•|\n/) // Split by bullet points or line breaks
+        .filter((item: string) => item.trim().length > 5)
+        .map((item: string) => item.trim())
+        .slice(0, 8); // Allow more technical details
       
-      // Try improved parsing with simpler approach
-      const simplifiedPatterns = [
-        { regex: /Masse:\s*([^A-Z]*?)(?=\s+[A-Z]|$)/i, label: 'Abmessungen' },
-        { regex: /Material:\s*([^A-Z]*?)(?=\s+[A-Z]|$)/i, label: 'Material' },
-        { regex: /Stromversorgung:\s*([^A-Z]*?)(?=\s+[A-Z]|$)/i, label: 'Stromversorgung' }
-      ];
-      
-      const addedLabels = new Set<string>();
-      
-      simplifiedPatterns.forEach(pattern => {
-        const match = techText.match(pattern.regex);
-        if (match && match[1] && !addedLabels.has(pattern.label)) {
-          const value = match[1].trim().replace(/\s+/g, ' '); // Normalize spaces
-          if (value && value.length > 1) {
-            technicalDetails.push(`${pattern.label}: ${value}`);
-            addedLabels.add(pattern.label);
+      if (bulletPoints.length > 0) {
+        technicalDetails.push(...bulletPoints);
+      } else {
+        // Fallback: Parse known patterns with flexible whitespace handling
+        const patterns = [
+          { regex: /Masse:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Abmessungen' },
+          { regex: /Material:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Material' },
+          { regex: /Stromversorgung:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Stromversorgung' },
+          { regex: /Gewicht:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Gewicht' },
+          { regex: /Leistung:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Leistung' },
+          { regex: /Kapazität:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Kapazität' }
+        ];
+        
+        const addedLabels = new Set<string>();
+        
+        patterns.forEach(pattern => {
+          const match = techText.match(pattern.regex);
+          if (match && match[1] && !addedLabels.has(pattern.label)) {
+            const value = match[1].trim().replace(/\s+/g, ' '); // Normalize spaces
+            if (value && value.length > 1) {
+              technicalDetails.push(`${pattern.label}: ${value}`);
+              addedLabels.add(pattern.label);
+            }
           }
-        }
-      });
+        });
+      }
       
       // Debug logging for technical details
       if (process.env.NODE_ENV === 'development') {

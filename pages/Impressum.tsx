@@ -4,7 +4,7 @@ import { generateStaticPageSEO } from '../lib/seo';
 export function Impressum() {
   // Generate SEO metadata for Impressum page
   const seoData = generateStaticPageSEO('impressum');
-
+ 
   return (
     <div className="min-h-screen bg-white pt-16">
       <SEOHead seo={seoData} canonicalUrl="/impressum" />
@@ -16,23 +16,16 @@ export function Impressum() {
           <div className="space-y-8">
             <section>
               <h2 className="text-2xl font-light text-black mb-4">Angaben zum Unternehmen</h2>
-              <div className="space-y-2 text-gray-700">
+              <div className="space-y-4 text-gray-700">
                 <p><strong>Firmenname:</strong> Alltagsgold</p>
               </div>
             </section>
 
             <section>
               <h2 className="text-2xl font-light text-black mb-4">Kontakt</h2>
-              <div className="space-y-2 text-gray-700">
+              <div className="space-y-4 text-gray-700">
                 <p><strong>E-Mail:</strong> <a href="mailto:hallo@alltagsgold.ch" className="text-blue-600 hover:underline">hallo@alltagsgold.ch</a></p>
                 <p><strong>Website:</strong> <a href="http://www.alltagsgold.ch" className="text-blue-600 hover:underline">www.alltagsgold.ch</a></p>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-light text-black mb-4">Verantwortlich für den Inhalt gemäss Art. 322 StGB und Art. 28 ZGB</h2>
-              <div className="text-gray-700">
-                <p>Alltagsgold</p>
               </div>
             </section>
 
@@ -40,13 +33,10 @@ export function Impressum() {
               <h2 className="text-2xl font-light text-black mb-4">Haftungsausschluss</h2>
               <div className="space-y-4 text-gray-700">
                 <p>
-                  Die Inhalte dieser Website wurden mit höchstmöglicher Sorgfalt erstellt. Gleichwohl übernimmt Alltagsgold keinerlei Gewähr für die Aktualität, Korrektheit, Vollständigkeit oder Qualität der bereitgestellten Informationen. Haftungsansprüche gegen Alltagsgold, die sich auf Schäden materieller oder immaterieller Art beziehen, welche durch Nutzung oder Nichtnutzung der dargebotenen Informationen bzw. durch Nutzung fehlerhafter oder unvollständiger Informationen verursacht wurden, sind grundsätzlich ausgeschlossen, sofern seitens Alltagsgold kein nachweislich vorsätzliches oder grob fahrlässiges Verschulden vorliegt.
+                  Die Inhalte dieser Website wurden mit höchstmöglicher Sorgfalt erstellt. Gleichwohl übernimmt Alltagsgold keinerlei Gewähr für die Aktualität, Korrektheit, Vollständigkeit oder Qualität der bereitgestellten Informationen.
                 </p>
                 <p>
-                  Alltagsgold behält sich ausdrücklich vor, Teile der Seiten oder das gesamte Angebot ohne gesonderte Ankündigung zu verändern, zu ergänzen, zu löschen oder die Veröffentlichung zeitweise oder endgültig einzustellen.
-                </p>
-                <p>
-                  Alltagsgold haftet insbesondere nicht für Inhalte fremder Websites, auf die mittels Links direkt oder indirekt verwiesen wird ("Hyperlinks"). Für illegale, fehlerhafte oder unvollständige Inhalte und insbesondere für Schäden, die aus der Nutzung oder Nichtnutzung solcherart dargebotener Informationen entstehen, haftet allein der Anbieter der Seite, auf welche verwiesen wurde, nicht derjenige, der über Links auf die jeweilige Veröffentlichung lediglich verweist.
+                  Haftungsansprüche gegen Alltagsgold, welche sich auf Schäden materieller oder ideeller Art beziehen, die durch die Nutzung oder Nichtnutzung der dargebotenen Informationen bzw. durch die Nutzung fehlerhafter und unvollständiger Informationen verursacht wurden, sind grundsätzlich ausgeschlossen.
                 </p>
               </div>
             </section>
@@ -58,21 +48,27 @@ export function Impressum() {
                   Alle durch die Seitenbetreiber erstellten Inhalte und Werke auf dieser Website unterliegen dem schweizerischen Urheberrecht. Jede Art der Vervielfältigung, Bearbeitung, Verbreitung und Verwertung ausserhalb der Grenzen des Urheberrechts bedarf der vorherigen schriftlichen Zustimmung des jeweiligen Urhebers bzw. Erstellers.
                 </p>
                 <p>
-                  Downloads und Kopien der Inhalte dieser Website sind ausschliesslich für den privaten, nicht kommerziellen Gebrauch gestattet. Die kommerzielle Nutzung jeglicher Art bedarf ausdrücklich der vorherigen schriftlichen Zustimmung.
+                  Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet.
                 </p>
+              </div>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-light text-black mb-4">Rechtswirksamkeit</h2>
+              <div className="space-y-4 text-gray-700">
                 <p>
-                  Soweit Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.
+                  Dieser Haftungsausschluss ist als Teil des Internetangebotes zu betrachten, von dem aus auf diese Seite verwiesen wurde. Sofern Teile oder einzelne Formulierungen dieses Textes der geltenden Rechtslage nicht, nicht mehr oder nicht vollständig entsprechen sollten, bleiben die übrigen Teile des Dokumentes in ihrem Inhalt und ihrer Gültigkeit davon unberührt.
                 </p>
               </div>
             </section>
 
             <section>
               <h2 className="text-2xl font-light text-black mb-4">Online-Streitbeilegung</h2>
-              <div className="text-gray-700">
+              <div className="space-y-4 text-gray-700">
                 <p>
                   Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit, welche unter folgendem Link erreichbar ist: <a href="https://ec.europa.eu/consumers/odr/" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">https://ec.europa.eu/consumers/odr/</a>. Unsere E-Mail-Adresse finden Sie oben im Impressum.
                 </p>
-                <p className="mt-4">
+                <p>
                   Alltagsgold ist weder bereit noch verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
                 </p>
               </div>

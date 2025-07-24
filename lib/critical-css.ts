@@ -96,38 +96,14 @@ export const productDetailCriticalCSS = `
 }
 `;
 
-// CSS Loading Strategy
+// CSS Loading Strategy - Disabled to prevent 404 errors
 export function loadCriticalCSS(page: string = 'home') {
   if (typeof window === 'undefined') return;
   
-  // Check if critical CSS is already loaded for this page
-  const existingStyle = document.querySelector(`style[data-critical="${page}"]`);
-  if (existingStyle) return;
-
-  const criticalStyles = {
-    home: criticalCSS,
-    products: criticalCSS + productListCriticalCSS,
-    product: criticalCSS + productDetailCriticalCSS,
-  };
-
-  const css = criticalStyles[page as keyof typeof criticalStyles] || criticalCSS;
+  // Disabled CSS loading - all styles are in globals.css
+  console.log(`Critical CSS loading disabled for page: ${page}`);
   
-  // Inject Critical CSS only if not already present
-  const styleElement = document.createElement('style');
-  styleElement.textContent = css;
-  styleElement.setAttribute('data-critical', page);
-  document.head.insertBefore(styleElement, document.head.firstChild);
-
-  // Preload non-critical CSS only once
-  if (!document.querySelector('link[href="/styles/non-critical.css"]')) {
-    setTimeout(() => {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = '/styles/non-critical.css';
-      link.media = 'all';
-      document.head.appendChild(link);
-    }, 100);
-  }
+  // No external CSS files are loaded to prevent 404 errors
 }
 
 // CSS Performance Monitoring

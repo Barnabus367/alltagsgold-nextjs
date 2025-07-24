@@ -5,64 +5,38 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   
-  // HOT RELOAD KOMPLETT DEAKTIVIERT - ENDGÜLTIGE LÖSUNG
-  experimental: {
-    swcPlugins: [],
-  },
-  
   webpack: (config, { dev, isServer }) => {
-    if (dev) {
-      // 1. Entferne ALLE Hot Module Replacement Plugins
-      config.plugins = config.plugins.filter(plugin => {
-        const name = plugin.constructor.name;
-        return ![
-          'HotModuleReplacementPlugin', 
-          'ReactRefreshPlugin',
-          'ReactRefreshWebpackPlugin'
-        ].includes(name);
-      });
-      
-      // 2. Deaktiviere File Watching komplett
-      config.watchOptions = false;
-      config.watch = false;
-      
-      // 3. Entferne React Refresh aus allen Loadern
-      const removeReactRefresh = (rules) => {
-        rules.forEach(rule => {
-          if (rule.oneOf) {
-            removeReactRefresh(rule.oneOf);
-          }
-          if (rule.use && Array.isArray(rule.use)) {
-            rule.use = rule.use.filter(use => {
-              if (typeof use === 'object' && use.loader) {
-                return !use.loader.includes('react-refresh');
-              }
-              if (typeof use === 'string') {
-                return !use.includes('react-refresh');
-              }
-              return true;
-            });
-          }
-        });
+    // Produktions-optimierte Bundle-Aufteilung
+    if (!isServer) {
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10,
+          },
+          shopify: {
+            test: /[\\/]node_modules[\\/].*shopify.*/,
+            name: 'shopify',
+            chunks: 'all',
+            priority: 20,
+          },
+          radix: {
+            test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
+            name: 'radix',
+            chunks: 'all',
+            priority: 15,
+          },
+          react: {
+            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+            name: 'react',
+            chunks: 'all',
+            priority: 25,
+          },
+        },
       };
-      removeReactRefresh(config.module.rules);
-      
-      // 4. Verhindere Hot Updates komplett
-      config.optimization.moduleIds = 'deterministic';
-      config.optimization.chunkIds = 'deterministic';
-      
-      // 5. Deaktiviere Development-Server Features
-      config.devServer = {
-        ...config.devServer,
-        hot: false,
-        liveReload: false,
-        watchFiles: false,
-      };
-      
-      // 6. Entferne Hot Update Outputs
-      delete config.output.hotUpdateChunkFilename;
-      delete config.output.hotUpdateMainFilename;
-      config.output.hotUpdateFunction = undefined;
     }
     return config;
   },
@@ -156,48 +130,13 @@ const nextConfig = {
     '*.replit.co'
   ],
   
-  // Webpack-Optimierungen für bessere Performance
-  webpack: (config, { dev, isServer, buildId }) => {
-    if (dev) {
-      config.cache = false; // Deaktiviert hartnäckige Caches
-      config.optimization.moduleIds = 'named';
-      config.watchOptions = {
-        poll: 1000,
-        aggregateTimeout: 300,
-      };
-    } else if (!isServer) {
-      // Production Bundle Splitting
-      config.optimization.splitChunks = {
-        ...config.optimization.splitChunks,
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-            priority: 10,
-          },
-          shopify: {
-            test: /[\\/]node_modules[\\/].*shopify.*/,
-            name: 'shopify',
-            chunks: 'all',
-            priority: 20,
-          },
-          radix: {
-            test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
-            name: 'radix',
-            chunks: 'all',
-            priority: 15,
-          },
-          react: {
-            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-            name: 'react',
-            chunks: 'all',
-            priority: 25,
-          },
-        },
-      };
-    }
-    return config;
+  async rewrites() {
+    return [
+      {
+        source: '/impressum',
+        destination: '/legal',
+      },
+    ];
   },
 }
 

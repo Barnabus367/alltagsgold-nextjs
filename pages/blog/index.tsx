@@ -19,3 +19,11 @@ export default function BlogPage() {
     </>
   );
 }
+
+// Static props for SEO and static generation
+export async function getStaticProps() {
+  return {
+    props: {},
+    revalidate: 3600, // Revalidate every hour for blog content
+  };
+}

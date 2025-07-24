@@ -31,14 +31,16 @@ export default function App({ Component, pageProps }) {
     optimizeFontLoading();
     initializeWebVitalsMonitoring();
     
-    // Load Critical CSS based on initial route only
-    const currentPath = window.location.pathname;
-    if (currentPath.includes('/products/')) {
-      loadCriticalCSS('product');
-    } else if (currentPath.includes('/collections') || currentPath.includes('/products')) {
-      loadCriticalCSS('products');
-    } else {
-      loadCriticalCSS('home');
+    // Load Critical CSS based on initial route only - safe browser check
+    if (typeof window !== 'undefined') {
+      const currentPath = window.location.pathname;
+      if (currentPath.includes('/products/')) {
+        loadCriticalCSS('product');
+      } else if (currentPath.includes('/collections') || currentPath.includes('/products')) {
+        loadCriticalCSS('products');
+      } else {
+        loadCriticalCSS('home');
+      }
     }
     
     isInitialized.current = true;

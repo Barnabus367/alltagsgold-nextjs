@@ -258,7 +258,7 @@ export async function getProductByHandle(handle: string): Promise<ShopifyProduct
   return data.productByHandle;
 }
 
-export async function getCollections(first: number = 10): Promise<ShopifyCollection[]> {
+export async function getCollections(first: number = 20): Promise<ShopifyCollection[]> {
   const query = `
     query getCollections($first: Int!) {
       collections(first: $first, sortKey: TITLE) {

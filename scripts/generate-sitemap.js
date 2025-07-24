@@ -37,8 +37,13 @@ const PUBLIC_DIR = path.join(__dirname, '../public');
 const CURRENT_DATE = new Date().toISOString().split('T')[0];
 
 // Environment variables (same as Shopify lib)
-const SHOPIFY_STORE_DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
-const SHOPIFY_STOREFRONT_ACCESS_TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+// Try multiple sources: process.env, .env.local, and hardcoded fallbacks
+const SHOPIFY_STORE_DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || 
+                             process.env.SHOPIFY_STORE_DOMAIN || 
+                             'yxwc4d-2f.myshopify.com';
+const SHOPIFY_STOREFRONT_ACCESS_TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN || 
+                                       process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN ||
+                                       '6cee47c83316d9e619313231aedf5861';
 
 // Debug environment variables
 console.log('🔍 Environment variables:');

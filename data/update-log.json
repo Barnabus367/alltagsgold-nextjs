@@ -1,6 +1,8 @@
 {
-  "lastSync": "2025-06-28T15:41:09.185Z",
-  "collectionsCount": 15,
-  "productsCount": 96,
-  "syncedBy": "sync-shopify-data.js"
+  "collections": {
+    "lastUpdated": "2025-07-24T01:29:12.289Z",
+    "totalCollections": 15,
+    "collectionsWithImages": 15,
+    "collectionsWithoutImages": 0
+  }
 }

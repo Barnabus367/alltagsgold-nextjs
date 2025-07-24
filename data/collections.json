@@ -1,202 +1,272 @@
 [
   {
-    "id": "gid://shopify/Collection/656397828439",
-    "title": "Sale",
-    "description": "",
-    "descriptionHtml": "",
-    "handle": "sale",
-    "image": null,
-    "seo": {
-      "title": null,
-      "description": null
+    "id": "gid://shopify/Collection/659568951639",
+    "title": "Haustierbedarf & Zubehör – Alles für dein Haustier",
+    "description": "Entdecke unser vielseitiges Sortiment an Haustierzubehör für Hund, Katze & Co. Von hochwertigem Futter über kuschelige Schlafplätze bis hin zu praktischem Pflegezubehör und spannendem Spielzeug – hier findest du alles, was dein Haustier braucht. Wir wählen alle Produkte sorgfältig aus, damit dein Liebling nur das Beste bekommt. Egal, ob du deinen Hund verwöhnen, deine Katze beschäftigen oder einfach für mehr Wohlbefinden sorgen möchtest: Bei Alltagsgold gibt’s die passenden Lösungen für deinen tierischen Alltag.",
+    "descriptionHtml": "<p><meta charset=\"utf-8\">Entdecke unser vielseitiges Sortiment an Haustierzubehör für Hund, Katze &amp; Co. Von hochwertigem Futter über kuschelige Schlafplätze bis hin zu praktischem Pflegezubehör und spannendem Spielzeug – hier findest du alles, was dein Haustier braucht. Wir wählen alle Produkte sorgfältig aus, damit dein Liebling nur das Beste bekommt. Egal, ob du deinen Hund verwöhnen, deine Katze beschäftigen oder einfach für mehr Wohlbefinden sorgen möchtest: Bei Alltagsgold gibt’s die passenden Lösungen für deinen tierischen Alltag.</p>",
+    "handle": "haustierbedarf-alles-fuer-dein-haustier",
+    "image": {
+      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/wenn-kein-menschlicher.jpg?v=1753312515",
+      "altText": null,
+      "width": 1240,
+      "height": 698
     },
-    "updatedAt": "2025-06-16T04:33:08Z"
+    "seo": {
+      "title": "Tierbedarf & Zubehör für Hund, Katze & Co | alltagsgold",
+      "description": "Praktisches & verspieltes Zubehör für Haustiere. Von Fellpflege bis Spielzeug – hochwertiger Tierbedarf bei alltagsgold entdecken."
+    },
+    "updatedAt": "2025-07-23T23:15:15Z"
   },
   {
-    "id": "gid://shopify/Collection/656584048983",
-    "title": "Bestseller",
-    "description": "Unsere beliebtesten Alltagsgold-Produkte - bewährt und von Kunden geliebt.",
-    "descriptionHtml": "Unsere beliebtesten Alltagsgold-Produkte - bewährt und von Kunden geliebt.",
-    "handle": "bestseller",
-    "image": null,
-    "seo": {
-      "title": null,
-      "description": null
-    },
-    "updatedAt": "2025-06-16T04:32:48Z"
-  },
-  {
-    "id": "gid://shopify/Collection/656688906583",
-    "title": "Küchenhelfer & Gadgets",
-    "description": "Hochwertige Küchengeräte für den modernen Haushalt. Entdecken Sie effiziente Helfer, die Ihre Kochprozesse vereinfachen und professionelle Ergebnisse liefern.",
-    "descriptionHtml": "<p class=\"_p_1x4t5_68\"><span>Hochwertige Küchengeräte für den modernen Haushalt. Entdecken Sie effiziente Helfer, die Ihre Kochprozesse vereinfachen und professionelle Ergebnisse liefern.</span></p>",
-    "handle": "kuchengerate-1",
-    "image": null,
-    "seo": {
-      "title": null,
-      "description": null
-    },
-    "updatedAt": "2025-06-22T08:31:01Z"
-  },
-  {
-    "id": "gid://shopify/Collection/656689496407",
-    "title": "Haushaltsgeräte",
-    "description": "Qualitativ hochwertige Haushaltsgeräte für mehr Effizienz im Alltag. Innovative Lösungen, die Zeit sparen und den Komfort in Ihrem Zuhause steigern.",
-    "descriptionHtml": "<p class=\"_p_1x4t5_68\"><span>Qualitativ hochwertige Haushaltsgeräte für mehr Effizienz im Alltag. Innovative Lösungen, die Zeit sparen und den Komfort in Ihrem Zuhause steigern.</span></p>",
-    "handle": "haushaltsgerate",
-    "image": null,
-    "seo": {
-      "title": null,
-      "description": null
-    },
-    "updatedAt": "2025-06-19T13:31:08Z"
-  },
-  {
-    "id": "gid://shopify/Collection/656689922391",
+    "id": "gid://shopify/Collection/659569181015",
     "title": "Reinigungsgeräte",
-    "description": "Technologie für effiziente und gründliche Reinigung in jedem Bereich Ihres Zuhauses.\"",
-    "descriptionHtml": "<p class=\"_p_1x4t5_68\"><span>Technologie für effiziente und gründliche Reinigung in jedem Bereich Ihres Zuhauses.\"</span></p>",
-    "handle": "reinigungsgerate",
-    "image": null,
-    "seo": {
-      "title": null,
-      "description": null
+    "description": "Technologie für effiziente und gründliche Reinigung in jedem Bereich Ihres Zuhauses.",
+    "descriptionHtml": "<p><meta charset=\"utf-8\"><span>Technologie für effiziente und gründliche Reinigung in jedem Bereich Ihres Zuhauses.</span></p>",
+    "handle": "reinigungsgeraete",
+    "image": {
+      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-olly-3768910_bjtf5z.webp?v=1753312825",
+      "altText": null,
+      "width": 800,
+      "height": 533
     },
-    "updatedAt": "2025-06-16T04:31:34Z"
+    "seo": {
+      "title": "Effiziente Reinigungsgeräte für Haushalt & Auto | alltagsgold",
+      "description": "Finde leistungsstarke Reinigungsgeräte für deinen Alltag. Jetzt entdecken und einfach sauber machen – mit ausgewählten Tools von alltagsgold."
+    },
+    "updatedAt": "2025-07-23T23:36:18Z"
   },
   {
-    "id": "gid://shopify/Collection/656690086231",
-    "title": "Luftbefeuchter & Raumklima",
-    "description": "Hocheffiziente Luftreiniger und Luftbefeuchter für ein gesundes Raumklima. Verbessern Sie Ihre Luftqualität und schaffen Sie ein angenehmes Wohnambiente.",
-    "descriptionHtml": "<p class=\"_p_1x4t5_68\"><span>Hocheffiziente Luftreiniger und Luftbefeuchter für ein gesundes Raumklima. Verbessern Sie Ihre Luftqualität und schaffen Sie ein angenehmes Wohnambiente.</span></p>",
-    "handle": "luftreiniger-luftbefeuchter",
-    "image": null,
-    "seo": {
-      "title": null,
-      "description": null
-    },
-    "updatedAt": "2025-06-19T14:02:41Z"
-  },
-  {
-    "id": "gid://shopify/Collection/656690315607",
+    "id": "gid://shopify/Collection/659569410391",
     "title": "Technik & Gadgets",
     "description": "Innovative Technik und praktische Gadgets für den modernen Lebensstil. Entdecken Sie smarte Lösungen, die Ihren Alltag bereichern.",
-    "descriptionHtml": "<p class=\"_p_1x4t5_68\"><span>Innovative Technik und praktische Gadgets für den modernen Lebensstil. Entdecken Sie smarte Lösungen, die Ihren Alltag bereichern.</span></p>",
+    "descriptionHtml": "<p><meta charset=\"utf-8\"><span>Innovative Technik und praktische Gadgets für den modernen Lebensstil. Entdecken Sie smarte Lösungen, die Ihren Alltag bereichern.</span></p>",
     "handle": "technik-gadgets",
-    "image": null,
-    "seo": {
-      "title": null,
-      "description": null
+    "image": {
+      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-sorjigrey-9956769_li3wx9.webp?v=1753313576",
+      "altText": null,
+      "width": 800,
+      "height": 450
     },
-    "updatedAt": "2025-06-16T04:33:03Z"
+    "seo": {
+      "title": "Technik & Gadgets für Haushalt & Alltag | alltagsgold",
+      "description": "Smarter Alltag leicht gemacht: Technik-Gadgets für dein Zuhause. Entdecke praktische Helfer & Innovationen jetzt bei alltagsgold."
+    },
+    "updatedAt": "2025-07-23T23:32:56Z"
   },
   {
-    "id": "gid://shopify/Collection/656690512215",
+    "id": "gid://shopify/Collection/659569541463",
+    "title": "Selfcare & Beauty",
+    "description": "Tauch ein in deine persönliche Auszeit – mit hochwertigen Produkten für Wellness, Selfcare und natürliche Schönheit. Unsere Kollektion unterstützt dich dabei, Körper und Geist in Einklang zu bringen – direkt bei dir zuhause. Beauty-Tools & Gesichtspflege für strahlende Haut Massageräte zur gezielten Entspannung Natürliche Pflegeprodukte für dein tägliches Wohlbefinden Reinigungs- und Anti-Aging-Lösungen für jeden Hauttyp Sanfte Entspannungshelfer für deine persönliche Auszeit Jetzt Selfcare neu entdecken und dir kleine Wohlfühlmomente im Alltag schaffen – mit den Lieblingsprodukten von Alltagsgold.",
+    "descriptionHtml": "<p><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-size: 0.875rem;\">Tauch ein in deine persönliche Auszeit – mit hochwertigen Produkten für Wellness, Selfcare und natürliche Schönheit. Unsere Kollektion unterstützt dich dabei, Körper und Geist in Einklang zu bringen – direkt bei dir zuhause.</span></p>\n<ul>\n<li>Beauty-Tools &amp; Gesichtspflege für strahlende Haut</li>\n<li>Massageräte zur gezielten Entspannung</li>\n<li>Natürliche Pflegeprodukte für dein tägliches Wohlbefinden</li>\n<li>Reinigungs- und Anti-Aging-Lösungen für jeden Hauttyp</li>\n<li>Sanfte Entspannungshelfer für deine persönliche Auszeit</li>\n</ul>\n<p>Jetzt Selfcare neu entdecken und dir kleine Wohlfühlmomente im Alltag schaffen – mit den Lieblingsprodukten von Alltagsgold.</p>",
+    "handle": "selfcare-beauty",
+    "image": {
+      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-juanpphotoandvideo-1242349_cqpjuv.webp?v=1753314082",
+      "altText": null,
+      "width": 800,
+      "height": 533
+    },
+    "seo": {
+      "title": "Beauty-Gadgets & Selfcare-Tools für Zuhause | alltagsgold",
+      "description": "Gesichtsbürsten, Pflegegeräte & Beauty-Helfer für deinen Alltag. Entdecke effektive Selfcare-Produkte jetzt bei alltagsgold."
+    },
+    "updatedAt": "2025-07-23T23:41:30Z"
+  },
+  {
+    "id": "gid://shopify/Collection/659569705303",
+    "title": "Küchenhelfer & Gadgets",
+    "description": "Hochwertige Küchengeräte für den modernen Haushalt. Entdecken Sie effiziente Helfer, die Ihre Kochprozesse vereinfachen und professionelle Ergebnisse liefern.",
+    "descriptionHtml": "<p><meta charset=\"utf-8\"><span>Hochwertige Küchengeräte für den modernen Haushalt. Entdecken Sie effiziente Helfer, die Ihre Kochprozesse vereinfachen und professionelle Ergebnisse liefern.</span></p>",
+    "handle": "kueche",
+    "image": {
+      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-jvdm-1599791_hkiovx.webp?v=1753314617",
+      "altText": null,
+      "width": 800,
+      "height": 535
+    },
+    "seo": {
+      "title": "Küchenhelfer & clevere Tools für deinen Alltag | alltagsgold",
+      "description": "Von Spiralschneider bis Eierschäler – innovative Küchenhelfer für Hobbyköche & Familien. Jetzt smart kochen mit alltagsgold."
+    },
+    "updatedAt": "2025-07-23T23:50:17Z"
+  },
+  {
+    "id": "gid://shopify/Collection/659569738071",
+    "title": "Haushaltsgeräte",
+    "description": "Qualitativ hochwertige Haushaltsgeräte für mehr Effizienz im Alltag. Innovative Lösungen, die Zeit sparen und den Komfort in Ihrem Zuhause steigern.",
+    "descriptionHtml": "<p><meta charset=\"utf-8\"><span>Qualitativ hochwertige Haushaltsgeräte für mehr Effizienz im Alltag. Innovative Lösungen, die Zeit sparen und den Komfort in Ihrem Zuhause steigern.</span></p>",
+    "handle": "haushaltsgeraete",
+    "image": {
+      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-elly-fairytale-3806953_su8gtr.webp?v=1753314698",
+      "altText": null,
+      "width": 800,
+      "height": 533
+    },
+    "seo": {
+      "title": "Haushaltsgeräte & Tools für den Alltag | alltagsgold",
+      "description": "Effiziente Geräte für Reinigung, Küche & Pflege. Entdecke kompakte Haushaltshelfer für jeden Zweck – jetzt online bei alltagsgold."
+    },
+    "updatedAt": "2025-07-23T23:57:44Z"
+  },
+  {
+    "id": "gid://shopify/Collection/659569901911",
+    "title": "Wellness & Entspannung",
+    "description": "Entdecke unsere sorgfältig kuratierte Auswahl an Wellness- und Entspannungsprodukten für Zuhause. Von wohltuenden Massagern über revitalisierende Gesichtspflege bis hin zu Aromadiffusern – hier findest du alles für deine persönliche Auszeit. Ideal für alle, die Körper, Geist und Haut nachhaltig verwöhnen möchten. Elektrische Massagegeräte & Nackenlockerung Gesichtsbürsten & Tiefenreinigung für strahlende Haut Pflegemasken mit Frucht- und Hyaluronformeln Raumdüfte, Räuchergefässe & Aromatherapie Beauty-Tools für sanfte Hautpflege Gönn dir täglich einen Moment der Ruhe – mit Wellness-Produkten von Alltagsgold.",
+    "descriptionHtml": "<p>Entdecke unsere sorgfältig kuratierte Auswahl an Wellness- und Entspannungsprodukten für Zuhause. Von wohltuenden Massagern über revitalisierende Gesichtspflege bis hin zu Aromadiffusern – hier findest du alles für deine persönliche Auszeit. Ideal für alle, die Körper, Geist und Haut nachhaltig verwöhnen möchten.</p>\n<ul>\n<li>Elektrische Massagegeräte &amp; Nackenlockerung</li>\n<li>Gesichtsbürsten &amp; Tiefenreinigung für strahlende Haut</li>\n<li>Pflegemasken mit Frucht- und Hyaluronformeln</li>\n<li>Raumdüfte, Räuchergefässe &amp; Aromatherapie</li>\n<li>Beauty-Tools für sanfte Hautpflege</li>\n</ul>\n<p>Gönn dir täglich einen Moment der Ruhe – mit Wellness-Produkten von Alltagsgold.</p>",
+    "handle": "wellness-entspannung",
+    "image": {
+      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/RS34674_AdobeStock_315903138-scr-2-1024x682.jpg?v=1753315181",
+      "altText": null,
+      "width": 1024,
+      "height": 682
+    },
+    "seo": {
+      "title": "Wellnessprodukte & Relax-Gadgets für dich | alltagsgold",
+      "description": "Gönn dir Entspannung mit Wellness-Tools & Selfcare-Gadgets. Ideal für Zuhause – entdecke Wohlfühlprodukte jetzt bei alltagsgold."
+    },
+    "updatedAt": "2025-07-24T00:01:52Z"
+  },
+  {
+    "id": "gid://shopify/Collection/659570032983",
+    "title": "Dekoration",
+    "description": "Entdecke ausgewählte Dekorationen, die deinem Zuhause eine persönliche Note verleihen – stilvoll, modern und mit viel Liebe zum Detail. Ob fürs Wohnzimmer, Schlafzimmer oder den Eingangsbereich: Unsere Dekoartikel sorgen für Atmosphäre und Charakter. Stilvolle Wohnaccessoires für jeden Raum Dekorative Akzente zum Verschenken oder Selbstbehalten Schlichte, moderne und verspielte Designs Liebevolle Details für besondere Momente Harmonisches Zusammenspiel von Farben und Materialien Jetzt Dekoration entdecken und dein Zuhause mit stilvollen Highlights verschönern – ganz einfach bei Alltagsgold.",
+    "descriptionHtml": "<p>Entdecke ausgewählte Dekorationen, die deinem Zuhause eine persönliche Note verleihen – stilvoll, modern und mit viel Liebe zum Detail. Ob fürs Wohnzimmer, Schlafzimmer oder den Eingangsbereich: Unsere Dekoartikel sorgen für Atmosphäre und Charakter.</p>\n<ul>\n<li>Stilvolle Wohnaccessoires für jeden Raum</li>\n<li>Dekorative Akzente zum Verschenken oder Selbstbehalten</li>\n<li>Schlichte, moderne und verspielte Designs</li>\n<li>Liebevolle Details für besondere Momente</li>\n<li>Harmonisches Zusammenspiel von Farben und Materialien</li>\n</ul>\n<p>Jetzt Dekoration entdecken und dein Zuhause mit stilvollen Highlights verschönern – ganz einfach bei Alltagsgold.</p>",
+    "handle": "dekoration",
+    "image": {
+      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-kevin-malik-9016170_wd3swb.webp?v=1753315401",
+      "altText": null,
+      "width": 800,
+      "height": 533
+    },
+    "seo": {
+      "title": "Wohnaccessoires & Dekoideen für dein Zuhause | alltagsgold",
+      "description": "Stilvolle Dekoration für jeden Raum. Entdecke kreative Wohnaccessoires & Geschenkideen – jetzt bei alltagsgold stöbern."
+    },
+    "updatedAt": "2025-07-24T00:06:21Z"
+  },
+  {
+    "id": "gid://shopify/Collection/659570131287",
+    "title": "Automobil- und Fahrzeugszubehör",
+    "description": "Entdecken Sie unsere besten Auto- und Fahrzeugzubehörteile. Finden Sie alles, was Sie benötigen, um Ihr Fahrzeug aufzurüsten und individuell zu gestalten.",
+    "descriptionHtml": "<p><meta charset=\"utf-8\">Entdecken Sie unsere besten Auto- und Fahrzeugzubehörteile. Finden Sie alles, was Sie benötigen, um Ihr Fahrzeug aufzurüsten und individuell zu gestalten.</p>",
+    "handle": "auto-zubehoer",
+    "image": {
+      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/Auto-Zubehoer_AdobeStock_374129613_Pixel-Shot_FIN.webp?v=1753315650",
+      "altText": null,
+      "width": 1680,
+      "height": 905
+    },
+    "seo": {
+      "title": "Praktisches Autozubehör & Fahrzeug-Gadgets | alltagsgold",
+      "description": "Zubehör für dein Auto – von Heizlüftern bis Reinigungshelfer. Clevere Tools für Fahrer & Fahrzeughalter direkt bei alltagsgold bestellen."
+    },
+    "updatedAt": "2025-07-24T01:10:20Z"
+  },
+  {
+    "id": "gid://shopify/Collection/659570262359",
+    "title": "LED-Produkte",
+    "description": "Entdecken Sie unsere große Auswahl an hochwertigen LED-Produkten für jeden Bedarf. Ob LED-Lampen, LED-Strips, Panels oder Leuchten – hier finden Sie energieeffiziente Beleuchtungslösungen für Ihr Zuhause, Büro oder Gewerbe. Unsere LED-Produkte bieten langlebige Qualität, moderne Technik und sparen Stromkosten. Perfekt für Innen- und Außenbereiche, einfache Montage und zuverlässige Performance. Jetzt passende LEDs finden und Licht neu erleben.",
+    "descriptionHtml": "<p><meta charset=\"utf-8\">Entdecken Sie unsere große Auswahl an hochwertigen LED-Produkten für jeden Bedarf. Ob LED-Lampen, LED-Strips, Panels oder Leuchten – hier finden Sie energieeffiziente Beleuchtungslösungen für Ihr Zuhause, Büro oder Gewerbe. Unsere LED-Produkte bieten langlebige Qualität, moderne Technik und sparen Stromkosten. Perfekt für Innen- und Außenbereiche, einfache Montage und zuverlässige Performance. Jetzt passende LEDs finden und Licht neu erleben.</p>",
+    "handle": "led-produkte",
+    "image": {
+      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/zx5094_3.jpg?v=1753315925",
+      "altText": null,
+      "width": 800,
+      "height": 600
+    },
+    "seo": {
+      "title": "LED-Lichter, Nachtlichter & Deko-Leuchten | alltagsgold",
+      "description": "LED-Produkte mit Effekt: Nachtlichter, Lichterketten & mehr für dein Zuhause. Kreatives Lichtdesign jetzt online bei alltagsgold shoppen."
+    },
+    "updatedAt": "2025-07-24T00:12:05Z"
+  },
+  {
+    "id": "gid://shopify/Collection/659570327895",
+    "title": "Badezimmeraccessoires und Textilien",
+    "description": "Entdecken Sie unsere exklusive Kollektion feinster Textilien und stilvoller Badaccessoires. Finden Sie die perfekten Ergänzungen für Ihr Zuhause.",
+    "descriptionHtml": "<p><meta charset=\"utf-8\">Entdecken Sie unsere exklusive Kollektion feinster Textilien und stilvoller Badaccessoires. Finden Sie die perfekten Ergänzungen für Ihr Zuhause.</p>",
+    "handle": "badezimmeraccessoires-und-textilien",
+    "image": {
+      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/af9b432bafd4.jpg?v=1753316041",
+      "altText": null,
+      "width": 956,
+      "height": 540
+    },
+    "seo": {
+      "title": "Badezimmeraccessoires & Textilien mit Stil | alltagsgold",
+      "description": "Verleihe deinem Bad ein Style-Upgrade. Handtücher, Organizer & Deko – hochwertige Accessoires & Textilien bei alltagsgold entdecken."
+    },
+    "updatedAt": "2025-07-24T00:15:35Z"
+  },
+  {
+    "id": "gid://shopify/Collection/659570458967",
+    "title": "Beleuchtung & Lampen",
+    "description": "Stimmungsvolle Beleuchtung für jedes Zuhause: Unsere Lampen und Lichtlösungen vereinen Funktionalität mit Design – für gemütliche, kreative und stilvolle Räume. Nachtlichter & LED-Lampen mit beruhigendem Licht Kreative 3D-Lampen für Kinderzimmer, Schlafzimmer & Büro Dekorative Lichtlösungen für besondere Akzente USB- & batteriebetriebene Modelle für flexible Nutzung Perfekt für Entspannung, Konzentration oder als Geschenkidee Jetzt entdecken und dein Zuhause mit stimmungsvoller Beleuchtung von Alltagsgold aufwerten.",
+    "descriptionHtml": "<p>Stimmungsvolle Beleuchtung für jedes Zuhause: Unsere Lampen und Lichtlösungen vereinen Funktionalität mit Design – für gemütliche, kreative und stilvolle Räume.</p>\n<ul>\n  <li>Nachtlichter &amp; LED-Lampen mit beruhigendem Licht</li>\n  <li>Kreative 3D-Lampen für Kinderzimmer, Schlafzimmer &amp; Büro</li>\n  <li>Dekorative Lichtlösungen für besondere Akzente</li>\n  <li>USB- &amp; batteriebetriebene Modelle für flexible Nutzung</li>\n  <li>Perfekt für Entspannung, Konzentration oder als Geschenkidee</li>\n</ul>\n<p>Jetzt entdecken und dein Zuhause mit stimmungsvoller Beleuchtung von Alltagsgold aufwerten.</p>",
+    "handle": "beleuchtung-lampen",
+    "image": {
+      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-pixabay-356048_t33j1h.webp?v=1753316210",
+      "altText": null,
+      "width": 800,
+      "height": 450
+    },
+    "seo": {
+      "title": "Moderne Lampen & Lichtideen für dein Zuhause | alltagsgold",
+      "description": "Stimmungsvolle Beleuchtung für Wohn- & Schlafzimmer. Ob LED, Nachtlicht oder kreative Lampen – entdecke jetzt Lichtideen bei alltagsgold."
+    },
+    "updatedAt": "2025-07-24T00:18:40Z"
+  },
+  {
+    "id": "gid://shopify/Collection/659570524503",
+    "title": "Aufbewahrung & Organisation",
+    "description": "Durchdachte Aufbewahrungs- und Organisationslösungen für ein aufgeräumtes Zuhause. Maximieren Sie Ihren Raum mit funktionalen und ästhetischen Produkten.",
+    "descriptionHtml": "<p class=\"_p_1x4t5_68\"><span>Durchdachte Aufbewahrungs- und Organisationslösungen für ein aufgeräumtes Zuhause. Maximieren Sie Ihren Raum mit funktionalen und ästhetischen Produkten.</span></p>",
+    "handle": "aufbewahrung-organisation",
+    "image": {
+      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-cottonbro-4553182_rduji7_c15bc267-a047-42b4-8a0f-0c140a09dbd3.webp?v=1753316379",
+      "altText": null,
+      "width": 800,
+      "height": 533
+    },
+    "seo": {
+      "title": "Ordnung & Aufbewahrung für dein Zuhause | alltagsgold",
+      "description": "Stylishe Ordnungshelfer für Küche, Bad & Büro. Organisiere dein Zuhause mit cleveren Storage-Lösungen – jetzt bei alltagsgold shoppen."
+    },
+    "updatedAt": "2025-07-24T00:21:41Z"
+  },
+  {
+    "id": "gid://shopify/Collection/659570622807",
     "title": "BBQ & Grill",
     "description": "Hochwertige BBQ- und Grillprodukte für das perfekte Grillerlebnis. Professionelles Zubehör für Grillfans und Outdoor-Köche.",
-    "descriptionHtml": "<p class=\"_p_1x4t5_68\"><span>Hochwertige BBQ- und Grillprodukte für das perfekte Grillerlebnis. Professionelles Zubehör für Grillfans und Outdoor-Köche.</span></p>",
+    "descriptionHtml": "<p><meta charset=\"utf-8\"><span>Hochwertige BBQ- und Grillprodukte für das perfekte Grillerlebnis. Professionelles Zubehör für Grillfans und Outdoor-Köche.</span></p>",
     "handle": "bbq-grill",
     "image": {
-      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/barbeque_1.jpg?v=1750350296",
+      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/barbeque_1.jpg?v=1753316602",
       "altText": null,
       "width": 600,
       "height": 305
     },
     "seo": {
-      "title": null,
-      "description": null
+      "title": "Grillzubehör & BBQ-Gadgets für Grillfans | alltagsgold",
+      "description": "Smarter Grillzubehör für Balkon, Garten & Camping. Hol dir kompakte Tools & Gadgets für perfekte Grillerlebnisse – bei alltagsgold entdecken."
     },
-    "updatedAt": "2025-06-19T16:24:56Z"
+    "updatedAt": "2025-07-24T00:24:08Z"
   },
   {
-    "id": "gid://shopify/Collection/656691495255",
-    "title": "Aufbewahrung & Organisation",
-    "description": "Durchdachte Aufbewahrungs- und Organisationslösungen für ein aufgeräumtes Zuhause. Maximieren Sie Ihren Raum mit funktionalen und ästhetischen Produkten.",
-    "descriptionHtml": "<p class=\"_p_1x4t5_68\"><span>Durchdachte Aufbewahrungs- und Organisationslösungen für ein aufgeräumtes Zuhause. Maximieren Sie Ihren Raum mit funktionalen und ästhetischen Produkten.</span></p>",
-    "handle": "aufbewahrung-organisation",
-    "image": null,
-    "seo": {
-      "title": null,
-      "description": null
+    "id": "gid://shopify/Collection/659570688343",
+    "title": "Luftbefeuchter & Raumklima",
+    "description": "Hocheffiziente Luftreiniger und Luftbefeuchter für ein gesundes Raumklima. Verbessern Sie Ihre Luftqualität und schaffen Sie ein angenehmes Wohnambiente.",
+    "descriptionHtml": "<p><meta charset=\"utf-8\"><span>Hocheffiziente Luftreiniger und Luftbefeuchter für ein gesundes Raumklima. Verbessern Sie Ihre Luftqualität und schaffen Sie ein angenehmes Wohnambiente.</span></p>",
+    "handle": "luftreiniger-luftbefeuchter",
+    "image": {
+      "src": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-alireza-kaviani-535828-1374448_wlk6mk.webp?v=1753316705",
+      "altText": null,
+      "width": 800,
+      "height": 533
     },
-    "updatedAt": "2025-06-16T04:31:30Z"
-  },
-  {
-    "id": "gid://shopify/Collection/656929227095",
-    "title": "Selfcare & Beauty",
-    "description": "",
-    "descriptionHtml": "",
-    "handle": "selfcare-beauty",
-    "image": null,
     "seo": {
-      "title": null,
-      "description": null
+      "title": "Luftbefeuchter & Raumklima-Geräte für Zuhause | alltagsgold",
+      "description": "Verbessere dein Raumklima mit innovativen Luftbefeuchtern & Diffusern. Für frische Luft, besseres Wohlbefinden & angenehme Atmosphäre – alltagsgold."
     },
-    "updatedAt": "2025-06-16T04:30:29Z"
-  },
-  {
-    "id": "gid://shopify/Collection/657211294039",
-    "title": "Dekoration",
-    "description": "",
-    "descriptionHtml": "",
-    "handle": "dekoration",
-    "image": null,
-    "seo": {
-      "title": "De",
-      "description": null
-    },
-    "updatedAt": "2025-06-22T06:42:22Z"
-  },
-  {
-    "id": "gid://shopify/Collection/657213718871",
-    "title": "Beleuchtung & Lampen",
-    "description": "",
-    "descriptionHtml": "",
-    "handle": "beleuchtung",
-    "image": null,
-    "seo": {
-      "title": null,
-      "description": null
-    },
-    "updatedAt": "2025-06-22T06:57:13Z"
-  },
-  {
-    "id": "gid://shopify/Collection/657213784407",
-    "title": "LED-Produkte",
-    "description": "Entdecken Sie unsere große Auswahl an hochwertigen LED-Produkten für jeden Bedarf. Ob LED-Lampen, LED-Strips, Panels oder Leuchten – hier finden Sie energieeffiziente Beleuchtungslösungen für Ihr Zuhause, Büro oder Gewerbe. Unsere LED-Produkte bieten langlebige Qualität, moderne Technik und sparen Stromkosten. Perfekt für Innen- und Außenbereiche, einfache Montage und zuverlässige Performance. Jetzt passende LEDs finden und Licht neu erleben.",
-    "descriptionHtml": "<p data-start=\"111\" data-end=\"557\">Entdecken Sie unsere große Auswahl an hochwertigen LED-Produkten für jeden Bedarf. Ob LED-Lampen, LED-Strips, Panels oder Leuchten – hier finden Sie energieeffiziente Beleuchtungslösungen für Ihr Zuhause, Büro oder Gewerbe. Unsere LED-Produkte bieten langlebige Qualität, moderne Technik und sparen Stromkosten. Perfekt für Innen- und Außenbereiche, einfache Montage und zuverlässige Performance. Jetzt passende LEDs finden und Licht neu erleben.</p>",
-    "handle": "led-produkte",
-    "image": null,
-    "seo": {
-      "title": null,
-      "description": null
-    },
-    "updatedAt": "2025-06-22T06:57:13Z"
-  },
-  {
-    "id": "gid://shopify/Collection/657362878807",
-    "title": "Haustierbedarf & Zubehör – Alles für dein Haustier",
-    "description": "Entdecke unser vielseitiges Sortiment an Haustierzubehör für Hund, Katze & Co. Von hochwertigem Futter über kuschelige Schlafplätze bis hin zu praktischem Pflegezubehör und spannendem Spielzeug – hier findest du alles, was dein Haustier braucht. Wir wählen alle Produkte sorgfältig aus, damit dein Liebling nur das Beste bekommt. Egal, ob du deinen Hund verwöhnen, deine Katze beschäftigen oder einfach für mehr Wohlbefinden sorgen möchtest: Bei Alltagsgold gibt’s die passenden Lösungen für deinen tierischen Alltag.",
-    "descriptionHtml": "<p data-start=\"155\" data-end=\"672\">Entdecke unser vielseitiges Sortiment an Haustierzubehör für Hund, Katze &amp; Co. Von hochwertigem Futter über kuschelige Schlafplätze bis hin zu praktischem Pflegezubehör und spannendem Spielzeug – hier findest du alles, was dein Haustier braucht. Wir wählen alle Produkte sorgfältig aus, damit dein Liebling nur das Beste bekommt. Egal, ob du deinen Hund verwöhnen, deine Katze beschäftigen oder einfach für mehr Wohlbefinden sorgen möchtest: Bei Alltagsgold gibt’s die passenden Lösungen für deinen tierischen Alltag.</p>",
-    "handle": "haustierbedarf-alles-fuer-dein-haustier",
-    "image": null,
-    "seo": {
-      "title": "Haustierzubehör & Tierbedarf für Hund, Katze & mehr ",
-      "description": "Alles für dein Haustier: Spielzeug, Futter, Pflege & Zubehör für Hund, Katze & Co. Jetzt hochwertige Haustierodukte bei Alltagsgold online kaufen.\n\n"
-    },
-    "updatedAt": "2025-06-19T13:59:32Z"
-  },
-  {
-    "id": "gid://shopify/Collection/657395614039",
-    "title": "Wellness & Entspannung",
-    "description": "",
-    "descriptionHtml": "",
-    "handle": "wellness-entspannung",
-    "image": null,
-    "seo": {
-      "title": null,
-      "description": null
-    },
-    "updatedAt": "2025-06-22T08:17:31Z"
+    "updatedAt": "2025-07-24T00:26:16Z"
   }
 ]

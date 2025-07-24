@@ -403,6 +403,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                 alt={currentImage?.altText || product.title}
                 className="w-full h-full object-cover"
                 productTitle={product.title}
+                context="detail"
+                fallbackSrc="https://via.placeholder.com/800x800?text=Produkt+Detail"
               />
             </div>
             
@@ -423,6 +425,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                       alt={image.altText || product.title}
                       className="w-full h-full object-cover"
                       productTitle={product.title}
+                      context="thumbnail"
                     />
                   </button>
                 ))}

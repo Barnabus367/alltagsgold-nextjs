@@ -1,32 +1,44 @@
 import { useState } from 'react';
 import Image from 'next/image';
+import { getOptimizedImageUrl } from '@/lib/categoryImages';
 
 interface PremiumImageProps {
   src: string;
   alt: string;
   className?: string;
   productTitle?: string;
+  context?: 'hero' | 'card' | 'thumbnail' | 'detail';
+  fallbackSrc?: string;
 }
 
-export function PremiumImage({ src, alt, className = "", productTitle = "" }: PremiumImageProps) {
+export function PremiumImage({ 
+  src, 
+  alt, 
+  className = "", 
+  productTitle = "",
+  context = 'card',
+  fallbackSrc
+}: PremiumImageProps) {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   
-  // Apply new Cloudinary optimization with effects: rounded corners, shadow, border
-  const getOptimizedImageUrl = (originalUrl: string) => {
-    if (!originalUrl) return '';
-    
-    // If already a Cloudinary URL, use fetch transformation
-    if (originalUrl.includes('res.cloudinary.com')) {
-      return `https://res.cloudinary.com/dwrk3iihw/image/fetch/w_800,q_auto,f_auto,r_12,e_shadow:10,bo_2px_solid_rgb:e0e0e0/${encodeURIComponent(originalUrl)}`;
+  // Intelligente Bildverarbeitung mit Shopify-Priority
+  const getImageUrl = (originalUrl: string) => {
+    if (!originalUrl || originalUrl.includes('placeholder')) {
+      return fallbackSrc || '';
     }
     
-    // For any other URL (including Shopify), use fetch transformation
-    return `https://res.cloudinary.com/dwrk3iihw/image/fetch/w_800,q_auto,f_auto,r_12,e_shadow:10,bo_2px_solid_rgb:e0e0e0/${encodeURIComponent(originalUrl)}`;
+    // Wenn es bereits eine Shopify-URL ist, optimiere sie intelligent
+    if (originalUrl.includes('shopify.com') || originalUrl.includes('shopifycdn.com')) {
+      return getOptimizedImageUrl(originalUrl, context);
+    }
+    
+    // Für alle anderen URLs (inkl. bereits optimierte Cloudinary)
+    return originalUrl;
   };
   
-  const imageUrl = getOptimizedImageUrl(src);
-  const isValidUrl = imageUrl && !src.includes('placeholder');
+  const imageUrl = getImageUrl(src);
+  const isValidUrl = imageUrl && !imageError;
 
   const handleImageLoad = () => {
     setImageLoaded(true);

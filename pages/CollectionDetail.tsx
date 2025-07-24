@@ -164,7 +164,7 @@ export function CollectionDetail({ preloadedCollection }: CollectionDetailProps)
     );
   }
 
-  const categoryImage = getCategoryImage(collection.title, collection.handle);
+  const categoryImage = getCategoryImage(collection.title, collection.handle, collection.image?.url);
 
   return (
     <div className="min-h-screen bg-white pt-16">
@@ -193,6 +193,7 @@ export function CollectionDetail({ preloadedCollection }: CollectionDetailProps)
           height={1080}
           className="absolute inset-0 w-full h-full object-cover filter saturate-75 brightness-90"
           priority
+          unoptimized={categoryImage.includes('res.cloudinary.com')}
         />
         <div className={`absolute inset-0 bg-gradient-to-br ${getCollectionOverlay(collection.handle)}`} />
         

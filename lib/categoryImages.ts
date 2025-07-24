@@ -1,9 +1,18 @@
-// Optimierte Cloudinary-Bilder für einheitliche Bildsprache
-export const getCategoryImage = (collectionTitle: string, collectionHandle: string): string => {
+// Intelligente Bildauswahl: Shopify-First mit optimierten Fallbacks
+export const getCategoryImage = (
+  collectionTitle: string, 
+  collectionHandle: string, 
+  shopifyImage?: string | null
+): string => {
+  // 1. PRIORITY: Verwende echtes Shopify-Bild wenn verfügbar
+  if (shopifyImage && shopifyImage.trim() && !shopifyImage.includes('placeholder')) {
+    return shopifyImage;
+  }
+
   const lowerTitle = collectionTitle.toLowerCase();
   const lowerHandle = collectionHandle.toLowerCase();
 
-  // Exakte Zuordnung für spezifische Collection-Handles
+  // 2. FALLBACK: Kuratierte Bilder für spezifische Collections
   const exactMappings: Record<string, string> = {
     'haushaltsgerate': 'https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750348905/pexels-elly-fairytale-3806953_su8gtr.jpg',
     'reinigungsgerate': 'https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750349439/pexels-olly-3768910_bjtf5z.jpg',
@@ -17,12 +26,12 @@ export const getCategoryImage = (collectionTitle: string, collectionHandle: stri
     'beleuchtung': 'https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750351051/pexels-pixabay-356048_t33j1h.jpg',
   };
 
-  // Prüfe exakte Handle-Übereinstimmung
+  // 3. FALLBACK: Prüfe exakte Handle-Übereinstimmung
   if (exactMappings[lowerHandle]) {
     return exactMappings[lowerHandle];
   }
 
-  // Keyword-basierte Zuordnung für ähnliche Begriffe
+  // 4. LAST RESORT: Keyword-basierte intelligente Zuordnung
   // 1. Küche - Küchengeräte
   if (lowerTitle.includes('küche') || lowerTitle.includes('kitchen') || 
       lowerHandle.includes('kitchen') || lowerHandle.includes('kuche') || lowerHandle.includes('kueche')) {
@@ -138,6 +147,28 @@ export const getCategoryImage = (collectionTitle: string, collectionHandle: stri
     return 'https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750350657/pexels-jvdm-1599791_hkiovx.jpg';
   }
   
-  // Standard AlltagsGold Produktwelt - verwende Küchengeräte als Hauptkategorie
+  // 5. ULTIMATE FALLBACK: Premium default für AlltagsGold
   return 'https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750350657/pexels-jvdm-1599791_hkiovx.jpg';
+};
+
+// Typ-sichere Bildoptimierung für verschiedene Kontexte
+export const getOptimizedImageUrl = (
+  originalUrl: string | null | undefined,
+  context: 'hero' | 'card' | 'thumbnail' | 'detail' = 'card'
+): string => {
+  if (!originalUrl || originalUrl.includes('placeholder')) {
+    return '';
+  }
+
+  const sizeMap = {
+    hero: 'w_1920,h_1080',
+    detail: 'w_800,h_800', 
+    card: 'w_400,h_400',
+    thumbnail: 'w_150,h_150'
+  };
+
+  const size = sizeMap[context];
+  
+  // Cloudinary optimization mit Context-spezifischen Parametern
+  return `https://res.cloudinary.com/dwrk3iihw/image/fetch/${size},q_auto,f_auto,r_8,e_improve/${encodeURIComponent(originalUrl)}`;
 };

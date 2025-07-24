@@ -99,6 +99,8 @@ export function ProductCard({ product }: ProductCardProps) {
             alt={primaryImage?.altText || product.title}
             className="product-image w-full h-full object-cover"
             productTitle={product.title}
+            context="card"
+            fallbackSrc="https://via.placeholder.com/400x400?text=Produkt+Bild"
           />
           
           {/* Wishlist Button - Mobile-optimiert */}

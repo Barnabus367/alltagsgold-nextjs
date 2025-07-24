@@ -41,7 +41,8 @@ const getCategoryIcon = (collectionHandle: string, collectionTitle: string) => {
 };
 
 export function CategoryCard({ collection, className = '' }: CategoryCardProps) {
-  const categoryImage = getCategoryImage(collection.title, collection.handle);
+  // SHOPIFY-FIRST: Verwende echte Shopify-Bilder mit intelligenten Fallbacks
+  const categoryImage = getCategoryImage(collection.title, collection.handle, collection.image?.url);
   const IconComponent = getCategoryIcon(collection.handle, collection.title);
   
   // Prüfe ob ein echtes Bild verfügbar ist (nicht Unsplash-Fallback)
@@ -101,7 +102,8 @@ export function CategoryCard({ collection, className = '' }: CategoryCardProps) 
 
 // Alternative: Kompakte Kachel-Version
 export function CompactCategoryCard({ collection, className = '' }: CategoryCardProps) {
-  const categoryImage = getCategoryImage(collection.title, collection.handle);
+  // SHOPIFY-FIRST: Verwende echte Shopify-Bilder mit intelligenten Fallbacks
+  const categoryImage = getCategoryImage(collection.title, collection.handle, collection.image?.url);
   const IconComponent = getCategoryIcon(collection.handle, collection.title);
   const hasRealImage = categoryImage && !categoryImage.includes('unsplash.com');
   
@@ -143,7 +145,8 @@ export function CompactCategoryCard({ collection, className = '' }: CategoryCard
 
 // Hero-Style große Kategorie-Karte
 export function HeroCategoryCard({ collection, className = '' }: CategoryCardProps) {
-  const categoryImage = getCategoryImage(collection.title, collection.handle);
+  // SHOPIFY-FIRST: Verwende echte Shopify-Bilder mit intelligenten Fallbacks
+  const categoryImage = getCategoryImage(collection.title, collection.handle, collection.image?.url);
   const IconComponent = getCategoryIcon(collection.handle, collection.title);
   const hasRealImage = categoryImage && !categoryImage.includes('unsplash.com');
   

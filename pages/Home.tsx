@@ -9,6 +9,7 @@ import { formatPrice } from '@/lib/shopify';
 import { ShopifyProduct, ShopifyCollection } from '@/types/shopify';
 import Link from 'next/link';
 import { Home as HomeIcon, ShoppingBag, Heart, Utensils, Shirt, Gamepad2, Monitor, Package, Settings, Fan, Flame, FolderOpen, Lightbulb, Wrench, Grid3X3, Palette, ChefHat, Droplets, Cpu, Beef, Wind, Zap, Waves, Sparkles } from 'lucide-react';
+import { getCategoryImage } from '@/lib/categoryImages';
 import { TrustSlider } from '@/components/common/TrustSlider';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
 
@@ -145,21 +146,8 @@ export function Home({ searchQuery = '', preloadedProducts, preloadedCollections
           ) : (
             <div className="space-y-6">
               {collections?.slice(0, 6).map((collection: any) => {
-                // Direkte Zuordnung der Cloudinary-Bilder zu Collection-Handles
-                const collectionImages: Record<string, string> = {
-                  'haushaltsgerate': 'https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750348905/pexels-elly-fairytale-3806953_su8gtr.jpg',
-                  'reinigungsgerate': 'https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750349439/pexels-olly-3768910_bjtf5z.jpg',
-                  'luftreiniger-luftbefeuchter': 'https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750349603/pexels-alireza-kaviani-535828-1374448_wlk6mk.jpg',
-                  'technik-gadgets': 'https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750349707/pexels-sorjigrey-9956769_li3wx9.jpg',
-                  'kuchengerate-1': 'https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750350657/pexels-jvdm-1599791_hkiovx.jpg',
-                  'bbq-grill': 'https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750350703/barbeque_1_vnzqln.jpg',
-                  'aufbewahrung-organisation': 'https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750350827/pexels-cottonbro-4553182_rduji7.jpg',
-                  'selfcare-beauty': 'https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750350903/pexels-juanpphotoandvideo-1242349_cqpjuv.jpg',
-                  'dekoration': 'https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750350978/pexels-kevin-malik-9016170_wd3swb.jpg',
-                  'beleuchtung': 'https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750351024/pexels-steve-johnson-1269968_vnhqoh.jpg'
-                };
-                
-                const heroImage = collectionImages[collection.handle];
+                // SHOPIFY-FIRST: Verwende echte Shopify-Bilder mit intelligenten Fallbacks
+                const heroImage = getCategoryImage(collection.title, collection.handle, collection.image?.url);
                 
                 return (
                   <Link key={collection.id} href={`/collections/${collection.handle}`}>

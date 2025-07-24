@@ -17,6 +17,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { VercelAnalytics } from '../components/VercelAnalytics';
 import { initializeAnalytics } from '../lib/analytics';
 import { ClickAnalyticsDashboard } from '../components/ClickAnalyticsDashboard';
+import { AnalyticsTestDashboard } from '../components/dev/AnalyticsTestDashboard';
 
 export default function App({ Component, pageProps }) {
   // Performance Optimizations Hook
@@ -36,6 +37,14 @@ export default function App({ Component, pageProps }) {
     
     // Initialize All Analytics (Meta Pixel + Vercel + Global Click Tracker)
     initializeAnalytics();
+    
+    // Initialize Navigation Diagnostics für SSG/ISR Hydration-Analyse
+    if (typeof window !== 'undefined') {
+      import('../lib/navigation-diagnostics').then(({ initializeNavigationDiagnostics }) => {
+        initializeNavigationDiagnostics();
+        console.log('🔧 Navigation Diagnostics aktiviert für Hydration-Analyse');
+      }).catch(console.error);
+    }
     
     // Load Critical CSS based on initial route only - safe browser check
     if (typeof window !== 'undefined') {
@@ -64,6 +73,7 @@ export default function App({ Component, pageProps }) {
                   <Analytics />
                   <VercelAnalytics />
                   <ClickAnalyticsDashboard />
+                  <AnalyticsTestDashboard />
                 </ToastProvider>
               </TooltipProvider>
             </QueryClientProvider>

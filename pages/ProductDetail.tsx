@@ -16,6 +16,7 @@ import { trackViewContent, trackAddToCart } from '@/lib/analytics';
 import { PremiumImage } from '@/components/common/PremiumImage';
 import { formatPrice } from '@/lib/shopify';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
+import { useProductNavigationCleanup } from '@/lib/navigation-handler';
 
 interface ProductDetailProps {
   preloadedProduct?: ShopifyProduct | null;
@@ -40,6 +41,9 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Navigation Handler für saubere Product-Page-Navigation
+  useProductNavigationCleanup();
 
   // Set page title
   usePageTitle(product ? formatPageTitle(product.title) : 'Produkt wird geladen...');

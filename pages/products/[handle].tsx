@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { ProductDetail } from '../ProductDetail';
 import { Layout } from '../../components/layout/Layout';
 import { NextSEOHead } from '../../components/seo/NextSEOHead';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ShopifyProduct } from '../../types/shopify';
 import { getAllProductHandles, getProductByHandle } from '../../lib/shopify';
 import { generateProductSEO } from '../../lib/seo';
@@ -20,6 +20,20 @@ interface ProductDetailPageProps {
 export default function ProductDetailPage({ product, handle }: ProductDetailPageProps) {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Navigation Diagnostics - Product Page Mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      console.log('🛍️ Product Page Mount:', {
+        handle,
+        product: product?.title,
+        timestamp: new Date().toISOString(),
+        fromSSG: !!product, // Preloaded data indicates SSG
+        routerReady: router.isReady,
+        referrer: document.referrer
+      });
+    }
+  }, [handle, product?.title, router.isReady]);
 
   // If the page is not yet generated, this will be displayed
   // until getStaticProps() finishes running
@@ -55,7 +69,9 @@ export default function ProductDetailPage({ product, handle }: ProductDetailPage
         includeOrganization={false} // Nicht bei Produkten, da wir Product Schema haben
       />
       <Layout key={handle} onSearch={setSearchQuery}>
-        <ProductDetail preloadedProduct={product} />
+        <div data-page-type="product" data-handle={handle} data-source={product ? 'ssg' : 'client'}>
+          <ProductDetail preloadedProduct={product} />
+        </div>
       </Layout>
     </>
   );

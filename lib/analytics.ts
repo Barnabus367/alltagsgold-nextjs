@@ -10,6 +10,33 @@ export const ANALYTICS_CONFIG = {
 
 // Vercel Analytics Integration
 import { track } from '@vercel/analytics';
+import { enhancedTrack } from './analytics-validator';
+
+// Force analytics to work in all environments
+const shouldTrack = true; // Always track, regardless of environment
+
+// Enhanced tracking function with retry mechanism
+const trackWithRetry = (eventName: string, properties: any, retries = 3) => {
+  if (!shouldTrack) return;
+  
+  try {
+    // Use enhanced tracking with validation
+    enhancedTrack(eventName, properties);
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.log('📊 Vercel Analytics (Dev):', eventName, properties);
+    }
+  } catch (error) {
+    console.error('❌ Vercel Analytics Error:', error);
+    
+    // Retry mechanism
+    if (retries > 0) {
+      setTimeout(() => {
+        trackWithRetry(eventName, properties, retries - 1);
+      }, 1000);
+    }
+  }
+};
 
 // Global Click Tracker Integration
 import { initializeGlobalClickTracker, getGlobalClickTracker } from './global-click-tracker';
@@ -179,7 +206,7 @@ export function trackViewContent(productData: ProductData) {
   }
   
   // Vercel Analytics - Product View
-  track('Product_View', {
+  trackWithRetry('Product_View', {
     product_id: productData.content_id || 'unknown',
     product_name: productData.content_name || 'Unknown Product',
     category: productData.content_type || 'product',
@@ -211,7 +238,7 @@ export function trackAddToCart(productData: ProductData) {
   }
   
   // Vercel Analytics - Add to Cart
-  track('Add_To_Cart', {
+  trackWithRetry('Add_To_Cart', {
     product_id: productData.content_id || 'unknown',
     product_name: productData.content_name || 'Unknown Product',
     category: productData.content_type || 'product',
@@ -242,7 +269,7 @@ export function trackViewCart(cartData: ProductData) {
   }
   
   // Vercel Analytics - Cart View
-  track('Cart_Viewed', {
+  trackWithRetry('Cart_View', {
     cart_value: cartData.value || 0,
     item_count: cartData.contents?.length || 0,
     currency: cartData.currency || 'CHF'
@@ -270,7 +297,7 @@ export function trackInitiateCheckout(cartData: ProductData) {
   }
   
   // Vercel Analytics - Checkout Started
-  track('Checkout_Started', {
+  trackWithRetry('Checkout_Start', {
     cart_value: cartData.value || 0,
     item_count: cartData.contents?.length || 0,
     currency: cartData.currency || 'CHF'
@@ -300,7 +327,7 @@ export function trackPurchase(purchaseData: PurchaseData) {
   }
 
   // Vercel Analytics - Purchase Completed
-  track('Purchase_Completed', {
+  trackWithRetry('Purchase', {
     order_value: purchaseData.total_value || purchaseData.value || 0,
     item_count: purchaseData.num_items || purchaseData.contents?.length || 1,
     currency: purchaseData.currency || 'CHF',
@@ -327,7 +354,7 @@ export function trackSearch(searchData: SearchData) {
   }
 
   // Vercel Analytics - Search Performed
-  track('Search_Performed', {
+  trackWithRetry('Search', {
     query: searchData.search_string,
     category: searchData.content_category || 'all',
     timestamp: Date.now()
@@ -339,7 +366,7 @@ export function trackSearch(searchData: SearchData) {
 }
 
 /**
- * Track Contact Form Submission with Meta Pixel
+ * Track Contact Form Submission with Meta Pixel + Vercel Analytics
  */
 export function trackContact(formData: { form_name: string; method?: string }) {
   if (typeof window === 'undefined') return;
@@ -348,9 +375,16 @@ export function trackContact(formData: { form_name: string; method?: string }) {
   if (window.fbq) {
     window.fbq('track', 'Contact');
   }
+
+  // Vercel Analytics - Contact Form
+  trackWithRetry('Contact', {
+    form_name: formData.form_name,
+    method: formData.method || 'form',
+    timestamp: Date.now()
+  });
   
   if (process.env.NODE_ENV === 'development') {
-    console.log('📊 Contact tracked:', formData);
+    console.log('📊 Contact tracked (Meta + Vercel):', formData);
   }
 }
 
@@ -404,7 +438,7 @@ export function trackCollectionBrowse(collectionData: {
 }) {
   if (typeof window === 'undefined') return;
 
-  track('Collection_Browse', {
+  trackWithRetry('Collection_Browse', {
     collection: collectionData.collection_name,
     products_count: collectionData.products_viewed,
     engagement_time: collectionData.time_spent,
@@ -423,7 +457,7 @@ export function trackCollectionBrowse(collectionData: {
 export function trackFilterUsage(filterData: FilterUsageEvent) {
   if (typeof window === 'undefined') return;
 
-  track('Filter_Applied', {
+  trackWithRetry('Filter_Applied', {
     filter_type: filterData.filter_type,
     filter_value: filterData.filter_value,
     results_count: filterData.products_shown,
@@ -441,7 +475,7 @@ export function trackFilterUsage(filterData: FilterUsageEvent) {
 export function trackUserEngagement(engagementData: UserEngagementEvent) {
   if (typeof window === 'undefined') return;
 
-  track('User_Engagement', {
+  trackWithRetry('User_Engagement', {
     scroll_depth: engagementData.scroll_depth,
     time_on_page: engagementData.time_on_page,
     interaction_count: engagementData.interactions_count,
@@ -473,7 +507,7 @@ export function trackNewsletterSignup(signupData: {
   }
 
   // Vercel Analytics Newsletter Event
-  track('Newsletter_Signup', {
+  trackWithRetry('Newsletter_Signup', {
     source: signupData.source,
     incentive: signupData.incentive || 'none',
     user_type: signupData.user_type
@@ -490,7 +524,7 @@ export function trackNewsletterSignup(signupData: {
 export function trackWishlistAction(wishlistData: WishlistEvent) {
   if (typeof window === 'undefined') return;
 
-  track('Wishlist_Action', {
+  trackWithRetry('Wishlist_Action', {
     action: wishlistData.action,
     product_id: wishlistData.product_id,
     product_name: wishlistData.product_name,

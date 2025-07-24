@@ -18,6 +18,19 @@ export default function CollectionDetailPage({ collection, handle }: CollectionD
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Navigation Diagnostics - Collection Page Mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      console.log('🏷️ Collection Page Mount:', {
+        handle,
+        collection: collection?.title,
+        timestamp: new Date().toISOString(),
+        fromSSG: !!collection, // Preloaded data indicates SSG
+        routerReady: router.isReady
+      });
+    }
+  }, [handle, collection?.title, collection, router.isReady]);
+
   // Scroll reset when component mounts
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -55,7 +68,9 @@ export default function CollectionDetailPage({ collection, handle }: CollectionD
         includeOrganization={true}
       />
       <Layout key={handle} onSearch={setSearchQuery}>
-        <CollectionDetail preloadedCollection={collection} />
+        <div data-page-type="collection" data-handle={handle} data-source={collection ? 'ssg' : 'client'}>
+          <CollectionDetail preloadedCollection={collection} />
+        </div>
       </Layout>
     </>
   );

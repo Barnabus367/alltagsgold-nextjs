@@ -12,13 +12,14 @@ export function VercelAnalytics() {
 
 // Export tracking functions for custom events
 export const trackEvent = (eventName: string, properties?: Record<string, any>) => {
-  if (process.env.NODE_ENV !== 'production') {
-    console.log('🔧 Dev Mode: Event würde getrackt werden -', eventName, properties);
-    return;
-  }
-
+  // Track in both development and production for debugging
   track(eventName, properties);
-  console.log('📊 Vercel Analytics: Event getrackt -', eventName, properties);
+  
+  if (process.env.NODE_ENV === 'development') {
+    console.log('🔧 Dev Mode: Vercel Event tracked -', eventName, properties);
+  } else {
+    console.log('📊 Vercel Analytics: Event tracked -', eventName, properties);
+  }
 };
 
 export const trackPurchase = (purchaseData: {

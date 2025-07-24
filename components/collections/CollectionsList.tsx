@@ -89,30 +89,45 @@ export function Collections({ preloadedCollections }: CollectionsProps) {
             </div>
           ) : (
             <>
-              {/* Featured Collection - Hero Style - KONFIGURIERT: Technik & Gadgets */}
+              {/* Featured Collection - Hero Style - PROMINENTE ANZEIGE: Technik & Gadgets */}
               {collections.length > 0 && (() => {
-                // Suche nach der konfigurierten Featured Collection
+                // KONFIGURATION: Technik & Gadgets als erste und prominente Kollektion
                 const featuredCollectionHandle = 'technik-gadgets';
                 const featuredCollection = collections.find((c: any) => c.handle === featuredCollectionHandle) || collections[0];
                 
                 return (
-                  <div className="mb-16">
+                  <div className="mb-20">
+                    <div className="text-center mb-12">
+                      <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-4">
+                        Ausgewählte Kollektion
+                      </h2>
+                      <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                        Entdecken Sie unsere Premium-Auswahl an innovativen Produkten
+                      </p>
+                    </div>
                     <HeroCategoryCard 
                       collection={featuredCollection} 
-                      className="max-w-4xl mx-auto"
+                      className="max-w-5xl mx-auto"
                     />
                   </div>
                 );
               })()}
 
-              {/* Regular Collections Grid - ALLE Collections anzeigen */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {collections.map((collection: any) => (
-                  <CategoryCard 
-                    key={collection.id} 
-                    collection={collection}
-                  />
-                ))}
+              {/* Regular Collections Grid - ALLE Collections anzeigen (ohne die bereits gefeatured) */}
+              <div className="mb-12">
+                <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-8 text-center">
+                  Alle Sortimente
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {collections
+                    .filter((collection: any) => collection.handle !== 'technik-gadgets') // Filtere die Featured Collection aus
+                    .map((collection: any) => (
+                      <CategoryCard 
+                        key={collection.id} 
+                        collection={collection}
+                      />
+                    ))}
+                </div>
               </div>
 
               {/* Call-to-Action */}

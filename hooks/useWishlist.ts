@@ -21,8 +21,9 @@ const WISHLIST_STORAGE_KEY = 'alltagsgold_wishlist';
 
 export function useWishlist(): UseWishlistReturn {
   const [wishlistItems, setWishlistItems] = useState<WishlistItem[]>([]);
+  const [isHydrated, setIsHydrated] = useState(false);
 
-  // Load wishlist from localStorage on mount
+  // Load wishlist from localStorage on mount (client-only)
   useEffect(() => {
     try {
       const stored = localStorage.getItem(WISHLIST_STORAGE_KEY);
@@ -32,17 +33,21 @@ export function useWishlist(): UseWishlistReturn {
       }
     } catch (error) {
       console.error('Error loading wishlist from localStorage:', error);
+    } finally {
+      setIsHydrated(true);
     }
   }, []);
 
-  // Save to localStorage whenever wishlist changes
+  // Save to localStorage whenever wishlist changes (nur nach Hydration)
   useEffect(() => {
+    if (!isHydrated) return;
+    
     try {
       localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlistItems));
     } catch (error) {
       console.error('Error saving wishlist to localStorage:', error);
     }
-  }, [wishlistItems]);
+  }, [wishlistItems, isHydrated]);
 
   const isInWishlist = useCallback((productId: string): boolean => {
     return wishlistItems.some(item => item.product.id === productId);

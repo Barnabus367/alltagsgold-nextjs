@@ -144,7 +144,7 @@ export function Header({ onSearch }: HeaderProps) {
             <Link href="/wishlist">
               <Button 
                 variant="ghost" 
-                className={`hidden md:flex items-center space-x-2 hover:bg-gray-50 transition-colors ${textClasses}`}
+                className={`hidden md:flex items-center hover:bg-gray-50 transition-colors ${textClasses} p-2`}
                 aria-label={`Wunschliste${wishlistCount > 0 ? ` (${wishlistCount} Artikel)` : ''}`}
               >
                 <div className="relative">
@@ -155,7 +155,6 @@ export function Header({ onSearch }: HeaderProps) {
                     </span>
                   )}
                 </div>
-                <span className="hidden lg:block">Wunschliste</span>
               </Button>
             </Link>
             

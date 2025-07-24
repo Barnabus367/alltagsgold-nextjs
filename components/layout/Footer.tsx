@@ -3,13 +3,42 @@ import { SiTiktok } from 'react-icons/si';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useCollections } from '@/hooks/useShopify';
+import { sendEmail, validateEmail } from '@/lib/email';
 
 export function Footer() {
   const { data: collections = [] } = useCollections();
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Get the first 4 collections for the footer
   const footerCollections = collections.slice(0, 4);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateEmail(newsletterEmail)) {
+      alert('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      await sendEmail('newsletter', {
+        email: newsletterEmail,
+        source: 'footer'
+      });
+      
+      setNewsletterEmail('');
+      alert('E-Mail-Programm wurde geöffnet. Bitte senden Sie die E-Mail ab, um sich für den Newsletter anzumelden.');
+    } catch (error) {
+      alert('Fehler beim Öffnen des E-Mail-Programms.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <footer className="bg-black text-white">
@@ -24,16 +53,23 @@ export function Footer() {
             
             <div className="space-y-4">
               <h4 className="text-sm font-medium tracking-wide">Newsletter</h4>
-              <div className="flex">
+              <form onSubmit={handleNewsletterSubmit} className="flex">
                 <Input
                   type="email"
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
                   placeholder="Ihre E-Mail-Adresse"
                   className="bg-transparent border-white text-white placeholder-gray-400 focus:border-gray-300 rounded-none flex-1"
+                  required
                 />
-                <Button className="bg-white text-black hover:bg-gray-100 rounded-none px-6 ml-2">
-                  Anmelden
+                <Button 
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="bg-white text-black hover:bg-gray-100 rounded-none px-6 ml-2"
+                >
+                  {isSubmitting ? 'Wird gesendet...' : 'Anmelden'}
                 </Button>
-              </div>
+              </form>
             </div>
           </div>
 
@@ -93,12 +129,26 @@ export function Footer() {
             <div>
               <h4 className="text-sm font-medium tracking-wide mb-4">Folgen Sie uns</h4>
               <div className="flex space-x-4">
-                <Button variant="ghost" size="sm" className="p-2 text-gray-300 hover:text-white hover:bg-white/10">
-                  <Instagram className="h-5 w-5" />
-                </Button>
-                <Button variant="ghost" size="sm" className="p-2 text-gray-300 hover:text-white hover:bg-white/10">
-                  <SiTiktok className="h-4 w-4" />
-                </Button>
+                <a 
+                  href="https://www.instagram.com/alltagsgold.ch/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="AlltagsGold auf Instagram folgen"
+                >
+                  <Button variant="ghost" size="sm" className="p-2 text-gray-300 hover:text-white hover:bg-white/10">
+                    <Instagram className="h-5 w-5" />
+                  </Button>
+                </a>
+                <a 
+                  href="https://www.tiktok.com/@alltagsgold.ch?is_from_webapp=1&sender_device=pc"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="AlltagsGold auf TikTok folgen"
+                >
+                  <Button variant="ghost" size="sm" className="p-2 text-gray-300 hover:text-white hover:bg-white/10">
+                    <SiTiktok className="h-4 w-4" />
+                  </Button>
+                </a>
               </div>
             </div>
           </div>

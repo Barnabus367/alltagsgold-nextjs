@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useState } from 'react';
 import { useCollections, useProducts } from '@/hooks/useShopify';
 import { ProductCard } from '@/components/product/ProductCard';
 import { CategoryCard, CompactCategoryCard, HeroCategoryCard } from '@/components/collections/CategoryCard';
@@ -8,6 +9,7 @@ import { SEOHelmet } from '@/components/SEOHelmet';
 import { HeroVideo } from '@/components/HeroVideo';
 import { ArrowRight, Home as HomeIcon, ShoppingBag, Heart, Utensils, Shirt, Gamepad2, Grid } from 'lucide-react';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
+import { sendEmail, validateEmail } from '@/lib/email';
 
 // Icon mapping for categories
 const getCategoryIcon = (collectionHandle: string, collectionTitle: string) => {
@@ -42,8 +44,36 @@ export function Collections({ preloadedCollections }: CollectionsProps) {
   });
   const { data: productsData, isLoading: productsLoading } = useProducts(8);
   
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [isSubmittingNewsletter, setIsSubmittingNewsletter] = useState(false);
+  
   const products = productsData?.products || [];
   const highlightProducts = products.slice(0, 4);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateEmail(newsletterEmail)) {
+      alert('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+      return;
+    }
+
+    setIsSubmittingNewsletter(true);
+    
+    try {
+      await sendEmail('newsletter', {
+        email: newsletterEmail,
+        source: 'collections'
+      });
+      
+      setNewsletterEmail('');
+      alert('E-Mail-Programm wurde geöffnet. Bitte senden Sie die E-Mail ab, um sich für den Newsletter anzumelden.');
+    } catch (error) {
+      alert('Fehler beim Öffnen des E-Mail-Programms.');
+    } finally {
+      setIsSubmittingNewsletter(false);
+    }
+  };
 
   if (collectionsError) {
     return <ShopifyError error={String(collectionsError)} />;
@@ -238,16 +268,23 @@ export function Collections({ preloadedCollections }: CollectionsProps) {
           <p className="text-xl opacity-80 mb-12 leading-relaxed">
             Erhalten Sie exklusive Angebote und Neuigkeiten direkt in Ihr Postfach
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+          <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
             <input 
               type="email" 
+              value={newsletterEmail}
+              onChange={(e) => setNewsletterEmail(e.target.value)}
               placeholder="Ihre E-Mail-Adresse"
               className="flex-1 px-4 py-3 bg-transparent border border-white text-white placeholder-gray-300 focus:outline-none focus:border-gray-300 rounded-none"
+              required
             />
-            <button className="bg-white text-black px-8 py-3 hover:bg-gray-100 transition-colors rounded-none font-normal">
-              Anmelden
+            <button 
+              type="submit"
+              disabled={isSubmittingNewsletter}
+              className="bg-white text-black px-8 py-3 hover:bg-gray-100 transition-colors rounded-none font-normal disabled:opacity-50"
+            >
+              {isSubmittingNewsletter ? 'Wird gesendet...' : 'Anmelden'}
             </button>
-          </div>
+          </form>
         </div>
       </section>
     </div>

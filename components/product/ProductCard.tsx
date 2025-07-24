@@ -5,6 +5,7 @@ import { Heart, Plus } from 'lucide-react';
 import { ShopifyProduct } from '@/types/shopify';
 import { formatPrice } from '@/lib/shopify';
 import { useCart } from '@/hooks/useCart';
+import { useWishlist } from '@/hooks/useWishlist';
 import { trackAddToCart } from '@/lib/analytics';
 import { PremiumImage } from '@/components/common/PremiumImage';
 import { announceToScreenReader } from '@/lib/accessibility';
@@ -16,11 +17,13 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [showQuickPreview, setShowQuickPreview] = useState(false);
   const { addItemToCart, isAddingToCart } = useCart();
+  const { isInWishlist, toggleWishlist: toggleWishlistHook } = useWishlist();
   const { capabilities, getTouchClasses, validateTouchTarget } = useMobileUX();
   const cardRef = useRef<HTMLDivElement>(null);
+
+  const isWishlisted = isInWishlist(product.id);
 
   const primaryImage = product.images.edges[0]?.node;
   const primaryVariant = product.variants.edges[0]?.node;
@@ -67,13 +70,13 @@ export function ProductCard({ product }: ProductCardProps) {
     }
   };
 
-  const toggleWishlist = (e: React.MouseEvent) => {
+  const handleToggleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    const newState = !isWishlisted;
-    setIsWishlisted(newState);
     
-    const message = newState 
+    const wasAdded = toggleWishlistHook(product);
+    
+    const message = wasAdded 
       ? `${product.title} zur Wunschliste hinzugefügt`
       : `${product.title} von Wunschliste entfernt`;
     announceToScreenReader(message);
@@ -112,7 +115,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 ? 'min-h-[44px] min-w-[44px] p-3 touch-manipulation' 
                 : 'h-8 w-8 p-1'
             }`}
-            onClick={toggleWishlist}
+            onClick={handleToggleWishlist}
             aria-label={isWishlisted ? `${product.title} von Wunschliste entfernen` : `${product.title} zur Wunschliste hinzufügen`}
             type="button"
           >

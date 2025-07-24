@@ -9,6 +9,7 @@ import { SearchBar } from '@/components/common/SearchBar';
 import { CartButton } from '@/components/cart/CartButton';
 import { Menu, Heart, Search } from 'lucide-react';
 import { useCollections } from '@/hooks/useShopify';
+import { useWishlist } from '@/hooks/useWishlist';
 import { useMobileUX } from '@/hooks/useMobileUX';
 import { FocusManager, announceToScreenReader } from '@/lib/accessibility';
 
@@ -19,6 +20,7 @@ interface HeaderProps {
 export function Header({ onSearch }: HeaderProps) {
   const router = useRouter();
   const { data: collections = [] } = useCollections();
+  const { wishlistCount } = useWishlist();
   const { capabilities, getTouchClasses } = useMobileUX();
   
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -138,6 +140,25 @@ export function Header({ onSearch }: HeaderProps) {
           {/* Right Actions */}
           <div className="flex items-center space-x-6">
             
+            {/* Wishlist Button */}
+            <Link href="/wishlist">
+              <Button 
+                variant="ghost" 
+                className={`hidden md:flex items-center space-x-2 hover:bg-gray-50 transition-colors ${textClasses}`}
+                aria-label={`Wunschliste${wishlistCount > 0 ? ` (${wishlistCount} Artikel)` : ''}`}
+              >
+                <div className="relative">
+                  <Heart className="h-5 w-5" />
+                  {wishlistCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      {wishlistCount > 99 ? '99+' : wishlistCount}
+                    </span>
+                  )}
+                </div>
+                <span className="hidden lg:block">Wunschliste</span>
+              </Button>
+            </Link>
+            
             <CartButton textClasses={textClasses} />
 
             {/* Mobile Menu - Touch-optimiert */}
@@ -177,6 +198,26 @@ export function Header({ onSearch }: HeaderProps) {
                         </Link>
                       ))}
                     </nav>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-900 mb-3">Mein Account</h3>
+                    <div className="space-y-3 text-sm">
+                      <Link 
+                        href="/wishlist" 
+                        className="flex items-center text-gray-600 hover:text-gray-900 py-2 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-blue-50"
+                        onClick={() => setMobileMenuOpen(false)}
+                        aria-label={`Zur Wunschliste${wishlistCount > 0 ? ` (${wishlistCount} Artikel)` : ''}`}
+                      >
+                        <Heart className="h-4 w-4 mr-2" />
+                        Wunschliste
+                        {wishlistCount > 0 && (
+                          <span className="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-1">
+                            {wishlistCount}
+                          </span>
+                        )}
+                      </Link>
+                    </div>
                   </div>
 
                   <div>

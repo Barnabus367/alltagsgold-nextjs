@@ -8,6 +8,7 @@ import { apiRequest } from '@/lib/queryClient';
 import { trackContact } from '@/lib/analytics';
 import { Layout } from '@/components/layout/Layout';
 import { generateStaticPageSEO } from '../lib/seo';
+import { sendEmail, validateEmail } from '@/lib/email';
 
 export default function ContactPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -56,6 +57,13 @@ export function Contact() {
     setIsSubmitting(true);
     setError('');
     
+    // Validiere E-Mail-Adresse
+    if (!validateEmail(formData.email)) {
+      setError('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+      setIsSubmitting(false);
+      return;
+    }
+    
     try {
       // Track contact form submission
       trackContact({
@@ -63,29 +71,36 @@ export function Contact() {
         method: 'form_submission'
       });
 
-      const response = await apiRequest('POST', '/api/contact', formData);
-      const result = await response.json();
+      // Versuche zuerst die API-Route
+      try {
+        const response = await apiRequest('POST', '/api/contact', formData);
+        const result = await response.json();
 
-      if (result.success) {
+        if (result.success) {
+          setIsSubmitted(true);
+          setFormData({ name: '', email: '', subject: '', message: '' });
+          
+          // Reset success message after 5 seconds
+          setTimeout(() => setIsSubmitted(false), 5000);
+          return;
+        } else {
+          throw new Error(result.error || 'API-Fehler');
+        }
+      } catch (apiError) {
+        console.log('API failed, falling back to email:', apiError);
+        
+        // Fallback: Öffne E-Mail-Programm
+        await sendEmail('contact', formData);
+        
         setIsSubmitted(true);
         setFormData({ name: '', email: '', subject: '', message: '' });
         
         // Reset success message after 5 seconds
         setTimeout(() => setIsSubmitted(false), 5000);
-      } else {
-        setError(result.error || 'Ein Fehler ist aufgetreten');
       }
     } catch (error: any) {
       console.error('Contact form submission error:', error);
-      // Parse error message from apiRequest
-      const errorMessage = error.message || 'Verbindungsfehler. Bitte versuchen Sie es später erneut.';
-      if (errorMessage.includes('400:')) {
-        setError(errorMessage.split('400: ')[1] || 'Ungültige Eingabedaten');
-      } else if (errorMessage.includes('500:')) {
-        setError('Serverfehler. Bitte versuchen Sie es später erneut.');
-      } else {
-        setError('Verbindungsfehler. Bitte versuchen Sie es später erneut.');
-      }
+      setError('Fehler beim Senden. Bitte versuchen Sie es später erneut.');
     } finally {
       setIsSubmitting(false);
     }

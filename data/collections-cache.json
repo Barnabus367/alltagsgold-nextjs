@@ -1,290 +1,364 @@
 [
   {
-    "id": "gid://shopify/Collection/656397828439",
-    "title": "Sale",
-    "description": "",
-    "handle": "sale",
-    "image": null,
-    "productCount": 0,
-    "seo": {
-      "title": "Sale: Hochwertige Lifestyle-Produkte günstig kaufen!",
-      "description": "Entdecken Sie unsere Sale-Kategorie mit hochwertigen Lifestyle-Produkten zu unschlagbaren Preisen. Jetzt zugreifen!",
-      "keywords": [
-        "Sale",
-        "Lifestyle-Produkte",
-        "Schweiz",
-        "AlltagsGold",
-        "Rabatte"
-      ]
-    }
-  },
-  {
-    "id": "gid://shopify/Collection/656584048983",
-    "title": "Bestseller",
-    "description": "Unsere beliebtesten Alltagsgold-Produkte - bewährt und von Kunden geliebt.",
-    "handle": "bestseller",
-    "image": null,
-    "productCount": 0,
-    "seo": {
-      "title": "Bestseller: Beliebte AlltagsGold Produkte",
-      "description": "Entdecken Sie unsere Bestseller! Beliebte AlltagsGold-Produkte, die Kunden lieben und bewähren.",
-      "keywords": [
-        "AlltagsGold",
-        "Bestseller",
-        "Lifestyle-Produkte",
-        "Schweiz",
-        "beliebte Produkte"
-      ]
-    }
-  },
-  {
-    "id": "gid://shopify/Collection/656688906583",
-    "title": "Küchenhelfer & Gadgets",
-    "description": "Hochwertige Küchengeräte für den modernen Haushalt. Entdecken Sie effiziente Helfer, die Ihre Kochprozesse vereinfachen und professionelle Ergebnisse liefern.",
-    "handle": "kuchengerate-1",
-    "image": null,
-    "productCount": 17,
-    "seo": {
-      "title": "Top Küchenhelfer & Gadgets für Ihren Haushalt",
-      "description": "Entdecken Sie hochwertige Küchenhelfer, die Kochen zum Vergnügen machen. Jetzt bei AlltagsGold Schweiz bestellen!",
-      "keywords": [
-        "Küchenhelfer",
-        "Küchengeräte",
-        "Küchen Gadgets",
-        "Hochwertige Küchenprodukte",
-        "Kochzubehör"
-      ]
-    }
-  },
-  {
-    "id": "gid://shopify/Collection/656689496407",
-    "title": "Haushaltsgeräte",
-    "description": "Qualitativ hochwertige Haushaltsgeräte für mehr Effizienz im Alltag. Innovative Lösungen, die Zeit sparen und den Komfort in Ihrem Zuhause steigern.",
-    "handle": "haushaltsgerate",
-    "image": null,
-    "productCount": 5,
-    "seo": {
-      "title": "Effiziente Haushaltsgeräte für Ihr Zuhause",
-      "description": "Entdecken Sie hochwertige Haushaltsgeräte, die Ihren Alltag erleichtern und Komfort bieten. Jetzt bei AlltagsGold Schweiz stöbern!",
-      "keywords": [
-        "Haushaltsgeräte",
-        "Hochwertige Geräte",
-        "Effizienz im Alltag",
-        "Lifestyle-Produkte",
-        "AlltagsGold Schweiz"
-      ]
-    }
-  },
-  {
-    "id": "gid://shopify/Collection/656689922391",
-    "title": "Reinigungsgeräte",
-    "description": "Technologie für effiziente und gründliche Reinigung in jedem Bereich Ihres Zuhauses.\"",
-    "handle": "reinigungsgerate",
-    "image": null,
-    "productCount": 8,
-    "seo": {
-      "title": "Effiziente Reinigungsgeräte für Ihr Zuhause",
-      "description": "Entdecken Sie hochwertige Reinigungsgeräte für eine gründliche Reinigung in jedem Bereich Ihres Zuhauses.",
-      "keywords": [
-        "Reinigungsgeräte",
-        "Hausreinigung",
-        "effiziente Reinigung",
-        "Lifestyle-Produkte",
-        "AlltagsGold Schweiz"
-      ]
-    }
-  },
-  {
-    "id": "gid://shopify/Collection/656690086231",
-    "title": "Luftbefeuchter & Raumklima",
-    "description": "Hocheffiziente Luftreiniger und Luftbefeuchter für ein gesundes Raumklima. Verbessern Sie Ihre Luftqualität und schaffen Sie ein angenehmes Wohnambiente.",
-    "handle": "luftreiniger-luftbefeuchter",
-    "image": null,
-    "productCount": 5,
-    "seo": {
-      "title": "Hochwertige Luftbefeuchter & Raumklima Lösungen",
-      "description": "Entdecken Sie hocheffiziente Luftbefeuchter für ein besseres Raumklima in Ihrem Zuhause. Jetzt Luftqualität verbessern!",
-      "keywords": [
-        "Luftbefeuchter",
-        "Raumklima",
-        "Luftreiniger",
-        "Luftqualität verbessern",
-        "Lifestyle Produkte"
-      ]
-    }
-  },
-  {
-    "id": "gid://shopify/Collection/656690315607",
+    "id": "gid://shopify/Collection/659569410391",
     "title": "Technik & Gadgets",
     "description": "Innovative Technik und praktische Gadgets für den modernen Lebensstil. Entdecken Sie smarte Lösungen, die Ihren Alltag bereichern.",
     "handle": "technik-gadgets",
-    "image": null,
-    "productCount": 0,
+    "image": {
+      "url": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-sorjigrey-9956769_li3wx9.webp?v=1753313576",
+      "altText": "Technik & Gadgets"
+    }, 
+    "productCount": 37,
     "seo": {
-      "title": "Entdecken Sie Technik & Gadgets für Ihren Lifestyle",
-      "description": "Innovative Technik und praktische Gadgets für jeden Tag. Jetzt smarte Lösungen für Ihren Alltag entdecken!",
+      "title": "Technik & Gadgets - Premium AlltagsGold Schweiz",
+      "description": "Innovative Technik und praktische Gadgets für den modernen Lebensstil. Entdecken Sie smarte Lösungen, die Ihren Alltag bereichern.",
       "keywords": [
-        "Technik",
-        "Gadgets",
-        "Lifestyle-Produkte",
+        "Technik & Gadgets",
         "AlltagsGold",
-        "schweizer E-Commerce"
+        "Lifestyle-Produkte",
+        "Schweiz",
+        "Hochwertige Produkte"
       ]
-    }
+    },
+    "updatedAt": "2025-07-24T02:18:59Z",
+    "sortOrder": "best-selling"
   },
   {
-    "id": "gid://shopify/Collection/656690512215",
+    "id": "gid://shopify/Collection/659569705303",
+    "title": "Küchenhelfer & Gadgets",
+    "description": "Hochwertige Küchengeräte für den modernen Haushalt. Entdecken Sie effiziente Helfer, die Ihre Kochprozesse vereinfachen und professionelle Ergebnisse liefern.",
+    "handle": "kueche",
+    "image": {
+      "url": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-jvdm-1599791_hkiovx.webp?v=1753314617",
+      "altText": "Küchenhelfer & Gadgets"
+    },
+    "productCount": 28,
+    "seo": {
+      "title": "Küchenhelfer & Gadgets - Premium AlltagsGold Schweiz",
+      "description": "Hochwertige Küchengeräte für den modernen Haushalt. Entdecken Sie effiziente Helfer, die Ihre Kochprozesse vereinfachen und professionelle Ergebnisse liefern.",
+      "keywords": [
+        "Küchenhelfer & Gadgets",
+        "AlltagsGold",
+        "Lifestyle-Produkte",
+        "Schweiz",
+        "Hochwertige Produkte"
+      ]
+    },
+    "updatedAt": "2025-07-23T23:50:17Z",
+    "sortOrder": "best-selling"
+  },
+  {
+    "id": "gid://shopify/Collection/659569738071",
+    "title": "Haushaltsgeräte",
+    "description": "Qualitativ hochwertige Haushaltsgeräte für mehr Effizienz im Alltag. Innovative Lösungen, die Zeit sparen und den Komfort in Ihrem Zuhause steigern.",
+    "handle": "haushaltsgeraete",
+    "image": {
+      "url": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-elly-fairytale-3806953_su8gtr.webp?v=1753314698",
+      "altText": "Haushaltsgeräte"
+    },
+    "productCount": 27,
+    "seo": {
+      "title": "Haushaltsgeräte - Premium AlltagsGold Schweiz",
+      "description": "Qualitativ hochwertige Haushaltsgeräte für mehr Effizienz im Alltag. Innovative Lösungen, die Zeit sparen und den Komfort in Ihrem Zuhause steigern.",
+      "keywords": [
+        "Haushaltsgeräte",
+        "AlltagsGold",
+        "Lifestyle-Produkte",
+        "Schweiz",
+        "Hochwertige Produkte",
+        "Haushaltsgeräte",
+        "Effizienz im Alltag"
+      ]
+    },
+    "updatedAt": "2025-07-23T23:57:44Z",
+    "sortOrder": "best-selling"
+  },
+  {
+    "id": "gid://shopify/Collection/659570032983",
+    "title": "Dekoration",
+    "description": "Entdecke ausgewählte Dekorationen, die deinem Zuhause eine persönliche Note verleihen – stilvoll, modern und mit viel Liebe zum Detail.",
+    "handle": "dekoration",
+    "image": {
+      "url": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-kevin-malik-9016170_wd3swb.webp?v=1753315401",
+      "altText": "Dekoration"
+    },
+    "productCount": 23,
+    "seo": {
+      "title": "Dekoration - Premium AlltagsGold Schweiz",
+      "description": "Entdecke ausgewählte Dekorationen, die deinem Zuhause eine persönliche Note verleihen – stilvoll, modern und mit viel Liebe zum Detail.",
+      "keywords": [
+        "Dekoration",
+        "AlltagsGold",
+        "Lifestyle-Produkte",
+        "Schweiz",
+        "Hochwertige Produkte"
+      ]
+    },
+    "updatedAt": "2025-07-24T02:11:58Z",
+    "sortOrder": "best-selling"
+  },
+  {
+    "id": "gid://shopify/Collection/659569541463",
+    "title": "Selfcare & Beauty",
+    "description": "Tauch ein in deine persönliche Auszeit – mit hochwertigen Produkten für Wellness, Selfcare und natürliche Schönheit. Unsere Kollektion unterstützt dich dabei, Körper und Geist in Einklang zu bringen – direkt bei dir zuhause.",
+    "handle": "selfcare-beauty",
+    "image": {
+      "url": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-juanpphotoandvideo-1242349_cqpjuv.webp?v=1753314082",
+      "altText": "Selfcare & Beauty"
+    },
+    "productCount": 20,
+    "seo": {
+      "title": "Selfcare & Beauty - Premium AlltagsGold Schweiz",
+      "description": "Tauch ein in deine persönliche Auszeit – mit hochwertigen Produkten für Wellness, Selfcare und natürliche Schönheit. Unsere Kollektion unterstützt dich dabei, K",
+      "keywords": [
+        "Selfcare & Beauty",
+        "AlltagsGold",
+        "Lifestyle-Produkte",
+        "Schweiz",
+        "Hochwertige Produkte"
+      ]
+    },
+    "updatedAt": "2025-07-24T02:13:21Z",
+    "sortOrder": "best-selling"
+  },
+  {
+    "id": "gid://shopify/Collection/659570458967",
+    "title": "Beleuchtung & Lampen",
+    "description": "Stimmungsvolle Beleuchtung für jedes Zuhause: Unsere Lampen und Lichtlösungen vereinen Funktionalität mit Design – für gemütliche, kreative und stilvolle Räume.",
+    "handle": "beleuchtung-lampen",
+    "image": {
+      "url": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-pixabay-356048_t33j1h.webp?v=1753316210",
+      "altText": "Beleuchtung & Lampen"
+    },
+    "productCount": 18,
+    "seo": {
+      "title": "Beleuchtung & Lampen - Premium AlltagsGold Schweiz",
+      "description": "Stimmungsvolle Beleuchtung für jedes Zuhause: Unsere Lampen und Lichtlösungen vereinen Funktionalität mit Design – für gemütliche, kreative und stilvolle Räume.",
+      "keywords": [
+        "Beleuchtung & Lampen",
+        "AlltagsGold",
+        "Lifestyle-Produkte",
+        "Schweiz",
+        "Hochwertige Produkte"
+      ]
+    },
+    "updatedAt": "2025-07-24T02:11:33Z",
+    "sortOrder": "best-selling"
+  },
+  {
+    "id": "gid://shopify/Collection/659570262359",
+    "title": "LED-Produkte",
+    "description": "Entdecken Sie unsere große Auswahl an hochwertigen LED-Produkten für jeden Bedarf. Ob LED-Lampen, LED-Strips, Panels oder Leuchten – hier finden Sie energieeffiziente Beleuchtungslösungen für Ihr Zuhause.",
+    "handle": "led-produkte",
+    "image": {
+      "url": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/zx5094_3.jpg?v=1753315925",
+      "altText": "LED-Produkte"
+    },
+    "productCount": 18,
+    "seo": {
+      "title": "LED-Produkte - Premium AlltagsGold Schweiz",
+      "description": "Entdecken Sie unsere große Auswahl an hochwertigen LED-Produkten für jeden Bedarf. Ob LED-Lampen, LED-Strips, Panels oder Leuchten – hier finden Sie energieeffi",
+      "keywords": [
+        "LED-Produkte",
+        "AlltagsGold",
+        "Lifestyle-Produkte",
+        "Schweiz",
+        "Hochwertige Produkte"
+      ]
+    },
+    "updatedAt": "2025-07-24T02:11:50Z",
+    "sortOrder": "best-selling"
+  },
+  {
+    "id": "gid://shopify/Collection/659569181015",
+    "title": "Reinigungsgeräte",
+    "description": "Technologie für effiziente und gründliche Reinigung in jedem Bereich Ihres Zuhauses.",
+    "handle": "reinigungsgeraete",
+    "image": {
+      "url": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-olly-3768910_bjtf5z.webp?v=1753312825",
+      "altText": "Reinigungsgeräte"
+    },
+    "productCount": 15,
+    "seo": {
+      "title": "Reinigungsgeräte - Premium AlltagsGold Schweiz",
+      "description": "Technologie für effiziente und gründliche Reinigung in jedem Bereich Ihres Zuhauses.",
+      "keywords": [
+        "Reinigungsgeräte",
+        "AlltagsGold",
+        "Lifestyle-Produkte",
+        "Schweiz",
+        "Hochwertige Produkte"
+      ]
+    },
+    "updatedAt": "2025-07-23T23:36:18Z",
+    "sortOrder": "best-selling"
+  },
+  {
+    "id": "gid://shopify/Collection/659570524503",
+    "title": "Aufbewahrung & Organisation",
+    "description": "Durchdachte Aufbewahrungs- und Organisationslösungen für ein aufgeräumtes Zuhause. Maximieren Sie Ihren Raum mit funktionalen und ästhetischen Produkten.",
+    "handle": "aufbewahrung-organisation",
+    "image": {
+      "url": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-cottonbro-4553182_rduji7_c15bc267-a047-42b4-8a0f-0c140a09dbd3.webp?v=1753316379",
+      "altText": "Aufbewahrung & Organisation"
+    },
+    "productCount": 10,
+    "seo": {
+      "title": "Aufbewahrung & Organisation - Premium AlltagsGold Schweiz",
+      "description": "Durchdachte Aufbewahrungs- und Organisationslösungen für ein aufgeräumtes Zuhause. Maximieren Sie Ihren Raum mit funktionalen und ästhetischen Produkten.",
+      "keywords": [
+        "Aufbewahrung & Organisation",
+        "AlltagsGold",
+        "Lifestyle-Produkte",
+        "Schweiz",
+        "Hochwertige Produkte"
+      ]
+    },
+    "updatedAt": "2025-07-24T00:21:41Z",
+    "sortOrder": "best-selling"
+  },
+  {
+    "id": "gid://shopify/Collection/659569901911",
+    "title": "Wellness & Entspannung",
+    "description": "Entdecke unsere sorgfältig kuratierte Auswahl an Wellness- und Entspannungsprodukten für Zuhause. Von wohltuenden Massagern über revitalisierende Gesichtspflege bis hin zu Aromadiffusern – hier findest du alles für deine persönliche Auszeit.",
+    "handle": "wellness-entspannung",
+    "image": {
+      "url": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/RS34674_AdobeStock_315903138-scr-2-1024x682.jpg?v=1753315181",
+      "altText": "Wellness & Entspannung"
+    },
+    "productCount": 10,
+    "seo": {
+      "title": "Wellness & Entspannung - Premium AlltagsGold Schweiz",
+      "description": "Entdecke unsere sorgfältig kuratierte Auswahl an Wellness- und Entspannungsprodukten für Zuhause. Von wohltuenden Massagern über revitalisierende Gesichtspflege",
+      "keywords": [
+        "Wellness & Entspannung",
+        "AlltagsGold",
+        "Lifestyle-Produkte",
+        "Schweiz",
+        "Hochwertige Produkte"
+      ]
+    },
+    "updatedAt": "2025-07-24T02:12:15Z",
+    "sortOrder": "best-selling"
+  },
+  {
+    "id": "gid://shopify/Collection/659570327895",
+    "title": "Badezimmeraccessoires und Textilien",
+    "description": "Entdecken Sie unsere exklusive Kollektion feinster Textilien und stilvoller Badaccessoires. Finden Sie die perfekten Ergänzungen für Ihr Zuhause.",
+    "handle": "badezimmeraccessoires-und-textilien",
+    "image": {
+      "url": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/af9b432bafd4.jpg?v=1753316041",
+      "altText": "Badezimmeraccessoires und Textilien"
+    },
+    "productCount": 9,
+    "seo": {
+      "title": "Badezimmeraccessoires und Textilien - Premium AlltagsGold Sc",
+      "description": "Entdecken Sie unsere exklusive Kollektion feinster Textilien und stilvoller Badaccessoires. Finden Sie die perfekten Ergänzungen für Ihr Zuhause.",
+      "keywords": [
+        "Badezimmeraccessoires und Textilien",
+        "AlltagsGold",
+        "Lifestyle-Produkte",
+        "Schweiz",
+        "Hochwertige Produkte"
+      ]
+    },
+    "updatedAt": "2025-07-24T00:15:35Z",
+    "sortOrder": "best-selling"
+  },
+  {
+    "id": "gid://shopify/Collection/659570131287",
+    "title": "Automobil- und Fahrzeugszubehör",
+    "description": "Entdecken Sie unsere besten Auto- und Fahrzeugzubehörteile. Finden Sie alles, was Sie benötigen, um Ihr Fahrzeug aufzurüsten und individuell zu gestalten.",
+    "handle": "auto-zubehoer",
+    "image": {
+      "url": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/Auto-Zubehoer_AdobeStock_374129613_Pixel-Shot_FIN.webp?v=1753315650",
+      "altText": "Automobil- und Fahrzeugszubehör"
+    },
+    "productCount": 7,
+    "seo": {
+      "title": "Automobil- und Fahrzeugszubehör - Premium AlltagsGold Schwei",
+      "description": "Entdecken Sie unsere besten Auto- und Fahrzeugzubehörteile. Finden Sie alles, was Sie benötigen, um Ihr Fahrzeug aufzurüsten und individuell zu gestalten.",
+      "keywords": [
+        "Automobil- und Fahrzeugszubehör",
+        "AlltagsGold",
+        "Lifestyle-Produkte",
+        "Schweiz",
+        "Hochwertige Produkte"
+      ]
+    },
+    "updatedAt": "2025-07-24T01:10:20Z",
+    "sortOrder": "best-selling"
+  },
+  {
+    "id": "gid://shopify/Collection/659568951639",
+    "title": "Haustierbedarf & Zubehör – Alles für dein Haustier",
+    "description": "Entdecke unser vielseitiges Sortiment an Haustierzubehör für Hund, Katze & Co. Von hochwertigem Futter über kuschelige Schlafplätze bis hin zu praktischem Pflegezubehör und spannendem Spielzeug – hier findest du alles, was dein Haustier braucht.",
+    "handle": "haustierbedarf-alles-fuer-dein-haustier",
+    "image": {
+      "url": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/wenn-kein-menschlicher.jpg?v=1753312515",
+      "altText": "Haustierbedarf & Zubehör – Alles für dein Haustier"
+    },
+    "productCount": 7,
+    "seo": {
+      "title": "Haustierbedarf & Zubehör – Alles für dein Haustier - Premium",
+      "description": "Entdecke unser vielseitiges Sortiment an Haustierzubehör für Hund, Katze & Co. Von hochwertigem Futter über kuschelige Schlafplätze bis hin zu praktischem Pfleg",
+      "keywords": [
+        "Haustierbedarf & Zubehör – Alles für dein Haustier",
+        "AlltagsGold",
+        "Lifestyle-Produkte",
+        "Schweiz",
+        "Hochwertige Produkte"
+      ]
+    },
+    "updatedAt": "2025-07-24T02:12:33Z",
+    "sortOrder": "best-selling"
+  },
+  {
+    "id": "gid://shopify/Collection/659570688343",
+    "title": "Luftbefeuchter & Raumklima",
+    "description": "Hocheffiziente Luftreiniger und Luftbefeuchter für ein gesundes Raumklima. Verbessern Sie Ihre Luftqualität und schaffen Sie ein angenehmes Wohnambiente.",
+    "handle": "luftreiniger-luftbefeuchter",
+    "image": {
+      "url": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/pexels-alireza-kaviani-535828-1374448_wlk6mk.webp?v=1753316705",
+      "altText": "Luftbefeuchter & Raumklima"
+    },
+    "productCount": 6,
+    "seo": {
+      "title": "Luftbefeuchter & Raumklima - Premium AlltagsGold Schweiz",
+      "description": "Hocheffiziente Luftreiniger und Luftbefeuchter für ein gesundes Raumklima. Verbessern Sie Ihre Luftqualität und schaffen Sie ein angenehmes Wohnambiente.",
+      "keywords": [
+        "Luftbefeuchter & Raumklima",
+        "AlltagsGold",
+        "Lifestyle-Produkte",
+        "Schweiz",
+        "Hochwertige Produkte"
+      ]
+    },
+    "updatedAt": "2025-07-24T00:26:16Z",
+    "sortOrder": "best-selling"
+  },
+  {
+    "id": "gid://shopify/Collection/659570622807",
     "title": "BBQ & Grill",
     "description": "Hochwertige BBQ- und Grillprodukte für das perfekte Grillerlebnis. Professionelles Zubehör für Grillfans und Outdoor-Köche.",
     "handle": "bbq-grill",
     "image": {
-      "url": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/barbeque_1.jpg?v=1750350296",
-      "altText": null
+      "url": "https://cdn.shopify.com/s/files/1/0918/4575/5223/collections/barbeque_1.jpg?v=1753316602",
+      "altText": "BBQ & Grill"
     },
     "productCount": 1,
     "seo": {
-      "title": "BBQ & Grill: Hochwertige Grillprodukte für Gourmets",
-      "description": "Entdecke erstklassige BBQ- und Grillprodukte für dein perfektes Grillerlebnis. Jetzt im AlltagsGold-Shop bestellen!",
+      "title": "BBQ & Grill - Premium AlltagsGold Schweiz",
+      "description": "Hochwertige BBQ- und Grillprodukte für das perfekte Grillerlebnis. Professionelles Zubehör für Grillfans und Outdoor-Köche.",
       "keywords": [
-        "BBQ Produkte",
-        "Grill Zubehör",
-        "Grillerlebnis",
-        "Outdoor Kochen",
-        "Grillfans"
-      ]
-    }
-  },
-  {
-    "id": "gid://shopify/Collection/656691495255",
-    "title": "Aufbewahrung & Organisation",
-    "description": "Durchdachte Aufbewahrungs- und Organisationslösungen für ein aufgeräumtes Zuhause. Maximieren Sie Ihren Raum mit funktionalen und ästhetischen Produkten.",
-    "handle": "aufbewahrung-organisation",
-    "image": null,
-    "productCount": 0,
-    "seo": {
-      "title": "Aufbewahrung & Organisation für Ihr Zuhause",
-      "description": "Entdecken Sie stilvolle Aufbewahrungslösungen für ein ordentliches Zuhause. Funktionalität und Ästhetik vereint.",
-      "keywords": [
-        "Aufbewahrungslösungen",
-        "Organisation zuhause",
-        "Raumoptimierung",
+        "BBQ & Grill",
+        "AlltagsGold",
         "Lifestyle-Produkte",
-        "Schweiz"
+        "Schweiz",
+        "Hochwertige Produkte"
       ]
-    }
-  },
-  {
-    "id": "gid://shopify/Collection/656929227095",
-    "title": "Selfcare & Beauty",
-    "description": "",
-    "handle": "selfcare-beauty",
-    "image": null,
-    "productCount": 4,
-    "seo": {
-      "title": "Entdecke Selfcare & Beauty Produkte in der Schweiz",
-      "description": "Hochwertige Lifestyle-Produkte für dein Wohlbefinden. Jetzt bei AlltagsGold entdecken!",
-      "keywords": [
-        "Selfcare",
-        "Beauty Produkte",
-        "Lifestyle Schweiz",
-        "Hochwertige Kosmetik",
-        "AlltagsGold"
-      ]
-    }
-  },
-  {
-    "id": "gid://shopify/Collection/657211294039",
-    "title": "Dekoration",
-    "description": "",
-    "handle": "dekoration",
-    "image": null,
-    "productCount": 7,
-    "seo": {
-      "title": "Stilvolle Dekoration für Ihr Zuhause | AlltagsGold",
-      "description": "Entdecken Sie hochwertige Dekoration für jeden Raum. Jetzt bei AlltagsGold Schweiz stöbern und Ihr Zuhause verwandeln!",
-      "keywords": [
-        "Dekoration",
-        "Hochwertige Lifestyle-Produkte",
-        "Zuhause gestalten",
-        "AlltagsGold Schweiz",
-        "Wohnaccessoires"
-      ]
-    }
-  },
-  {
-    "id": "gid://shopify/Collection/657213718871",
-    "title": "Beleuchtung & Lampen",
-    "description": "",
-    "handle": "beleuchtung",
-    "image": null,
-    "productCount": 17,
-    "seo": {
-      "title": "Beleuchtung & Lampen für stilvolles Wohnen",
-      "description": "Entdecken Sie hochwertige Beleuchtung & Lampen für Ihr Zuhause. Stilvolle Designs für jeden Raum bei AlltagsGold Schweiz.",
-      "keywords": [
-        "Beleuchtung",
-        "Lampen",
-        "Wohnaccessoires",
-        "Hochwertige Beleuchtung",
-        "AlltagsGold Schweiz"
-      ]
-    }
-  },
-  {
-    "id": "gid://shopify/Collection/657213784407",
-    "title": "LED-Produkte",
-    "description": "Entdecken Sie unsere große Auswahl an hochwertigen LED-Produkten für jeden Bedarf. Ob LED-Lampen, LED-Strips, Panels oder Leuchten – hier finden Sie energieeffiziente Beleuchtungslösungen für Ihr Zuhause, Büro oder Gewerbe. Unsere LED-Produkte bieten langlebige Qualität, moderne Technik und sparen Stromkosten. Perfekt für Innen- und Außenbereiche, einfache Montage und zuverlässige Performance. Jetzt passende LEDs finden und Licht neu erleben.",
-    "handle": "led-produkte",
-    "image": null,
-    "productCount": 5,
-    "seo": {
-      "title": "Hochwertige LED-Produkte für jedes Zuhause",
-      "description": "Entdecken Sie energieeffiziente LED-Lösungen für Ihr Zuhause. Hochwertige Qualität und moderne Technik für jeden Bedarf.",
-      "keywords": [
-        "LED-Produkte",
-        "Energieeffiziente Beleuchtung",
-        "LED-Lampen",
-        "LED-Strips",
-        "Beleuchtungslösungen"
-      ]
-    }
-  },
-  {
-    "id": "gid://shopify/Collection/657362878807",
-    "title": "Haustierbedarf & Zubehör – Alles für dein Haustier",
-    "description": "Entdecke unser vielseitiges Sortiment an Haustierzubehör für Hund, Katze & Co. Von hochwertigem Futter über kuschelige Schlafplätze bis hin zu praktischem Pflegezubehör und spannendem Spielzeug – hier findest du alles, was dein Haustier braucht. Wir wählen alle Produkte sorgfältig aus, damit dein Liebling nur das Beste bekommt. Egal, ob du deinen Hund verwöhnen, deine Katze beschäftigen oder einfach für mehr Wohlbefinden sorgen möchtest: Bei Alltagsgold gibt’s die passenden Lösungen für deinen tierischen Alltag.",
-    "handle": "haustierbedarf-alles-fuer-dein-haustier",
-    "image": null,
-    "productCount": 5,
-    "seo": {
-      "title": "Haustierbedarf: Alles für dein Tier – AlltagsGold",
-      "description": "Entdecke hochwertiges Haustierzubehör für Hunde & Katzen. Alles für dein Haustier bei AlltagsGold Schweiz!",
-      "keywords": [
-        "Haustierbedarf",
-        "Haustierzubehör",
-        "Hundezubehör",
-        "Katzenspielzeug",
-        "Tierpflege"
-      ]
-    }
-  },
-  {
-    "id": "gid://shopify/Collection/657395614039",
-    "title": "Wellness & Entspannung",
-    "description": "",
-    "handle": "wellness-entspannung",
-    "image": null,
-    "productCount": 15,
-    "seo": {
-      "title": "Wellness & Entspannung - Hochwertige Lifestyle-Produkte",
-      "description": "Entdecken Sie unsere exklusive Kollektion für Wellness und Entspannung. Hochwertige Produkte für Ihr Wohlbefinden.",
-      "keywords": [
-        "Wellness",
-        "Entspannung",
-        "Lifestyle-Produkte",
-        "Hochwertige Produkte",
-        "AlltagsGold Schweiz"
-      ]
-    }
+    },
+    "updatedAt": "2025-07-24T00:24:08Z",
+    "sortOrder": "best-selling"
   }
 ]

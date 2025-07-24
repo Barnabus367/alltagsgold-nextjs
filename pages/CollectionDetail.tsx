@@ -233,12 +233,12 @@ export function CollectionDetail({ preloadedCollection }: CollectionDetailProps)
             </h1>
             
             {/* Refined Subline */}
-            <p className="swiss-hero-subline text-gray-100 mb-12">
+            <p className="swiss-hero-subline text-gray-100 mb-16">
               {getCollectionSubheadline(collection.title, collection.handle)}
             </p>
             
-            {/* Optimierter Ghost Button mit besserer Positionierung */}
-            <div className="flex justify-center">
+            {/* Optimierter Ghost Button - VIEL weiter nach unten positioniert */}
+            <div className="flex justify-center mt-12 mb-8">
               <button 
                 onClick={() => {
                   const productsSection = document.querySelector('#products-section');
@@ -250,7 +250,7 @@ export function CollectionDetail({ preloadedCollection }: CollectionDetailProps)
               </button>
             </div>
             
-            {/* Dezenter Down Arrow mit mehr Abstand */}
+            {/* Dezenter Down Arrow mit noch mehr Abstand */}
             {showScrollIndicator && (
               <div className="mt-16">
                 <div className="swiss-scroll-indicator">

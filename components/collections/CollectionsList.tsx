@@ -105,9 +105,9 @@ export function Collections({ preloadedCollections }: CollectionsProps) {
                 );
               })()}
 
-              {/* Regular Collections Grid - alle außer der Featured */}
+              {/* Regular Collections Grid - ALLE Collections anzeigen */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {collections.filter((collection: any) => collection.handle !== 'technik-gadgets').map((collection: any) => (
+                {collections.map((collection: any) => (
                   <CategoryCard 
                     key={collection.id} 
                     collection={collection}

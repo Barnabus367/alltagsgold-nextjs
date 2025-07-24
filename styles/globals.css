@@ -162,23 +162,23 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 18px 48px;
-  border-radius: 2px;
+  padding: 20px 52px;
+  border-radius: 32px; /* Abgerundet wie im Screenshot */
   
   /* Typography */
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 16px;
-  font-weight: 500;
-  letter-spacing: 0.75px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
   line-height: 1.2;
   text-decoration: none;
   text-transform: uppercase;
   
-  /* Colors & Border - Subtil aufgehellt für bessere Sichtbarkeit */
-  color: #d4b478;
-  background-color: rgba(200, 160, 100, 0.08);
-  border: 1.5px solid #d4b478;
-  box-shadow: 0 2px 12px rgba(200, 160, 100, 0.15);
+  /* Colors & Border - Deutlich sichtbarer */
+  color: #f4e6b3;
+  background-color: rgba(244, 230, 179, 0.15);
+  border: 2px solid #f4e6b3;
+  box-shadow: 0 4px 20px rgba(244, 230, 179, 0.25);
   
   /* Interaction */
   cursor: pointer;
@@ -189,27 +189,27 @@
   
   /* States */
   &:hover {
-    background-color: rgba(200, 160, 100, 0.18);
-    box-shadow: 0 6px 25px rgba(200, 160, 100, 0.25);
-    transform: translateY(-2px);
-    border-color: #e6c58a;
-    color: #e6c58a;
+    background-color: rgba(244, 230, 179, 0.25);
+    box-shadow: 0 8px 30px rgba(244, 230, 179, 0.35);
+    transform: translateY(-3px);
+    border-color: #f9f0c8;
+    color: #f9f0c8;
     animation-play-state: paused;
   }
   
   &:active {
     transform: translateY(-1px);
-    box-shadow: 0 3px 15px rgba(200, 160, 100, 0.2);
+    box-shadow: 0 4px 20px rgba(244, 230, 179, 0.25);
   }
 }
 
 /* Subtile Glow Animation für bessere Aufmerksamkeit */
 @keyframes subtileGlow {
   0%, 100% {
-    box-shadow: 0 2px 12px rgba(200, 160, 100, 0.15);
+    box-shadow: 0 4px 20px rgba(244, 230, 179, 0.25);
   }
   50% {
-    box-shadow: 0 2px 16px rgba(200, 160, 100, 0.22);
+    box-shadow: 0 4px 25px rgba(244, 230, 179, 0.35);
   }
 }
 

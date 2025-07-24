@@ -91,9 +91,40 @@ export function Collections({ preloadedCollections }: CollectionsProps) {
             <>
               {/* Featured Collection - PROMINENTE ANZEIGE: Technik & Gadgets */}
               {collections.length > 0 && (() => {
+                // DEBUG: Log alle verfügbaren Collections
+                console.log('Verfügbare Collections:', collections.map((c: any) => ({ handle: c.handle, title: c.title })));
+                
                 // KONFIGURATION: Technik & Gadgets als prominente Kollektion
-                const featuredCollectionHandle = 'technik-gadgets';
-                const featuredCollection = collections.find((c: any) => c.handle === featuredCollectionHandle);
+                const featuredCollection = collections.find((c: any) => c.handle === 'technik-gadgets');
+                
+                console.log('Featured Collection gefunden:', featuredCollection ? featuredCollection.title : 'NICHT GEFUNDEN');
+                
+                // NUR anzeigen wenn die Kollektion gefunden wird
+                if (!featuredCollection) {
+                  console.error('FEHLER: Technik & Gadgets Kollektion nicht gefunden!');
+                  // FALLBACK: Nehme die erste verfügbare Kollektion
+                  const fallbackCollection = collections[0];
+                  console.log('Verwende Fallback:', fallbackCollection?.title);
+                  
+                  if (!fallbackCollection) return null;
+                  
+                  return (
+                    <div className="mb-20">
+                      <div className="text-center mb-12">
+                        <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-4">
+                          Ausgewählte Kollektion
+                        </h2>
+                        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                          Entdecken Sie unsere Premium-Auswahl an innovativen Produkten
+                        </p>
+                      </div>
+                      <HeroCategoryCard 
+                        collection={fallbackCollection} 
+                        className="max-w-5xl mx-auto"
+                      />
+                    </div>
+                  );
+                }
                 
                 return (
                   <div className="mb-20">
@@ -105,12 +136,10 @@ export function Collections({ preloadedCollections }: CollectionsProps) {
                         Entdecken Sie unsere Premium-Auswahl an innovativen Produkten
                       </p>
                     </div>
-                    {featuredCollection && (
-                      <HeroCategoryCard 
-                        collection={featuredCollection} 
-                        className="max-w-5xl mx-auto"
-                      />
-                    )}
+                    <HeroCategoryCard 
+                      collection={featuredCollection} 
+                      className="max-w-5xl mx-auto"
+                    />
                   </div>
                 );
               })()}

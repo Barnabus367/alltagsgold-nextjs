@@ -14,6 +14,8 @@ import { PWAProvider } from '../components/PWAProvider';
 import { loadCriticalCSS } from '../lib/critical-css';
 import { Analytics } from '@vercel/analytics/react';
 import { VercelAnalytics } from '../components/VercelAnalytics';
+import { initializeAnalytics } from '../lib/analytics';
+import { ClickAnalyticsDashboard } from '../components/ClickAnalyticsDashboard';
 
 export default function App({ Component, pageProps }) {
   // Performance Optimizations Hook
@@ -30,6 +32,9 @@ export default function App({ Component, pageProps }) {
     forceCloudinaryOptimization();
     optimizeFontLoading();
     initializeWebVitalsMonitoring();
+    
+    // Initialize All Analytics (Meta Pixel + Vercel + Global Click Tracker)
+    initializeAnalytics();
     
     // Load Critical CSS based on initial route only - safe browser check
     if (typeof window !== 'undefined') {
@@ -56,6 +61,7 @@ export default function App({ Component, pageProps }) {
                 <Component {...pageProps} />
                 <Analytics />
                 <VercelAnalytics />
+                <ClickAnalyticsDashboard />
               </TooltipProvider>
             </QueryClientProvider>
           </AnalyticsProvider>

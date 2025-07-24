@@ -151,7 +151,7 @@ export const getCategoryImage = (
   return 'https://res.cloudinary.com/dwrk3iihw/image/upload/w_800,q_auto,f_webp/v1750350657/pexels-jvdm-1599791_hkiovx.jpg';
 };
 
-// Typ-sichere Bildoptimierung für verschiedene Kontexte
+// Typ-sichere Bildoptimierung für verschiedene Kontexte - VERBESSERTE QUALITÄT
 export const getOptimizedImageUrl = (
   originalUrl: string | null | undefined,
   context: 'hero' | 'card' | 'thumbnail' | 'detail' = 'card'
@@ -169,6 +169,6 @@ export const getOptimizedImageUrl = (
 
   const size = sizeMap[context];
   
-  // Cloudinary optimization mit Context-spezifischen Parametern
-  return `https://res.cloudinary.com/dwrk3iihw/image/fetch/${size},q_auto,f_auto,r_8,e_improve/${encodeURIComponent(originalUrl)}`;
+  // Cloudinary optimization mit höherer Qualität (q_90 statt q_auto)
+  return `https://res.cloudinary.com/dwrk3iihw/image/fetch/${size},q_90,f_auto,r_8/${encodeURIComponent(originalUrl)}`;
 };

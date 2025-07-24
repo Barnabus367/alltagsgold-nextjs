@@ -2,20 +2,20 @@
 
 const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || 'alltagsgold';
 
-// Basis-Transformation-Presets
+// Basis-Transformation-Presets - VERBESSERTE QUALITÄT
 const TRANSFORM_PRESETS = {
-  thumbnail: 'w_150,h_150,c_fill,q_auto,f_webp',
-  product: 'w_400,h_400,c_fit,q_auto,f_webp',
-  productZoom: 'w_800,h_800,c_fit,q_auto,f_webp',
-  mobile: 'w_375,q_auto,f_webp',
-  mobileThumb: 'w_150,h_150,c_fill,q_auto,f_webp',
-  blogThumbnail: 'w_300,h_200,c_fill,q_auto,f_webp',
-  blogHero: 'w_1200,h_400,c_fill,q_auto,f_webp',
-  category: 'w_350,h_250,c_fill,q_auto,f_webp',
-  hero: 'w_1920,h_600,c_fill,q_auto,f_webp',
-  collection: 'w_600,h_400,c_fill,q_auto,f_webp',
-  avatar: 'w_80,h_80,c_fill,q_auto,f_webp,g_face',
-  banner: 'w_1200,h_300,c_fill,q_auto,f_webp'
+  thumbnail: 'w_150,h_150,c_fill,q_85,f_webp',
+  product: 'w_400,h_400,c_fit,q_90,f_webp',
+  productZoom: 'w_800,h_800,c_fit,q_95,f_webp',
+  mobile: 'w_375,q_85,f_webp',
+  mobileThumb: 'w_150,h_150,c_fill,q_85,f_webp',
+  blogThumbnail: 'w_300,h_200,c_fill,q_85,f_webp',
+  blogHero: 'w_1200,h_400,c_fill,q_90,f_webp',
+  category: 'w_350,h_250,c_fill,q_90,f_webp',
+  hero: 'w_1920,h_600,c_fill,q_95,f_webp',
+  collection: 'w_600,h_400,c_fill,q_90,f_webp',
+  avatar: 'w_80,h_80,c_fill,q_85,f_webp,g_face',
+  banner: 'w_1200,h_300,c_fill,q_90,f_webp'
 } as const;
 
 export type TransformPreset = keyof typeof TRANSFORM_PRESETS;

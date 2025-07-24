@@ -1,11 +1,10 @@
 import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Heart, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { ShopifyProduct } from '@/types/shopify';
 import { formatPrice } from '@/lib/shopify';
 import { useCart } from '@/hooks/useCart';
-import { useWishlist } from '@/hooks/useWishlist';
 import { trackAddToCart } from '@/lib/analytics';
 import { PremiumImage } from '@/components/common/PremiumImage';
 import { announceToScreenReader } from '@/lib/accessibility';
@@ -19,11 +18,8 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const [showQuickPreview, setShowQuickPreview] = useState(false);
   const { addItemToCart, isAddingToCart } = useCart();
-  const { isInWishlist, toggleWishlist: toggleWishlistHook } = useWishlist();
   const { capabilities, getTouchClasses, validateTouchTarget } = useMobileUX();
   const cardRef = useRef<HTMLDivElement>(null);
-
-  const isWishlisted = isInWishlist(product.id);
 
   const primaryImage = product.images.edges[0]?.node;
   const primaryVariant = product.variants.edges[0]?.node;
@@ -70,18 +66,6 @@ export function ProductCard({ product }: ProductCardProps) {
     }
   };
 
-  const handleToggleWishlist = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const wasAdded = toggleWishlistHook(product);
-    
-    const message = wasAdded 
-      ? `${product.title} zur Wunschliste hinzugefügt`
-      : `${product.title} von Wunschliste entfernt`;
-    announceToScreenReader(message);
-  };
-
   return (
     <article 
       ref={cardRef}
@@ -105,26 +89,6 @@ export function ProductCard({ product }: ProductCardProps) {
             context="card"
             fallbackSrc="https://via.placeholder.com/400x400?text=Produkt+Bild"
           />
-          
-          {/* Wishlist Button - Mobile-optimiert */}
-          <Button
-            size="sm"
-            variant="ghost"
-            className={`absolute top-2 right-2 bg-white/90 hover:bg-white rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-sm focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              capabilities.supportsTouch 
-                ? 'min-h-[44px] min-w-[44px] p-3 touch-manipulation' 
-                : 'h-8 w-8 p-1'
-            }`}
-            onClick={handleToggleWishlist}
-            aria-label={isWishlisted ? `${product.title} von Wunschliste entfernen` : `${product.title} zur Wunschliste hinzufügen`}
-            type="button"
-          >
-            <Heart 
-              className={`transition-colors ${
-                isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-600 hover:text-red-500'
-              } ${capabilities.supportsTouch ? 'h-5 w-5' : 'h-4 w-4'}`} 
-            />
-          </Button>
         </div>
         
         {/* Produktinfos */}

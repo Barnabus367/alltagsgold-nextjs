@@ -230,20 +230,19 @@ function Cart() {
                     <div className="flex gap-6">
                       {/* Product Image */}
                       <div className="w-28 h-28 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl overflow-hidden flex-shrink-0 shadow-inner">
-                        {item.merchandise.product.featuredImage?.url && 
-                         getCloudinaryUrl(item.merchandise.product.featuredImage.url).includes('res.cloudinary.com') ? (
+                        {item.merchandise.product.featuredImage?.url ? (
                           <Image
-      src={""}
-      alt="AlltagsGold Produktbild"
-      width={150}
-      height={150}
-      className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
-    />
+                            src={item.merchandise.product.featuredImage.url}
+                            alt={item.merchandise.product.title || "Produktbild"}
+                            width={150}
+                            height={150}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+                          />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
                             <div className="text-center">
                               <div className="w-8 h-8 bg-gray-300 rounded mx-auto mb-2"></div>
-                              Wird geladen...
+                              Kein Bild
                             </div>
                           </div>
                         )}

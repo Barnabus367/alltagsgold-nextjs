@@ -32,6 +32,7 @@ export function ImprovedProductFilterBar({
   compact = false 
 }: ImprovedProductFilterBarProps) {
   const [isOpen, setIsOpen] = useState(!compact);
+  const [hasInitialized, setHasInitialized] = useState(false);
   const [filters, setFilters] = useState<FilterCriteria>({
     collections: [],
     tags: [],
@@ -293,8 +294,17 @@ export function ImprovedProductFilterBar({
     }
 
     const newUrl = params.toString() ? `${window.location.pathname}?${params.toString()}` : window.location.pathname;
-    window.history.replaceState({}, '', newUrl);
-  }, [filters, filterOptions.priceRange]);
+    
+    // Nur URL updaten wenn bereits initialisiert (verhindert Browser-Back-Bug)
+    if (hasInitialized) {
+      window.history.replaceState({}, '', newUrl);
+    }
+    
+    // Nach erstem Update als initialisiert markieren
+    if (!hasInitialized) {
+      setHasInitialized(true);
+    }
+  }, [filters, filterOptions.priceRange, hasInitialized]);
 
   return (
     <div className={`bg-white border border-gray-200 shadow-sm rounded-lg ${className}`}>

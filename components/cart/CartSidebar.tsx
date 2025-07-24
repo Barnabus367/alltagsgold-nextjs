@@ -112,10 +112,9 @@ export function CartSidebar() {
                     className="flex items-center space-x-4 bg-muted/50 p-4 rounded-lg"
                     role="listitem"
                   >
-                    {line.merchandise.product.featuredImage?.url && 
-                     getCloudinaryUrl(line.merchandise.product.featuredImage.url).includes('res.cloudinary.com') ? (
+                    {line.merchandise.product.featuredImage?.url ? (
                       <Image
-                        src={getCloudinaryUrl(line.merchandise.product.featuredImage.url)}
+                        src={line.merchandise.product.featuredImage.url}
                         alt={`Produktbild: ${line.merchandise.product.title}`}
                         width={150}
                         height={150}
@@ -125,9 +124,9 @@ export function CartSidebar() {
                       <div 
                         className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-500"
                         role="img"
-                        aria-label="Produktbild wird geladen"
+                        aria-label="Kein Produktbild verfügbar"
                       >
-                        Wird optimiert...
+                        Kein Bild
                       </div>
                     )}
                     

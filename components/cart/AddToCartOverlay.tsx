@@ -62,10 +62,9 @@ export function AddToCartOverlay() {
         {/* Product Info */}
         <div className="flex items-center space-x-4 mb-6">
           <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-            {merchandise.product.featuredImage?.url && 
-             getCloudinaryUrl(merchandise.product.featuredImage.url).includes('res.cloudinary.com') ? (
+            {merchandise.product.featuredImage?.url ? (
               <Image
-                src={getCloudinaryUrl(merchandise.product.featuredImage.url)}
+                src={merchandise.product.featuredImage.url}
                 alt={merchandise.product.title}
                 width={150}
                 height={150}
@@ -73,7 +72,7 @@ export function AddToCartOverlay() {
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
-                Wird optimiert...
+                Kein Bild
               </div>
             )}
           </div>

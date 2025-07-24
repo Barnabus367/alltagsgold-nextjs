@@ -1,14 +1,2 @@
-// DEAKTIVIERTER Toast-Hook
-export const useToast = () => ({
-  toasts: [],
-  toast: () => ({ id: '', dismiss: () => {} }),
-  dismiss: () => {},
-});
-
-export type ToasterToast = {
-  id: string;
-  title?: string;
-  description?: string;
-  action?: any;
-  dismiss: () => void;
-};
+// Toast Hook - REPARIERT
+export { useToast, type ToasterToast } from '@/components/ui/toast-system';

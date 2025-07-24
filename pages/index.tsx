@@ -32,7 +32,7 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
   try {
     const [{ products }, collections] = await Promise.all([
       getProducts(12), // Featured products for homepage
-      getCollections(10) // Collections for homepage
+      getCollections(10) // Collections für Homepage 
     ]);
 
     return {

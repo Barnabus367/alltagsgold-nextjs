@@ -171,10 +171,10 @@ export function HeroCategoryCard({ collection, className = '' }: CategoryCardPro
         )}
         
         <div className="absolute bottom-6 left-6 right-6 text-white">
-          <h2 className="text-2xl md:text-3xl font-light mb-2 drop-shadow-lg">
+          <h2 className="text-2xl md:text-3xl font-bold mb-2 drop-shadow-lg">
             {collection.title}
           </h2>
-          <p className="text-white/90 mb-4 line-clamp-2 drop-shadow-sm">
+          <p className="text-white/90 mb-4 line-clamp-2 drop-shadow-sm font-medium">
             {collection.description || 'Entdecken Sie unsere exklusive Auswahl'}
           </p>
           

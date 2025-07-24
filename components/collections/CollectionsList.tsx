@@ -89,19 +89,25 @@ export function Collections({ preloadedCollections }: CollectionsProps) {
             </div>
           ) : (
             <>
-              {/* Featured Collection - Hero Style */}
-              {collections.length > 0 && (
-                <div className="mb-16">
-                  <HeroCategoryCard 
-                    collection={collections[0]} 
-                    className="max-w-4xl mx-auto"
-                  />
-                </div>
-              )}
+              {/* Featured Collection - Hero Style - KONFIGURIERT: Technik & Gadgets */}
+              {collections.length > 0 && (() => {
+                // Suche nach der konfigurierten Featured Collection
+                const featuredCollectionHandle = 'technik-gadgets';
+                const featuredCollection = collections.find((c: any) => c.handle === featuredCollectionHandle) || collections[0];
+                
+                return (
+                  <div className="mb-16">
+                    <HeroCategoryCard 
+                      collection={featuredCollection} 
+                      className="max-w-4xl mx-auto"
+                    />
+                  </div>
+                );
+              })()}
 
-              {/* Regular Collections Grid */}
+              {/* Regular Collections Grid - alle außer der Featured */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {collections.slice(1).map((collection: any) => (
+                {collections.filter((collection: any) => collection.handle !== 'technik-gadgets').map((collection: any) => (
                   <CategoryCard 
                     key={collection.id} 
                     collection={collection}

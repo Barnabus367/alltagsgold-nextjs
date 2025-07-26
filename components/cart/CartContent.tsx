@@ -10,6 +10,7 @@ import { getCloudinaryUrl } from '@/lib/cloudinary';
 import { trackViewCart, trackInitiateCheckout } from '@/lib/analytics';
 import { announceToScreenReader } from '@/lib/accessibility';
 import { useMobileUX } from '@/hooks/useMobileUX';
+import { isValidMerchandise, formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
 
 function CartContent() {
   const { 
@@ -41,11 +42,13 @@ function CartContent() {
   // Track ViewCart when component loads and cart has items
   useEffect(() => {
     if (cart && hasItem) {
-      const cartContents = cart.lines.edges.map(edge => ({
-        id: edge.node.merchandise.id,
-        quantity: edge.node.quantity,
-        item_price: parseFloat(edge.node.merchandise.price?.amount || '0')
-      }));
+      const cartContents = cart.lines.edges
+        .filter(edge => isValidMerchandise(edge.node.merchandise))
+        .map(edge => ({
+          id: edge.node.merchandise.id,
+          quantity: edge.node.quantity,
+          item_price: getPriceAmountSafe(edge.node.merchandise.price)
+        }));
 
       trackViewCart({
         value: currentTotal,

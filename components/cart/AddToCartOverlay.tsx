@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useCart } from '@/hooks/useCart';
 import { getCloudinaryUrl } from '@/lib/cloudinary';
 import { formatPrice } from '@/lib/shopify';
+import { formatPriceSafe } from '@/lib/type-guards';
 
 export function AddToCartOverlay() {
   const {
@@ -83,7 +84,7 @@ export function AddToCartOverlay() {
             )}
             <p className="text-sm text-gray-600">Menge: {quantity}</p>
             <p className="font-semibold text-sm">
-              {merchandise.price ? formatPrice(merchandise.price.amount, merchandise.price.currencyCode) : 'N/A'}
+              {formatPriceSafe(merchandise?.price)}
             </p>
           </div>
         </div>

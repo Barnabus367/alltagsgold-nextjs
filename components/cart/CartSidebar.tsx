@@ -9,6 +9,7 @@ import { useMobileUX } from '@/hooks/useMobileUX';
 import { formatPrice } from '@/lib/shopify';
 import { getCloudinaryUrl } from '@/lib/cloudinary';
 import { FocusManager, announceToScreenReader } from '@/lib/accessibility';
+import { formatPriceSafe } from '@/lib/type-guards';
 
 export function CartSidebar() {
   const {
@@ -140,7 +141,7 @@ export function CartSidebar() {
                         </p>
                       ))}
                       <p className="text-sm font-semibold">
-                        {line.merchandise.price ? formatPrice(line.merchandise.price.amount, line.merchandise.price.currencyCode) : 'N/A'}
+                        {formatPriceSafe(line.merchandise?.price)}
                       </p>
                       
                       {/* Mobile-optimierte Quantity Controls */}

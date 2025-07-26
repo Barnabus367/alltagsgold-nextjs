@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Font Definitions */
+@import './fonts.css';
+
 /* Import Accessibility Styles */
 @import './accessibility.css';
 

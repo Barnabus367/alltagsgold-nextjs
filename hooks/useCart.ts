@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createCart, addToCart, updateCartLines, removeFromCart, getCart } from '@/lib/shopify';
 import { ShopifyCart, CartItem } from '@/types/shopify';
+import { buildOverlayItem } from '@/lib/overlay-data';
 
 const CART_ID_KEY = 'shopify_cart_id';
 
@@ -101,9 +102,10 @@ export function useCart() {
         }
       }
 
-      // Set last added item for overlay
+      // Set last added item for overlay with correct structure
       if (productData) {
-        setLastAddedItem({ ...productData, variantId, quantity });
+        const overlayItem = buildOverlayItem(productData, variantId, quantity);
+        setLastAddedItem(overlayItem);
         setIsAddToCartOverlayOpen(true);
       }
     } catch (error) {

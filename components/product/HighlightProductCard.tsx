@@ -6,6 +6,7 @@ import { formatPrice } from '@/lib/shopify';
 import { useCart } from '@/hooks/useCart';
 import { trackAddToCart } from '@/lib/analytics';
 import { OptimizedImage } from '@/components/common/OptimizedImage';
+import { hasValidPrimaryVariant, isValidVariant, formatPriceSafe } from '@/lib/type-guards';
 
 interface HighlightProductCardProps {
   product: ShopifyProduct;
@@ -15,10 +16,23 @@ export function HighlightProductCard({ product }: HighlightProductCardProps) {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const { addItemToCart, isAddingToCart } = useCart();
 
+  // Early validation - wenn Produkt ungültig ist, zeige Fallback
+  if (!hasValidPrimaryVariant(product)) {
+    return (
+      <div className="bg-gray-100 rounded-xl p-8 opacity-50">
+        <div className="h-48 bg-gray-200 rounded-lg mb-4" />
+        <div className="text-center text-gray-500">
+          Produkt nicht verfügbar
+        </div>
+      </div>
+    );
+  }
+
   const primaryImage = product.images.edges[0]?.node;
   const primaryVariant = product.variants.edges[0]?.node;
   
-  const price = primaryVariant?.price ? formatPrice(primaryVariant.price.amount, primaryVariant.price.currencyCode) : 'N/A';
+  // Sichere Price-Formatierung mit Type Guards
+  const price = formatPriceSafe(primaryVariant.price);
 
   // Entfernt - jetzt in OptimizedImage-Komponente
 

@@ -3,7 +3,8 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { HighlightProductCard } from '@/components/product/HighlightProductCard';
 import { ShopifyError } from '@/components/common/ShopifyError';
-import { SEOHelmet } from '@/components/SEOHelmet';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
+import { generateHomeSEO } from '@/lib/seo';
 import { useProducts, useCollections } from '@/hooks/useShopify';
 import { formatPrice } from '@/lib/shopify';
 import { ShopifyProduct, ShopifyCollection } from '@/types/shopify';
@@ -71,11 +72,7 @@ export function Home({ searchQuery = '', preloadedProducts, preloadedCollections
 
   return (
     <div className="min-h-screen">
-      <SEOHelmet 
-        title="AlltagsGold - Premium Lifestyle-Produkte für den Alltag"
-        description="Entdecken Sie innovative Produkte, die den Alltag in kostbare Momente verwandeln. Premium Küchen-, Lifestyle- und Design-Artikel direkt aus der Schweiz."
-        type="website"
-      />
+      <NextSEOHead seo={generateHomeSEO()} />
       
       {/* Modern Reduced Hero Section */}
       <section className="relative overflow-hidden min-h-screen flex items-center justify-center">

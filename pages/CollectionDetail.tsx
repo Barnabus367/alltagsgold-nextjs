@@ -5,7 +5,8 @@ import { useCollection, useProducts } from '@/hooks/useShopify';
 import { ProductCard } from '@/components/product/ProductCard';
 import { ImprovedProductFilterBar } from '@/components/product/ImprovedProductFilterBar';
 import { ShopifyError } from '@/components/common/ShopifyError';
-import { SEOHelmet } from '@/components/SEOHelmet';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
+import { generateCollectionSEO } from '@/lib/seo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -199,11 +200,9 @@ export function CollectionDetail({ preloadedCollection }: CollectionDetailProps)
 
   return (
     <div className="min-h-screen bg-white pt-16">
-      <SEOHelmet
-        title={`${collection.title} - Premium Kollektion`}
-        description={collection.description || `Entdecken Sie unsere ${collection.title} Kollektion mit hochwertigen Produkten für Ihren Lifestyle.`}
-        type="website"
-        collection={collection}
+      <NextSEOHead
+        seo={generateCollectionSEO(collection)}
+        canonicalUrl={`collections/${collection.handle}`}
       />
 
       {/* Sticky Back Button */}

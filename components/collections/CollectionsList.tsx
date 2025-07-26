@@ -5,7 +5,7 @@ import { ProductCard } from '@/components/product/ProductCard';
 import { CategoryCard, CompactCategoryCard, HeroCategoryCard } from '@/components/collections/CategoryCard';
 import { ShopifyError } from '@/components/common/ShopifyError';
 import { ShopifyCollection } from '@/types/shopify';
-import { SEOHelmet } from '@/components/SEOHelmet';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { HeroVideo } from '@/components/HeroVideo';
 import { ArrowRight, Home as HomeIcon, ShoppingBag, Heart, Utensils, Shirt, Gamepad2, Grid } from 'lucide-react';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
@@ -81,10 +81,13 @@ export function Collections({ preloadedCollections }: CollectionsProps) {
 
   return (
     <div className="min-h-screen bg-white pt-16">
-      <SEOHelmet 
-        title="Sortimente - Premium Produktkategorien"
-        description="Entdecken Sie unsere kuratierten Produktkategorien: Küche, Lifestyle, Design und mehr. Hochwertige Artikel für jeden Bereich Ihres Lebens."
-        type="website"
+      <NextSEOHead 
+        seo={{
+          title: 'Sortimente - Premium Produktkategorien | AlltagsGold',
+          description: 'Entdecken Sie unsere kuratierten Produktkategorien: Küche, Lifestyle, Design und mehr. Hochwertige Artikel für jeden Bereich Ihres Lebens.',
+          keywords: 'Kategorien, Sortimente, Küche, Lifestyle, Design, Premium, AlltagsGold'
+        }}
+        canonicalUrl="collections"
       />
       
       {/* Hero Section mit Titel und Intro */}

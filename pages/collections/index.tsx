@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 import { Collections } from '../../components/collections/CollectionsList';
 import { Layout } from '../../components/layout/Layout';
-import { SEOHead } from '../../components/seo/SEOHead';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { useState } from 'react';
 import { ShopifyCollection } from '../../types/shopify';
 import { getCollections } from '../../lib/shopify';
@@ -19,7 +19,14 @@ export default function CollectionsPage({ collections }: CollectionsPageProps) {
 
   return (
     <>
-      <SEOHead seo={seoData} canonicalUrl="/collections" />
+      <NextSEOHead 
+        seo={{
+          title: 'Kollektionen - Premium Produktkategorien | AlltagsGold',
+          description: 'Entdecken Sie unsere kuratierten Produktkategorien: Küche, Lifestyle, Design und mehr.',
+          keywords: 'Kollektionen, Kategorien, Premium, AlltagsGold'
+        }}
+        canonicalUrl="collections" 
+      />
       <Layout onSearch={setSearchQuery}>
         <Collections preloadedCollections={collections} />
       </Layout>

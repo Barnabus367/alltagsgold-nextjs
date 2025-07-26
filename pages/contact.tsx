@@ -1,8 +1,9 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { SEOHelmet } from '../components/SEOHelmet';
-import { SEOHead } from '../components/seo/SEOHead';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
+import { generateContactSEO } from '@/lib/seo';
+
 import { Mail, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
 import { apiRequest } from '@/lib/queryClient';
 import { trackContact } from '@/lib/analytics';
@@ -18,7 +19,6 @@ export default function ContactPage() {
 
   return (
     <Layout onSearch={setSearchQuery}>
-      <SEOHead seo={seoData} canonicalUrl="/contact" />
       <Contact />
     </Layout>
   );
@@ -108,11 +108,9 @@ export function Contact() {
 
   return (
     <div className="min-h-screen bg-white">
-      <SEOHelmet 
-        title="Kontakt - Wir sind für Sie da"
-        description="Kontaktieren Sie uns bei Fragen zu unseren Premium-Produkten. Unser Kundenservice steht Ihnen gerne zur Verfügung. Schnelle und professionelle Beratung."
-        canonicalUrl="/contact"
-        type="website"
+      <NextSEOHead 
+        seo={generateContactSEO()}
+        canonicalUrl="contact"
       />
       
       {/* HULL-style Hero Section */}

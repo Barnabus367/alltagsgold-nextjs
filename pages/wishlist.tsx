@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Layout } from '@/components/layout/Layout';
-import { SEOHead } from '@/components/seo/SEOHead';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { ProductCard } from '@/components/product/ProductCard';
 import { useWishlist } from '@/hooks/useWishlist';
 import { Button } from '@/components/ui/button';
@@ -53,7 +53,14 @@ export default function WishlistPage() {
 
   return (
     <>
-      <SEOHead seo={seoData} canonicalUrl="/wishlist" />
+      <NextSEOHead 
+        seo={{
+          title: 'Wunschliste | AlltagsGold',
+          description: 'Ihre persönliche Wunschliste bei AlltagsGold. Merken Sie sich Ihre Lieblingsprodukte.',
+          keywords: 'Wunschliste, Favoriten, AlltagsGold'
+        }}
+        canonicalUrl="wishlist" 
+      />
       <Layout>
         <div className="min-h-screen bg-gray-50 pt-16">
           <div className="max-w-7xl mx-auto px-6 py-12">

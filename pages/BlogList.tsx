@@ -4,7 +4,8 @@ import { useBlogPosts, formatBlogDate, getReadingTime } from '@/hooks/useBlog';
 import { usePageTitle } from '@/hooks/usePageTitle';
 import { getCloudinaryUrl } from '@/lib/cloudinary';
 import { trackPageView } from '@/lib/analytics';
-import { SEOHelmet } from '@/components/SEOHelmet';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
+import { generateBlogListSEO } from '@/lib/seo';
 import { useEffect } from 'react';
 
 export default function Blog() {
@@ -19,10 +20,8 @@ export default function Blog() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-white">
-        <SEOHelmet
-          title="Blog - AlltagsGold"
-          description="Entdecken Sie hilfreiche Tipps, Produktneuheiten und Lifestyle-Inspiration im AlltagsGold Blog."
-          type="website"
+        <NextSEOHead
+          seo={generateBlogListSEO()}
         />
         <div className="max-w-6xl mx-auto px-6 py-12">
           <div className="animate-pulse">
@@ -46,11 +45,9 @@ export default function Blog() {
   if (error) {
     return (
       <div className="min-h-screen bg-white">
-        <SEOHelmet
-          title="Blog - AlltagsGold"
-          description="Entdecken Sie hilfreiche Tipps, Produktneuheiten und Lifestyle-Inspiration im AlltagsGold Blog."
-          canonicalUrl="/blog"
-          type="website"
+        <NextSEOHead
+          seo={generateBlogListSEO()}
+          canonicalUrl="blog"
         />
         <div className="max-w-6xl mx-auto px-6 py-12">
           <div className="text-center">
@@ -66,11 +63,9 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen bg-white">
-      <SEOHelmet
-        title="Blog - AlltagsGold"
-        description="Entdecken Sie hilfreiche Tipps, Produktneuheiten und Lifestyle-Inspiration im AlltagsGold Blog."
-        canonicalUrl="/blog"
-        type="website"
+      <NextSEOHead
+        seo={generateBlogListSEO()}
+        canonicalUrl="blog"
       />
       
       {/* Header Section */}

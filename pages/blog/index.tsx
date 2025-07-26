@@ -1,18 +1,18 @@
 import Blog from '../BlogList';
 import { Layout } from '../../components/layout/Layout';
-import { SEOHead } from '../../components/seo/SEOHead';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
+import { generateBlogListSEO } from '@/lib/seo';
 import { useState } from 'react';
-import { generateStaticPageSEO } from '../../lib/seo';
 
 export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Generate SEO metadata for blog page
-  const seoData = generateStaticPageSEO('blog');
-
   return (
     <>
-      <SEOHead seo={seoData} canonicalUrl="/blog" />
+      <NextSEOHead 
+        seo={generateBlogListSEO()}
+        canonicalUrl="blog" 
+      />
       <Layout onSearch={setSearchQuery}>
         <Blog />
       </Layout>

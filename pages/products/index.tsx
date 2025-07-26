@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 import { Products } from '../ProductsList';
 import { Layout } from '../../components/layout/Layout';
-import { SEOHead } from '../../components/seo/SEOHead';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { useState } from 'react';
 import { ShopifyProduct } from '../../types/shopify'; 
 import { getProducts } from '../../lib/shopify';
@@ -14,12 +14,16 @@ interface ProductsPageProps {
 export default function ProductsPage({ products }: ProductsPageProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Generate SEO metadata for products page
-  const seoData = generateStaticPageSEO('products');
-
   return (
     <>
-      <SEOHead seo={seoData} canonicalUrl="/products" />
+      <NextSEOHead 
+        seo={{
+          title: 'Alle Produkte - Premium Lifestyle | AlltagsGold',
+          description: 'Entdecken Sie innovative Produkte für den Alltag. Premium Qualität und schweizerische Standards für besondere Momente.',
+          keywords: 'Produkte, Premium, Lifestyle, Schweiz, AlltagsGold'
+        }}
+        canonicalUrl="products" 
+      />
       <Layout onSearch={setSearchQuery}>
         <Products preloadedProducts={products} />
       </Layout>

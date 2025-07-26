@@ -26,24 +26,29 @@ export interface SEOMetadata {
  */
 const SEO_TEMPLATES = {
   brand: "AlltagsGold",
-  productTitleSuffix: "2024 ✓ CH Versand ✓ Top Bewertungen",
-  collectionTitleSuffix: "Schweiz ✓ Sofort lieferbar ✓ Top Qualität",
+  productTitleSuffix: "Schweiz ✓ Sofort lieferbar ✓ Top Bewertungen",
+  collectionTitleSuffix: "Online Shop ✓ Gratis Versand ✓ Premium Qualität",
   productDescriptionSuffix: "⭐ 4.8/5 Bewertungen ⭐ Gratis Versand ab CHF 50 ⭐ 30 Tage Rückgabe ⭐ Schweizer Shop",
   collectionDescriptionTemplate: (name: string) => `${name} günstig kaufen Schweiz ✓ Sofort lieferbar ✓ Top Bewertungen ✓ Gratis Versand`,
   fallbacks: {
-    default: "AlltagsGold Schweiz ✓ Premium Haushaltsware ✓ Gratis Versand ✓ 4.8★ Bewertungen ✓ Sofort lieferbar",
-    products: "Haushaltsware günstig kaufen ✓ Schweizer Shop ✓ Gratis Versand ✓ Top Bewertungen ✓ 30 Tage Rückgabe",
-    collections: "Premium Haushaltsgeräte Schweiz ✓ Sofort lieferbar ✓ Top Qualität ✓ Gratis Versand ab CHF 50",
-    home: "AlltagsGold - Haushaltsware Schweiz ✓ Gratis Versand ✓ 4.8★ Bewertungen ✓ Sofort lieferbar ✓ Top Preise",
-    contact: "AlltagsGold Kontakt Schweiz ✓ Schnelle Hilfe ✓ Kostenlose Beratung ✓ Haushaltsware Experten",
-    blog: "Haushalt Tipps & Tricks ✓ Schweizer Ratgeber ✓ Produkttests ✓ Haushaltsware Guide ✓ AlltagsGold Blog"
+    default: "Lifestyle-Produkte & smarte Alltagshelfer ✓ Gratis Versand ✓ 4.8★ Bewertungen ✓ Schweizer Online Shop",
+    products: "Lifestyle-Produkte & Alltagshelfer günstig kaufen ✓ Schweizer Shop ✓ Gratis Versand ✓ Top Bewertungen ✓ Sofort lieferbar",
+    collections: "Premium Lifestyle-Produkte Schweiz ✓ Sofort lieferbar ✓ Top Qualität ✓ Gratis Versand ab CHF 50",
+    home: "Lifestyle-Produkte & smarte Alltagshelfer ✓ Gratis Versand ✓ 4.8★ Bewertungen ✓ Schweizer Online Shop",
+    contact: "AlltagsGold Kontakt Schweiz ✓ Schnelle Hilfe ✓ Kostenlose Beratung ✓ Lifestyle-Produkte Experten",
+    blog: "Lifestyle Tipps & Produkttests ✓ Schweizer Ratgeber ✓ Alltagshelfer Guide ✓ AlltagsGold Blog"
   }
 };
 
 /**
- * Generiert Brand-konformen Title mit Pipe-Trennung
+ * Generiert Brand-konformen Title mit Pipe-Trennung - ohne Duplikation
  */
 function generateBrandTitle(pageName: string, suffix?: string): string {
+  // Prüfe ob pageName bereits AlltagsGold enthält
+  if (pageName.toLowerCase().includes('alltagsgold')) {
+    return suffix ? `${pageName} | ${suffix}` : pageName;
+  }
+  
   if (!suffix) {
     return `${SEO_TEMPLATES.brand} | ${pageName}`;
   }
@@ -208,19 +213,19 @@ export function generateStaticPageSEO(pageType: string, customTitle?: string, cu
       description: "Haushaltsware & Küchenhelfer günstig kaufen ✓ Schweizer Online Shop ✓ Gratis Versand ab CHF 50 ✓ 4.8★ Bewertungen ✓ 30 Tage Rückgabe ✓ Sofort lieferbar"
     },
     contact: {
-      pageName: "Kontakt Haushaltsware Schweiz ✓ Kostenlose Beratung",
+      pageName: "Kontakt Lifestyle-Produkte Schweiz ✓ Kostenlose Beratung",
       description: SEO_TEMPLATES.fallbacks.contact
     },
     impressum: {
-      pageName: "Impressum AlltagsGold Schweiz ✓ Haushaltsware Shop",
-      description: "Impressum AlltagsGold - Schweizer Online Shop für Haushaltsware ✓ Premium Küchenhelfer ✓ Rechtliche Informationen"
+      pageName: "Impressum AlltagsGold Schweiz ✓ Lifestyle-Produkte Shop",
+      description: "Impressum AlltagsGold - Schweizer Online Shop für Lifestyle-Produkte ✓ Premium Alltagshelfer ✓ Rechtliche Informationen"
     },
     datenschutz: {
       pageName: "Datenschutz AlltagsGold ✓ Sichere Daten ✓ Schweizer Standard", 
       description: "Datenschutz AlltagsGold Schweiz ✓ Sichere Datenverarbeitung ✓ DSGVO konform ✓ Transparenter Umgang mit Kundendaten"
     },
     agb: {
-      pageName: "AGB Haushaltsware Schweiz ✓ Faire Bedingungen ✓ Schneller Versand",
+      pageName: "AGB Lifestyle-Produkte Schweiz ✓ Faire Bedingungen ✓ Schneller Versand",
       description: "AGB AlltagsGold ✓ Faire Geschäftsbedingungen ✓ Gratis Versand ab CHF 50 ✓ 30 Tage Rückgabe ✓ Schweizer Shop"
     },
     blog: {
@@ -228,19 +233,19 @@ export function generateStaticPageSEO(pageType: string, customTitle?: string, cu
       description: SEO_TEMPLATES.fallbacks.blog
     },
     products: {
-      pageName: "Alle Haushaltsware Schweiz ✓ Günstig kaufen ✓ Top Qualität",
-      description: "Alle Haushaltsware & Küchenhelfer ✓ Schweizer Online Shop ✓ Günstige Preise ✓ Premium Qualität ✓ Gratis Versand ab CHF 50"
+      pageName: "Lifestyle-Produkte & Alltagshelfer Schweiz ✓ Günstig kaufen ✓ Top Qualität",
+      description: "Alle Lifestyle-Produkte & Alltagshelfer ✓ Schweizer Online Shop ✓ Günstige Preise ✓ Premium Qualität ✓ Gratis Versand ab CHF 50"
     },
     collections: {
-      pageName: "Haushaltsware Kategorien Schweiz ✓ Große Auswahl ✓ Top Preise", 
-      description: "Haushaltsware Kategorien ✓ Küchenhelfer ✓ Reinigung ✓ Beleuchtung ✓ Schweizer Shop ✓ Günstige Preise ✓ Gratis Versand"
+      pageName: "Lifestyle-Produkte Kategorien Schweiz ✓ Große Auswahl ✓ Top Preise", 
+      description: "Lifestyle-Produkte Kategorien ✓ Alltagshelfer ✓ Beauty ✓ Auto-Zubehör ✓ Wohndeko ✓ Schweizer Shop ✓ Günstige Preise ✓ Gratis Versand"
     },
     'accessibility-demo': {
       pageName: "Barrierefreiheit Demo ✓ Bessere Zugänglichkeit ✓ Mobile UX",
       description: "Demo der neuen Barrierefreiheit und Mobile UX Features ✓ Verbesserte Zugänglichkeit ✓ Moderne Benutzerfreundlichkeit ✓ AlltagsGold"
     },
     cart: {
-      pageName: "Warenkorb ✓ Sichere Bestellung ✓ Haushaltsware Schweiz",
+      pageName: "Warenkorb ✓ Sichere Bestellung ✓ Lifestyle-Produkte Schweiz",
       description: "Ihr Warenkorb bei AlltagsGold ✓ Sichere Bestellung ✓ Gratis Versand ab CHF 50 ✓ 30 Tage Rückgabe ✓ Schweizer Shop"
     }
   };
@@ -331,4 +336,120 @@ export function validateSEOMetadata(metadata: SEOMetadata, pagePath: string): bo
   }
   
   return true;
+}
+
+/**
+ * Generiert SEO-Metadata für Homepage
+ */
+export function generateHomeSEO(): SEOMetadata {
+  const title = generateBrandTitle(SEO_TEMPLATES.fallbacks.home);
+  const description = SEO_TEMPLATES.fallbacks.home;
+  
+  return {
+    title,
+    description,
+    keywords: 'Lifestyle-Produkte, Alltagshelfer, Schweiz, Online Shop, Gratis Versand, Premium Qualität',
+    openGraph: {
+      title,
+      description,
+      image: '/og-home.jpg',
+      url: '/'
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      image: '/og-home.jpg'
+    }
+  };
+}
+
+/**
+ * Generiert SEO-Metadata für Kontaktseite
+ */
+export function generateContactSEO(): SEOMetadata {
+  const title = generateBrandTitle('Kontakt');
+  const description = SEO_TEMPLATES.fallbacks.contact;
+  
+  return {
+    title,
+    description,
+    keywords: 'Kontakt, Kundenservice, AlltagsGold, Schweiz, Beratung',
+    openGraph: {
+      title,
+      description,
+      url: '/contact'
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description
+    }
+  };
+}
+
+/**
+ * Generiert SEO-Metadata für Blog-Liste
+ */
+export function generateBlogListSEO(): SEOMetadata {
+  const title = generateBrandTitle('Blog', 'Tipps & Ratgeber');
+  const description = 'Entdecken Sie hilfreiche Tipps, Produktneuheiten und Lifestyle-Inspiration im AlltagsGold Blog. ✓ Expertentipps ✓ Schweizer Qualität';
+  
+  return {
+    title,
+    description,
+    keywords: 'Blog, Tipps, Ratgeber, Lifestyle, Haushalt, AlltagsGold, Schweiz',
+    openGraph: {
+      title,
+      description,
+      url: '/blog'
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description
+    }
+  };
+}
+
+/**
+ * Generiert SEO-Metadata für Blog-Posts
+ */
+export function generateBlogSEO(post: any): SEOMetadata {
+  const postTitle = post?.title || 'Blog Post';
+  const title = generateBrandTitle(postTitle, 'Haushalt Tipps');
+  
+  const baseDescription = post?.excerpt || post?.description || '';
+  let description = sanitizeDescription(baseDescription, 120);
+  
+  // Blog-spezifisches Suffix hinzufügen
+  const blogSuffix = '✓ Expertentipps ✓ AlltagsGold Blog';
+  if (description.length + blogSuffix.length + 3 <= 150) {
+    description = `${description} | ${blogSuffix}`;
+  }
+  
+  // Fallback
+  if (!description || description.length < 50) {
+    description = SEO_TEMPLATES.fallbacks.blog;
+  }
+  
+  const imageUrl = post?.featuredImage?.url || post?.image?.url;
+  
+  return {
+    title,
+    description,
+    keywords: post?.tags?.join(', ') || 'Haushalt, Tipps, Ratgeber, AlltagsGold',
+    openGraph: {
+      title,
+      description,
+      image: imageUrl,
+      url: `/blog/${post?.handle}`
+    },
+    twitter: {
+      card: imageUrl ? 'summary_large_image' : 'summary',
+      title,
+      description,
+      image: imageUrl
+    }
+  };
 }

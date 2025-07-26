@@ -8,15 +8,11 @@ import { useCheckout } from '@/hooks/useCheckout';
 import { formatPrice, formatSwissPrice, roundToSwissFrancs } from '@/lib/shopify';
 import { getCloudinaryUrl } from '@/lib/cloudinary';
 import { trackViewCart, trackInitiateCheckout } from '@/lib/analytics';
-import { SEOHead } from '../components/seo/SEOHead';
-import { generateStaticPageSEO } from '../lib/seo';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { Layout } from '@/components/layout/Layout';
 
 function Cart() {
   const [mounted, setMounted] = useState(false);
-
-  // Generate SEO metadata for cart page
-  const seoData = generateStaticPageSEO('cart', 'Warenkorb', 'Ihr Warenkorb bei alltagsgold. Überprüfen Sie Ihre Artikel und schließen Sie Ihre Bestellung sicher ab.');
 
   // Verhindert Hydration-Fehler durch client-only rendering
   useEffect(() => {
@@ -125,7 +121,14 @@ function Cart() {
 
   return (
     <>
-      <SEOHead seo={seoData} canonicalUrl="/cart" />
+      <NextSEOHead 
+        seo={{
+          title: 'Warenkorb | AlltagsGold',
+          description: 'Ihr Warenkorb bei alltagsgold. Überprüfen Sie Ihre Artikel und schließen Sie Ihre Bestellung sicher ab.',
+          keywords: 'Warenkorb, Einkauf, AlltagsGold'
+        }}
+        canonicalUrl="cart" 
+      />
       <div className="min-h-screen bg-white pt-16">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         {/* Header */}

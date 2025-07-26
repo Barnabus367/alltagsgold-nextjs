@@ -11,7 +11,8 @@ import { ShopifyVariant, ShopifyProduct } from '@/types/shopify';
 // Import product description generators
 import { getProductIntroduction, getProductFeatures } from '@/lib/productDescriptions';
 import { ShopifyError } from '@/components/common/ShopifyError';
-import { SEOHelmet } from '@/components/SEOHelmet';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
+import { generateProductSEO } from '@/lib/seo';
 import { trackViewContent, trackAddToCart } from '@/lib/analytics';
 import { PremiumImage } from '@/components/common/PremiumImage';
 import { formatPrice } from '@/lib/shopify';
@@ -378,14 +379,22 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   
   return (
     <div className="min-h-screen bg-white pt-16">
-      <SEOHelmet 
-        title={product.title}
-        description={`${optimizedContent.introText.slice(0, 155)}... Jetzt bei AlltagsGold bestellen.`}
-        ogImage={primaryImage?.url}
-        product={product}
-        type="product"
-        isProduct={true}
-        breadcrumbs={breadcrumbs}
+      <NextSEOHead 
+        seo={generateProductSEO(product)}
+        canonicalUrl={`products/${product.handle}`}
+        structuredData={{
+          "@type": "Product",
+          name: product.title,
+          image: primaryImage?.url,
+          description: optimizedContent.introText,
+          offers: {
+            "@type": "Offer",
+            price: parseFloat(product.variants[0].price),
+            priceCurrency: "CHF",
+            availability: product.variants[0].availableForSale ? "InStock" : "OutOfStock",
+            url: `https://www.alltagsgold.ch/products/${product.handle}`
+          }
+        }}
       />
       
       {/* Enhanced Breadcrumb Navigation with Collection */}

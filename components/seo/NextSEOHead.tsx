@@ -56,47 +56,47 @@ export function NextSEOHead({
 
   return (
     <Head>
-      {/* Basic Meta Tags */}
-      <title>{seo.title}</title>
-      <meta name="description" content={seo.description} />
-      {seo.keywords && <meta name="keywords" content={seo.keywords} />}
+      {/* Basic Meta Tags mit Keys für Deduplizierung */}
+      <title key="title">{seo.title}</title>
+      <meta name="description" content={seo.description} key="description" />
+      {seo.keywords && <meta name="keywords" content={seo.keywords} key="keywords" />}
       
       {/* Canonical URL */}
-      <link rel="canonical" href={fullCanonicalUrl} />
+      <link rel="canonical" href={fullCanonicalUrl} key="canonical" />
       
-      {/* Open Graph Tags */}
-      <meta property="og:title" content={seo.openGraph?.title || seo.title} />
-      <meta property="og:description" content={seo.openGraph?.description || seo.description} />
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content={seo.openGraph?.url ? generateCanonicalUrl(seo.openGraph.url) : fullCanonicalUrl} />
-      <meta property="og:site_name" content="AlltagsGold" />
-      <meta property="og:locale" content="de_CH" />
+      {/* Open Graph Tags mit Keys */}
+      <meta property="og:title" content={seo.openGraph?.title || seo.title} key="og:title" />
+      <meta property="og:description" content={seo.openGraph?.description || seo.description} key="og:description" />
+      <meta property="og:type" content="website" key="og:type" />
+      <meta property="og:url" content={seo.openGraph?.url ? generateCanonicalUrl(seo.openGraph.url) : fullCanonicalUrl} key="og:url" />
+      <meta property="og:site_name" content="AlltagsGold" key="og:site_name" />
+      <meta property="og:locale" content="de_CH" key="og:locale" />
       {seo.openGraph?.image && (
         <>
-          <meta property="og:image" content={seo.openGraph.image} />
-          <meta property="og:image:alt" content={seo.title} />
-          <meta property="og:image:width" content="1200" />
-          <meta property="og:image:height" content="630" />
+          <meta property="og:image" content={seo.openGraph.image} key="og:image" />
+          <meta property="og:image:alt" content={seo.title} key="og:image:alt" />
+          <meta property="og:image:width" content="1200" key="og:image:width" />
+          <meta property="og:image:height" content="630" key="og:image:height" />
         </>
       )}
       
-      {/* Twitter Card Tags */}
-      <meta name="twitter:card" content={seo.twitter?.card || 'summary'} />
-      <meta name="twitter:title" content={seo.twitter?.title || seo.title} />
-      <meta name="twitter:description" content={seo.twitter?.description || seo.description} />
-      {seo.twitter?.image && <meta name="twitter:image" content={seo.twitter.image} />}
+      {/* Twitter Card Tags mit Keys */}
+      <meta name="twitter:card" content={seo.twitter?.card || 'summary'} key="twitter:card" />
+      <meta name="twitter:title" content={seo.twitter?.title || seo.title} key="twitter:title" />
+      <meta name="twitter:description" content={seo.twitter?.description || seo.description} key="twitter:description" />
+      {seo.twitter?.image && <meta name="twitter:image" content={seo.twitter.image} key="twitter:image" />}
       
-      {/* Additional SEO Meta Tags */}
-      <meta name="robots" content="index, follow" />
-      <meta name="author" content="AlltagsGold" />
-      <meta name="language" content="de" />
-      <meta name="geo.region" content="CH" />
-      <meta name="geo.placename" content="Schweiz" />
+      {/* Additional SEO Meta Tags mit Keys */}
+      <meta name="robots" content="index, follow" key="robots" />
+      <meta name="author" content="AlltagsGold" key="author" />
+      <meta name="language" content="de" key="language" />
+      <meta name="geo.region" content="CH" key="geo:region" />
+      <meta name="geo.placename" content="Schweiz" key="geo:placename" />
       
-      {/* Structured Data (JSON-LD) */}
+      {/* Structured Data (JSON-LD) mit eindeutigen Keys */}
       {allStructuredData.map((data, index) => (
         <script
-          key={`structured-data-${index}`}
+          key={`structured-data-${data['@type']}-${index}`}
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: generateStructuredDataScript(data)

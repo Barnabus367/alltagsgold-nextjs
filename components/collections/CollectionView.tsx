@@ -4,7 +4,8 @@ import { useCollection, useProducts } from '@/hooks/useShopify';
 import { ProductCard } from '@/components/product/ProductCard';
 import { SearchBar } from '@/components/common/SearchBar';
 import { ShopifyError } from '@/components/common/ShopifyError';
-import { SEOHelmet } from '@/components/SEOHelmet';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
+import { generateCollectionSEO } from '@/lib/seo';
 import { useProductSearch } from '@/hooks/useShopify';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -49,11 +50,9 @@ export function CollectionView() {
   return (
     <div className="min-h-screen bg-white">
       {collection && (
-        <SEOHelmet 
-          title={`${collection.title} - Produktkategorie`}
-          description={`${collection.description || `Entdecken Sie alle Produkte in der Kategorie ${collection.title}`}. Hochwertige Artikel bei AlltagsGold.`}
-          collection={collection}
-          type="website"
+        <NextSEOHead 
+          seo={generateCollectionSEO(collection)}
+          canonicalUrl={`collections/${collection.handle}`}
         />
       )}
       

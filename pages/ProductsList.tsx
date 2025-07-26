@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Search, Filter, Grid, List } from 'lucide-react';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
 import { trackSearch } from '@/lib/analytics';
-import { SEOHelmet } from '@/components/SEOHelmet';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { ShopifyProduct, ShopifyCollection } from '@/types/shopify';
 
 interface ProductsProps {
@@ -69,10 +69,13 @@ export function Products({ preloadedProducts }: ProductsProps) {
 
   return (
     <div className="min-h-screen bg-white pt-16">
-      <SEOHelmet
-        title="Alle Produkte - Premium Lifestyle"
-        description={`Entdecken Sie ${products.length} innovative Produkte für den Alltag. Premium Qualität und schweizerische Standards für besondere Momente.`}
-        type="website"
+      <NextSEOHead
+        seo={{
+          title: 'Alle Produkte - Premium Lifestyle | AlltagsGold',
+          description: `Entdecken Sie innovative Produkte für den Alltag. Premium Qualität und schweizerische Standards für besondere Momente.`,
+          keywords: 'Produkte, Premium, Lifestyle, Schweiz, AlltagsGold'
+        }}
+        canonicalUrl="products"
       />
       {/* Hero Section */}
       <section className="relative h-[45vh] bg-gradient-to-br from-blue-900 via-gray-900 to-black flex items-center justify-center overflow-hidden">

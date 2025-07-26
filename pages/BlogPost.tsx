@@ -5,7 +5,8 @@ import { useBlogPost, formatBlogDate, getReadingTime } from '@/hooks/useBlog';
 import { usePageTitle } from '@/hooks/usePageTitle';
 import { getCloudinaryUrl } from '@/lib/cloudinary';
 import { trackPageView, trackViewContent } from '@/lib/analytics';
-import { SEOHelmet } from '@/components/SEOHelmet';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
+import { generateBlogSEO } from '@/lib/seo';
 import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import { useEffect } from 'react';
 
@@ -50,10 +51,12 @@ export default function BlogPost() {
   if (error || !post) {
     return (
       <div className="min-h-screen bg-white">
-        <SEOHelmet
-          title="Blogpost nicht gefunden - AlltagsGold"
-          description="Der gesuchte Blogpost konnte nicht gefunden werden."
-          type="article"
+        <NextSEOHead
+          seo={{
+            title: 'Blogpost nicht gefunden - AlltagsGold',
+            description: 'Der gesuchte Blogpost konnte nicht gefunden werden.',
+            keywords: 'Blog, AlltagsGold'
+          }}
         />
         <div className="max-w-4xl mx-auto px-6 py-12">
           <div className="text-center">
@@ -99,11 +102,10 @@ export default function BlogPost() {
 
   return (
     <div className="min-h-screen bg-white">
-      <SEOHelmet
-        title={post.seo?.title || `${post.title} - AlltagsGold Blog`}
-        description={post.seo?.description || post.excerpt || `Lesen Sie "${post.title}" im AlltagsGold Blog.`}
-        ogImage={post.image ? getCloudinaryUrl(post.image.url) : undefined}
-        type="article"
+      <NextSEOHead
+        seo={generateBlogSEO(post)}
+        canonicalUrl={`blog/${post.handle}`}
+        structuredData={structuredData}
       />
       
       <script

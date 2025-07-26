@@ -1,8 +1,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { Loader2, ShoppingBag } from 'lucide-react';
-import { SEOHead } from '../components/seo/SEOHead';
-import { generateStaticPageSEO } from '../lib/seo';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { Layout } from '@/components/layout/Layout';
 
 // Dynamischer Import für Cart-Inhalt (client-side only)
@@ -73,12 +72,9 @@ function Cart() {
 
   // Generate SEO metadata
   const seoData = {
-    seo: generateStaticPageSEO(
-      'cart', 
-      'Warenkorb', 
-      'Ihr Warenkorb bei alltagsgold. Überprüfen Sie Ihre Artikel und schließen Sie Ihre Bestellung sicher ab.'
-    ),
-    canonicalUrl: '/cart'
+    title: 'Warenkorb | AlltagsGold',
+    description: 'Ihr Warenkorb bei alltagsgold. Überprüfen Sie Ihre Artikel und schließen Sie Ihre Bestellung sicher ab.',
+    keywords: 'Warenkorb, Einkauf, AlltagsGold'
   };
 
   // Sichere Hydration
@@ -98,7 +94,10 @@ function Cart() {
 
   return (
     <Layout>
-      <SEOHead {...seoData} />
+      <NextSEOHead 
+        seo={seoData}
+        canonicalUrl="cart" 
+      />
       
       {error ? (
         <CartErrorFallback error={error} retry={handleRetry} />

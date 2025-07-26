@@ -1,4 +1,4 @@
-import { SEOHead } from '../components/seo/SEOHead';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateStaticPageSEO } from '../lib/seo';
 
 export function AGB() {
@@ -7,7 +7,14 @@ export function AGB() {
  
   return (
     <div className="min-h-screen bg-white pt-16">
-      <SEOHead seo={seoData} canonicalUrl="/agb" />
+      <NextSEOHead 
+        seo={{
+          title: 'AGB - Allgemeine Geschäftsbedingungen | AlltagsGold',
+          description: 'Lesen Sie unsere allgemeinen Geschäftsbedingungen für den Einkauf bei AlltagsGold.',
+          keywords: 'AGB, Geschäftsbedingungen, AlltagsGold'
+        }}
+        canonicalUrl="agb" 
+      />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px:8 py-16">
         <div className="prose prose-gray max-w-none">

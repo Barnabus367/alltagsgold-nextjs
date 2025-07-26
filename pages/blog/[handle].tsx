@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import BlogPost from '../BlogPost';
 import { Layout } from '../../components/layout/Layout';
-import { SEOHead } from '../../components/seo/SEOHead';
+import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { useState } from 'react';
 import { generateStaticPageSEO } from '../../lib/seo';
 
@@ -15,7 +15,14 @@ export default function BlogPostPage() {
 
   return (
     <>
-      <SEOHead seo={seoData} canonicalUrl={`/blog/${handle}`} />
+      <NextSEOHead 
+        seo={{
+          title: `Blog Post - ${handle} | AlltagsGold`,
+          description: `Lesen Sie unseren aktuellen Blog-Artikel bei AlltagsGold. Nützliche Tipps und Inspiration für einen modernen Alltag.`,
+          keywords: 'Blog, Tipps, AlltagsGold'
+        }}
+        canonicalUrl={`blog/${handle}`} 
+      />
       <Layout onSearch={setSearchQuery}>
         <BlogPost />
       </Layout>

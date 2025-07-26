@@ -40,6 +40,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   const product = preloadedProduct || clientProduct;
   const { addItemToCart, isAddingToCart } = useCart();
   
+  // All React Hooks MUST be called before any early returns
   const [selectedVariant, setSelectedVariant] = useState<ShopifyVariant | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -89,6 +90,34 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       });
     }
   }, [product]);
+
+  // Early return checks AFTER all hooks to comply with Rules of Hooks
+  // Loading state
+  if (isLoading || !product) {
+    return (
+      <div className="min-h-screen bg-white pt-16 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">Produkt wird geladen...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white pt-16 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Fehler beim Laden</h1>
+          <p className="text-gray-600 mb-8">Das Produkt konnte nicht geladen werden. Bitte versuchen Sie es später erneut.</p>
+          <Link href="/products" className="bg-black text-white px-6 py-2 hover:bg-gray-800 inline-block">
+            Alle Produkte ansehen
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   const handleAddToCart = async () => {
     if (selectedVariant && product) {
@@ -335,10 +364,6 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     );
   }
 
-  if (error || !product) {
-    return <ShopifyError error={error?.message || 'Produkt nicht gefunden'} />;
-  }
-
   const images = product.images.edges.map((edge: any) => edge.node);
   const variants = product.variants.edges.map((edge: any) => edge.node);
   const currentImage = images[selectedImageIndex];
@@ -391,9 +416,9 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
           description: optimizedContent.introText,
           offers: {
             "@type": "Offer",
-            price: parseFloat(product.variants[0].price),
-            priceCurrency: "CHF",
-            availability: product.variants[0].availableForSale ? "InStock" : "OutOfStock",
+            price: getPriceAmountSafe(product.variants.edges[0]?.node?.price),
+            priceCurrency: product.variants.edges[0]?.node?.price?.currencyCode || "CHF",
+            availability: product.variants.edges[0]?.node?.availableForSale ? "InStock" : "OutOfStock",
             url: `https://www.alltagsgold.ch/products/${product.handle}`
           }
         }}

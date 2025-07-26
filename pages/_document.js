@@ -31,6 +31,9 @@ export default function Document() {
         {/* Critical CSS Variables */}
         <style dangerouslySetInnerHTML={{ __html: fontVariables }} />
 
+        {/* Emergency Production Fix */}
+        <script src="/emergency-fix.js"></script>
+
         {/* Meta Pixel Script */}
         <script
           dangerouslySetInnerHTML={{

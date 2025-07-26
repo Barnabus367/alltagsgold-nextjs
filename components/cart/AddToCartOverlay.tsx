@@ -83,7 +83,7 @@ export function AddToCartOverlay() {
             )}
             <p className="text-sm text-gray-600">Menge: {quantity}</p>
             <p className="font-semibold text-sm">
-              {formatPrice(merchandise.price.amount, merchandise.price.currencyCode)}
+              {merchandise.price ? formatPrice(merchandise.price.amount, merchandise.price.currencyCode) : 'N/A'}
             </p>
           </div>
         </div>

@@ -44,7 +44,7 @@ function CartContent() {
       const cartContents = cart.lines.edges.map(edge => ({
         id: edge.node.merchandise.id,
         quantity: edge.node.quantity,
-        item_price: parseFloat(edge.node.merchandise.price.amount)
+        item_price: parseFloat(edge.node.merchandise.price?.amount || '0')
       }));
 
       trackViewCart({
@@ -64,7 +64,7 @@ function CartContent() {
         const cartContents = cart.lines.edges.map(edge => ({
           id: edge.node.merchandise.id,
           quantity: edge.node.quantity,
-          item_price: parseFloat(edge.node.merchandise.price.amount)
+          item_price: parseFloat(edge.node.merchandise.price?.amount || '0')
         }));
 
         trackInitiateCheckout({
@@ -171,7 +171,7 @@ function CartContent() {
                           </div>
                         )}
                         <p className="mt-1 text-sm font-medium text-gray-900">
-                          {formatPrice(variant.price.amount, variant.price.currencyCode)}
+                          {variant.price ? formatPrice(variant.price.amount, variant.price.currencyCode) : 'N/A'}
                         </p>
                       </div>
 

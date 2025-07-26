@@ -140,7 +140,7 @@ export function CartSidebar() {
                         </p>
                       ))}
                       <p className="text-sm font-semibold">
-                        {formatPrice(line.merchandise.price.amount, line.merchandise.price.currencyCode)}
+                        {line.merchandise.price ? formatPrice(line.merchandise.price.amount, line.merchandise.price.currencyCode) : 'N/A'}
                       </p>
                       
                       {/* Mobile-optimierte Quantity Controls */}

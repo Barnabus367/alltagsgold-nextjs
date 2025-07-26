@@ -18,7 +18,7 @@ export function HighlightProductCard({ product }: HighlightProductCardProps) {
   const primaryImage = product.images.edges[0]?.node;
   const primaryVariant = product.variants.edges[0]?.node;
   
-  const price = primaryVariant ? formatPrice(primaryVariant.price.amount, primaryVariant.price.currencyCode) : 'N/A';
+  const price = primaryVariant?.price ? formatPrice(primaryVariant.price.amount, primaryVariant.price.currencyCode) : 'N/A';
 
   // Entfernt - jetzt in OptimizedImage-Komponente
 

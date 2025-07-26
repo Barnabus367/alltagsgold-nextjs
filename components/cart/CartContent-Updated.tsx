@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useCart } from '@/hooks/useCart';
 import { useCheckout } from '@/hooks/useCheckout';
 import { formatPrice, formatSwissPrice, roundToSwissFrancs } from '@/lib/shopify';
+import { formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
 import { getCloudinaryUrl } from '@/lib/cloudinary';
 import { trackViewCart, trackInitiateCheckout } from '@/lib/analytics';
 import { announceToScreenReader } from '@/lib/accessibility';
@@ -44,7 +45,7 @@ function CartContent() {
       const cartContents = cart.lines.edges.map(edge => ({
         id: edge.node.merchandise.id,
         quantity: edge.node.quantity,
-        item_price: parseFloat(edge.node.merchandise.price?.amount || '0')
+        item_price: getPriceAmountSafe(edge.node.merchandise.price)
       }));
 
       trackViewCart({
@@ -64,7 +65,7 @@ function CartContent() {
         const cartContents = cart.lines.edges.map(edge => ({
           id: edge.node.merchandise.id,
           quantity: edge.node.quantity,
-          item_price: parseFloat(edge.node.merchandise.price?.amount || '0')
+          item_price: getPriceAmountSafe(edge.node.merchandise.price)
         }));
 
         trackInitiateCheckout({
@@ -171,7 +172,7 @@ function CartContent() {
                           </div>
                         )}
                         <p className="mt-1 text-sm font-medium text-gray-900">
-                          {formatPrice(variant.price.amount, variant.price.currencyCode)}
+                          {formatPriceSafe(variant.price)}
                         </p>
                       </div>
 

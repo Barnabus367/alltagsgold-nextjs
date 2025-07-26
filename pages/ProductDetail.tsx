@@ -271,9 +271,11 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       
       // Always add price as consistent element
       if (product.variants.edges.length > 0) {
-        const variant = product.variants.edges[0].node;
-        const priceFormatted = formatPriceSafe(variant.price);
-        technicalDetails.push(`Preis: ${priceFormatted}`);
+        const variant = product.variants.edges[0]?.node;
+        if (variant) {
+          const priceFormatted = formatPriceSafe(variant.price);
+          technicalDetails.push(`Preis: ${priceFormatted}`);
+        }
       }
     }
     

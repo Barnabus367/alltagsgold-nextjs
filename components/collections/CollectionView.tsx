@@ -8,6 +8,7 @@ import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateCollectionSEO } from '@/lib/seo';
 import { useProductSearch } from '@/hooks/useShopify';
 import { ArrowLeft } from 'lucide-react';
+import { getPriceAmountSafe } from '@/lib/type-guards';
 import Link from 'next/link';
 import { trackSearch } from '@/lib/analytics';
 
@@ -33,9 +34,9 @@ export function CollectionView() {
   const sortedProducts = [...searchResults].sort((a, b) => {
     switch (sortBy) {
       case 'price-low':
-        return parseFloat(a.priceRange.minVariantPrice.amount) - parseFloat(b.priceRange.minVariantPrice.amount);
+        return getPriceAmountSafe(a.priceRange.minVariantPrice) - getPriceAmountSafe(b.priceRange.minVariantPrice);
       case 'price-high':
-        return parseFloat(b.priceRange.minVariantPrice.amount) - parseFloat(a.priceRange.minVariantPrice.amount);
+        return getPriceAmountSafe(b.priceRange.minVariantPrice) - getPriceAmountSafe(a.priceRange.minVariantPrice);
       case 'name':
         return a.title.localeCompare(b.title);
       default:

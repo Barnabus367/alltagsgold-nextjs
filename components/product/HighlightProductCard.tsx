@@ -6,7 +6,7 @@ import { formatPrice } from '@/lib/shopify';
 import { useCart } from '@/hooks/useCart';
 import { trackAddToCart } from '@/lib/analytics';
 import { OptimizedImage } from '@/components/common/OptimizedImage';
-import { hasValidPrimaryVariant, isValidVariant, formatPriceSafe } from '@/lib/type-guards';
+import { hasValidPrimaryVariant, isValidVariant, formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
 
 interface HighlightProductCardProps {
   product: ShopifyProduct;
@@ -55,12 +55,12 @@ export function HighlightProductCard({ product }: HighlightProductCardProps) {
         content_id: product.id,
         content_name: product.title,
         content_type: 'product',
-        value: parseFloat(primaryVariant.price.amount),
-        currency: primaryVariant.price.currencyCode || 'CHF',
+        value: getPriceAmountSafe(primaryVariant.price),
+        currency: primaryVariant.price?.currencyCode || 'CHF',
         contents: [{
           id: primaryVariant.id,
           quantity: 1,
-          item_price: parseFloat(primaryVariant.price.amount)
+          item_price: getPriceAmountSafe(primaryVariant.price)
         }]
       });
       

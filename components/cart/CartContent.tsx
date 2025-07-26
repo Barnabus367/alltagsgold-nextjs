@@ -67,7 +67,7 @@ function CartContent() {
         const cartContents = cart.lines.edges.map(edge => ({
           id: edge.node.merchandise.id,
           quantity: edge.node.quantity,
-          item_price: parseFloat(edge.node.merchandise.price?.amount || '0')
+          item_price: getPriceAmountSafe(edge.node.merchandise.price)
         }));
 
         trackInitiateCheckout({

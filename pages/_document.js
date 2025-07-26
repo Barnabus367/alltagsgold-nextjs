@@ -32,7 +32,7 @@ export default function Document() {
         <style dangerouslySetInnerHTML={{ __html: fontVariables }} />
 
         {/* Emergency Production Fix */}
-        <script src="/emergency-fix.js"></script>
+        <script async src="/emergency-fix.js"></script>
 
         {/* Meta Pixel Script */}
         <script

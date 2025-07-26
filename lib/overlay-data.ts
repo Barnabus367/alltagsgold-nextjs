@@ -3,6 +3,8 @@
  * Extrahiert für bessere Testbarkeit und Wiederverwendung
  */
 
+import { formatPriceSafe, isValidPrice, isValidMerchandise } from './type-guards';
+
 export interface OverlayMerchandise {
   id: string;
   product: {
@@ -65,12 +67,7 @@ export function isValidOverlayItem(item: any): item is OverlayItem {
     item &&
     typeof item === 'object' &&
     item.merchandise &&
-    typeof item.merchandise.id === 'string' &&
-    item.merchandise.product &&
-    typeof item.merchandise.product.title === 'string' &&
-    item.merchandise.price &&
-    typeof item.merchandise.price.amount === 'string' &&
-    typeof item.merchandise.price.currencyCode === 'string' &&
+    isValidMerchandise(item.merchandise) &&
     typeof item.quantity === 'number' &&
     item.quantity > 0
   );

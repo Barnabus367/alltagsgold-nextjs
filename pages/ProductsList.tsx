@@ -8,6 +8,7 @@ import { useProductSearch, useProductFilter } from '@/hooks/useShopify';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { getPriceAmountSafe } from '@/lib/type-guards';
 import { Search, Filter, Grid, List } from 'lucide-react';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
 import { trackSearch } from '@/lib/analytics';
@@ -50,11 +51,11 @@ export function Products({ preloadedProducts }: ProductsProps) {
     switch (sortBy) {
       case 'price-low':
         return sorted.sort((a, b) => 
-          parseFloat(a.priceRange.minVariantPrice.amount) - parseFloat(b.priceRange.minVariantPrice.amount)
+          getPriceAmountSafe(a.priceRange.minVariantPrice) - getPriceAmountSafe(b.priceRange.minVariantPrice)
         );
       case 'price-high':
         return sorted.sort((a, b) => 
-          parseFloat(b.priceRange.minVariantPrice.amount) - parseFloat(a.priceRange.minVariantPrice.amount)
+          getPriceAmountSafe(b.priceRange.minVariantPrice) - getPriceAmountSafe(a.priceRange.minVariantPrice)
         );
       case 'title':
         return sorted.sort((a, b) => a.title.localeCompare(b.title));

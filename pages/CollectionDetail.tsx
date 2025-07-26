@@ -8,6 +8,7 @@ import { ShopifyError } from '@/components/common/ShopifyError';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateCollectionSEO } from '@/lib/seo';
 import { Button } from '@/components/ui/button';
+import { getPriceAmountSafe } from '@/lib/type-guards';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Grid, List, ArrowLeft, Package, Tag } from 'lucide-react';
@@ -160,11 +161,11 @@ export function CollectionDetail({ preloadedCollection }: CollectionDetailProps)
     switch (sortBy) {
       case 'price-low':
         return sorted.sort((a, b) => 
-          parseFloat(a.priceRange.minVariantPrice.amount) - parseFloat(b.priceRange.minVariantPrice.amount)
+          getPriceAmountSafe(a.priceRange.minVariantPrice) - getPriceAmountSafe(b.priceRange.minVariantPrice)
         );
       case 'price-high':
         return sorted.sort((a, b) => 
-          parseFloat(b.priceRange.minVariantPrice.amount) - parseFloat(a.priceRange.minVariantPrice.amount)
+          getPriceAmountSafe(b.priceRange.minVariantPrice) - getPriceAmountSafe(a.priceRange.minVariantPrice)
         );
       case 'title':
         return sorted.sort((a, b) => a.title.localeCompare(b.title));

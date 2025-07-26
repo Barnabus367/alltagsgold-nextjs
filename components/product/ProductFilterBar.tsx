@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { ChevronDown, X, Filter, SlidersHorizontal, Tag, Palette, Package } from 'lucide-react';
-import { ShopifyProduct } from '../../types/shopify';
-import { Button } from '../ui/button';
+import { ShopifyProduct } from '@/types/shopify';
+import { getPriceAmountSafe } from '@/lib/type-guards';
+import { Button } from '@/components/ui/button';
 import { Checkbox } from '../ui/checkbox';
 import { Label } from '../ui/label';
 import { Slider } from '../ui/slider';
@@ -66,10 +67,12 @@ export function ProductFilterBar({
       }
 
       // Preise
-      if (product.variants?.edges?.[0]?.node?.price?.amount) {
-        const price = parseFloat(product.variants.edges[0].node.price.amount);
-        minPrice = Math.min(minPrice, price);
-        maxPrice = Math.max(maxPrice, price);
+      if (product.variants?.edges?.[0]?.node?.price) {
+        const price = getPriceAmountSafe(product.variants.edges[0].node.price);
+        if (price > 0) {
+          minPrice = Math.min(minPrice, price);
+          maxPrice = Math.max(maxPrice, price);
+        }
       }
 
       // Farben und Materialien aus Tags extrahieren

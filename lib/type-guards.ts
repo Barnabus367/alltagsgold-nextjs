@@ -4,10 +4,11 @@ import { ShopifyMoney, ShopifyProductVariant } from '@/types/shopify';
  * Runtime Type Guards für sichere Shopify-Datenverarbeitung
  */
 
-export function isValidPrice(price: any): price is { amount: number; currencyCode: string } {
+export function isValidPrice(price: any): price is { amount: number | string; currencyCode: string } {
   if (!price || typeof price !== 'object') return false;
-  return typeof price.amount === 'number' && 
-         price.amount >= 0 && 
+  return (typeof price.amount === 'number' || typeof price.amount === 'string') && 
+         parseFloat(String(price.amount)) >= 0 && 
+         !isNaN(parseFloat(String(price.amount))) &&
          typeof price.currencyCode === 'string' && 
          price.currencyCode.length > 0;
 }
@@ -45,8 +46,8 @@ export function formatPriceSafe(price: any, options?: {
       return options?.fallback || '–';
     }
     
-    // Since isValidPrice confirms amount is a number, use it directly
-    const amount = price.amount;
+    // Convert string amounts to numbers for formatting
+    const amount = typeof price.amount === 'string' ? parseFloat(price.amount) : price.amount;
     const currency = price.currencyCode;
     const locale = options?.locale || 'de-CH';
     
@@ -68,8 +69,8 @@ export const getPriceAmountSafe = (price: unknown, fallback: number = 0): number
     return fallback;
   }
   
-  // Since isValidPrice confirms amount is a number, use it directly
-  const amount = price.amount;
+  // Convert string amounts to numbers
+  const amount = typeof price.amount === 'string' ? parseFloat(price.amount) : price.amount;
   return isNaN(amount) ? fallback : amount;
 };
 

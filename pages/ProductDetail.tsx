@@ -16,6 +16,7 @@ import { generateProductSEO } from '@/lib/seo';
 import { trackViewContent, trackAddToCart } from '@/lib/analytics';
 import { PremiumImage } from '@/components/common/PremiumImage';
 import { formatPrice } from '@/lib/shopify';
+import { formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
 import { useProductNavigationCleanup } from '@/lib/navigation-handler';
 
@@ -83,8 +84,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
         content_id: product.id,
         content_name: product.title,
         content_type: 'product',
-        value: parseFloat(primaryVariant?.price.amount || '0'),
-        currency: primaryVariant?.price.currencyCode || 'CHF'
+        value: getPriceAmountSafe(primaryVariant?.price),
+        currency: primaryVariant?.price?.currencyCode || 'CHF'
       });
     }
   }, [product]);
@@ -104,12 +105,12 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
         content_id: product.id,
         content_name: product.title,
         content_type: 'product',
-        value: parseFloat(selectedVariant.price.amount) * quantity,
-        currency: selectedVariant.price.currencyCode || 'CHF',
+        value: getPriceAmountSafe(selectedVariant.price) * quantity,
+        currency: selectedVariant.price?.currencyCode || 'CHF',
         contents: [{
           id: selectedVariant.id,
           quantity: quantity,
-          item_price: parseFloat(selectedVariant.price.amount)
+          item_price: getPriceAmountSafe(selectedVariant.price)
         }]
       });
       
@@ -271,9 +272,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       // Always add price as consistent element
       if (product.variants.edges.length > 0) {
         const variant = product.variants.edges[0].node;
-        const price = parseFloat(variant.price.amount);
-        const currency = variant.price.currencyCode || 'CHF';
-        technicalDetails.push(`Preis: ${price.toFixed(2)} ${currency}`);
+        const priceFormatted = formatPriceSafe(variant.price);
+        technicalDetails.push(`Preis: ${priceFormatted}`);
       }
     }
     
@@ -342,8 +342,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   const currentImage = images[selectedImageIndex];
   
   const price = selectedVariant ? 
-    formatPrice(selectedVariant.price.amount, selectedVariant.price.currencyCode) : 
-    formatPrice(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode);
+    formatPriceSafe(selectedVariant.price) : 
+    formatPriceSafe(product.priceRange?.minVariantPrice);
 
   const primaryImage = product.images.edges[0]?.node;
   

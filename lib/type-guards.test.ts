@@ -22,8 +22,14 @@ interface TestCase {
 const testCases: TestCase[] = [
   // isValidPrice tests
   {
-    name: 'isValidPrice: valid price object',
+    name: 'isValidPrice: valid price object with number',
     input: { amount: 29.99, currencyCode: 'CHF' },
+    expected: true,
+    validator: isValidPrice
+  },
+  {
+    name: 'isValidPrice: valid price object with string (Shopify format)',
+    input: { amount: '29.99', currencyCode: 'CHF' },
     expected: true,
     validator: isValidPrice
   },
@@ -60,8 +66,8 @@ const testCases: TestCase[] = [
 
   // formatPriceSafe tests
   {
-    name: 'formatPriceSafe: valid price',
-    input: { amount: 29.99, currencyCode: 'CHF' },
+    name: 'formatPriceSafe: valid price with string amount (Shopify)',
+    input: { amount: '29.99', currencyCode: 'CHF' },
     expected: 'CHF 29.99',
     validator: (input) => formatPriceSafe(input)
   },
@@ -86,8 +92,8 @@ const testCases: TestCase[] = [
 
   // getPriceAmountSafe tests
   {
-    name: 'getPriceAmountSafe: valid price',
-    input: { amount: 29.99, currencyCode: 'CHF' },
+    name: 'getPriceAmountSafe: valid price with string amount',
+    input: { amount: '29.99', currencyCode: 'CHF' },
     expected: 29.99,
     validator: getPriceAmountSafe
   },
@@ -112,7 +118,7 @@ const testCases: TestCase[] = [
         edges: [{
           node: {
             id: 'variant-1',
-            price: { amount: 29.99, currencyCode: 'CHF' },
+            price: { amount: '29.99', currencyCode: 'CHF' },
             availableForSale: true
           }
         }]

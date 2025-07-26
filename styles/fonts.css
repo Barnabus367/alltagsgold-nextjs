@@ -1,39 +1,15 @@
 /**
- * Swiss-Optimized Font System
- * Consolidated font loading with bulletproof fallbacks
+ * Swiss-Optimized Font System - Google Fonts CDN
+ * Bulletproof fallbacks for production reliability
  */
 
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap; /* Performance-optimiert */
-  src: url('/fonts/inter-regular.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153;
-}
+/* Import Google Fonts via CDN - no local files needed */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('/fonts/inter-medium.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153;
-}
-
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url('/fonts/inter-medium.woff2') format('woff2'); /* Fallback */
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153;
-}
-
-/* Konsolidierte Font-Stacks für Swiss Market */
+/* CSS Variables für konsistente Typography */
 :root {
-  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* Base font application */
@@ -46,9 +22,14 @@ body, .font-inter {
   font-family: var(--font-system);
 }
 
-/* Fallback when custom fonts fail completely */
-@supports not (font-display: swap) {
-  body {
-    font-family: var(--font-system);
-  }
+/* Optimize font loading performance */
+.font-display-swap {
+  font-display: swap;
+}
+
+/* Performance optimierungen */
+.text-rendering-optimized {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

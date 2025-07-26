@@ -11,7 +11,7 @@
     "lint": "next lint",
     "generate-sitemap": "node scripts/generate-sitemap.js",
     "update-collections": "node scripts/update-collections.js",
-    "test:types": "node lib/type-guards.test.ts"
+    "test:types": "npx tsx lib/type-guards.test.ts"
   },
   "dependencies": {
     "@babel/generator": "^7.28.0",

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { ShopifyProduct } from '@/types/shopify';
 import { formatPrice } from '@/lib/shopify';
+import { formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
 import { useCart } from '@/hooks/useCart';
 import { trackAddToCart } from '@/lib/analytics';
 import { PremiumImage } from '@/components/common/PremiumImage';
@@ -24,7 +25,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const primaryImage = product.images.edges[0]?.node;
   const primaryVariant = product.variants.edges[0]?.node;
   
-  const price = primaryVariant ? formatPrice(primaryVariant.price.amount, primaryVariant.price.currencyCode) : 'N/A';
+  const price = primaryVariant ? formatPriceSafe(primaryVariant.price) : '–';
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -49,12 +50,12 @@ export function ProductCard({ product }: ProductCardProps) {
         content_id: product.id,
         content_name: product.title,
         content_type: 'product',
-        value: parseFloat(primaryVariant.price.amount),
-        currency: primaryVariant.price.currencyCode || 'CHF',
+        value: getPriceAmountSafe(primaryVariant.price),
+        currency: primaryVariant.price?.currencyCode || 'CHF',
         contents: [{
           id: primaryVariant.id,
           quantity: 1,
-          item_price: parseFloat(primaryVariant.price.amount)
+          item_price: getPriceAmountSafe(primaryVariant.price)
         }]
       });
       

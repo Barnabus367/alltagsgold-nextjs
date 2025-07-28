@@ -139,7 +139,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       amount: getPriceAmountSafe(currentPrice || fallbackPrice),
       currency: currentPrice?.currencyCode || fallbackPrice?.currencyCode || 'CHF'
     };
-  }, [safeVariantData.current?.price, safeProductData.priceRange]);
+  }, [safeVariantData, safeProductData.priceRange]);
 
   // Feature Flag für Content Processing
   const useNativeDescriptions = getFeatureFlag('USE_NATIVE_DESCRIPTIONS');
@@ -293,7 +293,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
         url: `https://www.alltagsgold.ch/products/${safeProductData.handle}`
       }
     };
-  }, [safeProductData, safeImageData.primary, optimizedContent, safePricing, safeVariantData.current?.availableForSale]);
+  }, [safeProductData, safeImageData.primary, optimizedContent, safePricing, safeVariantData]);
 
   // Memoized breadcrumbs - lazy loaded
   const breadcrumbs = useMemo(() => {

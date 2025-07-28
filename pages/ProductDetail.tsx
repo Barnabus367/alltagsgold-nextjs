@@ -21,6 +21,7 @@ import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateProductSEO } from '@/lib/seo';
 import { trackViewContent, trackAddToCart } from '@/lib/analytics';
 import { PremiumImage } from '@/components/common/PremiumImage';
+import { ProductDescription } from '@/components/product/ProductDescription';
 import { formatPrice } from '@/lib/shopify';
 import { formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
@@ -578,23 +579,20 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
 
             {/* Content Rendering - Feature Flag basiert */}
             {optimizedContent.type === 'native' ? (
-              // Native HTML Content Rendering
+              // Native HTML Content Rendering mit ProductDescription Komponente
               <div className="space-y-6">
-                {optimizedContent.loading ? (
-                  <div className="text-gray-500">Beschreibung wird geladen...</div>
-                ) : optimizedContent.isEmpty ? (
-                  <div className="text-gray-500">Keine Beschreibung verfügbar</div>
-                ) : (
-                  <div 
-                    className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: optimizedContent.html }}
-                  />
-                )}
+                <ProductDescription 
+                  html={optimizedContent.html}
+                  loading={optimizedContent.loading}
+                  isEmpty={optimizedContent.isEmpty}
+                />
               </div>
             ) : (
-              // Legacy Content Rendering
+              // Legacy Content Rendering - AUSKOMMENTIERT für Rollback-Sicherheit
               <div className="space-y-6">
-                {/* Intro Text */}
+                {/* LEGACY CONTENT - Kann bei Bedarf reaktiviert werden
+                
+                {/* Intro Text *}
                 {optimizedContent.introText && (
                   <div className="space-y-4">
                     <p className="text-gray-700 leading-relaxed">
@@ -603,7 +601,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   </div>
                 )}
 
-                {/* Produktvorteile */}
+                {/* Produktvorteile *}
                 {optimizedContent.benefits && optimizedContent.benefits.length > 0 && (
                   <div className="space-y-4">
                     <h3 className="text-lg font-semibold text-gray-900">Produktvorteile</h3>
@@ -618,7 +616,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   </div>
                 )}
 
-                {/* Technische Details */}
+                {/* Technische Details *}
                 {optimizedContent.sections && optimizedContent.sections.length > 0 && (
                   <div className="space-y-4">
                     <h3 className="text-lg font-semibold text-gray-900">Technische Details</h3>
@@ -634,6 +632,13 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                     </ul>
                   </div>
                 )}
+                
+                ENDE LEGACY CONTENT */}
+                
+                {/* Fallback für Legacy Mode */}
+                <div className="text-gray-500 text-sm">
+                  Legacy Content Mode - Verwende Native Descriptions für optimierte Darstellung
+                </div>
               </div>
             )}
 

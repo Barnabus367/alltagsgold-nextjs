@@ -71,6 +71,49 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            h2: {
+              marginTop: '1.5rem',
+              marginBottom: '0.5rem',
+              fontSize: '1.125rem',
+              fontWeight: '600',
+              color: '#111827', // gray-900
+              lineHeight: '1.5',
+            },
+            ul: {
+              listStyleType: 'disc',
+              paddingLeft: '1.5rem',
+              marginTop: '0.5rem',
+              marginBottom: '0.5rem',
+            },
+            li: {
+              marginTop: '0.25rem',
+              lineHeight: '1.625', // leading-relaxed
+              color: '#374151', // gray-700
+            },
+            p: {
+              marginBottom: '0.75rem',
+              color: '#374151', // gray-700
+              lineHeight: '1.625', // leading-relaxed
+            },
+            // Entferne alle Icons/Emojis durch CSS
+            'li::marker': {
+              color: '#9CA3AF', // gray-400
+              content: '•',
+            },
+            // Saubere Abstände für bessere Lesbarkeit
+            '> *': {
+              marginTop: '0',
+              marginBottom: '0.75rem',
+            },
+            '> *:last-child': {
+              marginBottom: '0',
+            },
+          },
+        },
+      },
     },
   },
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],

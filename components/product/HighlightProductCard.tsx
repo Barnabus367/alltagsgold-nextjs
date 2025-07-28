@@ -5,7 +5,7 @@ import { ShopifyProduct } from '@/types/shopify';
 import { formatPrice } from '@/lib/shopify';
 import { useCart } from '@/hooks/useCart';
 import { trackAddToCart } from '@/lib/analytics';
-import { OptimizedImage } from '@/components/common/OptimizedImage';
+import { PremiumImage } from '@/components/common/PremiumImage';
 import { hasValidPrimaryVariant, isValidVariant, formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
 
 interface HighlightProductCardProps {
@@ -94,14 +94,14 @@ export function HighlightProductCard({ product }: HighlightProductCardProps) {
         {/* Produktbild größer und mit reduziertem Schatten */}
         <div className="relative aspect-square overflow-hidden bg-white mb-6 rounded-lg">
           {primaryImage?.url ? (
-            <OptimizedImage
+            <PremiumImage
               src={primaryImage.url}
               alt={primaryImage.altText || product.title}
               className="w-full h-full object-cover"
-              width={400}
-              height={400}
-              priority={false}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+              productTitle={product.title}
+              productId={product.id ? product.id.replace('gid://shopify/Product/', '') : undefined}
+              imageIndex={0}
+              context="card"
             />
           ) : (
             <div className="w-full h-full bg-gray-50 flex items-center justify-center">

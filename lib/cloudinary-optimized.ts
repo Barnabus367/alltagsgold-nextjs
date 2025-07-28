@@ -1,152 +1,113 @@
-// Optimierte Version von cloudinary.ts - Entfernt aggressive DOM-Manipulation
+// Optimierte Cloudinary-Integration basierend auf bewährten Patterns
 
 const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || 'do7yh4dll';
 
-// Basis-Transformation-Presets - SELEKTIVE OPTIMIERUNG
+// Simplere, bewährte Transformation-Presets (basierend auf alter erfolgreicher Version)
 const TRANSFORM_PRESETS = {
-  // PRODUKTBILDER - Mit einheitlichem weißen Hintergrund (ohne Background Removal)
-  thumbnail: 'c_pad,w_150,h_150,ar_1:1,b_white,q_85,f_webp',
-  product: 'c_pad,w_400,h_400,ar_1:1,b_white,q_90,f_webp',
-  productZoom: 'c_pad,w_800,h_800,ar_1:1,b_white,q_95,f_webp',
+  // Basis-Transformationen (wie in alter Version)
+  thumbnail: 'w_300,h_300,c_fill,q_auto,f_webp',
+  medium: 'w_800,h_800,c_fit,q_auto,f_webp', 
+  large: 'w_1200,h_1200,c_fit,q_auto:best,f_webp',
+  hero: 'w_1920,h_1080,c_fill,q_auto:best,f_webp',
   
-  // CONTENT BILDER - Bleiben unverändert (natürliche Hintergründe)
-  mobile: 'w_375,q_85,f_webp',
-  mobileThumb: 'w_150,h_150,c_fill,q_85,f_webp',
-  blogThumbnail: 'w_300,h_200,c_fill,q_85,f_webp',
-  blogHero: 'w_1200,h_400,c_fill,q_90,f_webp',
-  category: 'w_350,h_250,c_fill,q_90,f_webp',
-  hero: 'w_1920,h_600,c_fill,q_95,f_webp',
-  collection: 'w_600,h_400,c_fill,q_90,f_webp',
-  avatar: 'w_80,h_80,c_fill,q_85,f_webp,g_face',
-  banner: 'w_1200,h_300,c_fill,q_90,f_webp'
+  // E-Commerce spezifisch (ohne problematische e_background_removal)
+  product: 'w_800,h_800,c_pad,b_white,q_auto,f_webp',
+  productZoom: 'w_1600,h_1600,c_pad,b_white,q_auto:best,f_webp',
+  productList: 'w_400,h_400,c_fill,q_auto,f_webp,ar_1:1',
+  
+  // Blog & Content
+  blogHero: 'w_1200,h_600,c_fill,q_auto,f_webp',
+  blogThumbnail: 'w_400,h_250,c_fill,q_auto,f_webp',
+  
+  // Performance-optimiert für mobile
+  mobile: 'w_600,q_auto,f_webp,dpr_auto',
+  mobileThumb: 'w_200,h_200,c_fill,q_auto,f_webp,dpr_auto'
 } as const;
 
 export type TransformPreset = keyof typeof TRANSFORM_PRESETS;
 
-// PERFORMANCE OPTIMIERUNG: URL-Caching um parallele Prozesse zu reduzieren
+// Simpleres URL-Caching (weniger komplex als vorher)
 const urlCache = new Map<string, string>();
-const MAX_CACHE_SIZE = 1000;
+const MAX_CACHE_SIZE = 500; // Reduziert von 1000
 
-// PERFORMANCE MONITORING: Verhindert 300 parallele Prozesse
-let activeTransformations = 0;
-let cacheHits = 0;
-let cacheMisses = 0;
-
-// Performance Stats für Debugging
+// Vereinfachte Performance-Stats
 export function getCloudinaryStats() {
   return {
-    activeTransformations,
     cacheSize: urlCache.size,
-    cacheHitRate: cacheHits / (cacheHits + cacheMisses) * 100,
-    cacheHits,
-    cacheMisses
+    cacheHits: urlCache.size > 0 ? 'active' : 'empty'
   };
-}
-
-// Cache-aware URL Generation für externe URLs (fetch)
-function getCachedCloudinaryUrl(originalUrl: string, preset: string): string {
-  const cacheKey = `${originalUrl}:${preset}`;
-  
-  // Cache Hit
-  if (urlCache.has(cacheKey)) {
-    cacheHits++;
-    return urlCache.get(cacheKey)!;
-  }
-  
-  // Cache Miss - Generate URL
-  cacheMisses++;
-  activeTransformations++;
-  
-  const transform = TRANSFORM_PRESETS[preset as TransformPreset] || preset;
-  
-  try {
-    const encodedUrl = encodeURIComponent(originalUrl);
-    const result = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/fetch/${transform}/${encodedUrl}`;
-    
-    // Cache Management (LRU-style)
-    if (urlCache.size >= MAX_CACHE_SIZE) {
-      const firstKey = urlCache.keys().next().value;
-      if (firstKey) urlCache.delete(firstKey);
-    }
-    
-    urlCache.set(cacheKey, result);
-    activeTransformations--;
-    return result;
-  } catch (error) {
-    activeTransformations--;
-    console.warn('Cloudinary URL generation failed:', error);
-    return originalUrl;
-  }
-}
-
-// Spezielle Funktion für bereits hochgeladene Cloudinary-Bilder (upload)
-function getCloudinaryUploadUrl(cloudinaryUrl: string, preset: string): string {
-  const transform = TRANSFORM_PRESETS[preset as TransformPreset] || preset;
-  
-  // URL-Struktur: https://res.cloudinary.com/do7yh4dll/image/upload/v1753735171/alltagsgold/products/...
-  // Ergebnis: https://res.cloudinary.com/do7yh4dll/image/upload/c_pad,w_400,h_400.../alltagsgold/products/...
-  
-  const urlParts = cloudinaryUrl.split('/');
-  const cloudIndex = urlParts.findIndex(part => part === 'image');
-  
-  if (cloudIndex !== -1 && urlParts[cloudIndex + 1] === 'upload') {
-    // Einfügen der Transformation nach "upload"
-    urlParts.splice(cloudIndex + 2, 0, transform);
-    return urlParts.join('/');
-  }
-  
-  return cloudinaryUrl; // Fallback
 }
 
 // Spezielle Funktion für hochgeladene Produkt-Bilder (direkte Upload URLs)
 export function getProductCloudinaryUrl(productId: string, imageIndex: number = 0, preset: TransformPreset = 'product'): string {
   const transform = TRANSFORM_PRESETS[preset] || preset;
   
-  // Public ID Schema das bei der Sync verwendet wird
-  const publicId = `shopify-products/product_${productId}_image_${imageIndex}`;
+  // KORRIGIERTE Public ID Schema - das tatsächlich bei der Sync verwendet wird
+  const publicId = `alltagsgold/products/shopify-products/product_${productId}_image_${imageIndex}`;
   
-  // Direkte Upload URL für bereits hochgeladene Bilder
-  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/${transform}/alltagsgold/products/${publicId}.jpg`;
+  // Korrekte Cloudinary Upload URL (ohne Version - Cloudinary findet automatisch die neueste)
+  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/${transform}/${publicId}.jpg`;
 }
 
-// Verbesserte Haupt-URL-Transformation mit produktspezifischer Logik
+// Hauptfunktion: Cloudinary URL-Generation (basierend auf bewährter alter Logik)
 export function getCloudinaryUrl(
   originalUrl?: string, 
-  preset: TransformPreset | string = 'product',
+  transform: TransformPreset | string = 'medium',
   productId?: string,
   imageIndex?: number
 ): string {
+  // URL-Validierung (wie in alter Version)
   if (!originalUrl || typeof originalUrl !== 'string') {
-    return '/images/placeholder.jpg';
+    return 'https://via.placeholder.com/800x800?text=Bild+nicht+verfügbar';
   }
 
-  // PRIORITÄT 1: Wenn productId verfügbar ist, verwende direkte Upload URL
+  // PRIORITÄT 1: ProductId für direkte Upload URLs (verbesserte Version)
   if (productId) {
-    return getProductCloudinaryUrl(productId, imageIndex || 0, preset as TransformPreset);
+    return getProductCloudinaryUrl(productId, imageIndex || 0, transform as TransformPreset);
   }
 
-  // PRIORITÄT 2: Bereits hochgeladene Cloudinary-Bilder (upload URLs)
-  if (originalUrl.includes('res.cloudinary.com') && originalUrl.includes('/image/upload/')) {
-    return getCloudinaryUploadUrl(originalUrl, preset);
-  }
-
-  // PRIORITÄT 3: Bereits optimierte fetch URLs
-  if (originalUrl.includes('res.cloudinary.com') && originalUrl.includes('/image/fetch/')) {
+  // Bereits optimierte Cloudinary-URLs überspringen (wie alte Version)
+  if (originalUrl.includes('res.cloudinary.com')) {
     return originalUrl;
   }
-
-  // Lokale oder relative URLs
-  if (originalUrl.startsWith('/') || originalUrl.startsWith('data:')) {
+  
+  // Lokale Assets und Placeholders überspringen (wie alte Version)
+  if (originalUrl.startsWith('/') || 
+      originalUrl.includes('localhost') || 
+      originalUrl.includes('replit') || 
+      originalUrl.includes('placeholder') ||
+      originalUrl.includes('data:image')) {
     return originalUrl;
   }
-
-  // Placeholder URLs
-  if (originalUrl.includes('placeholder') || originalUrl.includes('via.placeholder.com')) {
-    return originalUrl;
+  
+  // Transform-String aus Preset oder direkt verwenden (vereinfacht)
+  const transformString = typeof transform === 'string' && transform.includes(',') 
+    ? transform 
+    : TRANSFORM_PRESETS[transform as TransformPreset] || TRANSFORM_PRESETS.medium;
+  
+  // Cloudinary Fetch API für externe URLs (wie bewährte alte Version)
+  if (originalUrl.startsWith('http')) {
+    const cacheKey = `${originalUrl}:${transformString}`;
+    
+    // Einfaches Caching
+    if (urlCache.has(cacheKey)) {
+      return urlCache.get(cacheKey)!;
+    }
+    
+    const encodedUrl = encodeURIComponent(originalUrl);
+    const result = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/fetch/${transformString}/${encodedUrl}`;
+    
+    // Cache Management
+    if (urlCache.size >= MAX_CACHE_SIZE) {
+      const firstKey = urlCache.keys().next().value;
+      if (firstKey) urlCache.delete(firstKey);
+    }
+    
+    urlCache.set(cacheKey, result);
+    return result;
   }
-
-  // PERFORMANCE: Verwende gecachte URL-Generation
-  return getCachedCloudinaryUrl(originalUrl, preset);
+  
+  return originalUrl;
 }
 
 // ENTFERNT: forceCloudinaryOptimization() - keine DOM-Manipulation mehr

@@ -542,6 +542,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                 alt={safeImageData.current?.altText || safeProductData.title}
                 className="w-full h-full object-cover"
                 productTitle={safeProductData.title}
+                productId={safeProductData.id ? safeProductData.id.replace('gid://shopify/Product/', '') : undefined}
+                imageIndex={selectedImageIndex}
                 context="detail"
                 fallbackSrc="https://res.cloudinary.com/do7yh4dll/image/fetch/c_pad,w_800,h_800,b_auto/https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800"
               />
@@ -564,6 +566,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                       alt={image.altText || safeProductData.title}
                       className="w-full h-full object-cover"
                       productTitle={safeProductData.title}
+                      productId={safeProductData.id ? safeProductData.id.replace('gid://shopify/Product/', '') : undefined}
+                      imageIndex={index}
                       context="thumbnail"
                     />
                   </button>

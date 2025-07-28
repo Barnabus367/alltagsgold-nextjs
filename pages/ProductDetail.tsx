@@ -46,6 +46,7 @@ const FALLBACK_PRODUCT_DATA = {
   variants: { edges: [] },
   collections: { edges: [] },
   description: '',
+  descriptionHtml: '',
   id: '',
   priceRange: null
 };
@@ -85,6 +86,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       variants: product.variants?.edges || [],
       collections: product.collections?.edges || [],
       description: product.description || '',
+      descriptionHtml: product.descriptionHtml || '',
       id: product.id || '',
       priceRange: product.priceRange || null
     };
@@ -152,13 +154,28 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     if (contentData.type === 'native' && safeProductData.handle) {
       setContentLoading(true);
       
+      if (getFeatureFlag('DEBUG_DESCRIPTION_PARSING')) {
+        console.log('🔄 Loading Native Content for:', safeProductData.handle, {
+          hasDescription: !!safeProductData.description,
+          hasDescriptionHtml: !!safeProductData.descriptionHtml,
+          descriptionLength: safeProductData.description?.length || 0,
+          descriptionHtmlLength: safeProductData.descriptionHtml?.length || 0
+        });
+      }
+      
       getCachedNativeContent(safeProductData.handle, safeProductData)
         .then(result => {
           setNativeContent(result);
           setContentLoading(false);
           
           if (getFeatureFlag('DEBUG_DESCRIPTION_PARSING')) {
-            console.log('✅ Native Content loaded:', result);
+            console.log('✅ Native Content loaded:', {
+              source: result.source,
+              htmlLength: result.html.length,
+              plainTextLength: result.plainText.length,
+              sectionsCount: result.sections?.length || 0,
+              isEmpty: result.isEmpty
+            });
           }
         })
         .catch(error => {
@@ -511,7 +528,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                 className="w-full h-full object-cover"
                 productTitle={safeProductData.title}
                 context="detail"
-                fallbackSrc="https://via.placeholder.com/800x800?text=Produkt+Detail"
+                fallbackSrc="https://res.cloudinary.com/demo/image/upload/c_pad,w_800,h_800,b_auto/v1/sample.jpg"
               />
             </div>
             
@@ -558,7 +575,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   <div className="text-gray-500">Keine Beschreibung verfügbar</div>
                 ) : (
                   <div 
-                    className="prose prose-sm max-w-none text-gray-700"
+                    className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
                     dangerouslySetInnerHTML={{ __html: optimizedContent.html }}
                   />
                 )}
@@ -645,8 +662,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-4">
                 <div className="space-y-4 border rounded-lg p-4 bg-gray-50">
-                  {/* Structured sections */}
-                  {optimizedContent.sections && optimizedContent.sections.length > 0 && (
+                  {/* Structured sections - NUR für Legacy Content */}
+                  {optimizedContent.type === 'legacy' && optimizedContent.sections && optimizedContent.sections.length > 0 && (
                     <div className="space-y-4">
                       {optimizedContent.sections.map((section: any, index: number) => (
                         <div key={index} className="space-y-2">
@@ -662,7 +679,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                             </ul>
                           ) : (
                             <div 
-                              className="text-sm text-gray-700 prose prose-sm max-w-none"
+                              className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
                               dangerouslySetInnerHTML={{ __html: section.content }}
                             />
                           )}
@@ -672,7 +689,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   )}
 
                   {/* Versand- und Service-Informationen */}
-                  <div className={`${optimizedContent.sections && optimizedContent.sections.length > 0 ? 'border-t pt-4' : ''}`}>
+                  <div className={`${optimizedContent.type === 'legacy' && optimizedContent.sections && optimizedContent.sections.length > 0 ? 'border-t pt-4' : ''}`}>
                     <h4 className="font-semibold text-gray-900 mb-3">Versand & Service</h4>
                     <div className="space-y-2 text-sm text-gray-700">
                       <p><span className="font-semibold">Kostenloser Versand</span> ab CHF 50 Bestellwert</p>

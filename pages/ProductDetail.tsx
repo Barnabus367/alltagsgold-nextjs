@@ -587,6 +587,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   isEmpty={optimizedContent.isEmpty}
                   collapsible={true}
                   truncateLines={4}
+                  previewLines={2}
                   className="bg-white"
                 />
               </div>

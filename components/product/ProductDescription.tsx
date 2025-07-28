@@ -7,6 +7,7 @@ interface ProductDescriptionProps {
   className?: string;
   collapsible?: boolean;
   truncateLines?: number;
+  previewLines?: number; // Neue Option für Preview-Zeilen
 }
 
 /**
@@ -27,7 +28,8 @@ export const ProductDescription = memo(({
   isEmpty = false,
   className = '',
   collapsible = false,
-  truncateLines = 5
+  truncateLines = 5,
+  previewLines = 2 // Standard: 2 Zeilen Preview
 }: ProductDescriptionProps) => {
   const [isExpanded, setIsExpanded] = useState(!collapsible);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -61,7 +63,7 @@ export const ProductDescription = memo(({
               aria-controls="description-content"
               aria-expanded={isExpanded}
               onClick={() => setIsExpanded(!isExpanded)}
-              className="flex items-center justify-between w-full text-left font-medium text-gray-900 hover:text-gray-700 transition-colors"
+              className="flex items-center justify-between w-full text-left font-semibold text-lg text-gray-900 hover:text-gray-700 transition-colors py-1"
               tabIndex={0}
             >
               <span>Produktbeschreibung</span>
@@ -70,7 +72,7 @@ export const ProductDescription = memo(({
                 viewBox="0 0 16 16" 
                 width="16" 
                 height="16" 
-                className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+                className={`transition-transform duration-200 text-gray-500 ${isExpanded ? 'rotate-180' : ''}`}
               >
                 <path 
                   fill="currentColor" 
@@ -82,13 +84,48 @@ export const ProductDescription = memo(({
             </button>
           </h3>
           
+          {/* Preview Content (immer sichtbar wenn collapsible) */}
+          {!isExpanded && (
+            <div className="mt-4 pb-2">
+              <div className="prose prose-base max-w-none text-gray-700 leading-relaxed">
+                <div 
+                  className={`line-clamp-${previewLines}`}
+                  dangerouslySetInnerHTML={{ __html: html }}
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsExpanded(true)}
+                className="mt-3 inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
+                aria-label="Vollständige Beschreibung anzeigen"
+              >
+                <svg 
+                  fill="none" 
+                  viewBox="0 0 16 16" 
+                  width="14" 
+                  height="14" 
+                  className="mr-1"
+                >
+                  <path 
+                    fill="currentColor" 
+                    fillRule="evenodd" 
+                    d="M7.995 1v12.086L4.213 9.343l-.713.707 4.284 4.243L8.5 15l4.999-4.95-.714-.707-3.78 3.743V1z" 
+                    clipRule="evenodd"
+                  />
+                </svg>
+                Mehr anzeigen
+              </button>
+            </div>
+          )}
+          
+          {/* Full Content (expandiert) */}
           {isExpanded && (
             <div 
               id="description-content" 
               aria-hidden={!isExpanded}
-              className="mt-4"
+              className="mt-5 pb-3"
             >
-              <div className="prose prose-lg max-w-none text-gray-800">
+              <div className="prose prose-lg max-w-none text-gray-800 leading-relaxed">
                 <div 
                   className={isCollapsed ? `line-clamp-${truncateLines}` : ''}
                   dangerouslySetInnerHTML={{ __html: html }}
@@ -98,7 +135,7 @@ export const ProductDescription = memo(({
                   <button
                     type="button"
                     onClick={() => setIsCollapsed(!isCollapsed)}
-                    className="mt-3 inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
+                    className="mt-4 inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
                     aria-label={isCollapsed ? "Mehr von der Beschreibung anzeigen" : "Weniger von der Beschreibung anzeigen"}
                   >
                     <svg 

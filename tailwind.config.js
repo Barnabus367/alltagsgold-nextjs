@@ -74,29 +74,47 @@ module.exports = {
       typography: {
         DEFAULT: {
           css: {
+            h1: {
+              fontSize: '2rem',
+              fontWeight: '700',
+              color: '#111827',
+              lineHeight: '1.25',
+              marginBottom: '1.5rem',
+            },
             h2: {
+              fontSize: '1.75rem',
+              fontWeight: '700',
+              color: '#111827',
+              lineHeight: '1.3',
+              marginTop: '2rem',
+              marginBottom: '1rem',
+            },
+            h3: {
+              fontSize: '1.5rem',
+              fontWeight: '600', 
+              color: '#374151',
+              lineHeight: '1.4',
               marginTop: '1.5rem',
-              marginBottom: '0.5rem',
-              fontSize: '1.125rem',
-              fontWeight: '600',
-              color: '#111827', // gray-900
-              lineHeight: '1.5',
+              marginBottom: '0.75rem',
             },
             ul: {
               listStyleType: 'disc',
               paddingLeft: '1.5rem',
-              marginTop: '0.5rem',
-              marginBottom: '0.5rem',
+              marginTop: '1.5rem',
+              marginBottom: '1.5rem',
             },
             li: {
-              marginTop: '0.25rem',
-              lineHeight: '1.625', // leading-relaxed
-              color: '#374151', // gray-700
+              marginTop: '0.75rem',
+              marginBottom: '0.75rem',
+              lineHeight: '1.7',
+              color: '#374151',
             },
             p: {
-              marginBottom: '0.75rem',
-              color: '#374151', // gray-700
-              lineHeight: '1.625', // leading-relaxed
+              marginTop: '1.25rem',
+              marginBottom: '1.25rem',
+              fontSize: '1.125rem',
+              lineHeight: '1.7',
+              color: '#374151',
             },
             // Entferne alle Icons/Emojis durch CSS
             'li::marker': {
@@ -116,5 +134,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography"), require("@tailwindcss/line-clamp")],
 }

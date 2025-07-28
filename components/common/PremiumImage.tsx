@@ -9,6 +9,9 @@ interface PremiumImageProps {
   productTitle?: string;
   context?: 'hero' | 'card' | 'thumbnail' | 'detail';
   fallbackSrc?: string;
+  // NEU: Shopify Produkt-ID für direkte Cloudinary-URL-Generierung
+  productId?: string;
+  imageIndex?: number;
 }
 
 export function PremiumImage({ 
@@ -17,7 +20,9 @@ export function PremiumImage({
   className = "", 
   productTitle = "",
   context = 'card',
-  fallbackSrc
+  fallbackSrc,
+  productId,
+  imageIndex = 0
 }: PremiumImageProps) {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -29,7 +34,7 @@ export function PremiumImage({
     return `https://res.cloudinary.com/demo/image/upload/c_pad,w_${width},h_${height},b_auto/v1/sample.jpg`;
   }, [context]);
 
-  // Stabile Bild-URL mit useMemo
+  // Stabile Bild-URL mit useMemo - PRIORISIERT HOCHGELADENE BILDER
   const imageUrl = useMemo(() => {
     if (!src || src.includes('placeholder')) {
       if (process.env.NODE_ENV === 'development') {
@@ -38,11 +43,27 @@ export function PremiumImage({
       return fallbackSrc || developmentFallback;
     }
     
+    // SCHRITT 1: Wenn productId vorhanden ist, verwende Cloudinary-URL direkt
+    if (productId) {
+      const cloudinaryUrl = getCloudinaryUrl(src);
+      
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🔄 DIREKTE CLOUDINARY URL - Using optimized image:', { 
+          productId: productId,
+          imageIndex: imageIndex,
+          cloudinaryUrl: cloudinaryUrl,
+          context: context 
+        });
+      }
+      
+      return cloudinaryUrl;
+    }
+
     if (src.includes('shopify.com') || src.includes('shopifycdn.com')) {
-      // Nutze spezifische Cloudinary-Funktionen basierend auf Context
+      // SCHRITT 2: Standardmäßige Cloudinary-Optimierung für Shopify-Bilder
       let optimizedUrl: string;
       if (context === 'detail') {
-        optimizedUrl = getProductImage(src, false); // Standard Produktbild
+        optimizedUrl = getProductImage(src, false);
       } else if (context === 'thumbnail') {
         optimizedUrl = getThumbnailImage(src);
       } else if (context === 'hero') {
@@ -52,7 +73,7 @@ export function PremiumImage({
       }
       
       if (process.env.NODE_ENV === 'development') {
-        console.log('🔄 NEW CLOUDINARY - Shopify image optimized:', { 
+        console.log('🔄 SHOPIFY IMAGE OPTIMIZED:', { 
           original: src, 
           optimized: optimizedUrl,
           context: context 
@@ -65,7 +86,7 @@ export function PremiumImage({
       console.log('🖼️ Using original image URL:', src);
     }
     return src;
-  }, [src, fallbackSrc, context, developmentFallback]);
+  }, [src, fallbackSrc, context, developmentFallback, productId, imageIndex]);
   
   const isValidUrl = imageUrl && !imageError;
 

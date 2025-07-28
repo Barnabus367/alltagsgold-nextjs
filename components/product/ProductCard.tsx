@@ -88,6 +88,8 @@ export function ProductCard({ product }: ProductCardProps) {
             className="product-image w-full h-full object-cover"
             productTitle={product.title}
             context="card"
+            productId={product.id}
+            imageIndex={0}
             fallbackSrc="https://via.placeholder.com/400x400?text=Produkt+Bild"
           />
         </div>

@@ -77,6 +77,8 @@ export const OptimizedProductDetail: React.FC<OptimizedProductDetailProps> = ({
               className="w-full h-full object-cover"
               productTitle={product.title}
               context="detail"
+              productId={product.id}
+              imageIndex={selectedImageIndex}
               fallbackSrc="https://res.cloudinary.com/demo/image/upload/c_pad,w_800,h_800,b_auto/v1/sample.jpg"
             />
           </div>
@@ -101,6 +103,8 @@ export const OptimizedProductDetail: React.FC<OptimizedProductDetailProps> = ({
                     className="w-full h-full object-cover"
                     productTitle={product.title}
                     context="thumbnail"
+                    productId={product.id}
+                    imageIndex={index}
                   />
                 </button>
               ))}

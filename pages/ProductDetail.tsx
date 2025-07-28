@@ -706,21 +706,39 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               )
             )}
 
-            {/* 4. Technische Details */}
-            {optimizedContent.type === 'legacy' && optimizedContent.sections && optimizedContent.sections.length > 0 && (
-              <div className="space-y-4">
-                <h3 className="product-section-heading">Technische Details</h3>
-                <ul className="space-y-3">
-                  {optimizedContent.sections[0].content && Array.isArray(optimizedContent.sections[0].content) &&
-                    optimizedContent.sections[0].content.map((detail: string, index: number) => (
-                      <li key={index} className="flex items-start space-x-3">
-                        <span className="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0"></span>
-                        <span className="product-bullet-text">{detail}</span>
-                      </li>
-                    ))
-                  }
-                </ul>
-              </div>
+            {/* 4. Technische Details - FUNKTIONIERT FÜR BEIDE CONTENT-TYPES */}
+            {optimizedContent.type === 'native' ? (
+              // Native Content: Technische Details aus HTML extrahieren
+              optimizedContent.html.includes('Technische Details') && (
+                <div className="space-y-4">
+                  <h3 className="product-section-heading">Technische Details</h3>
+                  <div 
+                    className="prose prose-lg max-w-none text-gray-800"
+                    dangerouslySetInnerHTML={{ 
+                      __html: optimizedContent.html
+                        .match(/<h[1-6][^>]*>.*?Technische Details.*?<\/h[1-6]>([\s\S]*?)(?=<h[1-6]|$)/gi)?.[0]
+                        ?.replace(/<h[1-6][^>]*>.*?Technische Details.*?<\/h[1-6]>/gi, '') || ''
+                    }}
+                  />
+                </div>
+              )
+            ) : (
+              // Legacy Content: Strukturierte Sections
+              optimizedContent.sections && optimizedContent.sections.length > 0 && (
+                <div className="space-y-4">
+                  <h3 className="product-section-heading">Technische Details</h3>
+                  <ul className="space-y-3">
+                    {optimizedContent.sections[0].content && Array.isArray(optimizedContent.sections[0].content) &&
+                      optimizedContent.sections[0].content.map((detail: string, index: number) => (
+                        <li key={index} className="flex items-start space-x-3">
+                          <span className="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0"></span>
+                          <span className="product-bullet-text">{detail}</span>
+                        </li>
+                      ))
+                    }
+                  </ul>
+                </div>
+              )
             )}
 
             {/* 5. In den Warenkorb (CTA) - Unterer Block */}

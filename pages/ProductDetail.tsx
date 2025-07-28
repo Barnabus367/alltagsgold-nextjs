@@ -201,8 +201,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
         type: 'legacy' as const,
         loading: false,
         introText: legacyData.introText,
-        benefits: legacyData.benefits,
-        sections: legacyData.sections,
+        benefits: legacyData.benefits || [],
+        sections: legacyData.sections || [],
         isEmpty: false
       };
     }
@@ -646,26 +646,33 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               <CollapsibleContent className="mt-4">
                 <div className="space-y-4 border rounded-lg p-4 bg-gray-50">
                   {/* Structured sections */}
-                  {optimizedContent.sections.length > 0 && (
+                  {optimizedContent.sections && optimizedContent.sections.length > 0 && (
                     <div className="space-y-4">
                       {optimizedContent.sections.map((section: any, index: number) => (
                         <div key={index} className="space-y-2">
                           <h4 className="font-semibold text-gray-900">{section.title}</h4>
-                          <ul className="space-y-1">
-                            {section.content.map((item: string, itemIndex: number) => (
-                              <li key={itemIndex} className="text-sm text-gray-700 flex items-start space-x-2">
-                                <span className="text-gray-400 mt-1">•</span>
-                                <span>{item}</span>
-                              </li>
-                            ))}
-                          </ul>
+                          {Array.isArray(section.content) ? (
+                            <ul className="space-y-1">
+                              {section.content.map((item: string, itemIndex: number) => (
+                                <li key={itemIndex} className="text-sm text-gray-700 flex items-start space-x-2">
+                                  <span className="text-gray-400 mt-1">•</span>
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <div 
+                              className="text-sm text-gray-700 prose prose-sm max-w-none"
+                              dangerouslySetInnerHTML={{ __html: section.content }}
+                            />
+                          )}
                         </div>
                       ))}
                     </div>
                   )}
 
                   {/* Versand- und Service-Informationen */}
-                  <div className={`${optimizedContent.sections.length > 0 ? 'border-t pt-4' : ''}`}>
+                  <div className={`${optimizedContent.sections && optimizedContent.sections.length > 0 ? 'border-t pt-4' : ''}`}>
                     <h4 className="font-semibold text-gray-900 mb-3">Versand & Service</h4>
                     <div className="space-y-2 text-sm text-gray-700">
                       <p><span className="font-semibold">Kostenloser Versand</span> ab CHF 50 Bestellwert</p>

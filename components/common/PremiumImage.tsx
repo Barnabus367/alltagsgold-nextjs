@@ -37,12 +37,21 @@ export function PremiumImage({
   // Stabile Bild-URL mit useMemo - PRIORISIERT HOCHGELADENE BILDER
   const imageUrl = useMemo(() => {
     if (!src || src.includes('placeholder') || src.trim() === '') {
-      if (process.env.NODE_ENV === 'development') {
-        console.warn('🖼️ No valid image source provided, using fallback:', src);
-      }
-      // NOTFALL-FALLBACK: Falls kein src, verwende ein echtes Shopify-Produktbild statt sample.jpg
-      const emergencyFallback = 'https://cdn.shopify.com/s/files/1/0918/4575/5223/files/4a86f2d4-fe93-4425-a898-f67b376ba169.jpg?v=1750091644';
-      return fallbackSrc || emergencyFallback;
+      console.warn('🖼️ No valid image source provided, using fallback:', src);
+      
+      // INTELLIGENTER FALLBACK: Verschiedene echte Produktbilder je nach Kontext
+      const productImages = [
+        'https://cdn.shopify.com/s/files/1/0918/4575/5223/files/4a86f2d4-fe93-4425-a898-f67b376ba169.jpg?v=1750091644', // Nachtlicht
+        'https://cdn.shopify.com/s/files/1/0918/4575/5223/files/913340162679.jpg?v=1750055469', // LED-Lampe
+        'https://cdn.shopify.com/s/files/1/0918/4575/5223/files/897800972772.jpg?v=1750103955', // Gadget
+        'https://cdn.shopify.com/s/files/1/0918/4575/5223/files/350852167380.jpg?v=1750125533', // Haushalt
+      ];
+      
+      // Wähle ein Bild basierend auf imageIndex oder zufällig
+      const fallbackIndex = (imageIndex || 0) % productImages.length;
+      const selectedFallback = productImages[fallbackIndex];
+      
+      return fallbackSrc || selectedFallback;
     }
     
     // SCHRITT 1: Wenn productId vorhanden ist, verwende Cloudinary-URL direkt

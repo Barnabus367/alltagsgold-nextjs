@@ -1,8 +1,8 @@
 import { ShopifyProduct, ShopifyCollection, ShopifyCart, CartItem, ShopifyBlogPost, ShopifyBlog } from '@/types/shopify';
 
 // Fix für vertauschte Umgebungsvariablen
-const SHOPIFY_STORE_DOMAIN = 'yxwc4d-2f.myshopify.com';
-const SHOPIFY_STOREFRONT_ACCESS_TOKEN = '6cee47c83316d9e619313231aedf5861';
+const SHOPIFY_STORE_DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || 'yxwc4d-2f.myshopify.com';
+const SHOPIFY_STOREFRONT_ACCESS_TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN || '6cee47c83316d9e619313231aedf5861';
 
 const STOREFRONT_API_URL = `https://${SHOPIFY_STORE_DOMAIN}/api/2023-10/graphql.json`;
 

@@ -6,8 +6,9 @@ export default function Document() {
   return (
     <Html lang="de">
       <Head>
-        {/* PWA Manifest */}
+        {/* PWA Manifest - Mit Fallback */}
         <link rel="manifest" href="/manifest.json" />
+        <link rel="alternate" href="/api/manifest" type="application/manifest+json" />
         <meta name="theme-color" content="#059669" />
         <meta name="application-name" content="AlltagsGold" />
         <meta name="apple-mobile-web-app-capable" content="yes" />

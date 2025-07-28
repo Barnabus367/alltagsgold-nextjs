@@ -54,16 +54,17 @@ export function PremiumImage({
       return fallbackSrc || selectedFallback;
     }
     
-    // SCHRITT 1: Wenn productId vorhanden ist, verwende Cloudinary-URL direkt
+    // SCHRITT 1: Wenn productId vorhanden ist, verwende direkte Upload-URL
     if (productId) {
-      const cloudinaryUrl = getCloudinaryUrl(src);
+      const cloudinaryUrl = getCloudinaryUrl(src, context === 'detail' ? 'productZoom' : context === 'thumbnail' ? 'thumbnail' : 'product', productId, imageIndex);
       
       if (process.env.NODE_ENV === 'development') {
-        console.log('🔄 DIREKTE CLOUDINARY URL - Using optimized image:', { 
+        console.log('🔄 PRODUKTSPEZIFISCHE CLOUDINARY URL:', { 
           productId: productId,
           imageIndex: imageIndex,
           cloudinaryUrl: cloudinaryUrl,
-          context: context 
+          context: context,
+          originalSrc: src
         });
       }
       

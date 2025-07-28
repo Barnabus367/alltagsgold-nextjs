@@ -43,7 +43,7 @@ export function getCloudinaryStats() {
   };
 }
 
-// Cache-aware URL Generation
+// Cache-aware URL Generation für externe URLs (fetch)
 function getCachedCloudinaryUrl(originalUrl: string, preset: string): string {
   const cacheKey = `${originalUrl}:${preset}`;
   
@@ -79,17 +79,59 @@ function getCachedCloudinaryUrl(originalUrl: string, preset: string): string {
   }
 }
 
-// Haupt-URL-Transformation (PERFORMANCE OPTIMIERT)
+// Spezielle Funktion für bereits hochgeladene Cloudinary-Bilder (upload)
+function getCloudinaryUploadUrl(cloudinaryUrl: string, preset: string): string {
+  const transform = TRANSFORM_PRESETS[preset as TransformPreset] || preset;
+  
+  // URL-Struktur: https://res.cloudinary.com/do7yh4dll/image/upload/v1753735171/alltagsgold/products/...
+  // Ergebnis: https://res.cloudinary.com/do7yh4dll/image/upload/c_pad,w_400,h_400.../alltagsgold/products/...
+  
+  const urlParts = cloudinaryUrl.split('/');
+  const cloudIndex = urlParts.findIndex(part => part === 'image');
+  
+  if (cloudIndex !== -1 && urlParts[cloudIndex + 1] === 'upload') {
+    // Einfügen der Transformation nach "upload"
+    urlParts.splice(cloudIndex + 2, 0, transform);
+    return urlParts.join('/');
+  }
+  
+  return cloudinaryUrl; // Fallback
+}
+
+// Spezielle Funktion für hochgeladene Produkt-Bilder (direkte Upload URLs)
+export function getProductCloudinaryUrl(productId: string, imageIndex: number = 0, preset: TransformPreset = 'product'): string {
+  const transform = TRANSFORM_PRESETS[preset] || preset;
+  
+  // Public ID Schema das bei der Sync verwendet wird
+  const publicId = `shopify-products/product_${productId}_image_${imageIndex}`;
+  
+  // Direkte Upload URL für bereits hochgeladene Bilder
+  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/${transform}/alltagsgold/products/${publicId}.jpg`;
+}
+
+// Verbesserte Haupt-URL-Transformation mit produktspezifischer Logik
 export function getCloudinaryUrl(
   originalUrl?: string, 
-  preset: TransformPreset | string = 'product'
+  preset: TransformPreset | string = 'product',
+  productId?: string,
+  imageIndex?: number
 ): string {
   if (!originalUrl || typeof originalUrl !== 'string') {
     return '/images/placeholder.jpg';
   }
 
-  // Bereits optimiert
-  if (originalUrl.includes('res.cloudinary.com')) {
+  // PRIORITÄT 1: Wenn productId verfügbar ist, verwende direkte Upload URL
+  if (productId) {
+    return getProductCloudinaryUrl(productId, imageIndex || 0, preset as TransformPreset);
+  }
+
+  // PRIORITÄT 2: Bereits hochgeladene Cloudinary-Bilder (upload URLs)
+  if (originalUrl.includes('res.cloudinary.com') && originalUrl.includes('/image/upload/')) {
+    return getCloudinaryUploadUrl(originalUrl, preset);
+  }
+
+  // PRIORITÄT 3: Bereits optimierte fetch URLs
+  if (originalUrl.includes('res.cloudinary.com') && originalUrl.includes('/image/fetch/')) {
     return originalUrl;
   }
 

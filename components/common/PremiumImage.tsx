@@ -31,12 +31,12 @@ export function PremiumImage({
   const developmentFallback = useMemo(() => {
     const width = context === 'detail' ? 800 : context === 'hero' ? 1200 : 400;
     const height = context === 'detail' ? 600 : context === 'hero' ? 600 : 400;
-    return `https://res.cloudinary.com/demo/image/upload/c_pad,w_${width},h_${height},b_auto/v1/sample.jpg`;
+    return `https://res.cloudinary.com/do7yh4dll/image/upload/c_pad,w_${width},h_${height},b_auto/v1/sample.jpg`;
   }, [context]);
 
   // Stabile Bild-URL mit useMemo - PRIORISIERT HOCHGELADENE BILDER
   const imageUrl = useMemo(() => {
-    if (!src || src.includes('placeholder')) {
+    if (!src || src.includes('placeholder') || src.trim() === '') {
       if (process.env.NODE_ENV === 'development') {
         console.warn('🖼️ No valid image source provided:', src);
       }
@@ -82,10 +82,13 @@ export function PremiumImage({
       return optimizedUrl;
     }
     
+    // SCHRITT 3: Fallback für andere Bildquellen - verwende immer Cloudinary Fetch
+    const finalUrl = getCloudinaryUrl(src, context);
+    
     if (process.env.NODE_ENV === 'development') {
-      console.log('🖼️ Using original image URL:', src);
+      console.log('🖼️ Using Cloudinary optimized URL:', { original: src, optimized: finalUrl });
     }
-    return src;
+    return finalUrl;
   }, [src, fallbackSrc, context, developmentFallback, productId, imageIndex]);
   
   const isValidUrl = imageUrl && !imageError;

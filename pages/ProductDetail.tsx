@@ -543,7 +543,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                 className="w-full h-full object-cover"
                 productTitle={safeProductData.title}
                 context="detail"
-                fallbackSrc="https://res.cloudinary.com/demo/image/upload/c_pad,w_800,h_800,b_auto/v1/sample.jpg"
+                fallbackSrc="https://res.cloudinary.com/do7yh4dll/image/upload/c_pad,w_800,h_800,b_auto/v1/sample.jpg"
               />
             </div>
             

@@ -1,6 +1,6 @@
 // Optimierte Version von cloudinary.ts - Entfernt aggressive DOM-Manipulation
 
-const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || 'alltagsgold';
+const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || 'do7yh4dll';
 
 // Basis-Transformation-Presets - SELEKTIVE OPTIMIERUNG
 const TRANSFORM_PRESETS = {

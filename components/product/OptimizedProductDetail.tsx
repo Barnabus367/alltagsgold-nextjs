@@ -79,7 +79,7 @@ export const OptimizedProductDetail: React.FC<OptimizedProductDetailProps> = ({
               context="detail"
               productId={product.id}
               imageIndex={selectedImageIndex}
-              fallbackSrc="https://res.cloudinary.com/demo/image/upload/c_pad,w_800,h_800,b_auto/v1/sample.jpg"
+              fallbackSrc="https://res.cloudinary.com/do7yh4dll/image/upload/c_pad,w_800,h_800,b_auto/v1/sample.jpg"
             />
           </div>
           

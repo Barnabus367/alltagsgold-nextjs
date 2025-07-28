@@ -66,15 +66,15 @@ function validateCanonicalInPage(filePath) {
   const info = [];
   
   // Prüfe auf SEOHead Import und Usage
-  const hasSEOHeadImport = content.includes('SEOHead') || content.includes('SEOHelmet');
-  const hasSEOHeadUsage = content.includes('<SEOHead') || content.includes('<SEOHelmet');
+  const hasSEOHeadImport = content.includes('NextSEOHead');
+  const hasSEOHeadUsage = content.includes('<NextSEOHead');
   
   if (!hasSEOHeadImport) {
-    issues.push('Missing SEOHead/SEOHelmet import');
+    issues.push('Missing NextSEOHead import');
   }
   
   if (!hasSEOHeadUsage) {
-    issues.push('SEOHead/SEOHelmet component not used');
+    issues.push('NextSEOHead component not used');
   }
   
   // Prüfe auf canonicalUrl Prop

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import { getOptimizedImageUrl } from '@/lib/categoryImages';
 
@@ -22,22 +22,26 @@ export function PremiumImage({
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   
-  // Intelligente Bildverarbeitung mit Shopify-Priority
-  const getImageUrl = (originalUrl: string) => {
-    if (!originalUrl || originalUrl.includes('placeholder')) {
-      return fallbackSrc || '';
+  // Stabile Fallback URL mit useMemo
+  const developmentFallback = useMemo(() => {
+    const width = context === 'detail' ? 800 : context === 'hero' ? 1200 : 400;
+    const height = context === 'detail' ? 600 : context === 'hero' ? 600 : 400;
+    return `https://res.cloudinary.com/demo/image/upload/c_pad,w_${width},h_${height},b_auto/v1/sample.jpg`;
+  }, [context]);
+
+  // Stabile Bild-URL mit useMemo
+  const imageUrl = useMemo(() => {
+    if (!src || src.includes('placeholder')) {
+      return fallbackSrc || 'https://res.cloudinary.com/demo/image/upload/c_pad,w_400,h_400,b_auto/v1/sample.jpg';
     }
     
-    // Wenn es bereits eine Shopify-URL ist, optimiere sie intelligent
-    if (originalUrl.includes('shopify.com') || originalUrl.includes('shopifycdn.com')) {
-      return getOptimizedImageUrl(originalUrl, context);
+    if (src.includes('shopify.com') || src.includes('shopifycdn.com')) {
+      return getOptimizedImageUrl(src, context);
     }
     
-    // Für alle anderen URLs (inkl. bereits optimierte Cloudinary)
-    return originalUrl;
-  };
+    return src;
+  }, [src, fallbackSrc, context]);
   
-  const imageUrl = getImageUrl(src);
   const isValidUrl = imageUrl && !imageError;
 
   const handleImageLoad = () => {
@@ -45,6 +49,7 @@ export function PremiumImage({
   };
 
   const handleImageError = () => {
+    console.warn('Image failed to load:', imageUrl);
     setImageError(true);
     setImageLoaded(true);
   };
@@ -75,14 +80,28 @@ export function PremiumImage({
           )}
         </>
       ) : (
-        <div className="w-full h-full bg-gray-100 flex items-center justify-center rounded-lg">
-          <div className="text-center text-gray-400">
-            <svg className="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
-            </svg>
-            <span className="text-xs">Bild wird geladen...</span>
+        // Development-safe fallback with Cloudinary placeholder
+        <>
+          <Image
+            src={developmentFallback}
+            alt={alt || `${productTitle} Fallback-Bild`}
+            width={800}
+            height={800}
+            onLoad={handleImageLoad}
+            loading="lazy"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            quality={75}
+            className={`object-cover rounded-lg transition-all duration-300 opacity-60 ${className}`}
+          />
+          <div className="absolute inset-0 bg-gray-100 bg-opacity-50 flex items-center justify-center rounded-lg">
+            <div className="text-center text-gray-500">
+              <svg className="w-8 h-8 mx-auto mb-1" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+              </svg>
+              <span className="text-xs">Placeholder</span>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

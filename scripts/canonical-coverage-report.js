@@ -90,12 +90,11 @@ function getAllFiles(dir = PAGES_DIR, allFiles = [], prefix = '') {
 function checkCanonicalInFile(filePath) {
   const content = fs.readFileSync(filePath, 'utf8');
   
-  const hasSEOHead = content.includes('<SEOHead') && content.includes('canonicalUrl=');
-  const hasSEOHelmet = content.includes('<SEOHelmet') && content.includes('canonicalUrl=');
+  const hasNextSEOHead = content.includes('<NextSEOHead') && content.includes('canonicalUrl=');
   
   return {
-    hasCanonical: hasSEOHead || hasSEOHelmet,
-    seoComponent: hasSEOHead ? 'SEOHead' : hasSEOHelmet ? 'SEOHelmet' : null
+    hasCanonical: hasNextSEOHead,
+    seoComponent: hasNextSEOHead ? 'NextSEOHead' : null
   };
 }
 

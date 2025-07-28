@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Minus, Plus, Heart, ShoppingCart, ChevronDown, ChevronUp } from 'lucide-react';
@@ -24,6 +24,26 @@ interface ProductDetailProps {
   preloadedProduct?: ShopifyProduct | null;
 }
 
+// Fallback constants
+const FALLBACK_VARIANT: Partial<ShopifyVariant> = {
+  id: '',
+  title: 'Standard',
+  price: { amount: '0', currencyCode: 'CHF' },
+  availableForSale: false,
+  selectedOptions: []
+};
+
+const FALLBACK_PRODUCT_DATA = {
+  title: 'Produkt wird geladen...',
+  handle: '',
+  images: { edges: [] },
+  variants: { edges: [] },
+  collections: { edges: [] },
+  description: '',
+  id: '',
+  priceRange: null
+};
+
 export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   const router = useRouter();
   const { handle } = router.query as { handle: string };
@@ -48,128 +68,68 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Hydration fix
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
-
-  // Navigation Handler für saubere Product-Page-Navigation
-  useProductNavigationCleanup();
-
-  // Set page title
-  usePageTitle(product ? formatPageTitle(product.title) : 'Produkt wird geladen...');
-
-  // Set default variant and check mobile when product loads
-  useEffect(() => {
-    if (product && !selectedVariant) {
-      setSelectedVariant(product.variants.edges[0]?.node || null);
-    }
+  // Memoized safe product data - NO direct product access in render
+  const safeProductData = useMemo(() => {
+    if (!product) return FALLBACK_PRODUCT_DATA;
     
-    // Check if mobile
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    return {
+      title: product.title || 'Unbekanntes Produkt',
+      handle: product.handle || '',
+      images: product.images?.edges || [],
+      variants: product.variants?.edges || [],
+      collections: product.collections?.edges || [],
+      description: product.description || '',
+      id: product.id || '',
+      priceRange: product.priceRange || null
     };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
-  }, [product, selectedVariant]);
-
-  // Track ViewContent when product loads
-  useEffect(() => {
-    if (product) {
-      const primaryVariant = product.variants.edges[0]?.node;
-      
-      trackViewContent({
-        content_id: product.id,
-        content_name: product.title,
-        content_type: 'product',
-        value: getPriceAmountSafe(primaryVariant?.price),
-        currency: primaryVariant?.price?.currencyCode || 'CHF'
-      });
-    }
   }, [product]);
 
-  // Early return checks AFTER all hooks to comply with Rules of Hooks
-  // Loading state
-  if (isLoading || !product) {
-    return (
-      <div className="min-h-screen bg-white pt-16 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto mb-4"></div>
-          <p className="text-gray-600">Produkt wird geladen...</p>
-        </div>
-      </div>
-    );
-  }
+  // Memoized variant data with fallbacks
+  const safeVariantData = useMemo(() => {
+    const variantEdges = safeProductData.variants?.edges || [];
+    const firstVariant = variantEdges[0]?.node;
+    const currentVariant = selectedVariant || firstVariant;
+    
+    return {
+      current: currentVariant || FALLBACK_VARIANT,
+      all: variantEdges.map((edge: any) => edge.node).filter(Boolean),
+      hasMultiple: variantEdges.length > 1
+    };
+  }, [safeProductData.variants, selectedVariant]);
 
-  // Error state
-  if (error) {
-    return (
-      <div className="min-h-screen bg-white pt-16 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Fehler beim Laden</h1>
-          <p className="text-gray-600 mb-8">Das Produkt konnte nicht geladen werden. Bitte versuchen Sie es später erneut.</p>
-          <Link href="/products" className="bg-black text-white px-6 py-2 hover:bg-gray-800 inline-block">
-            Alle Produkte ansehen
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  // Memoized image data with fallbacks  
+  const safeImageData = useMemo(() => {
+    const imageEdges = safeProductData.images?.edges || [];
+    const images = imageEdges.map((edge: any) => edge.node).filter(Boolean);
+    
+    return {
+      all: images,
+      current: images[selectedImageIndex] || null,
+      primary: images[0] || null,
+      hasMultiple: images.length > 1
+    };
+  }, [safeProductData.images, selectedImageIndex]);
 
-  const handleAddToCart = async () => {
-    if (selectedVariant && product) {
-      const productData = {
-        title: product.title,
-        image: product.images.edges[selectedImageIndex]?.node.url,
-        price: selectedVariant.price,
-        selectedOptions: selectedVariant.selectedOptions,
-        handle: product.handle
-      };
-      
-      // Track AddToCart event
-      trackAddToCart({
-        content_id: product.id,
-        content_name: product.title,
-        content_type: 'product',
-        value: getPriceAmountSafe(selectedVariant.price) * quantity,
-        currency: selectedVariant.price?.currencyCode || 'CHF',
-        contents: [{
-          id: selectedVariant.id,
-          quantity: quantity,
-          item_price: getPriceAmountSafe(selectedVariant.price)
-        }]
-      });
-      
-      await addItemToCart(selectedVariant.id, quantity, productData);
-    }
-  };
+  // Memoized pricing with safe access
+  const safePricing = useMemo(() => {
+    const currentPrice = safeVariantData.current?.price;
+    const fallbackPrice = safeProductData.priceRange?.minVariantPrice;
+    
+    return {
+      formatted: formatPriceSafe(currentPrice || fallbackPrice),
+      amount: getPriceAmountSafe(currentPrice || fallbackPrice),
+      currency: currentPrice?.currencyCode || fallbackPrice?.currencyCode || 'CHF'
+    };
+  }, [safeVariantData.current?.price, safeProductData.priceRange]);
 
-  const handleVariantChange = (variantIndex: number) => {
-    const variant = product?.variants.edges[variantIndex]?.node;
-    if (variant) {
-      setSelectedVariant(variant);
-      // Update image if variant has specific image
-      if (variant.image) {
-        const imageIndex = product?.images.edges.findIndex((edge: any) => edge.node.url === variant.image?.url);
-        if (imageIndex !== -1) {
-          setSelectedImageIndex(imageIndex || 0);
-        }
-      }
-    }
-  };
-
-  const adjustQuantity = (delta: number) => {
-    setQuantity(prev => Math.max(1, prev + delta));
-  };
-
-  // Parse real Shopify product content - stable version to prevent hydration issues
-  const parseShopifyContent = () => {
-    if (!product || !product.description) {
+  // Memoized content parsing - NO product access in render
+  const optimizedContent = useMemo(() => {
+    const productData = safeProductData;
+    const description = productData.description;
+    
+    if (!description) {
       return { 
-        introText: product?.title || '', 
+        introText: productData.title, 
         benefits: [], 
         sections: [
           {
@@ -185,9 +145,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       };
     }
     
-    const description = product.description;
-    
-    // Debug logging
+    // Debug logging - ONLY in development
     if (process.env.NODE_ENV === 'development') {
       console.log('🔍 Raw Shopify Description:', description);
     }
@@ -201,7 +159,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     
     // Fallback to product title if no description found
     if (!introText || introText.length < 10) {
-      introText = product.title;
+      introText = productData.title;
     }
     
     if (process.env.NODE_ENV === 'development') {
@@ -254,7 +212,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     if (techMatch && techMatch[1]) {
       const techText = techMatch[1].trim();
       
-      // Debug logging for technical details
+      // Debug logging for technical details - ONLY in development
       if (process.env.NODE_ENV === 'development') {
         console.log('🔧 Raw tech text:', techText);
       }
@@ -293,18 +251,15 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
         });
       }
       
-      // Debug logging for technical details
+      // Debug logging for technical details - ONLY in development
       if (process.env.NODE_ENV === 'development') {
         console.log('🔧 Found technical details:', technicalDetails);
       }
       
       // Always add price as consistent element
-      if (product.variants.edges.length > 0) {
-        const variant = product.variants.edges[0]?.node;
-        if (variant) {
-          const priceFormatted = formatPriceSafe(variant.price);
-          technicalDetails.push(`Preis: ${priceFormatted}`);
-        }
+      if (safeVariantData.current?.price) {
+        const priceFormatted = formatPriceSafe(safeVariantData.current.price);
+        technicalDetails.push(`Preis: ${priceFormatted}`);
       }
     }
     
@@ -339,6 +294,190 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     });
     
     return { introText, benefits, sections };
+  }, [safeProductData, safeVariantData.current?.price]);
+
+  // Memoized SEO data - lazy loaded to prevent re-computation on every render
+  const seoData = useMemo(() => {
+    if (!product) return null;
+    
+    return generateProductSEO(product);
+  }, [product]);
+
+  // Memoized structured data - lazy loaded
+  const structuredData = useMemo(() => {
+    if (!safeProductData.id || !safeImageData.primary) return null;
+    
+    return {
+      "@type": "Product",
+      name: safeProductData.title,
+      image: safeImageData.primary.url,
+      description: optimizedContent.introText,
+      offers: {
+        "@type": "Offer",
+        price: safePricing.amount,
+        priceCurrency: safePricing.currency,
+        availability: safeVariantData.current?.availableForSale ? "InStock" : "OutOfStock",
+        url: `https://www.alltagsgold.ch/products/${safeProductData.handle}`
+      }
+    };
+  }, [safeProductData, safeImageData.primary, optimizedContent.introText, safePricing, safeVariantData.current?.availableForSale]);
+
+  // Memoized breadcrumbs - lazy loaded
+  const breadcrumbs = useMemo(() => {
+    const crumbs = [
+      { name: 'Home', url: 'https://www.alltagsgold.ch/', position: 1 },
+      { name: 'Shop', url: 'https://www.alltagsgold.ch/collections', position: 2 }
+    ];
+
+    // Add collection breadcrumb if product has collections
+    const collectionEdges = safeProductData.collections?.edges || [];
+    if (collectionEdges.length > 0) {
+      const collection = collectionEdges[0]?.node;
+      if (collection) {
+        crumbs.push({
+          name: collection.title,
+          url: `https://www.alltagsgold.ch/collections/${collection.handle}`,
+          position: 3
+        });
+        crumbs.push({
+          name: safeProductData.title,
+          url: `https://www.alltagsgold.ch/products/${safeProductData.handle}`,
+          position: 4
+        });
+      }
+    } else {
+      crumbs.push({
+        name: safeProductData.title,
+        url: `https://www.alltagsgold.ch/products/${safeProductData.handle}`,
+        position: 3
+      });
+    }
+    
+    return crumbs;
+  }, [safeProductData]);
+
+  // Hydration fix
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
+  // Navigation Handler für saubere Product-Page-Navigation
+  useProductNavigationCleanup();
+
+  // Set page title with safe access
+  usePageTitle(safeProductData.title !== 'Produkt wird geladen...' ? formatPageTitle(safeProductData.title) : 'Produkt wird geladen...');
+
+  // Set default variant and check mobile when product loads
+  useEffect(() => {
+    if (product && !selectedVariant) {
+      const firstVariant = product.variants?.edges?.[0]?.node;
+      if (firstVariant) {
+        setSelectedVariant(firstVariant);
+      }
+    }
+    
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [product, selectedVariant]);
+
+  // Track ViewContent when product loads - ONLY access product within useEffect
+  useEffect(() => {
+    if (product) {
+      const primaryVariant = product.variants?.edges?.[0]?.node;
+      
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🔍 Tracking ViewContent for product:', product.title);
+      }
+      
+      trackViewContent({
+        content_id: product.id || '',
+        content_name: product.title || 'Unknown Product',
+        content_type: 'product',
+        value: getPriceAmountSafe(primaryVariant?.price),
+        currency: primaryVariant?.price?.currencyCode || 'CHF'
+      });
+    }
+  }, [product]);
+
+  // Early return checks AFTER all hooks to comply with Rules of Hooks
+  // Loading state
+  if (isLoading || !product) {
+    return (
+      <div className="min-h-screen bg-white pt-16 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">Produkt wird geladen...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white pt-16 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Fehler beim Laden</h1>
+          <p className="text-gray-600 mb-8">Das Produkt konnte nicht geladen werden. Bitte versuchen Sie es später erneut.</p>
+          <Link href="/products" className="bg-black text-white px-6 py-2 hover:bg-gray-800 inline-block">
+            Alle Produkte ansehen
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const handleAddToCart = async () => {
+    if (safeVariantData.current && safeProductData.id) {
+      const productData = {
+        title: safeProductData.title,
+        image: safeImageData.current?.url,
+        price: safeVariantData.current.price,
+        selectedOptions: safeVariantData.current.selectedOptions || [],
+        handle: safeProductData.handle
+      };
+      
+      // Track AddToCart event
+      trackAddToCart({
+        content_id: safeProductData.id,
+        content_name: safeProductData.title,
+        content_type: 'product',
+        value: safePricing.amount * quantity,
+        currency: safePricing.currency,
+        contents: [{
+          id: safeVariantData.current.id || '',
+          quantity: quantity,
+          item_price: safePricing.amount
+        }]
+      });
+      
+      await addItemToCart(safeVariantData.current.id || '', quantity, productData);
+    }
+  };
+
+  const handleVariantChange = (variantIndex: number) => {
+    const variant = safeVariantData.all[variantIndex];
+    if (variant) {
+      setSelectedVariant(variant);
+      // Update image if variant has specific image
+      if (variant.image) {
+        const imageIndex = safeImageData.all.findIndex((img: any) => img.url === variant.image?.url);
+        if (imageIndex !== -1) {
+          setSelectedImageIndex(imageIndex);
+        }
+      }
+    }
+  };
+
+  const adjustQuantity = (delta: number) => {
+    setQuantity(prev => Math.max(1, prev + delta));
   };
 
   // Prevent hydration mismatch by waiting for client-side hydration
@@ -363,65 +502,13 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       </div>
     );
   }
-
-  const images = product.images.edges.map((edge: any) => edge.node);
-  const variants = product.variants.edges.map((edge: any) => edge.node);
-  const currentImage = images[selectedImageIndex];
-  
-  const price = selectedVariant ? 
-    formatPriceSafe(selectedVariant.price) : 
-    formatPriceSafe(product.priceRange?.minVariantPrice);
-
-  const primaryImage = product.images.edges[0]?.node;
-  
-  // Parse real Shopify product content
-  const optimizedContent = parseShopifyContent();
-
-  // Generate breadcrumbs for SEO structured data
-  const breadcrumbs = [
-    { name: 'Home', url: 'https://www.alltagsgold.ch/', position: 1 },
-    { name: 'Shop', url: 'https://www.alltagsgold.ch/collections', position: 2 }
-  ];
-
-  // Add collection breadcrumb if product has collections
-  if (product.collections.edges.length > 0) {
-    const collection = product.collections.edges[0].node;
-    breadcrumbs.push({
-      name: collection.title,
-      url: `https://www.alltagsgold.ch/collections/${collection.handle}`,
-      position: 3
-    });
-    breadcrumbs.push({
-      name: product.title,
-      url: `https://www.alltagsgold.ch/products/${product.handle}`,
-      position: 4
-    });
-  } else {
-    breadcrumbs.push({
-      name: product.title,
-      url: `https://www.alltagsgold.ch/products/${product.handle}`,
-      position: 3
-    });
-  }
   
   return (
     <div className="min-h-screen bg-white pt-16">
       <NextSEOHead 
-        seo={generateProductSEO(product)}
-        canonicalUrl={`products/${product.handle}`}
-        structuredData={{
-          "@type": "Product",
-          name: product.title,
-          image: primaryImage?.url,
-          description: optimizedContent.introText,
-          offers: {
-            "@type": "Offer",
-            price: getPriceAmountSafe(product.variants.edges[0]?.node?.price),
-            priceCurrency: product.variants.edges[0]?.node?.price?.currencyCode || "CHF",
-            availability: product.variants.edges[0]?.node?.availableForSale ? "InStock" : "OutOfStock",
-            url: `https://www.alltagsgold.ch/products/${product.handle}`
-          }
-        }}
+        seo={seoData || { title: safeProductData.title, description: optimizedContent.introText }}
+        canonicalUrl={`products/${safeProductData.handle}`}
+        structuredData={structuredData}
       />
       
       {/* Enhanced Breadcrumb Navigation with Collection */}
@@ -435,19 +522,19 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             <Link href="/collections" className="hover:text-black transition-colors">
               Shop
             </Link>
-            {product.collections.edges.length > 0 && (
+            {safeProductData.collections?.edges && safeProductData.collections.edges.length > 0 && (
               <>
                 <span>/</span>
                 <Link 
-                  href={`/collections/${product.collections.edges[0].node.handle}`}
+                  href={`/collections/${safeProductData.collections.edges[0]?.node?.handle || ''}`}
                   className="hover:text-black transition-colors"
                 >
-                  {product.collections.edges[0].node.title}
+                  {safeProductData.collections.edges[0]?.node?.title || 'Kollektion'}
                 </Link>
               </>
             )}
             <span>/</span>
-            <span className="text-gray-900 font-medium">{product.title}</span>
+            <span className="text-gray-900 font-medium">{safeProductData.title}</span>
           </nav>
         </div>
       </div>
@@ -459,32 +546,32 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             {/* Main Image */}
             <div className="aspect-square overflow-hidden bg-gray-50 rounded-lg">
               <PremiumImage
-                src={currentImage?.url || primaryImage?.url || ''}
-                alt={currentImage?.altText || product.title}
+                src={safeImageData.current?.url || safeImageData.primary?.url || ''}
+                alt={safeImageData.current?.altText || safeProductData.title}
                 className="w-full h-full object-cover"
-                productTitle={product.title}
+                productTitle={safeProductData.title}
                 context="detail"
                 fallbackSrc="https://via.placeholder.com/800x800?text=Produkt+Detail"
               />
             </div>
             
             {/* Thumbnail Images */}
-            {images.length > 1 && (
+            {safeImageData.hasMultiple && (
               <div className="flex space-x-2 overflow-x-auto pb-2">
-                {images.map((image: any, index: number) => (
+                {safeImageData.all.map((image: any, index: number) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImageIndex(index)}
                     className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors ${
                       selectedImageIndex === index ? 'border-black' : 'border-gray-200 hover:border-gray-300'
                     }`}
-                    aria-label={`Produktbild ${index + 1} von ${images.length} anzeigen`}
+                    aria-label={`Produktbild ${index + 1} von ${safeImageData.all.length} anzeigen`}
                   >
                     <PremiumImage
                       src={image.url}
-                      alt={image.altText || product.title}
+                      alt={image.altText || safeProductData.title}
                       className="w-full h-full object-cover"
-                      productTitle={product.title}
+                      productTitle={safeProductData.title}
                       context="thumbnail"
                     />
                   </button>
@@ -497,8 +584,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
           <div className="space-y-8">
             {/* Title and Price - SEO H1 */}
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.title}</h1>
-              <div className="text-3xl font-bold text-gray-900 mb-6">{price}</div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">{safeProductData.title}</h1>
+              <div className="text-3xl font-bold text-gray-900 mb-6">{safePricing.formatted}</div>
             </div>
 
             {/* Intro Text */}
@@ -541,21 +628,21 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             )}
 
             {/* Variant Selection - JETZT NACH Produktvorteilen */}
-            {variants.length > 1 && (
+            {safeVariantData.hasMultiple && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900">Varianten</h3>
                 <div className="grid grid-cols-2 gap-2">
-                  {variants.map((variant: any, index: number) => (
+                  {safeVariantData.all.map((variant: any, index: number) => (
                     <button
                       key={variant.id}
                       onClick={() => handleVariantChange(index)}
                       className={`p-3 text-sm border rounded-lg transition-colors ${
-                        selectedVariant?.id === variant.id
+                        safeVariantData.current?.id === variant.id
                           ? 'border-black bg-black text-white'
                           : 'border-gray-300 hover:border-gray-400'
                       }`}
                     >
-                      {variant.selectedOptions.map((option: any) => option.value).join(' / ')}
+                      {variant.selectedOptions?.map((option: any) => option.value).join(' / ') || variant.title}
                     </button>
                   ))}
                 </div>
@@ -645,16 +732,16 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               {/* Add to Cart Button - Mobile-optimiert */}
               <Button 
                 onClick={handleAddToCart}
-                disabled={!selectedVariant?.availableForSale || isAddingToCart}
+                disabled={!safeVariantData.current?.availableForSale || isAddingToCart}
                 className="w-full min-h-[48px] text-base font-semibold bg-black hover:bg-gray-900 text-white border border-black hover:border-gray-900 transition-all duration-200 shadow-sm hover:shadow-md touch-manipulation"
                 style={{
                   boxShadow: '0 0 0 1px rgba(200, 160, 100, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1)'
                 }}
-                aria-label={product ? `${product.title} in den Warenkorb legen` : 'Produkt in den Warenkorb legen'}
+                aria-label={safeProductData.title ? `${safeProductData.title} in den Warenkorb legen` : 'Produkt in den Warenkorb legen'}
               >
                 {isAddingToCart ? (
                   'Wird hinzugefügt...'
-                ) : !selectedVariant?.availableForSale ? (
+                ) : !safeVariantData.current?.availableForSale ? (
                   'Nicht verfügbar'
                 ) : (
                   <>

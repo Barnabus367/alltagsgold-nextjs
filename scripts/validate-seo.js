@@ -47,9 +47,9 @@ function validatePageFile(filePath) {
   const issues = [];
   const warnings = [];
   
-  // Prüfe auf SEOHead Import (unterstützt alle SEO-Komponenten)
-  if (!content.includes('SEOHead') && !content.includes('SEOHelmet') && !content.includes('NextSEOHead')) {
-    issues.push('Missing SEOHead, SEOHelmet, or NextSEOHead import');
+  // Prüfe auf NextSEOHead Import (aktuelle SEO-Komponente)
+  if (!content.includes('NextSEOHead')) {
+    issues.push('Missing NextSEOHead import');
   }
   
   // Prüfe auf generateSEO Import
@@ -59,13 +59,13 @@ function validatePageFile(filePath) {
     warnings.push('No SEO generation function imported');
   }
   
-  // Prüfe auf SEOHead Component Usage (unterstützt alle SEO-Komponenten)
-  if (!content.includes('<SEOHead') && !content.includes('<SEOHelmet') && !content.includes('<NextSEOHead')) {
-    issues.push('SEO component not used in JSX');
+  // Prüfe auf NextSEOHead Component Usage
+  if (!content.includes('<NextSEOHead')) {
+    issues.push('NextSEOHead component not used in JSX');
   }
   
   // Prüfe auf canonical URL
-  if ((content.includes('<SEOHead') || content.includes('<NextSEOHead')) && !content.includes('canonicalUrl')) {
+  if (content.includes('<NextSEOHead') && !content.includes('canonicalUrl')) {
     warnings.push('No canonical URL specified');
   }
   
@@ -83,7 +83,7 @@ function validatePageFile(filePath) {
     issues,
     warnings,
     hasNext: content.includes('export default function'),
-    hasSEO: content.includes('SEOHead') || content.includes('SEOHelmet')
+    hasSEO: content.includes('NextSEOHead')
   };
 }
 

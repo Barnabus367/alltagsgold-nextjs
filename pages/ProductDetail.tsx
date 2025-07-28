@@ -567,20 +567,18 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               </div>
             )}
 
-            {/* Produktbeschreibung - Unter der Galerie */}
+            {/* Produktbeschreibung - Unter der Galerie - Vereinfacht */}
             <div className="mt-12 space-y-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Produktbeschreibung</h2>
+              <h2 className="product-section-heading text-gray-900 mb-4">Produktbeschreibung</h2>
               
-              {/* Native HTML Content Rendering mit ProductDescription Komponente */}
+              {/* Native HTML Content Rendering */}
               {optimizedContent.type === 'native' ? (
                 <div className="space-y-4">
                   <ProductDescription 
                     html={optimizedContent.html}
                     loading={optimizedContent.loading}
                     isEmpty={optimizedContent.isEmpty}
-                    collapsible={true}
-                    truncateLines={4}
-                    previewLines={2}
+                    collapsible={false}
                     className="bg-white prose-benefits"
                   />
                 </div>
@@ -623,34 +621,6 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   )}
                 </div>
               )}
-              
-              {/* Versand & weitere Infos - Unter der Produktbeschreibung */}
-              <Collapsible open={isDescriptionExpanded} onOpenChange={setIsDescriptionExpanded}>
-                <CollapsibleTrigger asChild>
-                  <Button variant="outline" className="w-full justify-between">
-                    <span>Versand & weitere Infos</span>
-                    {isDescriptionExpanded ? (
-                      <ChevronUp className="h-4 w-4" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4" />
-                    )}
-                  </Button>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="mt-4">
-                  <div className="space-y-4 border rounded-lg p-4 bg-gray-50">
-                    {/* Versand- und Service-Informationen */}
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-3">Versand & Service</h4>
-                      <div className="space-y-2 text-sm text-gray-700">
-                        <p><span className="font-semibold">Kostenloser Versand</span> ab CHF 60 Bestellwert</p>
-                        <p><span className="font-semibold">Lieferzeit:</span> 2-4 Werktage</p>
-                        <p><span className="font-semibold">Rückgabe:</span> 30 Tage Rückgaberecht</p>
-                        <p><span className="font-semibold">Versand durch:</span> Swiss Post</p>
-                      </div>
-                    </div>
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
             </div>
           </div>
 
@@ -678,7 +648,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               </div>
             </div>
 
-            {/* 3. Produktvorteile (bullet points) */}
+            {/* 3. Produktvorteile (bullet points) - Direkter Header ohne Intro */}
             {optimizedContent.type === 'native' ? (
               <div className="space-y-4">
                 <h3 className="product-section-heading">Produktvorteile</h3>

@@ -94,7 +94,8 @@ export function Home({ searchQuery = '', preloadedProducts, preloadedCollections
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
           {/* Main Headline */}
           <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">
-            <span className="text-black">alltags</span><span className="text-yellow-400">gold</span>
+                          <span className="text-black">alltags</span>
+              <span style={{ color: '#c9a74d' }}>gold</span>
           </h1>
           
           {/* First Subline */}

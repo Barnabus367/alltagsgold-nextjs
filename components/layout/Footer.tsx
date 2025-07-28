@@ -47,7 +47,7 @@ export function Footer() {
           {/* Brand & Newsletter */}
           <div className="md:col-span-1">
             <h3 className="text-2xl font-light mb-6 tracking-wide">
-              <span className="text-black">alltags</span><span className="text-yellow-400">gold</span>
+              <span className="text-white">alltags</span><span style={{ color: '#c9a74d' }}>gold</span>
             </h3>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Innovative Produkte, die den Alltag in kostbare Momente verwandeln.
@@ -158,7 +158,7 @@ export function Footer() {
         
         <div className="border-t border-gray-800 mt-16 pt-8 text-center">
           <p className="text-sm text-gray-400">
-            © 2024 <span className="text-black">alltags</span><span className="text-yellow-400">gold</span> – Alle Rechte vorbehalten.
+            © 2024 <span className="text-white">alltags</span><span style={{ color: '#c9a74d' }}>gold</span> – Alle Rechte vorbehalten.
           </p>
         </div>
       </div>

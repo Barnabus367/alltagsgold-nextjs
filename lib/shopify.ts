@@ -62,6 +62,7 @@ export async function getProducts(first: number = 250, after?: string): Promise<
             id
             title
             description
+            descriptionHtml
             handle
             images(first: 5) {
               edges {
@@ -190,6 +191,7 @@ export async function getProductByHandle(handle: string): Promise<ShopifyProduct
         id
         title
         description
+        descriptionHtml
         handle
         images(first: 10) {
           edges {
@@ -323,6 +325,7 @@ export async function getCollectionByHandle(handle: string): Promise<ShopifyColl
               id
               title
               description
+              descriptionHtml
               handle
               images(first: 5) {
                 edges {

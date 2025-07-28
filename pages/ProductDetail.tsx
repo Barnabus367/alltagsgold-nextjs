@@ -8,8 +8,14 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { useProduct } from '@/hooks/useShopify';
 import { useCart } from '@/hooks/useCart';
 import { ShopifyVariant, ShopifyProduct } from '@/types/shopify';
-// Import product description generators
-import { getProductIntroduction, getProductFeatures } from '@/lib/productDescriptions';
+
+// Feature Flag System
+import { getFeatureFlag } from '@/lib/feature-flags';
+
+// Content Processing Systems
+import { generateNativeContent, getCachedNativeContent, NativeContentResult } from '@/lib/native-descriptions';
+import { generateLegacyContent, LegacyContentResult } from '@/lib/legacy-descriptions';
+
 import { ShopifyError } from '@/components/common/ShopifyError';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateProductSEO } from '@/lib/seo';
@@ -122,196 +128,135 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     };
   }, [safeVariantData.current?.price, safeProductData.priceRange]);
 
-  // Memoized content parsing - NO product access in render
-  const optimizedContent = useMemo(() => {
-    const productData = safeProductData;
-    const description = productData.description;
-    
-    if (!description) {
-      return { 
-        introText: productData.title, 
-        benefits: [], 
-        sections: [
-          {
-            title: 'Pflege & Wartung',
-            content: [
-              'Trocken und staubfrei lagern',
-              'Mit weichem Tuch reinigen',
-              'Vor Feuchtigkeit schützen',
-              'Bei Nichtgebrauch sicher aufbewahren'
-            ]
+  // Feature Flag für Content Processing
+  const useNativeDescriptions = getFeatureFlag('USE_NATIVE_DESCRIPTIONS');
+  
+  // Memoized content processing - Feature Flag basiert
+  const contentData = useMemo(() => {
+    if (useNativeDescriptions) {
+      // Neue Native Content Logik (wird async geladen)
+      return { type: 'native' as const, data: null };
+    } else {
+      // Legacy Content Processing
+      const legacyContent = generateLegacyContent(safeProductData);
+      return { type: 'legacy' as const, data: legacyContent };
+    }
+  }, [safeProductData, useNativeDescriptions]);
+
+  // State für Native Content (async loading)
+  const [nativeContent, setNativeContent] = useState<NativeContentResult | null>(null);
+  const [contentLoading, setContentLoading] = useState(false);
+
+  // Native Content async laden
+  useEffect(() => {
+    if (contentData.type === 'native' && safeProductData.handle) {
+      setContentLoading(true);
+      
+      getCachedNativeContent(safeProductData.handle, safeProductData)
+        .then(result => {
+          setNativeContent(result);
+          setContentLoading(false);
+          
+          if (getFeatureFlag('DEBUG_DESCRIPTION_PARSING')) {
+            console.log('✅ Native Content loaded:', result);
           }
-        ]
+        })
+        .catch(error => {
+          console.error('❌ Native Content loading failed:', error);
+          setContentLoading(false);
+          // Fallback zu Legacy bei Fehlern
+        });
+    }
+  }, [contentData.type, safeProductData.handle, safeProductData]);
+
+  // Finales Content-Objekt für UI-Rendering
+  const optimizedContent = useMemo(() => {
+    if (contentData.type === 'native') {
+      if (!nativeContent) {
+        // Loading-State für Native Content
+        return {
+          type: 'native' as const,
+          loading: contentLoading,
+          html: '',
+          plainText: safeProductData.title || 'Laden...',
+          sections: [],
+          isEmpty: true
+        };
+      }
+      
+      // Native Content verfügbar
+      return {
+        type: 'native' as const,
+        loading: false,
+        html: nativeContent.html,
+        plainText: nativeContent.plainText,
+        sections: nativeContent.sections || [],
+        isEmpty: nativeContent.isEmpty,
+        metadata: nativeContent.metadata
+      };
+    } else {
+      // Legacy Content
+      const legacyData = contentData.data as LegacyContentResult;
+      return {
+        type: 'legacy' as const,
+        loading: false,
+        introText: legacyData.introText,
+        benefits: legacyData.benefits,
+        sections: legacyData.sections,
+        isEmpty: false
       };
     }
-    
-    // Debug logging - ONLY in development
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🔍 Raw Shopify Description:', description);
-    }
-    
-    // Shopify data successfully loaded and parsed
-    const sections: Array<{ title: string; content: string[] }> = [];
-    
-    // Extract intro text (first paragraph before Produktvorteile)
-    const introMatch = description.match(/^([\s\S]*?)(?=Produktvorteile|Technische Details|$)/);
-    let introText = introMatch ? introMatch[1].trim() : '';
-    
-    // Fallback to product title if no description found
-    if (!introText || introText.length < 10) {
-      introText = productData.title;
-    }
-    
-    if (process.env.NODE_ENV === 'development') {
-      console.log('📝 Extracted intro text:', introText);
-    }
-    
-    // Extract product benefits with stable parsing for concatenated text
-    let benefits: string[] = [];
-    const benefitsMatch = description.match(/Produktvorteile\s*([\s\S]*?)(?=Technische Details|$)/);
-    if (benefitsMatch && benefitsMatch[1]) {
-      const benefitsText = benefitsMatch[1].trim();
-      if (benefitsText) {
-        // Split by recognizable German benefit patterns - manual approach for better results
-        const manualBenefits = [];
-        
-        // Check for specific benefit patterns in the Mini-Eierkocher description
-        if (benefitsText.includes('Kochvergnügen für die ganze Familie')) {
-          manualBenefits.push('Kochvergnügen für die ganze Familie – bis zu 7 Eier gleichzeitig');
-        }
-        if (benefitsText.includes('Individuelle Härtegrade')) {
-          manualBenefits.push('Individuelle Härtegrade für jeden Geschmack');
-        }
-        if (benefitsText.includes('Schnelle Zubereitung')) {
-          manualBenefits.push('Schnelle Zubereitung für einen zeitsparenden Morgen');
-        }
-        if (benefitsText.includes('Sicherheitsfunktionen')) {
-          manualBenefits.push('Sicherheitsfunktionen für sorgenfreies Kochen');
-        }
-        if (benefitsText.includes('Kompaktes Design')) {
-          manualBenefits.push('Kompaktes Design, das in jede Küche passt');
-        }
-        
-        // If manual parsing worked, use it
-        if (manualBenefits.length > 0) {
-          benefits = manualBenefits;
-        } else {
-          // Fallback: try splitting by bullet points (•) or line breaks
-          benefits = benefitsText
-            .split(/•|\n/) // Split by bullet points or line breaks
-            .filter((sentence: string) => sentence.trim().length > 10)
-            .map((sentence: string) => sentence.trim())
-            .slice(0, 6);
-        }
-      }
-    }
-    
-    // Extract technical details with stable parsing for concatenated text
-    const technicalDetails: string[] = [];
-    const techMatch = description.match(/Technische Details\s*([\s\S]*)$/);
-    if (techMatch && techMatch[1]) {
-      const techText = techMatch[1].trim();
-      
-      // Debug logging for technical details - ONLY in development
-      if (process.env.NODE_ENV === 'development') {
-        console.log('🔧 Raw tech text:', techText);
-      }
-      
-      // Try parsing by bullet points first
-      const bulletPoints = techText
-        .split(/•|\n/) // Split by bullet points or line breaks
-        .filter((item: string) => item.trim().length > 5)
-        .map((item: string) => item.trim())
-        .slice(0, 8); // Allow more technical details
-      
-      if (bulletPoints.length > 0) {
-        technicalDetails.push(...bulletPoints);
-      } else {
-        // Fallback: Parse known patterns with flexible whitespace handling
-        const patterns = [
-          { regex: /Masse:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Abmessungen' },
-          { regex: /Material:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Material' },
-          { regex: /Stromversorgung:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Stromversorgung' },
-          { regex: /Gewicht:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Gewicht' },
-          { regex: /Leistung:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Leistung' },
-          { regex: /Kapazität:\s*([^A-ZÄÖÜ]*?)(?=\s[A-ZÄÖÜ][a-z]+:|$)/i, label: 'Kapazität' }
-        ];
-        
-        const addedLabels = new Set<string>();
-        
-        patterns.forEach(pattern => {
-          const match = techText.match(pattern.regex);
-          if (match && match[1] && !addedLabels.has(pattern.label)) {
-            const value = match[1].trim().replace(/\s+/g, ' '); // Normalize spaces
-            if (value && value.length > 1) {
-              technicalDetails.push(`${pattern.label}: ${value}`);
-              addedLabels.add(pattern.label);
-            }
-          }
-        });
-      }
-      
-      // Debug logging for technical details - ONLY in development
-      if (process.env.NODE_ENV === 'development') {
-        console.log('🔧 Found technical details:', technicalDetails);
-      }
-      
-      // Always add price as consistent element
-      if (safeVariantData.current?.price) {
-        const priceFormatted = formatPriceSafe(safeVariantData.current.price);
-        technicalDetails.push(`Preis: ${priceFormatted}`);
-      }
-    }
-    
-    // Always add technical details section for consistency - IMMER mit Fallback-Inhalten
-    if (technicalDetails.length > 0) {
-      sections.push({
-        title: 'Technische Details',
-        content: technicalDetails
-      });
-    } else {
-      // Fallback technical details wenn keine geparst werden können
-      sections.push({
-        title: 'Technische Details',
-        content: [
-          'Hochwertige Materialien und Verarbeitung',
-          'Qualitätskontrolle nach Swiss Standards',
-          'Benutzerfreundliches Design',
-          'Langlebige Konstruktion'
-        ]
-      });
-    }
-    
-    // Always add care instructions section for consistency
-    sections.push({
-      title: 'Pflege & Wartung',
-      content: [
-        'Trocken und staubfrei lagern',
-        'Mit weichem Tuch reinigen',
-        'Vor Feuchtigkeit schützen',
-        'Bei Nichtgebrauch sicher aufbewahren'
-      ]
-    });
-    
-    return { introText, benefits, sections };
-  }, [safeProductData, safeVariantData.current?.price]);
+  }, [contentData, nativeContent, contentLoading, safeProductData.title]);
 
-  // Memoized SEO data - lazy loaded to prevent re-computation on every render
+  // Memoized SEO data - Feature Flag basiert
   const seoData = useMemo(() => {
     if (!product) return null;
     
-    return generateProductSEO(product);
-  }, [product]);
+    // SEO-Description basierend auf Content-Type
+    let seoDescription = '';
+    
+    if (optimizedContent.type === 'native' && !optimizedContent.loading && !optimizedContent.isEmpty) {
+      seoDescription = optimizedContent.plainText.slice(0, 160);
+    } else if (optimizedContent.type === 'legacy') {
+      const intro = optimizedContent.introText || '';
+      const benefitsText = optimizedContent.benefits?.join(' ') || '';
+      const combined = `${intro} ${benefitsText}`.trim();
+      seoDescription = combined.slice(0, 160);
+    } else {
+      seoDescription = safeProductData.title;
+    }
+    
+    // Temporär angepasstes Product-Objekt für SEO
+    const productForSEO = {
+      ...product,
+      description: seoDescription
+    };
+    
+    return generateProductSEO(productForSEO);
+  }, [product, optimizedContent, safeProductData.title]);
 
-  // Memoized structured data - lazy loaded
+  // Memoized structured data - Feature Flag basiert
   const structuredData = useMemo(() => {
     if (!safeProductData.id || !safeImageData.primary) return null;
+    
+    // Description für Structured Data
+    let structuredDescription = '';
+    if (optimizedContent.type === 'native' && !optimizedContent.loading && !optimizedContent.isEmpty) {
+      structuredDescription = optimizedContent.plainText;
+    } else if (optimizedContent.type === 'legacy') {
+      const intro = optimizedContent.introText || '';
+      const benefitsText = optimizedContent.benefits?.join(' ') || '';
+      const combined = `${intro} ${benefitsText}`.trim();
+      structuredDescription = combined || safeProductData.title;
+    } else {
+      structuredDescription = safeProductData.title;
+    }
     
     return {
       "@type": "Product",
       name: safeProductData.title,
       image: safeImageData.primary.url,
-      description: optimizedContent.introText,
+      description: structuredDescription,
       offers: {
         "@type": "Offer",
         price: safePricing.amount,
@@ -320,7 +265,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
         url: `https://www.alltagsgold.ch/products/${safeProductData.handle}`
       }
     };
-  }, [safeProductData, safeImageData.primary, optimizedContent.introText, safePricing, safeVariantData.current?.availableForSale]);
+  }, [safeProductData, safeImageData.primary, optimizedContent, safePricing, safeVariantData.current?.availableForSale]);
 
   // Memoized breadcrumbs - lazy loaded
   const breadcrumbs = useMemo(() => {
@@ -506,7 +451,22 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   return (
     <div className="min-h-screen bg-white pt-16">
       <NextSEOHead 
-        seo={seoData || { title: safeProductData.title, description: optimizedContent.introText }}
+        seo={seoData || { 
+          title: safeProductData.title, 
+          description: (optimizedContent.type === 'legacy' ? optimizedContent.introText : optimizedContent.plainText) || safeProductData.title,
+          keywords: '',
+          openGraph: {
+            title: safeProductData.title,
+            description: (optimizedContent.type === 'legacy' ? optimizedContent.introText : optimizedContent.plainText) || safeProductData.title,
+            image: safeImageData.primary?.url,
+            url: `/products/${safeProductData.handle}`
+          },
+          twitter: {
+            card: 'summary',
+            title: safeProductData.title,
+            description: (optimizedContent.type === 'legacy' ? optimizedContent.introText : optimizedContent.plainText) || safeProductData.title
+          }
+        }}
         canonicalUrl={`products/${safeProductData.handle}`}
         structuredData={structuredData}
       />
@@ -588,42 +548,64 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               <div className="text-3xl font-bold text-gray-900 mb-6">{safePricing.formatted}</div>
             </div>
 
-            {/* Intro Text */}
-            {optimizedContent.introText && (
-              <div className="space-y-4">
-                <p className="text-gray-700 leading-relaxed">
-                  {optimizedContent.introText}
-                </p>
+            {/* Content Rendering - Feature Flag basiert */}
+            {optimizedContent.type === 'native' ? (
+              // Native HTML Content Rendering
+              <div className="space-y-6">
+                {optimizedContent.loading ? (
+                  <div className="text-gray-500">Beschreibung wird geladen...</div>
+                ) : optimizedContent.isEmpty ? (
+                  <div className="text-gray-500">Keine Beschreibung verfügbar</div>
+                ) : (
+                  <div 
+                    className="prose prose-sm max-w-none text-gray-700"
+                    dangerouslySetInnerHTML={{ __html: optimizedContent.html }}
+                  />
+                )}
               </div>
-            )}
+            ) : (
+              // Legacy Content Rendering
+              <div className="space-y-6">
+                {/* Intro Text */}
+                {optimizedContent.introText && (
+                  <div className="space-y-4">
+                    <p className="text-gray-700 leading-relaxed">
+                      {optimizedContent.introText}
+                    </p>
+                  </div>
+                )}
 
-            {/* Produktvorteile - JETZT VOR Varianten */}
-            {optimizedContent.benefits.length > 0 && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Produktvorteile</h3>
-                <ul className="space-y-2">
-                  {optimizedContent.benefits.map((benefit: string, index: number) => (
-                    <li key={index} className="flex items-start space-x-2 text-gray-700">
-                      <span className="text-gray-400 mt-1">•</span>
-                      <span className="text-sm leading-relaxed">{benefit}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+                {/* Produktvorteile */}
+                {optimizedContent.benefits && optimizedContent.benefits.length > 0 && (
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-gray-900">Produktvorteile</h3>
+                    <ul className="space-y-2">
+                      {optimizedContent.benefits.map((benefit: string, index: number) => (
+                        <li key={index} className="flex items-start space-x-2 text-gray-700">
+                          <span className="text-gray-400 mt-1">•</span>
+                          <span className="text-sm leading-relaxed">{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
-            {/* Technische Details - IMMER SICHTBAR vor Varianten */}
-            {optimizedContent.sections.length > 0 && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Technische Details</h3>
-                <ul className="space-y-2">
-                  {optimizedContent.sections[0].content.map((detail: string, index: number) => (
-                    <li key={index} className="flex items-start space-x-2 text-gray-700">
-                      <span className="text-gray-400 mt-1">•</span>
-                      <span className="text-sm leading-relaxed">{detail}</span>
-                    </li>
-                  ))}
-                </ul>
+                {/* Technische Details */}
+                {optimizedContent.sections && optimizedContent.sections.length > 0 && (
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-gray-900">Technische Details</h3>
+                    <ul className="space-y-2">
+                      {optimizedContent.sections[0].content && Array.isArray(optimizedContent.sections[0].content) &&
+                        optimizedContent.sections[0].content.map((detail: string, index: number) => (
+                          <li key={index} className="flex items-start space-x-2 text-gray-700">
+                            <span className="text-gray-400 mt-1">•</span>
+                            <span className="text-sm leading-relaxed">{detail}</span>
+                          </li>
+                        ))
+                      }
+                    </ul>
+                  </div>
+                )}
               </div>
             )}
 

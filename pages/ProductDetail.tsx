@@ -567,7 +567,29 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               </div>
             )}
 
-            {/* Produktbeschreibung - Unter der Galerie - Nur reine Beschreibung */}
+            {/* Varianten-Auswahl - Unter der Thumbnail-Galerie */}
+            {safeVariantData.hasMultiple && (
+              <div className="mt-8 space-y-4">
+                <h3 className="product-section-heading text-gray-900">Varianten</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {safeVariantData.all.map((variant: any, index: number) => (
+                    <button
+                      key={variant.id}
+                      onClick={() => handleVariantChange(index)}
+                      className={`p-3 text-sm border rounded-lg transition-colors ${
+                        safeVariantData.current?.id === variant.id
+                          ? 'border-black bg-black text-white'
+                          : 'border-gray-300 hover:border-gray-400'
+                      }`}
+                    >
+                      {variant.selectedOptions?.map((option: any) => option.value).join(' / ') || variant.title}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Produktbeschreibung - Unter der Galerie (und Varianten) - Nur reine Beschreibung */}
             <div className="mt-12 space-y-6">
               <h2 className="product-section-heading text-gray-900 mb-4">Produktbeschreibung</h2>
               
@@ -655,16 +677,17 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               </div>
             </div>
 
-            {/* 3. Produktvorteile (bullet points) - Direkter Header ohne Intro */}
+            {/* 3. Produktvorteile (nur Bullet Points) */}
             {optimizedContent.type === 'native' ? (
               <div className="space-y-4">
                 <h3 className="product-section-heading">Produktvorteile</h3>
-                <ProductDescription 
-                  html={optimizedContent.html}
-                  loading={optimizedContent.loading}
-                  isEmpty={optimizedContent.isEmpty}
-                  collapsible={false}
-                  className="prose-benefits"
+                <div 
+                  className="prose prose-lg max-w-none text-gray-800"
+                  dangerouslySetInnerHTML={{ 
+                    __html: optimizedContent.html
+                      .match(/<h[1-6][^>]*>.*?Produktvorteile.*?<\/h[1-6]>([\s\S]*?)(?=<h[1-6]|$)/gi)?.[0]
+                      ?.replace(/<h[1-6][^>]*>.*?Produktvorteile.*?<\/h[1-6]>/gi, '') || ''
+                  }}
                 />
               </div>
             ) : (
@@ -700,29 +723,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               </div>
             )}
 
-            {/* 5. Variant Selection */}
-            {safeVariantData.hasMultiple && (
-              <div className="space-y-4">
-                <h3 className="product-section-heading">Varianten</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {safeVariantData.all.map((variant: any, index: number) => (
-                    <button
-                      key={variant.id}
-                      onClick={() => handleVariantChange(index)}
-                      className={`p-3 text-sm border rounded-lg transition-colors ${
-                        safeVariantData.current?.id === variant.id
-                          ? 'border-black bg-black text-white'
-                          : 'border-gray-300 hover:border-gray-400'
-                      }`}
-                    >
-                      {variant.selectedOptions?.map((option: any) => option.value).join(' / ') || variant.title}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* 6. In den Warenkorb (CTA) - Unterer Block */}
+            {/* 5. In den Warenkorb (CTA) - Unterer Block */}
             <div className="space-y-4 pt-6 border-t border-gray-200">
               {/* Quantity Selector */}
               <div className="flex items-center space-x-4">

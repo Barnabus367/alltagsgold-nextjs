@@ -32,25 +32,41 @@ export function PremiumImage({
   // Stabile Bild-URL mit useMemo
   const imageUrl = useMemo(() => {
     if (!src || src.includes('placeholder')) {
-      return fallbackSrc || 'https://res.cloudinary.com/demo/image/upload/c_pad,w_400,h_400,b_auto/v1/sample.jpg';
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('🖼️ No valid image source provided:', src);
+      }
+      return fallbackSrc || developmentFallback;
     }
     
     if (src.includes('shopify.com') || src.includes('shopifycdn.com')) {
-      return getOptimizedImageUrl(src, context);
+      const optimizedUrl = getOptimizedImageUrl(src, context);
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🔄 Shopify image optimized:', { original: src, optimized: optimizedUrl });
+      }
+      return optimizedUrl;
     }
     
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🖼️ Using original image URL:', src);
+    }
     return src;
-  }, [src, fallbackSrc, context]);
+  }, [src, fallbackSrc, context, developmentFallback]);
   
   const isValidUrl = imageUrl && !imageError;
 
   const handleImageLoad = () => {
     setImageLoaded(true);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('✅ Image loaded successfully:', imageUrl);
+    }
   };
 
   const handleImageError = () => {
     console.warn('Image failed to load:', imageUrl);
-    setImageError(true);
+    // Only set error for actual failures, not empty URLs
+    if (imageUrl && !imageUrl.includes('placeholder')) {
+      setImageError(true);
+    }
     setImageLoaded(true);
   };
 

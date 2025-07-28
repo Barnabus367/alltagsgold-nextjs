@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useCart } from '@/hooks/useCart';
 import { useCheckout } from '@/hooks/useCheckout';
 import { formatPrice, formatSwissPrice, roundToSwissFrancs } from '@/lib/shopify';
-import { getCloudinaryUrl } from '@/lib/cloudinary';
+import { getCloudinaryUrl } from '@/lib/cloudinary-optimized';
 import { trackViewCart, trackInitiateCheckout } from '@/lib/analytics';
 import { announceToScreenReader } from '@/lib/accessibility';
 import { useMobileUX } from '@/hooks/useMobileUX';

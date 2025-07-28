@@ -7,7 +7,7 @@ import { useCart } from '@/hooks/useCart';
 import { useCheckout } from '@/hooks/useCheckout';
 import { formatPrice, formatSwissPrice, roundToSwissFrancs } from '@/lib/shopify';
 import { formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
-import { getCloudinaryUrl } from '@/lib/cloudinary';
+import { getCloudinaryUrl } from '@/lib/cloudinary-optimized';
 import { trackViewCart, trackInitiateCheckout } from '@/lib/analytics';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { Layout } from '@/components/layout/Layout';

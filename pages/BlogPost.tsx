@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useBlogPost, formatBlogDate, getReadingTime } from '@/hooks/useBlog';
 import { usePageTitle } from '@/hooks/usePageTitle';
-import { getCloudinaryUrl } from '@/lib/cloudinary';
+import { getCloudinaryUrl } from '@/lib/cloudinary-optimized';
 import { trackPageView, trackViewContent } from '@/lib/analytics';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateBlogSEO } from '@/lib/seo';

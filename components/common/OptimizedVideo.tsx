@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { getCloudinaryVideoUrl } from '@/lib/cloudinary';
+import { getCloudinaryVideoUrl } from '@/lib/cloudinary-optimized';
 
 interface OptimizedVideoProps {
   src: string;

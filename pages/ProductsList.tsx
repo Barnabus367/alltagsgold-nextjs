@@ -82,7 +82,7 @@ export function Products({ preloadedProducts }: ProductsProps) {
       <section className="relative h-[45vh] bg-gradient-to-br from-blue-900 via-gray-900 to-black flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-black/30 to-black/50 z-10"></div>
         <Image
-      src={"https://res.cloudinary.com/do7yh4dll/image/upload/w_800,q_auto,f_webp/v1750348380/pexels-alexasfotos-2255441_njetbg.jpg"}
+      src={"https://res.cloudinary.com/do7yh4dll/image/fetch/w_800,q_auto,f_webp/https://images.unsplash.com/photo-1505740420928-5e560c06d30e"}
       alt="Alle Produkte"
       width={600}
       height={400}

@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/hooks/useCart';
 import { useMobileUX } from '@/hooks/useMobileUX';
 import { formatPrice } from '@/lib/shopify';
-import { getCloudinaryUrl } from '@/lib/cloudinary';
+import { getCloudinaryUrl } from '@/lib/cloudinary-optimized';
 import { FocusManager, announceToScreenReader } from '@/lib/accessibility';
 import { formatPriceSafe } from '@/lib/type-guards';
 

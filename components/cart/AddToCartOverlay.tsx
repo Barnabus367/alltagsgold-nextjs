@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Check, X, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/hooks/useCart';
-import { getCloudinaryUrl } from '@/lib/cloudinary';
+import { getCloudinaryUrl } from '@/lib/cloudinary-optimized';
 import { formatPrice } from '@/lib/shopify';
 import { formatPriceSafe } from '@/lib/type-guards';
 

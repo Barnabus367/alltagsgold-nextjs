@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import Image from 'next/image';
-import { getCloudinaryUrl, getProductImage, getThumbnailImage } from '@/lib/cloudinary';
+import { getCloudinaryUrl, getProductImage, getThumbnailImage } from '@/lib/cloudinary-optimized';
 
 interface PremiumImageProps {
   src: string;
@@ -31,7 +31,7 @@ export function PremiumImage({
   const developmentFallback = useMemo(() => {
     const width = context === 'detail' ? 800 : context === 'hero' ? 1200 : 400;
     const height = context === 'detail' ? 600 : context === 'hero' ? 600 : 400;
-    return `https://res.cloudinary.com/do7yh4dll/image/upload/c_pad,w_${width},h_${height},b_auto/v1/sample.jpg`;
+    return `https://res.cloudinary.com/do7yh4dll/image/fetch/c_pad,w_${width},h_${height},b_auto/https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800`;
   }, [context]);
 
   // Stabile Bild-URL mit useMemo - PRIORISIERT HOCHGELADENE BILDER

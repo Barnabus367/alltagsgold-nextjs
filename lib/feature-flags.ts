@@ -17,10 +17,9 @@ export interface FeatureFlags {
 export const FEATURE_FLAGS: FeatureFlags = {
   // Native Shopify HTML Descriptions (Hauptfeature)
   USE_NATIVE_DESCRIPTIONS: 
-    true, // ← TEMPORÄR AKTIVIERT FÜR TESTS
-    // process.env.NODE_ENV === 'development' ||
-    // process.env.VERCEL_ENV === 'preview' ||
-    // process.env.ENABLE_NATIVE_DESCRIPTIONS === 'true',
+    process.env.NODE_ENV === 'development' ||
+    process.env.VERCEL_ENV === 'preview' ||
+    process.env.ENABLE_NATIVE_DESCRIPTIONS === 'true',
   
   // HTML Sanitization aktivieren
   ENABLE_HTML_SANITIZATION: true,

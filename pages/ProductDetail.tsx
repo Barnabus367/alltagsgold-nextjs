@@ -530,7 +530,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Product Images */}
+          {/* Links: Produktbild / Galerie */}
           <div className="space-y-6">
             {/* Main Image */}
             <div className="aspect-square overflow-hidden bg-gray-50 rounded-lg">
@@ -567,17 +567,76 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                 ))}
               </div>
             )}
+
+            {/* Erweiterte Beschreibung / FAQ - Unter der Galerie */}
+            <div className="mt-12 space-y-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Erweiterte Beschreibung / FAQ</h2>
+              
+              {/* Versand & weitere Infos - Collapsible */}
+              <Collapsible open={isDescriptionExpanded} onOpenChange={setIsDescriptionExpanded}>
+                <CollapsibleTrigger asChild>
+                  <Button variant="outline" className="w-full justify-between">
+                    <span>Versand & weitere Infos</span>
+                    {isDescriptionExpanded ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="mt-4">
+                  <div className="space-y-4 border rounded-lg p-4 bg-gray-50">
+                    {/* Structured sections - NUR für Legacy Content */}
+                    {optimizedContent.type === 'legacy' && optimizedContent.sections && optimizedContent.sections.length > 0 && (
+                      <div className="space-y-4">
+                        {optimizedContent.sections.map((section: any, index: number) => (
+                          <div key={index} className="space-y-2">
+                            <h4 className="font-semibold text-gray-900">{section.title}</h4>
+                            {Array.isArray(section.content) ? (
+                              <ul className="space-y-1">
+                                {section.content.map((item: string, itemIndex: number) => (
+                                  <li key={itemIndex} className="text-sm text-gray-700 flex items-start space-x-2">
+                                    <span className="text-gray-400 mt-1">•</span>
+                                    <span>{item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <div 
+                                className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
+                                dangerouslySetInnerHTML={{ __html: section.content }}
+                              />
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Versand- und Service-Informationen */}
+                    <div className={`${optimizedContent.type === 'legacy' && optimizedContent.sections && optimizedContent.sections.length > 0 ? 'border-t pt-4' : ''}`}>
+                      <h4 className="font-semibold text-gray-900 mb-3">Versand & Service</h4>
+                      <div className="space-y-2 text-sm text-gray-700">
+                        <p><span className="font-semibold">Kostenloser Versand</span> ab CHF 50 Bestellwert</p>
+                        <p><span className="font-semibold">Lieferzeit:</span> 2-4 Werktage</p>
+                        <p><span className="font-semibold">Rückgabe:</span> 30 Tage Rückgaberecht</p>
+                        <p><span className="font-semibold">Versand durch:</span> Swiss Post</p>
+                      </div>
+                    </div>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            </div>
           </div>
 
-          {/* Product Info */}
-          <div className="space-y-6">
-            {/* Product Name (H1) - Optimierte Typografie */}
-            <h1 className="product-title">{safeProductData.title}</h1>
+          {/* Rechts: Product Info nach Wireframe */}
+          <div className="product-detail space-y-6">
+            {/* 1. Name & Preis - Oberer Block */}
+            <div className="space-y-4">
+              <h1 className="product-title">{safeProductData.title}</h1>
+              <div className="product-price">{safePricing.formatted}</div>
+            </div>
 
-            {/* Price - Optimierte Typografie */}
-            <div className="product-price">{safePricing.formatted}</div>
-
-            {/* Versand, Rückgabe, Garantie Infos */}
+            {/* 2. Versand & Service - Direkt unter Preis */}
             <div className="bg-gray-50 rounded-lg p-4 space-y-3">
               <div className="flex items-center space-x-3 text-sm text-gray-700">
                 <span className="w-2 h-2 bg-green-500 rounded-full"></span>
@@ -593,70 +652,55 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               </div>
             </div>
 
-            {/* Produktvorteile - Optimierte Darstellung mit besserer UX */}
+            {/* 3. Produktvorteile (bullet points) */}
             {optimizedContent.type === 'native' ? (
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Produktvorteile</h3>
+                <h3 className="product-section-heading">Produktvorteile</h3>
                 <ProductDescription 
                   html={optimizedContent.html}
                   loading={optimizedContent.loading}
                   isEmpty={optimizedContent.isEmpty}
-                  collapsible={true}
-                  truncateLines={4}
-                  previewLines={2}
-                  className="bg-white prose-benefits"
+                  collapsible={false}
+                  className="prose-benefits"
                 />
               </div>
             ) : (
-              // Legacy Content mit strukturierteren Produktvorteilen
-              <div className="space-y-6">
-                {/* Intro Text */}
-                {optimizedContent.introText && (
-                  <div className="space-y-4">
-                    <p className="product-text text-gray-700 leading-relaxed">
-                      {optimizedContent.introText}
-                    </p>
-                  </div>
-                )}
+              optimizedContent.benefits && optimizedContent.benefits.length > 0 && (
+                <div className="space-y-4">
+                  <h3 className="product-section-heading">Produktvorteile</h3>
+                  <ul className="space-y-3">
+                    {optimizedContent.benefits.map((benefit: string, index: number) => (
+                      <li key={index} className="flex items-start space-x-3">
+                        <span className="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0"></span>
+                        <span className="product-bullet-text">{benefit}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            )}
 
-                {/* Produktvorteile als Bullet Points */}
-                {optimizedContent.benefits && optimizedContent.benefits.length > 0 && (
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Produktvorteile</h3>
-                    <ul className="space-y-3">
-                      {optimizedContent.benefits.map((benefit: string, index: number) => (
-                        <li key={index} className="flex items-start space-x-3">
-                          <span className="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0"></span>
-                          <span className="product-text text-gray-700">{benefit}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* Technische Details */}
-                {optimizedContent.sections && optimizedContent.sections.length > 0 && (
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Technische Details</h3>
-                    <ul className="space-y-3">
-                      {optimizedContent.sections[0].content && Array.isArray(optimizedContent.sections[0].content) &&
-                        optimizedContent.sections[0].content.map((detail: string, index: number) => (
-                          <li key={index} className="flex items-start space-x-3">
-                            <span className="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0"></span>
-                            <span className="product-text text-gray-700">{detail}</span>
-                          </li>
-                        ))
-                      }
-                    </ul>
-                  </div>
-                )}
+            {/* 4. Technische Details */}
+            {optimizedContent.type === 'legacy' && optimizedContent.sections && optimizedContent.sections.length > 0 && (
+              <div className="space-y-4">
+                <h3 className="product-section-heading">Technische Details</h3>
+                <ul className="space-y-3">
+                  {optimizedContent.sections[0].content && Array.isArray(optimizedContent.sections[0].content) &&
+                    optimizedContent.sections[0].content.map((detail: string, index: number) => (
+                      <li key={index} className="flex items-start space-x-3">
+                        <span className="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0"></span>
+                        <span className="product-bullet-text">{detail}</span>
+                      </li>
+                    ))
+                  }
+                </ul>
               </div>
             )}
 
-            {/* Variant Selection - Optimiertes Layout */}
+            {/* 5. Variant Selection */}
             {safeVariantData.hasMultiple && (
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Varianten</h3>
+                <h3 className="product-section-heading">Varianten</h3>
                 <div className="grid grid-cols-2 gap-3">
                   {safeVariantData.all.map((variant: any, index: number) => (
                     <button
@@ -675,61 +719,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               </div>
             )}
 
-            {/* Versand & weitere Infos - Collapsible */}
-            <Collapsible open={isDescriptionExpanded} onOpenChange={setIsDescriptionExpanded}>
-              <CollapsibleTrigger asChild>
-                <Button variant="outline" className="w-full justify-between">
-                  <span>Versand & weitere Infos</span>
-                  {isDescriptionExpanded ? (
-                    <ChevronUp className="h-4 w-4" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4" />
-                  )}
-                </Button>
-              </CollapsibleTrigger>
-              <CollapsibleContent className="mt-4">
-                <div className="space-y-4 border rounded-lg p-4 bg-gray-50">
-                  {/* Structured sections - NUR für Legacy Content */}
-                  {optimizedContent.type === 'legacy' && optimizedContent.sections && optimizedContent.sections.length > 0 && (
-                    <div className="space-y-4">
-                      {optimizedContent.sections.map((section: any, index: number) => (
-                        <div key={index} className="space-y-2">
-                          <h4 className="font-semibold text-gray-900">{section.title}</h4>
-                          {Array.isArray(section.content) ? (
-                            <ul className="space-y-1">
-                              {section.content.map((item: string, itemIndex: number) => (
-                                <li key={itemIndex} className="text-sm text-gray-700 flex items-start space-x-2">
-                                  <span className="text-gray-400 mt-1">•</span>
-                                  <span>{item}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          ) : (
-                            <div 
-                              className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
-                              dangerouslySetInnerHTML={{ __html: section.content }}
-                            />
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Versand- und Service-Informationen */}
-                  <div className={`${optimizedContent.type === 'legacy' && optimizedContent.sections && optimizedContent.sections.length > 0 ? 'border-t pt-4' : ''}`}>
-                    <h4 className="font-semibold text-gray-900 mb-3">Versand & Service</h4>
-                    <div className="space-y-2 text-sm text-gray-700">
-                      <p><span className="font-semibold">Kostenloser Versand</span> ab CHF 50 Bestellwert</p>
-                      <p><span className="font-semibold">Lieferzeit:</span> 2-4 Werktage</p>
-                      <p><span className="font-semibold">Rückgabe:</span> 30 Tage Rückgaberecht</p>
-                      <p><span className="font-semibold">Versand durch:</span> Swiss Post</p>
-                    </div>
-                  </div>
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
-
-            {/* Quantity and Add to Cart - Optimierte Layout & Typografie */}
+            {/* 6. In den Warenkorb (CTA) - Unterer Block */}
             <div className="space-y-4 pt-6 border-t border-gray-200">
               {/* Quantity Selector */}
               <div className="flex items-center space-x-4">
@@ -754,7 +744,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                 </div>
               </div>
 
-              {/* Add to Cart Button - Optimierte Typografie gemäß Spezifikation */}
+              {/* Add to Cart Button - Exakt nach Spezifikation */}
               <Button 
                 onClick={handleAddToCart}
                 disabled={!safeVariantData.current?.availableForSale || isAddingToCart}
@@ -773,7 +763,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                 )}
               </Button>
 
-              {/* Wishlist Button - Optimierte Darstellung */}
+              {/* Wishlist Button */}
               <Button
                 onClick={() => setIsWishlisted(!isWishlisted)}
                 variant="outline"
@@ -784,8 +774,6 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                 {isWishlisted ? 'Von Wunschliste entfernen' : 'Auf Wunschliste'}
               </Button>
             </div>
-
-
           </div>
         </div>
       </div>

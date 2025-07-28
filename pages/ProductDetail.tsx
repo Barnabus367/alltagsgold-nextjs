@@ -567,19 +567,21 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               </div>
             )}
 
-            {/* Produktbeschreibung - Unter der Galerie - Vereinfacht */}
+            {/* Produktbeschreibung - Unter der Galerie - Nur reine Beschreibung */}
             <div className="mt-12 space-y-6">
               <h2 className="product-section-heading text-gray-900 mb-4">Produktbeschreibung</h2>
               
-              {/* Native HTML Content Rendering */}
+              {/* Native HTML Content Rendering - Nur Beschreibung ohne Produktvorteile */}
               {optimizedContent.type === 'native' ? (
                 <div className="space-y-4">
-                  <ProductDescription 
-                    html={optimizedContent.html}
-                    loading={optimizedContent.loading}
-                    isEmpty={optimizedContent.isEmpty}
-                    collapsible={false}
-                    className="bg-white prose-benefits"
+                  <div 
+                    className="prose prose-lg max-w-none text-gray-800 leading-relaxed"
+                    dangerouslySetInnerHTML={{ 
+                      __html: optimizedContent.html
+                        .replace(/<h[1-6][^>]*>.*?Produktvorteile.*?<\/h[1-6]>[\s\S]*?(?=<h[1-6]|$)/gi, '')
+                        .replace(/<h[1-6][^>]*>.*?Technische Details.*?<\/h[1-6]>[\s\S]*$/gi, '')
+                        .trim()
+                    }}
                   />
                 </div>
               ) : (
@@ -594,10 +596,15 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                     </div>
                   )}
 
-                  {/* Strukturierte Sections */}
+                  {/* Strukturierte Sections - Nur Beschreibung, keine Produktvorteile */}
                   {optimizedContent.sections && optimizedContent.sections.length > 0 && (
                     <div className="space-y-4">
-                      {optimizedContent.sections.map((section: any, index: number) => (
+                      {optimizedContent.sections
+                        .filter((section: any) => 
+                          !section.title.toLowerCase().includes('produktvorteile') &&
+                          !section.title.toLowerCase().includes('technische details')
+                        )
+                        .map((section: any, index: number) => (
                         <div key={index} className="space-y-2">
                           <h4 className="font-semibold text-gray-900">{section.title}</h4>
                           {Array.isArray(section.content) ? (

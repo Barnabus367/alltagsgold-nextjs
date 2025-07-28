@@ -4,10 +4,10 @@ const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || 'do7yh4dll';
 
 // Basis-Transformation-Presets - SELEKTIVE OPTIMIERUNG
 const TRANSFORM_PRESETS = {
-  // PRODUKTBILDER - Mit einheitlichem weißen Hintergrund (Galaxus-Style)
-  thumbnail: 'e_background_removal,c_pad,w_150,h_150,ar_1:1,b_white,q_85,f_webp',
-  product: 'e_background_removal,c_pad,w_400,h_400,ar_1:1,b_white,q_90,f_webp',
-  productZoom: 'e_background_removal,c_pad,w_800,h_800,ar_1:1,b_white,q_95,f_webp',
+  // PRODUKTBILDER - Mit einheitlichem weißen Hintergrund (ohne Background Removal)
+  thumbnail: 'c_pad,w_150,h_150,ar_1:1,b_white,q_85,f_webp',
+  product: 'c_pad,w_400,h_400,ar_1:1,b_white,q_90,f_webp',
+  productZoom: 'c_pad,w_800,h_800,ar_1:1,b_white,q_95,f_webp',
   
   // CONTENT BILDER - Bleiben unverändert (natürliche Hintergründe)
   mobile: 'w_375,q_85,f_webp',

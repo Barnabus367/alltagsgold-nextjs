@@ -94,7 +94,7 @@ export function Collections({ preloadedCollections }: CollectionsProps) {
       <section className="relative h-[50vh] bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-black/30 to-black/60 z-10"></div>
         <HeroVideo 
-          videoSrc="https://res.cloudinary.com/dwrk3iihw/video/upload/v1750154076/4669325-uhd_4096_2160_25fps_rjfgd4.mp4"
+          videoSrc="https://res.cloudinary.com/do7yh4dll/video/upload/v1750154076/4669325-uhd_4096_2160_25fps_rjfgd4.mp4"
           fallbackImage="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=2340&q=80"
         />
         <div className="relative z-20 text-center text-white max-w-5xl mx-auto px-6">

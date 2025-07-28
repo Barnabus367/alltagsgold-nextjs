@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import Image from 'next/image';
-import { getOptimizedImageUrl } from '@/lib/categoryImages';
+import { getCloudinaryUrl, getProductImage, getThumbnailImage } from '@/lib/cloudinary';
 
 interface PremiumImageProps {
   src: string;
@@ -39,9 +39,24 @@ export function PremiumImage({
     }
     
     if (src.includes('shopify.com') || src.includes('shopifycdn.com')) {
-      const optimizedUrl = getOptimizedImageUrl(src, context);
+      // Nutze spezifische Cloudinary-Funktionen basierend auf Context
+      let optimizedUrl: string;
+      if (context === 'detail') {
+        optimizedUrl = getProductImage(src, false); // Standard Produktbild
+      } else if (context === 'thumbnail') {
+        optimizedUrl = getThumbnailImage(src);
+      } else if (context === 'hero') {
+        optimizedUrl = getCloudinaryUrl(src, 'hero');
+      } else {
+        optimizedUrl = getCloudinaryUrl(src, 'product');
+      }
+      
       if (process.env.NODE_ENV === 'development') {
-        console.log('🔄 Shopify image optimized:', { original: src, optimized: optimizedUrl });
+        console.log('🔄 NEW CLOUDINARY - Shopify image optimized:', { 
+          original: src, 
+          optimized: optimizedUrl,
+          context: context 
+        });
       }
       return optimizedUrl;
     }

@@ -38,7 +38,7 @@ export function OptimizedImage({
     }
     
     // Neue Optimierung via Cloudinary
-    return `https://res.cloudinary.com/dwrk3iihw/image/fetch/${cloudinaryEffects}/${encodeURIComponent(originalUrl)}`;
+    return `https://res.cloudinary.com/do7yh4dll/image/fetch/${cloudinaryEffects}/${encodeURIComponent(originalUrl)}`;
   };
 
   const optimizedSrc = getOptimizedImageUrl(src);

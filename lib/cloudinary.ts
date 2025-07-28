@@ -1,5 +1,14 @@
-// Next.js-optimierte Cloudinary-Integration
-const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || 'dwrk3iihw';
+// Next.js-optimierte Cloudinary-Integration mit Auto-Upload Support
+const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || 'do7yh4dll';
+
+// Debug-Logging für Produktionsumgebung
+const DEBUG_CLOUDINARY = process.env.NODE_ENV === 'development' || process.env.DEBUG_IMAGES === 'true';
+
+function debugLog(message: string, data?: any) {
+  if (DEBUG_CLOUDINARY) {
+    console.log(`[CLOUDINARY DEBUG] ${message}`, data || '');
+  }
+}
 
 // Vordefinierte Transformationen für verschiedene Anwendungen
 export const CLOUDINARY_TRANSFORMS = {
@@ -28,14 +37,15 @@ export type TransformType = keyof typeof CLOUDINARY_TRANSFORMS;
 export function getCloudinaryUrl(originalUrl: string, transform: string | TransformType = 'medium'): string {
   // URL-Validierung
   if (!originalUrl || typeof originalUrl !== 'string') {
-    if (process.env.NODE_ENV === 'development') {
-      console.warn('Invalid URL provided to getCloudinaryUrl:', originalUrl);
-    }
+    debugLog('Invalid URL provided:', originalUrl);
     return 'https://via.placeholder.com/800x800?text=Bild+nicht+verfügbar';
   }
 
+  debugLog('Processing URL:', originalUrl);
+
   // Bereits optimierte Cloudinary-URLs überspringen
   if (originalUrl.includes('res.cloudinary.com')) {
+    debugLog('Already Cloudinary URL, skipping');
     return originalUrl;
   }
   
@@ -45,6 +55,7 @@ export function getCloudinaryUrl(originalUrl: string, transform: string | Transf
       originalUrl.includes('replit') || 
       originalUrl.includes('placeholder') ||
       originalUrl.includes('data:image')) {
+    debugLog('Local/placeholder URL, skipping');
     return originalUrl;
   }
   
@@ -53,12 +64,23 @@ export function getCloudinaryUrl(originalUrl: string, transform: string | Transf
     ? transform 
     : CLOUDINARY_TRANSFORMS[transform as TransformType] || CLOUDINARY_TRANSFORMS.medium;
   
-  // Cloudinary Fetch API für externe URLs
+  // Cloudinary Fetch API für externe URLs (jetzt aktiviert!)
   if (originalUrl.startsWith('http')) {
     const encodedUrl = encodeURIComponent(originalUrl);
-    return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/fetch/${transformString}/${encodedUrl}`;
+    const cloudinaryUrl = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/fetch/${transformString}/${encodedUrl}`;
+    
+    debugLog('Generated Cloudinary Fetch URL:', {
+      original: originalUrl,
+      cloudinary: cloudinaryUrl,
+      transform: transformString,
+      account: CLOUDINARY_CLOUD_NAME,
+      status: 'FETCH_ENABLED'
+    });
+    
+    return cloudinaryUrl;
   }
   
+  debugLog('No transformation applied, returning original');
   return originalUrl;
 }
 

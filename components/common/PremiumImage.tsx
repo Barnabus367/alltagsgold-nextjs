@@ -38,9 +38,11 @@ export function PremiumImage({
   const imageUrl = useMemo(() => {
     if (!src || src.includes('placeholder') || src.trim() === '') {
       if (process.env.NODE_ENV === 'development') {
-        console.warn('🖼️ No valid image source provided:', src);
+        console.warn('🖼️ No valid image source provided, using fallback:', src);
       }
-      return fallbackSrc || developmentFallback;
+      // NOTFALL-FALLBACK: Falls kein src, verwende ein echtes Shopify-Produktbild statt sample.jpg
+      const emergencyFallback = 'https://cdn.shopify.com/s/files/1/0918/4575/5223/files/4a86f2d4-fe93-4425-a898-f67b376ba169.jpg?v=1750091644';
+      return fallbackSrc || emergencyFallback;
     }
     
     // SCHRITT 1: Wenn productId vorhanden ist, verwende Cloudinary-URL direkt

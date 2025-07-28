@@ -54,22 +54,11 @@ export function PremiumImage({
       return fallbackSrc || selectedFallback;
     }
     
-    // SCHRITT 1: Wenn productId vorhanden ist, verwende direkte Upload-URL
-    if (productId) {
-      const cloudinaryUrl = getCloudinaryUrl(src, context === 'detail' ? 'productZoom' : context === 'thumbnail' ? 'thumbnail' : 'product', productId, imageIndex);
-      
-      if (process.env.NODE_ENV === 'development') {
-        console.log('🔄 PRODUKTSPEZIFISCHE CLOUDINARY URL:', { 
-          productId: productId,
-          imageIndex: imageIndex,
-          cloudinaryUrl: cloudinaryUrl,
-          context: context,
-          originalSrc: src
-        });
-      }
-      
-      return cloudinaryUrl;
-    }
+    // SCHRITT 1: DEAKTIVIERT - Verwende immer Fetch API statt Upload URLs
+    // Problem: Upload URLs existieren nicht, aber Fetch API funktioniert
+    // if (productId) { ... }
+    
+    // DIREKT ZU SCHRITT 2: Verwende Fetch API für alle Shopify-Bilder
 
     if (src.includes('shopify.com') || src.includes('shopifycdn.com')) {
       // SCHRITT 2: Standardmäßige Cloudinary-Optimierung für Shopify-Bilder

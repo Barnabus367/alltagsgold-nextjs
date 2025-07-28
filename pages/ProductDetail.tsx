@@ -570,17 +570,33 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
           </div>
 
           {/* Product Info */}
-          <div className="space-y-8">
-            {/* Title and Price - SEO H1 */}
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">{safeProductData.title}</h1>
-              <div className="text-3xl font-bold text-gray-900 mb-6">{safePricing.formatted}</div>
+          <div className="space-y-6">
+            {/* Product Name (H1) - Optimierte Typografie */}
+            <h1 className="product-title">{safeProductData.title}</h1>
+
+            {/* Price - Optimierte Typografie */}
+            <div className="product-price">{safePricing.formatted}</div>
+
+            {/* Versand, Rückgabe, Garantie Infos */}
+            <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+              <div className="flex items-center space-x-3 text-sm text-gray-700">
+                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                <span>Kostenloser Versand ab CHF 100</span>
+              </div>
+              <div className="flex items-center space-x-3 text-sm text-gray-700">
+                <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                <span>30 Tage Rückgaberecht</span>
+              </div>
+              <div className="flex items-center space-x-3 text-sm text-gray-700">
+                <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                <span>2 Jahre Garantie</span>
+              </div>
             </div>
 
-            {/* Content Rendering - Feature Flag basiert */}
+            {/* Produktvorteile - Optimierte Darstellung mit besserer UX */}
             {optimizedContent.type === 'native' ? (
-              // Native HTML Content Rendering mit ProductDescription Komponente
-              <div className="space-y-6">
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-900">Produktvorteile</h3>
                 <ProductDescription 
                   html={optimizedContent.html}
                   loading={optimizedContent.loading}
@@ -588,69 +604,60 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   collapsible={true}
                   truncateLines={4}
                   previewLines={2}
-                  className="bg-white"
+                  className="bg-white prose-benefits"
                 />
               </div>
             ) : (
-              // Legacy Content Rendering - AUSKOMMENTIERT für Rollback-Sicherheit
+              // Legacy Content mit strukturierteren Produktvorteilen
               <div className="space-y-6">
-                {/* LEGACY CONTENT - Kann bei Bedarf reaktiviert werden
-                
-                {/* Intro Text *}
+                {/* Intro Text */}
                 {optimizedContent.introText && (
                   <div className="space-y-4">
-                    <p className="text-gray-700 leading-relaxed">
+                    <p className="product-text text-gray-700 leading-relaxed">
                       {optimizedContent.introText}
                     </p>
                   </div>
                 )}
 
-                {/* Produktvorteile *}
+                {/* Produktvorteile als Bullet Points */}
                 {optimizedContent.benefits && optimizedContent.benefits.length > 0 && (
                   <div className="space-y-4">
                     <h3 className="text-lg font-semibold text-gray-900">Produktvorteile</h3>
-                    <ul className="space-y-2">
+                    <ul className="space-y-3">
                       {optimizedContent.benefits.map((benefit: string, index: number) => (
-                        <li key={index} className="flex items-start space-x-2 text-gray-700">
-                          <span className="text-gray-400 mt-1">•</span>
-                          <span className="text-sm leading-relaxed">{benefit}</span>
+                        <li key={index} className="flex items-start space-x-3">
+                          <span className="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0"></span>
+                          <span className="product-text text-gray-700">{benefit}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
                 )}
 
-                {/* Technische Details *}
+                {/* Technische Details */}
                 {optimizedContent.sections && optimizedContent.sections.length > 0 && (
                   <div className="space-y-4">
                     <h3 className="text-lg font-semibold text-gray-900">Technische Details</h3>
-                    <ul className="space-y-2">
+                    <ul className="space-y-3">
                       {optimizedContent.sections[0].content && Array.isArray(optimizedContent.sections[0].content) &&
                         optimizedContent.sections[0].content.map((detail: string, index: number) => (
-                          <li key={index} className="flex items-start space-x-2 text-gray-700">
-                            <span className="text-gray-400 mt-1">•</span>
-                            <span className="text-sm leading-relaxed">{detail}</span>
+                          <li key={index} className="flex items-start space-x-3">
+                            <span className="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0"></span>
+                            <span className="product-text text-gray-700">{detail}</span>
                           </li>
                         ))
                       }
                     </ul>
                   </div>
                 )}
-                
-                ENDE LEGACY CONTENT */}
-                
-                {/* Fallback für Legacy Mode */}
-                <div className="text-gray-500 text-sm">
-                  Legacy Content Mode - Verwende Native Descriptions für optimierte Darstellung
-                </div>
               </div>
             )}
 
-            {/* Variant Selection - JETZT NACH Produktvorteilen */}
+            {/* Variant Selection - Optimiertes Layout */}
             {safeVariantData.hasMultiple && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900">Varianten</h3>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-3">
                   {safeVariantData.all.map((variant: any, index: number) => (
                     <button
                       key={variant.id}
@@ -722,47 +729,36 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               </CollapsibleContent>
             </Collapsible>
 
-            {/* Quantity and Add to Cart */}
-            <div className="space-y-4">
+            {/* Quantity and Add to Cart - Optimierte Layout & Typografie */}
+            <div className="space-y-4 pt-6 border-t border-gray-200">
+              {/* Quantity Selector */}
               <div className="flex items-center space-x-4">
-                <div className="flex items-center border rounded-lg">
+                <span className="text-sm font-medium text-gray-900">Menge:</span>
+                <div className="flex items-center border border-gray-300 rounded-lg">
                   <button
                     onClick={() => adjustQuantity(-1)}
-                    className="p-2 hover:bg-gray-50 disabled:opacity-50"
+                    className="p-2 hover:bg-gray-50 disabled:opacity-50 transition-colors"
                     disabled={quantity <= 1}
                     aria-label="Menge verringern"
                   >
                     <Minus className="h-4 w-4" />
                   </button>
-                  <span className="px-4 py-2 border-x min-w-[3rem] text-center">{quantity}</span>
+                  <span className="px-4 py-2 min-w-[3rem] text-center">{quantity}</span>
                   <button
                     onClick={() => adjustQuantity(1)}
-                    className="p-2 hover:bg-gray-50"
+                    className="p-2 hover:bg-gray-50 transition-colors"
                     aria-label="Menge erhöhen"
                   >
                     <Plus className="h-4 w-4" />
                   </button>
                 </div>
-                
-                {/* Wishlist Button - Mobile-optimiert */}
-                <Button
-                  onClick={() => setIsWishlisted(!isWishlisted)}
-                  variant="outline"
-                  className="min-h-[44px] min-w-[44px] p-3 touch-manipulation"
-                  aria-label={isWishlisted ? 'Von Wunschliste entfernen' : 'Zur Wunschliste hinzufügen'}
-                >
-                  <Heart className={`h-5 w-5 ${isWishlisted ? 'fill-current text-red-500' : ''}`} />
-                </Button>
               </div>
 
-              {/* Add to Cart Button - Mobile-optimiert */}
+              {/* Add to Cart Button - Optimierte Typografie gemäß Spezifikation */}
               <Button 
                 onClick={handleAddToCart}
                 disabled={!safeVariantData.current?.availableForSale || isAddingToCart}
-                className="w-full min-h-[48px] text-base font-semibold bg-black hover:bg-gray-900 text-white border border-black hover:border-gray-900 transition-all duration-200 shadow-sm hover:shadow-md touch-manipulation"
-                style={{
-                  boxShadow: '0 0 0 1px rgba(200, 160, 100, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1)'
-                }}
+                className="w-full bg-black hover:bg-gray-800 text-white py-4 cta-button transition-all duration-200"
                 aria-label={safeProductData.title ? `${safeProductData.title} in den Warenkorb legen` : 'Produkt in den Warenkorb legen'}
               >
                 {isAddingToCart ? (
@@ -775,6 +771,17 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                     In den Warenkorb
                   </>
                 )}
+              </Button>
+
+              {/* Wishlist Button - Optimierte Darstellung */}
+              <Button
+                onClick={() => setIsWishlisted(!isWishlisted)}
+                variant="outline"
+                className="w-full py-3 text-base font-medium transition-colors"
+                aria-label={isWishlisted ? 'Von Wunschliste entfernen' : 'Zur Wunschliste hinzufügen'}
+              >
+                <Heart className={`h-4 w-4 mr-2 ${isWishlisted ? 'fill-current text-red-500' : ''}`} />
+                {isWishlisted ? 'Von Wunschliste entfernen' : 'Auf Wunschliste'}
               </Button>
             </div>
 

@@ -1,6 +1,5 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import Image from 'next/image';
-import { getCloudinaryUrl, getProductImage, getThumbnailImage } from '@/lib/cloudinary-optimized';
 
 interface PremiumImageProps {
   src: string;
@@ -9,7 +8,7 @@ interface PremiumImageProps {
   productTitle?: string;
   context?: 'hero' | 'card' | 'thumbnail' | 'detail';
   fallbackSrc?: string;
-  // NEU: Shopify Produkt-ID für direkte Cloudinary-URL-Generierung
+  // NEU: Shopify Produkt-ID (nicht mehr verwendet)
   productId?: string;
   imageIndex?: number;
 }
@@ -26,87 +25,27 @@ export function PremiumImage({
 }: PremiumImageProps) {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-  
-  // Stabile Fallback URL mit useMemo
-  const developmentFallback = useMemo(() => {
-    const width = context === 'detail' ? 800 : context === 'hero' ? 1200 : 400;
-    const height = context === 'detail' ? 600 : context === 'hero' ? 600 : 400;
-    return `https://res.cloudinary.com/do7yh4dll/image/fetch/c_pad,w_${width},h_${height},b_auto/https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800`;
-  }, [context]);
 
-  // Stabile Bild-URL mit useMemo - PRIORISIERT HOCHGELADENE BILDER
+  // EINFACH: Verwende nur die ursprünglichen Shopify-URLs
   const imageUrl = useMemo(() => {
+    // Wenn kein src vorhanden, verwende Fallback
     if (!src || src.includes('placeholder') || src.trim() === '') {
-      console.warn('🖼️ No valid image source provided, using fallback:', src);
-      
-      // INTELLIGENTER FALLBACK: Verschiedene echte Produktbilder je nach Kontext
-      const productImages = [
-        'https://cdn.shopify.com/s/files/1/0918/4575/5223/files/4a86f2d4-fe93-4425-a898-f67b376ba169.jpg?v=1750091644', // Nachtlicht
-        'https://cdn.shopify.com/s/files/1/0918/4575/5223/files/913340162679.jpg?v=1750055469', // LED-Lampe
-        'https://cdn.shopify.com/s/files/1/0918/4575/5223/files/897800972772.jpg?v=1750103955', // Gadget
-        'https://cdn.shopify.com/s/files/1/0918/4575/5223/files/350852167380.jpg?v=1750125533', // Haushalt
-      ];
-      
-      // Wähle ein Bild basierend auf imageIndex oder zufällig
-      const fallbackIndex = (imageIndex || 0) % productImages.length;
-      const selectedFallback = productImages[fallbackIndex];
-      
-      return fallbackSrc || selectedFallback;
+      return fallbackSrc || 'https://via.placeholder.com/400x400?text=Kein+Bild';
     }
     
-    // SCHRITT 1: DEAKTIVIERT - Verwende immer Fetch API statt Upload URLs
-    // Problem: Upload URLs existieren nicht, aber Fetch API funktioniert
-    // if (productId) { ... }
-    
-    // DIREKT ZU SCHRITT 2: Verwende Fetch API für alle Shopify-Bilder
-
-    if (src.includes('shopify.com') || src.includes('shopifycdn.com')) {
-      // SCHRITT 2: Standardmäßige Cloudinary-Optimierung für Shopify-Bilder
-      let optimizedUrl: string;
-      if (context === 'detail') {
-        optimizedUrl = getProductImage(src, false);
-      } else if (context === 'thumbnail') {
-        optimizedUrl = getThumbnailImage(src);
-      } else if (context === 'hero') {
-        optimizedUrl = getCloudinaryUrl(src, 'hero');
-      } else {
-        optimizedUrl = getCloudinaryUrl(src, 'product');
-      }
-      
-      if (process.env.NODE_ENV === 'development') {
-        console.log('🔄 SHOPIFY IMAGE OPTIMIZED:', { 
-          original: src, 
-          optimized: optimizedUrl,
-          context: context 
-        });
-      }
-      return optimizedUrl;
-    }
-    
-    // SCHRITT 3: Fallback für andere Bildquellen - verwende immer Cloudinary Fetch
-    const finalUrl = getCloudinaryUrl(src, context);
-    
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🖼️ Using Cloudinary optimized URL:', { original: src, optimized: finalUrl });
-    }
-    return finalUrl;
-  }, [src, fallbackSrc, context, developmentFallback, productId, imageIndex]);
+    // KEINE OPTIMIERUNGEN - verwende das ursprüngliche Bild direkt
+    return src;
+  }, [src, fallbackSrc]);
   
   const isValidUrl = imageUrl && !imageError;
 
   const handleImageLoad = () => {
     setImageLoaded(true);
-    if (process.env.NODE_ENV === 'development') {
-      console.log('✅ Image loaded successfully:', imageUrl);
-    }
   };
 
   const handleImageError = () => {
     console.warn('Image failed to load:', imageUrl);
-    // Only set error for actual failures, not empty URLs
-    if (imageUrl && !imageUrl.includes('placeholder')) {
-      setImageError(true);
-    }
+    setImageError(true);
     setImageLoaded(true);
   };
 
@@ -136,28 +75,10 @@ export function PremiumImage({
           )}
         </>
       ) : (
-        // Development-safe fallback with Cloudinary placeholder
-        <>
-          <Image
-            src={developmentFallback}
-            alt={alt || `${productTitle} Fallback-Bild`}
-            width={800}
-            height={800}
-            onLoad={handleImageLoad}
-            loading="lazy"
-            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            quality={75}
-            className={`object-cover rounded-lg transition-all duration-300 opacity-60 ${className}`}
-          />
-          <div className="absolute inset-0 bg-gray-100 bg-opacity-50 flex items-center justify-center rounded-lg">
-            <div className="text-center text-gray-500">
-              <svg className="w-8 h-8 mx-auto mb-1" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
-              </svg>
-              <span className="text-xs">Placeholder</span>
-            </div>
-          </div>
-        </>
+        // Einfacher Fallback
+        <div className={`bg-gray-200 flex items-center justify-center text-gray-500 text-sm ${className}`}>
+          <span>Bild nicht verfügbar</span>
+        </div>
       )}
     </div>
   );

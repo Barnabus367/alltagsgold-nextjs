@@ -156,7 +156,15 @@ export const getOptimizedImageUrl = (
   originalUrl: string | null | undefined,
   context: 'hero' | 'card' | 'thumbnail' | 'detail' = 'card'
 ): string => {
+  // DEBUG: Log incoming URLs
+  if (process.env.NODE_ENV === 'development') {
+    console.log('🔍 getOptimizedImageUrl called:', { originalUrl, context });
+  }
+
   if (!originalUrl || originalUrl.includes('placeholder')) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('⚠️ Invalid or placeholder URL detected:', originalUrl);
+    }
     return '';
   }
 
@@ -170,5 +178,11 @@ export const getOptimizedImageUrl = (
   const size = sizeMap[context];
   
   // Cloudinary optimization mit höherer Qualität (q_90 statt q_auto)
-  return `https://res.cloudinary.com/dwrk3iihw/image/fetch/${size},q_90,f_auto,r_8/${encodeURIComponent(originalUrl)}`;
+  const optimizedUrl = `https://res.cloudinary.com/dwrk3iihw/image/fetch/${size},q_90,f_auto,r_8/${encodeURIComponent(originalUrl)}`;
+  
+  if (process.env.NODE_ENV === 'development') {
+    console.log('✅ Optimized URL created:', optimizedUrl);
+  }
+  
+  return optimizedUrl;
 };

@@ -110,14 +110,18 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     const imageEdges = safeProductData.images?.edges || [];
     const images = imageEdges.map((edge: any) => edge.node).filter(Boolean);
     
-    // Debug Logging für Bildverarbeitung
+    // Enhanced Debug Logging für Bildverarbeitung
     if (getFeatureFlag('DEBUG_DESCRIPTION_PARSING')) {
       console.log('🖼️ Image Processing Debug:', {
         productHandle: safeProductData.handle,
         totalImageEdges: imageEdges.length,
-        processedImages: images.length,
+        processedImagesCount: images.length,
         selectedIndex: selectedImageIndex,
-        imageUrls: images.map((img: any) => img.url)
+        rawImageEdges: imageEdges,
+        processedImagesData: images,
+        imageUrls: images.map((img: any) => img.url),
+        primaryImageUrl: images[0]?.url,
+        currentImageUrl: images[selectedImageIndex]?.url
       });
     }
     

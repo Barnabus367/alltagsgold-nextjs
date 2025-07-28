@@ -30,7 +30,7 @@ export const FEATURE_FLAGS: FeatureFlags = {
   
   // Debug Logging für Description Parsing
   DEBUG_DESCRIPTION_PARSING: 
-    process.env.NODE_ENV === 'development' &&
+    process.env.NODE_ENV === 'development' ||
     process.env.DEBUG_DESCRIPTIONS === 'true'
 };
 

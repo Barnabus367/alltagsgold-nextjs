@@ -28,14 +28,18 @@ export function PremiumImage({
 
   // EINFACH: Verwende nur die ursprünglichen Shopify-URLs
   const imageUrl = useMemo(() => {
+    console.log('🖼️ PremiumImage received:', { src, context, productTitle });
+    
     // Wenn kein src vorhanden, verwende Fallback
     if (!src || src.includes('placeholder') || src.trim() === '') {
+      console.log('❌ No valid src, using fallback');
       return fallbackSrc || 'https://via.placeholder.com/400x400?text=Kein+Bild';
     }
     
+    console.log('✅ Using original Shopify URL:', src);
     // KEINE OPTIMIERUNGEN - verwende das ursprüngliche Bild direkt
     return src;
-  }, [src, fallbackSrc]);
+  }, [src, fallbackSrc, context, productTitle]);
   
   const isValidUrl = imageUrl && !imageError;
 

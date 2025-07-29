@@ -77,14 +77,25 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
 
   // Memoized safe product data - NO direct product access in render
   const safeProductData = useMemo(() => {
-    if (!product) return FALLBACK_PRODUCT_DATA;
+    if (!product) {
+      console.log('🚨 NO PRODUCT DATA - using fallback');
+      return FALLBACK_PRODUCT_DATA;
+    }
+    
+    console.log('✅ PRODUCT DATA FOUND:', {
+      title: product.title,
+      handle: product.handle,
+      hasImages: !!product.images,
+      imageEdgesCount: product.images?.edges?.length || 0,
+      firstImageUrl: product.images?.edges?.[0]?.node?.url
+    });
     
     return {
       title: product.title || 'Unbekanntes Produkt',
       handle: product.handle || '',
-      images: product.images?.edges || [],
-      variants: product.variants?.edges || [],
-      collections: product.collections?.edges || [],
+      images: product.images || { edges: [] },  // FIX: Korrekte Struktur beibehalten
+      variants: product.variants || { edges: [] },
+      collections: product.collections || { edges: [] },
       description: product.description || '',
       descriptionHtml: product.descriptionHtml || '',
       id: product.id || '',
@@ -110,19 +121,16 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     const imageEdges = safeProductData.images?.edges || [];
     const images = imageEdges.map((edge: any) => edge.node).filter(Boolean);
     
-    // Enhanced Debug Logging für Bildverarbeitung - PERMANENT AKTIVIERT
+    // Enhanced Debug Logging für Bildverarbeitung
     console.log('🖼️ Image Processing Debug:', {
       productHandle: safeProductData.handle,
       totalImageEdges: imageEdges.length,
       processedImagesCount: images.length,
       selectedIndex: selectedImageIndex,
-      rawImageEdges: imageEdges,
-      processedImagesData: images,
       imageUrls: images.map((img: any) => img.url),
       primaryImageUrl: images[0]?.url,
       currentImageUrl: images[selectedImageIndex]?.url,
-      safeProductDataImages: safeProductData.images,
-      fullProduct: !!product
+      firstImageRaw: imageEdges[0]
     });
     
     return {
@@ -545,7 +553,6 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                 productId={safeProductData.id ? safeProductData.id.replace('gid://shopify/Product/', '') : undefined}
                 imageIndex={selectedImageIndex}
                 context="detail"
-                fallbackSrc="https://res.cloudinary.com/do7yh4dll/image/fetch/c_pad,w_800,h_800,b_auto/https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800"
               />
             </div>
             

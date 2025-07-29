@@ -267,7 +267,7 @@ export function Home({ searchQuery = '', preloadedProducts, preloadedCollections
               </div>
             </div>
             <div>
-              <div className="aspect-square bg-gray-100 overflow-hidden rounded-sm">
+              <div className="aspect-square overflow-hidden rounded-sm">
                 <Image
       src={"https://cdn.shopify.com/s/files/1/0918/4575/5223/files/Bildschirmfoto_2025-07-29_um_02.30.07.png?v=1753749205"}
       alt="Qualitätsprodukte für den Alltag - Premium Lifestyle"

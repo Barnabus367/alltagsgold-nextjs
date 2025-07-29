@@ -79,7 +79,7 @@ export function Home({ searchQuery = '', preloadedProducts, preloadedCollections
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-      src={"https://res.cloudinary.com/do7yh4dll/image/fetch/w_1920,h_1080,c_fill,g_center,q_auto:best,f_webp/https://images.unsplash.com/photo-1441986300917-64674bd600d8"}
+      src={"https://cdn.shopify.com/s/files/1/0918/4575/5223/files/pexels-silverkblack-23224720_ft2x1y_jpg.webp?v=1753748616"}
       alt="Premium Package auf Teppich"
       width={1200}
       height={600}
@@ -269,7 +269,7 @@ export function Home({ searchQuery = '', preloadedProducts, preloadedCollections
             <div>
               <div className="aspect-square bg-gray-100 overflow-hidden rounded-sm">
                 <Image
-      src={"https://res.cloudinary.com/do7yh4dll/image/fetch/w_800,q_auto,f_webp/https://images.unsplash.com/photo-1560472354-b33ff0c44a43"}
+      src={"https://cdn.shopify.com/s/files/1/0918/4575/5223/files/Bildschirmfoto_2025-07-29_um_02.30.07.png?v=1753749205"}
       alt="Qualitätsprodukte für den Alltag - Premium Lifestyle"
       width={1200}
       height={600}

@@ -95,7 +95,7 @@ export function Collections({ preloadedCollections }: CollectionsProps) {
         <div className="absolute inset-0 bg-gradient-to-br from-black/30 to-black/60 z-10"></div>
         <HeroVideo 
           videoSrc="https://res.cloudinary.com/do7yh4dll/video/upload/v1750154076/4669325-uhd_4096_2160_25fps_rjfgd4.mp4"
-          fallbackImage="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=2340&q=80"
+          fallbackImage="https://cdn.shopify.com/s/files/1/0918/4575/5223/files/Alle_Produkte_Hero.jpg?v=1753748617"
         />
         <div className="relative z-20 text-center text-white max-w-5xl mx-auto px-6">
           <h1 className="text-5xl md:text-7xl font-light tracking-tight mb-6">

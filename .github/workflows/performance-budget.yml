@@ -1,0 +1,105 @@
+name: Performance Budget Check
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  performance-budget:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build project
+      run: npm run build
+    
+    - name: Analyze bundle size
+      run: |
+        npm install -g @next/bundle-analyzer
+        ANALYZE=true npm run build > bundle-report.txt
+    
+    - name: Check bundle sizes
+      run: |
+        echo "Checking bundle sizes..."
+        
+        # Define size limits (in KB)
+        MAX_JS_SIZE=300
+        MAX_CSS_SIZE=100
+        MAX_TOTAL_SIZE=500
+        
+        # Get actual sizes from .next
+        JS_SIZE=$(find .next/static -name "*.js" -type f -exec du -k {} + | awk '{total += $1} END {print total}')
+        CSS_SIZE=$(find .next/static -name "*.css" -type f -exec du -k {} + | awk '{total += $1} END {print total}')
+        TOTAL_SIZE=$((JS_SIZE + CSS_SIZE))
+        
+        echo "JavaScript size: ${JS_SIZE}KB (limit: ${MAX_JS_SIZE}KB)"
+        echo "CSS size: ${CSS_SIZE}KB (limit: ${MAX_CSS_SIZE}KB)"
+        echo "Total size: ${TOTAL_SIZE}KB (limit: ${MAX_TOTAL_SIZE}KB)"
+        
+        # Check if sizes exceed limits
+        if [ $JS_SIZE -gt $MAX_JS_SIZE ]; then
+          echo "❌ JavaScript bundle size exceeds limit!"
+          exit 1
+        fi
+        
+        if [ $CSS_SIZE -gt $MAX_CSS_SIZE ]; then
+          echo "❌ CSS bundle size exceeds limit!"
+          exit 1
+        fi
+        
+        if [ $TOTAL_SIZE -gt $MAX_TOTAL_SIZE ]; then
+          echo "❌ Total bundle size exceeds limit!"
+          exit 1
+        fi
+        
+        echo "✅ All bundle sizes within limits!"
+    
+    - name: Run Lighthouse CI
+      run: |
+        npm install -g @lhci/cli
+        npm run build
+        npm run start &
+        sleep 5
+        
+        # Run Lighthouse
+        lhci autorun --config=lighthouserc.json || true
+    
+    - name: Comment PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          
+          // Read bundle sizes
+          const bundleReport = fs.readFileSync('bundle-report.txt', 'utf8');
+          
+          const comment = `## 📊 Performance Budget Report
+          
+          ### Bundle Sizes
+          \`\`\`
+          ${bundleReport}
+          \`\`\`
+          
+          ### Performance Metrics
+          Check the Lighthouse CI results for detailed performance metrics.
+          `;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });

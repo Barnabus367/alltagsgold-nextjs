@@ -3,6 +3,8 @@
  * Generiert optimierte Meta-Descriptions für alle Seitentypen
  */
 
+import type { BlogPost } from '@/data/blog-posts';
+
 export interface SEOMetadata {
   title: string;
   description: string;
@@ -25,18 +27,40 @@ export interface SEOMetadata {
  * Brand-optimierte SEO-Templates nach neuem Schema
  */
 const SEO_TEMPLATES = {
-  brand: "AlltagsGold",
-  productTitleSuffix: "Schweiz ✓ Sofort lieferbar ✓ Top Bewertungen",
-  collectionTitleSuffix: "Online Shop ✓ Gratis Versand ✓ Premium Qualität",
-  productDescriptionSuffix: "⭐ 4.8/5 Bewertungen ⭐ Gratis Versand ab CHF 50 ⭐ 30 Tage Rückgabe ⭐ Schweizer Shop",
-  collectionDescriptionTemplate: (name: string) => `${name} günstig kaufen Schweiz ✓ Sofort lieferbar ✓ Top Bewertungen ✓ Gratis Versand`,
+  brand: "Alltagsgold",
+  homepage: {
+    title: "Alltagsgold Lifestyle Shop | Haushaltshelfer & Küchenhelfer Schweiz",
+    description: "Premium Haushaltshelfer online kaufen Schweiz ✓ Innovative Küchenhelfer & Alltagsprodukte ✓ Kein Dropshipping ✓ Schneller Versand aus CH-Lager"
+  },
+  productTitleSuffix: "kaufen | Alltagsgold Schweiz",
+  collectionTitleSuffix: "| Praktische Produkte bei Alltagsgold",
+  productDescriptionTemplate: (productName: string, benefit?: string) => {
+    const base = `${productName} günstig kaufen bei Alltagsgold Schweiz.`;
+    const middle = benefit ? ` ${benefit}.` : ' Premium Qualität für Ihren Alltag.';
+    const suffix = " ✓ Schneller CH-Versand ✓ Kein Dropshipping ✓ 30 Tage Rückgabe";
+    return base + middle + suffix;
+  },
+  collectionDescriptionTemplate: (name: string) => {
+    const categoryKeywords: Record<string, string> = {
+      'küche': 'Innovative Küchenhelfer & zeitsparende Küchengeräte',
+      'haushalt': 'Praktische Haushaltshelfer & Reinigungsgeräte',
+      'beauty': 'Selbstpflege Produkte & Beauty Tools',
+      'lifestyle': 'Wellness Gadgets & Lifestyle Produkte',
+      'aufbewahrung': 'Platzsparende Organizer & Aufbewahrungslösungen'
+    };
+    const keyword = Object.entries(categoryKeywords).find(([key]) => 
+      name.toLowerCase().includes(key)
+    )?.[1] || 'Premium Produkte';
+    
+    return `${keyword} online kaufen Schweiz. ${name} bei Alltagsgold: ✓ Auf Lager ✓ Schneller Versand ✓ Schweizer Shop`;
+  },
   fallbacks: {
-    default: "Lifestyle-Produkte & smarte Alltagshelfer ✓ Gratis Versand ✓ 4.8★ Bewertungen ✓ Schweizer Online Shop",
-    products: "Lifestyle-Produkte & Alltagshelfer günstig kaufen ✓ Schweizer Shop ✓ Gratis Versand ✓ Top Bewertungen ✓ Sofort lieferbar",
-    collections: "Premium Lifestyle-Produkte Schweiz ✓ Sofort lieferbar ✓ Top Qualität ✓ Gratis Versand ab CHF 50",
-    home: "Lifestyle-Produkte & smarte Alltagshelfer ✓ Gratis Versand ✓ 4.8★ Bewertungen ✓ Schweizer Online Shop",
-    contact: "AlltagsGold Kontakt Schweiz ✓ Schnelle Hilfe ✓ Kostenlose Beratung ✓ Lifestyle-Produkte Experten",
-    blog: "Lifestyle Tipps & Produkttests ✓ Schweizer Ratgeber ✓ Alltagshelfer Guide ✓ AlltagsGold Blog"
+    default: "Entdecke einzigartige Produkte bei Alltagsgold. Schweizer Qualität, schneller Versand und echte Kundenzufriedenheit.",
+    products: "Hochwertige Produkte direkt aus der Schweiz. Bestelle jetzt bei Alltagsgold und profitiere von schnellem Versand.",
+    collections: "Entdecke unsere Produktkategorien. Alle Artikel auf Lager in der Schweiz und sofort versandbereit.",
+    home: "Entdecke einzigartige Produkte direkt aus unserem Schweizer Lager. Bei Alltagsgold findest du Qualität statt Dropshipping.",
+    contact: "Kontaktiere Alltagsgold für Fragen zu deiner Bestellung. Wir helfen dir gerne weiter - schnell und unkompliziert.",
+    blog: "Entdecke Tipps, Tricks und Produktneuheiten im Alltagsgold Blog. Praktische Ratschläge für deinen Alltag."
   }
 };
 
@@ -109,13 +133,19 @@ function createProductDescription(productDescription: string, productTitle: stri
 export function generateProductSEO(product: any): SEOMetadata {
   const productTitle = product?.title || 'Produkt';
   
-  // Neues Title-Schema: alltagsgold | {Produktname} | Jetzt entdecken
-  const title = generateBrandTitle(productTitle, SEO_TEMPLATES.productTitleSuffix);
+  // Neues Title-Schema: [Produktname] kaufen | Alltagsgold Schweiz
+  const title = `${productTitle} ${SEO_TEMPLATES.productTitleSuffix}`;
   
+  // Extrahiere Hauptvorteil aus der Beschreibung (erste 50 Zeichen)
   const baseDescription = product?.description || product?.excerpt || '';
+  const cleanDesc = sanitizeDescription(baseDescription, 50);
+  const benefit = cleanDesc.length > 20 ? cleanDesc : undefined;
   
-  // Neue Description mit Brand-Suffix
-  let description = createProductDescription(baseDescription, productTitle);
+  // Neue Description mit Template
+  let description = SEO_TEMPLATES.productDescriptionTemplate(productTitle, benefit);
+  
+  // Kürze auf 150 Zeichen falls nötig
+  description = sanitizeDescription(description, 150);
   
   // Fallback falls keine sinnvolle Description erstellt werden kann
   if (!description || description.length < 50) {
@@ -149,33 +179,14 @@ export function generateProductSEO(product: any): SEOMetadata {
 export function generateCollectionSEO(collection: any): SEOMetadata {
   const collectionTitle = collection?.title || 'Kollektion';
   
-  // Neues Title-Schema: alltagsgold | {Kollektionsname} | Clever & stilvoll
-  const title = generateBrandTitle(collectionTitle, SEO_TEMPLATES.collectionTitleSuffix);
+  // Neues Title-Schema: [Kategoriename] | Praktische Produkte bei Alltagsgold
+  const title = `${collectionTitle} ${SEO_TEMPLATES.collectionTitleSuffix}`;
   
-  const baseDescription = collection?.description || '';
+  // Verwende Template für Description
+  let description = SEO_TEMPLATES.collectionDescriptionTemplate(collectionTitle);
   
-  let description: string;
-  
-  // Prüfe ob eigene Description vorhanden und sinnvoll nutzbar
-  if (baseDescription && baseDescription.length > 20) {
-    const cleanDesc = sanitizeDescription(baseDescription, 100);
-    const template = SEO_TEMPLATES.collectionDescriptionTemplate(collectionTitle);
-    
-    // Wenn Template + Description zu lang, nutze nur Template
-    if ((cleanDesc.length + template.length + 3) <= 150) {
-      description = `${cleanDesc}. ${template}`;
-    } else {
-      description = template;
-    }
-  } else {
-    // Verwende Template mit Collection-Name
-    description = SEO_TEMPLATES.collectionDescriptionTemplate(collectionTitle);
-  }
-  
-  // Fallback falls Template zu lang
-  if (description.length > 150) {
-    description = sanitizeDescription(description, 150);
-  }
+  // Kürze auf 150 Zeichen falls nötig
+  description = sanitizeDescription(description, 150);
   
   // Final fallback
   if (!description || description.length < 50) {
@@ -209,8 +220,8 @@ export function generateCollectionSEO(collection: any): SEOMetadata {
 export function generateStaticPageSEO(pageType: string, customTitle?: string, customDescription?: string): SEOMetadata {
   const staticPageData: Record<string, { pageName: string; description: string; suffix?: string }> = {
     home: {
-      pageName: "AlltagsGold | Haushaltsware Schweiz ✓ Gratis Versand ✓ Top Bewertungen",
-      description: "Haushaltsware & Küchenhelfer günstig kaufen ✓ Schweizer Online Shop ✓ Gratis Versand ab CHF 50 ✓ 4.8★ Bewertungen ✓ 30 Tage Rückgabe ✓ Sofort lieferbar"
+      pageName: SEO_TEMPLATES.homepage.title,
+      description: SEO_TEMPLATES.homepage.description
     },
     contact: {
       pageName: "Kontakt Lifestyle-Produkte Schweiz ✓ Kostenlose Beratung",
@@ -342,13 +353,13 @@ export function validateSEOMetadata(metadata: SEOMetadata, pagePath: string): bo
  * Generiert SEO-Metadata für Homepage
  */
 export function generateHomeSEO(): SEOMetadata {
-  const title = generateBrandTitle(SEO_TEMPLATES.fallbacks.home);
-  const description = SEO_TEMPLATES.fallbacks.home;
+  const title = SEO_TEMPLATES.homepage.title;
+  const description = SEO_TEMPLATES.homepage.description;
   
   return {
     title,
     description,
-    keywords: 'Lifestyle-Produkte, Alltagshelfer, Schweiz, Online Shop, Gratis Versand, Premium Qualität',
+    keywords: 'alltagsgold lifestyle shop, haushaltshelfer schweiz online, premium küchenhelfer shop ch, alltagsprodukte online kaufen schweiz, innovative reinigungsgeräte, praktische alltagshelfer',
     openGraph: {
       title,
       description,
@@ -450,6 +461,46 @@ export function generateBlogSEO(post: any): SEOMetadata {
       title,
       description,
       image: imageUrl
+    }
+  };
+}
+
+/**
+ * Generiert SEO-Metadata für Blog-Posts (typed version)
+ */
+export function generateBlogPostSEO(post: BlogPost): SEOMetadata {
+  const postTitle = post.title;
+  const title = `${postTitle} | AlltagsGold Blog`;
+  
+  // Use excerpt for description
+  let description = sanitizeDescription(post.excerpt, 120);
+  
+  // Add blog-specific suffix if there's room
+  const blogSuffix = '✓ Expertentipps ✓ AlltagsGold Schweiz';
+  if (description.length + blogSuffix.length + 3 <= 150) {
+    description = `${description} | ${blogSuffix}`;
+  }
+  
+  // Fallback if description is too short
+  if (!description || description.length < 50) {
+    description = SEO_TEMPLATES.fallbacks.blog;
+  }
+  
+  return {
+    title,
+    description,
+    keywords: post.tags.join(', '),
+    openGraph: {
+      title,
+      description,
+      image: post.featuredImage,
+      url: `/blog/${post.slug}`
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      image: post.featuredImage
     }
   };
 }

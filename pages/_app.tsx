@@ -17,8 +17,10 @@ import { VercelAnalytics } from '../components/VercelAnalytics';
 import { initializeAnalytics } from '../lib/analytics';
 import { ClickAnalyticsDashboard } from '../components/ClickAnalyticsDashboard';
 import { AnalyticsTestDashboard } from '../components/dev/AnalyticsTestDashboard';
+import { initializeLazyScripts } from '../lib/lazy-load-scripts';
+import type { AppProps } from 'next/app';
 
-export default function App({ Component, pageProps }) {
+export default function App({ Component, pageProps }: AppProps) {
   // Performance Optimizations Hook
   useTouchOptimization();
   useMobilePerformanceMonitor();
@@ -36,6 +38,9 @@ export default function App({ Component, pageProps }) {
     
     // Initialize All Analytics (Meta Pixel + Vercel + Global Click Tracker)
     initializeAnalytics();
+    
+    // Initialize lazy-loaded third-party scripts
+    initializeLazyScripts();
     
     // Initialize Navigation Diagnostics für SSG/ISR Hydration-Analyse
     if (typeof window !== 'undefined') {

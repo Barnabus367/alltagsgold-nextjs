@@ -118,6 +118,39 @@ export interface OrganizationStructuredData extends StructuredDataBase {
   sameAs?: string[];
 }
 
+export interface LocalBusinessStructuredData extends StructuredDataBase {
+  '@type': 'LocalBusiness';
+  '@id': string;
+  name: string;
+  url: string;
+  logo: string;
+  description: string;
+  address: {
+    '@type': 'PostalAddress';
+    addressCountry: string;
+    addressLocality: string;
+    addressRegion: string;
+    postalCode?: string;
+  };
+  geo?: {
+    '@type': 'GeoCoordinates';
+    latitude: number;
+    longitude: number;
+  };
+  openingHoursSpecification?: Array<{
+    '@type': 'OpeningHoursSpecification';
+    dayOfWeek: string[];
+    opens: string;
+    closes: string;
+  }>;
+  priceRange?: string;
+  paymentAccepted?: string[];
+  areaServed?: {
+    '@type': 'Country';
+    name: string;
+  };
+}
+
 export interface WebSiteStructuredData extends StructuredDataBase {
   '@type': 'WebSite';
   name: string;
@@ -291,22 +324,64 @@ export function generateOrganizationStructuredData(): OrganizationStructuredData
     '@type': 'Organization',
     name: 'AlltagsGold',
     url: SITE_URL,
-    logo: `${SITE_URL}/logo.png`,
-    description: 'Premium Haushaltsware und Küchenhelfer aus der Schweiz. Günstige Preise, schneller Versand, top Bewertungen.',
+    logo: `${SITE_URL}/alltagsgold-logo.png`,
+    description: 'Premium Haushaltshelfer online kaufen Schweiz. Innovative Küchenhelfer & Alltagsprodukte direkt aus CH-Lager.',
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'CH',
-      addressLocality: 'Schweiz'
+      addressLocality: 'Zürich',
+      addressRegion: 'ZH'
     },
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'Customer Service',
-      availableLanguage: ['German', 'French', 'Italian']
+      availableLanguage: ['German', 'French', 'Italian', 'English'],
+      email: 'info@alltagsgold.ch'
     },
     sameAs: [
-      'https://www.facebook.com/alltagsgold',
-      'https://www.instagram.com/alltagsgold'
+      'https://www.instagram.com/alltagsgold.ch/',
+      'https://www.tiktok.com/@alltagsgold.ch'
     ]
+  };
+}
+
+/**
+ * Generiert LocalBusiness Schema für lokale SEO
+ */
+export function generateLocalBusinessStructuredData(): LocalBusinessStructuredData {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': `${SITE_URL}/#business`,
+    name: 'AlltagsGold - Haushaltshelfer & Lifestyle Shop',
+    url: SITE_URL,
+    logo: `${SITE_URL}/alltagsgold-logo.png`,
+    description: 'Haushaltsware online shop Zürich. Küchenhelfer Lieferung Basel, Bern. Lifestyle Produkte Versand ganze Deutschschweiz.',
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'CH',
+      addressLocality: 'Zürich',
+      addressRegion: 'Zürich'
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 47.3769, // Zürich
+      longitude: 8.5417
+    },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '08:00',
+        closes: '18:00'
+      }
+    ],
+    priceRange: 'CHF',
+    paymentAccepted: ['Kreditkarte', 'PayPal', 'Twint', 'Rechnung'],
+    areaServed: {
+      '@type': 'Country',
+      name: 'Schweiz'
+    }
   };
 }
 

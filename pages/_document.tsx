@@ -35,40 +35,17 @@ export default function Document() {
         {/* Emergency Production Fix */}
         <script async src="/emergency-fix.js" type="text/javascript"></script>
 
-        {/* Meta Pixel Script - Only in production */}
+        {/* Meta Pixel noscript fallback - Only in production */}
         {process.env.NODE_ENV === 'production' && (
-          <>
-            <script
-              type="text/javascript"
-              dangerouslySetInnerHTML={{
-                __html: `
-                  !function(f,b,e,v,n,t,s)
-                  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                  n.queue=[];t=b.createElement(e);t.async=!0;
-                  t.src=v;s=b.getElementsByTagName(e)[0];
-                  s.parentNode.insertBefore(t,s)}(window, document,'script',
-                  'https://connect.facebook.net/en_US/fbevents.js');
-                  try {
-                    fbq('init', '1408203506889853');
-                    fbq('track', 'PageView');
-                  } catch(e) {
-                    console.warn('Facebook Pixel failed to load:', e);
-                  }
-                `,
-              }}
+          <noscript>
+            <Image
+              src="https://www.facebook.com/tr?id=1408203506889853&ev=PageView&noscript=1"
+              alt="Facebook Pixel"
+              width={1}
+              height={1}
+              style={{ display: 'none' }}
             />
-            <noscript>
-              <Image
-                src="https://www.facebook.com/tr?id=1408203506889853&ev=PageView&noscript=1"
-                alt="Facebook Pixel"
-                width={1}
-                height={1}
-                style={{ display: 'none' }}
-              />
-            </noscript>
-          </>
+          </noscript>
         )}
 
 

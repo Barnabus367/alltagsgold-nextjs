@@ -53,6 +53,7 @@ export function Header({ onSearch }: HeaderProps) {
 
   const navItems = [
     { title: 'SHOP', href: '/collections', ariaLabel: 'Zu allen Produktkategorien' },
+    { title: 'ÜBER UNS', href: '/ueber-uns', ariaLabel: 'Über Alltagsgold erfahren' },
     { title: 'BLOG', href: '/blog', ariaLabel: 'Zum Blog' },
     { title: 'KONTAKT', href: '/contact', ariaLabel: 'Zur Kontaktseite' },
   ];

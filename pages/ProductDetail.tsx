@@ -22,6 +22,8 @@ import { generateProductSEO } from '@/lib/seo';
 import { trackViewContent, trackAddToCart } from '@/lib/analytics';
 import { PremiumImage } from '@/components/common/PremiumImage';
 import { ProductDescription } from '@/components/product/ProductDescription';
+import { ProductReviewStars } from '@/components/common/ProductReviewStars';
+import { RelatedProducts } from '@/components/product/RelatedProducts';
 import { formatPrice } from '@/lib/shopify';
 import { formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
@@ -673,6 +675,14 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             {/* 1. Name & Preis - Oberer Block */}
             <div className="space-y-4">
               <h1 className="product-title">{safeProductData.title}</h1>
+              
+              {/* Produktbewertungen - wird später mit echten Daten gefüllt */}
+              <ProductReviewStars 
+                rating={0} // Wird später durch echte Bewertungsdaten ersetzt
+                reviewCount={0}
+                size="md"
+              />
+              
               <div className="product-price">{safePricing.formatted}</div>
             </div>
 
@@ -802,6 +812,11 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
             </div>
           </div>
         </div>
+      </div>
+      
+      {/* Verwandte Produkte für bessere interne Verlinkung */}
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <RelatedProducts currentProduct={product!} />
       </div>
     </div>
   );

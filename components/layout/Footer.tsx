@@ -102,6 +102,11 @@ export function Footer() {
             <h4 className="text-sm font-medium tracking-wide mb-6">Service</h4>
             <ul className="space-y-3 text-sm mb-6">
               <li>
+                <Link href="/ueber-uns" className="text-gray-300 hover:text-white transition-colors">
+                  Über uns
+                </Link>
+              </li>
+              <li>
                 <Link href="/blog" className="text-gray-300 hover:text-white transition-colors">
                   Blog
                 </Link>

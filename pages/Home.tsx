@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { Home as HomeIcon, ShoppingBag, Heart, Utensils, Shirt, Gamepad2, Monitor, Package, Settings, Fan, Flame, FolderOpen, Lightbulb, Wrench, Grid3X3, Palette, ChefHat, Droplets, Cpu, Beef, Wind, Zap, Waves, Sparkles } from 'lucide-react';
 import { getCategoryImage } from '@/lib/categoryImages';
 import { TrustSlider } from '@/components/common/TrustSlider';
+import { ReviewWidget } from '@/components/common/ReviewWidget';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
 
 interface HomeProps {
@@ -122,6 +123,13 @@ export function Home({ searchQuery = '', preloadedProducts, preloadedCollections
 
       {/* Trust Slider - Editorial Marquee */}
       <TrustSlider />
+      
+      {/* Review Widget Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-6">
+          <ReviewWidget platform="trustpilot" />
+        </div>
+      </section>
 
       {/* Hero-Style Sortimente Section */}
       <section className="py-24 bg-white">

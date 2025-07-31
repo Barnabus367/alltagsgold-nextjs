@@ -36,6 +36,24 @@ const SITE_URL = 'https://www.alltagsgold.ch';
 const PUBLIC_DIR = path.join(__dirname, '../public');
 const CURRENT_DATE = new Date().toISOString().split('T')[0];
 
+// SEO-optimierte Prioritäten und Update-Frequenzen
+const SITEMAP_CONFIG = {
+  pages: {
+    '/': { priority: 1.0, changefreq: 'daily' },
+    '/collections': { priority: 0.9, changefreq: 'daily' },
+    '/products': { priority: 0.8, changefreq: 'daily' },
+    '/ueber-uns': { priority: 0.7, changefreq: 'monthly' },
+    '/blog': { priority: 0.7, changefreq: 'weekly' },
+    '/contact': { priority: 0.6, changefreq: 'monthly' },
+    '/impressum': { priority: 0.3, changefreq: 'yearly' },
+    '/datenschutz': { priority: 0.3, changefreq: 'yearly' },
+    '/agb': { priority: 0.3, changefreq: 'yearly' }
+  },
+  products: { priority: 0.8, changefreq: 'weekly' },
+  collections: { priority: 0.9, changefreq: 'weekly' },
+  blog: { priority: 0.6, changefreq: 'weekly' }
+};
+
 // Environment variables (same as Shopify lib)
 // Try multiple sources: process.env, .env.local, and hardcoded fallbacks
 const SHOPIFY_STORE_DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || 
@@ -234,15 +252,11 @@ function generateIndexHeader() {
  * Get static pages
  */
 function getStaticPages() {
-  const staticPages = [
-    { url: '/', changefreq: 'daily', priority: '1.0' },
-    { url: '/products', changefreq: 'daily', priority: '0.8' },
-    { url: '/collections', changefreq: 'weekly', priority: '0.8' },
-    { url: '/contact', changefreq: 'monthly', priority: '0.6' },
-    { url: '/impressum', changefreq: 'yearly', priority: '0.3' },
-    { url: '/datenschutz', changefreq: 'yearly', priority: '0.3' },
-    { url: '/agb', changefreq: 'yearly', priority: '0.3' }
-  ];
+  const staticPages = Object.entries(SITEMAP_CONFIG.pages).map(([url, config]) => ({
+    url,
+    changefreq: config.changefreq,
+    priority: config.priority.toString()
+  }));
 
   return staticPages.map(page => 
     createUrlEntry(`${SITE_URL}${page.url}`, CURRENT_DATE, page.changefreq, page.priority)
@@ -253,8 +267,9 @@ function getStaticPages() {
  * Get blog pages
  */
 function getBlogPages() {
+  const blogConfig = SITEMAP_CONFIG.blog;
   const blogPages = [
-    { url: '/blog', changefreq: 'daily', priority: '0.7' }
+    { url: '/blog', changefreq: blogConfig.changefreq, priority: blogConfig.priority.toString() }
   ];
 
   return blogPages.map(page => 
@@ -281,8 +296,8 @@ function convertProductsToSitemapEntries(products) {
     return createUrlEntry(
       `${SITE_URL}/products/${product.handle}`,
       lastmod,
-      'weekly',
-      '0.9',
+      SITEMAP_CONFIG.products.changefreq,
+      SITEMAP_CONFIG.products.priority.toString(),
       images
     );
   });
@@ -298,8 +313,8 @@ function convertCollectionsToSitemapEntries(collections) {
     return createUrlEntry(
       `${SITE_URL}/collections/${collection.handle}`,
       lastmod,
-      'weekly',
-      '0.7'
+      SITEMAP_CONFIG.collections.changefreq,
+      SITEMAP_CONFIG.collections.priority.toString()
     );
   });
 }

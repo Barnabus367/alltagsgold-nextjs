@@ -1,3 +1,34 @@
+# Robots.txt für alltagsgold.ch
+# Letzte Aktualisierung: 2025-01-31
+
+# Alle Suchmaschinen
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /checkout
+Disallow: /account
+Disallow: /cart?*
+Disallow: /*.json$
+Crawl-delay: 1
+
+# Google-spezifische Optimierungen
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Crawl-delay: 0
+
+# Bing-spezifische Optimierungen
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Crawl-delay: 1
+
+# Sitemap-Referenzen
 Sitemap: https://www.alltagsgold.ch/sitemap.xml
+Sitemap: https://www.alltagsgold.ch/sitemap-products.xml
+Sitemap: https://www.alltagsgold.ch/sitemap-collections.xml
+Sitemap: https://www.alltagsgold.ch/sitemap-blog.xml
+Sitemap: https://www.alltagsgold.ch/sitemap-pages.xml

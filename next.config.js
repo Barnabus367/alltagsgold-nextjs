@@ -10,33 +10,50 @@ const nextConfig = {
     if (!isServer) {
       config.optimization.splitChunks = {
         chunks: 'all',
+        maxAsyncRequests: 30,
+        maxInitialRequests: 30,
         cacheGroups: {
+          default: false,
+          vendors: false,
+          // React and core dependencies
+          react: {
+            test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
+            name: 'react',
+            chunks: 'all',
+            priority: 40,
+          },
+          // Shopify integration
+          shopify: {
+            test: /[\\/]node_modules[\\/].*shopify.*|\/lib\/shopify/,
+            name: 'shopify',
+            chunks: 'all',
+            priority: 30,
+          },
+          // UI Components (Radix UI)
+          radix: {
+            test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
+            name: 'radix',
+            chunks: 'all',
+            priority: 20,
+          },
+          // All other vendor code
           vendor: {
             test: /[\\/]node_modules[\\/]/,
             name: 'vendors',
             chunks: 'all',
             priority: 10,
           },
-          shopify: {
-            test: /[\\/]node_modules[\\/].*shopify.*/,
-            name: 'shopify',
-            chunks: 'all',
-            priority: 20,
-          },
-          radix: {
-            test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
-            name: 'radix',
-            chunks: 'all',
-            priority: 15,
-          },
-          react: {
-            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-            name: 'react',
-            chunks: 'all',
-            priority: 25,
+          // Common modules shared between pages
+          common: {
+            minChunks: 2,
+            priority: 5,
+            reuseExistingChunk: true,
           },
         },
       };
+      
+      // Enable module concatenation for better tree shaking
+      config.optimization.concatenateModules = true;
     }
     return config;
   },
@@ -88,7 +105,22 @@ const nextConfig = {
   },
   // Experimentelle Features nur für Production
   experimental: {
-    optimizePackageImports: ['@radix-ui/react-icons', '@tanstack/react-query'],
+    optimizePackageImports: [
+      '@radix-ui/react-accordion',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-icons',
+      '@radix-ui/react-label',
+      '@radix-ui/react-popover',
+      '@radix-ui/react-select',
+      '@radix-ui/react-separator',
+      '@radix-ui/react-switch',
+      '@radix-ui/react-tabs',
+      '@radix-ui/react-tooltip',
+      '@tanstack/react-query',
+      'lucide-react',
+      'framer-motion'
+    ],
     // optimizeCss: true, // Temporär deaktiviert wegen Build-Issues
   },
   env: {

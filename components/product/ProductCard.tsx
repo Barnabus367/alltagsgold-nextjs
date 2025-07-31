@@ -8,6 +8,7 @@ import { formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
 import { useCart } from '@/hooks/useCart';
 import { trackAddToCart } from '@/lib/analytics';
 import { PremiumImage } from '@/components/common/PremiumImage';
+import { ProductReviewStars } from '@/components/common/ProductReviewStars';
 import { announceToScreenReader } from '@/lib/accessibility';
 import { useMobileUX } from '@/hooks/useMobileUX';
 
@@ -103,6 +104,13 @@ export function ProductCard({ product }: ProductCardProps) {
           >
             {product.title}
           </h3>
+          
+          {/* Produktbewertungen - wird später mit echten Daten gefüllt */}
+          <ProductReviewStars 
+            rating={0} // Wird später durch echte Bewertungsdaten ersetzt
+            reviewCount={0}
+            size="sm"
+          />
           
           {/* Preis groß und deutlich */}
           <div className="mb-3">

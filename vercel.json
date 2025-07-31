@@ -5,7 +5,50 @@
   "installCommand": "npm install",
   "devCommand": "npm run dev",
   "regions": ["fra1"],
+  "github": {
+    "silent": false,
+    "autoJobCancelation": true
+  },
+  "functions": {
+    "pages/api/*.ts": {
+      "maxDuration": 10
+    }
+  },
   "headers": [
+    {
+      "source": "/robots.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "all"
+        }
+      ]
+    },
+    {
+      "source": "/sitemap*.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "all"
+        }
+      ]
+    },
     {
       "source": "/manifest.json",
       "headers": [

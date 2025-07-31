@@ -3,8 +3,13 @@
 const fs = require('fs');
 const path = require('path');
 
-// Load environment variables from .env.local manually
+// Load environment variables from .env.local manually (only in local development)
 function loadEnvLocal() {
+  // Skip in production/CI environments
+  if (process.env.CI || process.env.VERCEL || process.env.NODE_ENV === 'production') {
+    return;
+  }
+  
   const envPath = path.join(__dirname, '../.env.local');
   try {
     const envContent = fs.readFileSync(envPath, 'utf8');

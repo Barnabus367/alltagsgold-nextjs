@@ -2,6 +2,9 @@
   "name": "alltagsgold-nextjs",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=18.17.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "npm run generate-sitemap && next build",

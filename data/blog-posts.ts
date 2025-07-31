@@ -1,40 +1,8 @@
-export interface BlogPost {
-  id: string;
-  slug: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  date: string;
-  updatedDate?: string;
-  author: string;
-  authorRole: string;
-  category: string;
-  tags: string[];
-  readTime: number;
-  featuredImage: string;
-  featuredImageAlt: string;
-  metaDescription: string;
-  keywords: string[];
-}
+import { BlogPost, AUTHORS } from './blog-types';
 
-export const AUTHORS = {
-  sarah: {
-    name: "Sarah Müller",
-    role: "Lifestyle-Redakteurin"
-  },
-  michael: {
-    name: "Michael Weber",
-    role: "Produktexperte"
-  },
-  lisa: {
-    name: "Lisa Schneider",
-    role: "Interior-Spezialistin"
-  },
-  thomas: {
-    name: "Thomas Fischer",
-    role: "Küchenchef & Blogger"
-  }
-};
+// Re-export types for backward compatibility
+export type { BlogPost } from './blog-types';
+export { AUTHORS } from './blog-types';
 
 export const BLOG_POSTS: BlogPost[] = [
   // Phase 1: Grundlagen-Content

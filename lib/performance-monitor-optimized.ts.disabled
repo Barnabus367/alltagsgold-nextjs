@@ -298,7 +298,7 @@ class PerformanceMonitor {
 
   private reportMetric(metric: ExtendedMetric) {
     // Send to analytics endpoint
-    if (typeof window !== 'undefined' && window.fetch !== undefined) {
+    if (typeof window !== 'undefined' && window.fetch) {
       fetch('/api/analytics/web-vitals', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -316,15 +316,13 @@ class PerformanceMonitor {
   }
 
   private reportCustomMetric(name: string, value: number, details?: any) {
-    const metric: ExtendedMetric = {
-      name: name as any, // Custom metric names are not in the standard Metric type
+    const metric: Partial<ExtendedMetric> & { name: string; value: number; id: string } = {
+      name,
       value,
       id: `${name}-${Date.now()}`,
       delta: value,
-      rating: 'good' as const,
-      details,
-      entries: [],
-      navigationType: 'navigate' // Add required field
+      rating: 'good',
+      details
     };
     
     this.metrics.push(metric);

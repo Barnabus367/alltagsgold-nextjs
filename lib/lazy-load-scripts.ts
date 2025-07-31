@@ -243,9 +243,7 @@ export function initializeLazyScripts(): void {
 // Type declarations
 declare global {
   interface Window {
-    fbq: any;
     Intercom: any;
-    dataLayer: any[];
   }
 }
 

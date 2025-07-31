@@ -87,3 +87,82 @@ export const hasValidPrimaryVariant = (product: any): boolean => {
     isValidVariant(product.variants.edges[0]?.node)
   );
 };
+
+/**
+ * Image Validation
+ */
+export function isValidImage(image: any): boolean {
+  if (!image || typeof image !== 'object') return false;
+  return (
+    typeof image.url === 'string' &&
+    image.url.length > 0 &&
+    (image.url.startsWith('http://') || image.url.startsWith('https://'))
+  );
+}
+
+/**
+ * Product Validation
+ */
+export function isValidProduct(product: any): boolean {
+  if (!product || typeof product !== 'object') return false;
+  return (
+    typeof product.id === 'string' &&
+    typeof product.title === 'string' &&
+    typeof product.handle === 'string' &&
+    hasValidPrimaryVariant(product)
+  );
+}
+
+/**
+ * Collection Validation
+ */
+export function isValidCollection(collection: any): boolean {
+  if (!collection || typeof collection !== 'object') return false;
+  return (
+    typeof collection.id === 'string' &&
+    typeof collection.title === 'string' &&
+    typeof collection.handle === 'string'
+  );
+}
+
+/**
+ * Sanitize Product - filters out invalid data
+ */
+export function sanitizeProduct(product: any): any | null {
+  if (!isValidProduct(product)) return null;
+  
+  // Filter invalid images
+  if (product.images && product.images.edges) {
+    product.images.edges = product.images.edges.filter((edge: any) => 
+      edge && edge.node && isValidImage(edge.node)
+    );
+  }
+  
+  // Filter invalid variants
+  if (product.variants && product.variants.edges) {
+    product.variants.edges = product.variants.edges.filter((edge: any) =>
+      edge && edge.node && isValidVariant(edge.node)
+    );
+  }
+  
+  // Return null if no valid variants remain
+  if (!hasValidPrimaryVariant(product)) {
+    return null;
+  }
+  
+  return product;
+}
+
+/**
+ * Sanitize Collection
+ */
+export function sanitizeCollection(collection: any): any | null {
+  if (!isValidCollection(collection)) return null;
+  
+  // Filter invalid images if present
+  if (collection.image && !isValidImage(collection.image)) {
+    collection.image = null;
+  }
+  
+  return collection;
+}

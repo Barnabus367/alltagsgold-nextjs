@@ -9,7 +9,7 @@ import { Layout } from '@/components/layout/Layout';
 import { trackPageView } from '@/lib/analytics';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateBlogListSEO } from '@/lib/seo';
-import type { BlogPost } from '@/data/blog-posts';
+import type { BlogPost } from '@/data/blog-types';
 
 export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);

@@ -30,12 +30,12 @@ export function RelatedProducts({ currentProduct, maxProducts = 4 }: RelatedProd
   const currentType = currentProduct.productType?.toLowerCase() || '';
   
   const relatedProducts = productsData.products
-    .filter(p => {
+    .filter((p: any) => {
       // Nicht das aktuelle Produkt
       if (p.id === currentProduct.id) return false;
       
       // Gleiche Kollektion?
-      const hasSharedCollection = p.collections?.edges?.some(e => 
+      const hasSharedCollection = p.collections?.edges?.some((e: any) => 
         currentCollections.includes(e.node.id)
       );
       
@@ -50,7 +50,7 @@ export function RelatedProducts({ currentProduct, maxProducts = 4 }: RelatedProd
   // Wenn nicht genug verwandte Produkte, fülle mit anderen auf
   if (relatedProducts.length < maxProducts) {
     const additionalProducts = productsData.products
-      .filter(p => p.id !== currentProduct.id && !relatedProducts.includes(p))
+      .filter((p: any) => p.id !== currentProduct.id && !relatedProducts.includes(p))
       .slice(0, maxProducts - relatedProducts.length);
     
     relatedProducts.push(...additionalProducts);
@@ -83,7 +83,7 @@ export function RelatedProducts({ currentProduct, maxProducts = 4 }: RelatedProd
       </div>
       
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-        {relatedProducts.map((product) => (
+        {relatedProducts.map((product: any) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>

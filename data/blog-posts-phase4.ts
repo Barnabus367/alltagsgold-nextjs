@@ -1,4 +1,4 @@
-import { BlogPost, AUTHORS } from './blog-posts';
+import { BlogPost, AUTHORS } from './blog-types';
 
 export const BLOG_POSTS_PHASE4: BlogPost[] = [
   // Phase 4: Aktuelle Themen (6 Artikel)

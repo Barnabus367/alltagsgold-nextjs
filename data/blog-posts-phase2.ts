@@ -1,4 +1,4 @@
-import { BlogPost, AUTHORS } from './blog-posts';
+import { BlogPost, AUTHORS } from './blog-types';
 
 export const BLOG_POSTS_PHASE2: BlogPost[] = [
   // Phase 2: Saisonaler Content

@@ -111,20 +111,21 @@ function sanitizeDescription(text: string, maxLength: number = 150): string {
  */
 function createProductDescription(productDescription: string, productTitle: string): string {
   if (!productDescription) {
-    return `${productTitle}. ${SEO_TEMPLATES.productDescriptionSuffix}`;
+    return SEO_TEMPLATES.productDescriptionTemplate(productTitle);
   }
   
   const cleanDesc = sanitizeDescription(productDescription, 100); // Platz für Suffix lassen
-  const suffixLength = SEO_TEMPLATES.productDescriptionSuffix.length + 2; // +2 für ". "
+  const fallbackSuffix = " ✓ Schneller CH-Versand ✓ Kein Dropshipping ✓ 30 Tage Rückgabe";
+  const suffixLength = fallbackSuffix.length + 2; // +2 für ". "
   
   if ((cleanDesc.length + suffixLength) <= 150) {
-    return `${cleanDesc}. ${SEO_TEMPLATES.productDescriptionSuffix}`;
+    return `${cleanDesc}. ${fallbackSuffix}`;
   }
   
   // Kürze Description um Platz für Suffix zu schaffen
   const maxDescLength = 150 - suffixLength;
   const shortenedDesc = sanitizeDescription(productDescription, maxDescLength);
-  return `${shortenedDesc}. ${SEO_TEMPLATES.productDescriptionSuffix}`;
+  return `${shortenedDesc}. ${fallbackSuffix}`;
 }
 
 /**

@@ -329,14 +329,12 @@ export function generateOrganizationStructuredData(): OrganizationStructuredData
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'CH',
-      addressLocality: 'Zürich',
-      addressRegion: 'ZH'
+      addressLocality: 'Zürich'
     },
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'Customer Service',
-      availableLanguage: ['German', 'French', 'Italian', 'English'],
-      email: 'info@alltagsgold.ch'
+      availableLanguage: ['German', 'French', 'Italian', 'English']
     },
     sameAs: [
       'https://www.instagram.com/alltagsgold.ch/',

@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Layout } from '@/components/layout/Layout';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateBlogPostSEO } from '@/lib/seo';
-import { getBlogPostBySlug, getAllBlogPosts, type BlogPost } from '@/data/blog-posts';
+import { getBlogPostBySlug, getAllBlogPosts } from '@/data/blog-posts';
+import type { BlogPost } from '@/data/blog-types';
 import { trackPageView } from '@/lib/analytics';
 import { useEffect } from 'react';
 
@@ -176,7 +177,7 @@ export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) 
                         {children}
                       </blockquote>
                     ),
-                    code: ({inline, children}) => 
+                    code: ({inline, children}: any) => 
                       inline ? (
                         <code className="bg-gray-100 px-2 py-1 rounded text-sm">{children}</code>
                       ) : (
@@ -184,9 +185,9 @@ export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) 
                           <code>{children}</code>
                         </pre>
                       ),
-                    strong: ({children}) => <strong className="font-semibold text-gray-900">{children}</strong>,
-                    em: ({children}) => <em className="italic">{children}</em>,
-                    a: ({href, children}) => (
+                    strong: ({children}: any) => <strong className="font-semibold text-gray-900">{children}</strong>,
+                    em: ({children}: any) => <em className="italic">{children}</em>,
+                    a: ({href, children}: any) => (
                       <Link href={href || '#'} className="text-amber-600 hover:text-amber-700 underline">
                         {children}
                       </Link>

@@ -96,7 +96,11 @@ describe('Type Guards', () => {
       tags: [],
       vendor: 'Vendor',
       productType: 'Type',
-      metafields: []
+      options: [],
+      availableForSale: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      seo: {}
     }
 
     it('returns valid products unchanged', () => {

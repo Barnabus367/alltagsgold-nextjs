@@ -35,10 +35,9 @@ export default function App({ Component, pageProps }: AppProps) {
   // Performance Optimizations Hook
   useTouchOptimization();
   
-  // Mobile Performance Monitor nur wenn Debug aktiviert
-  if (isDebugEnabled('enablePerformanceMonitoring')) {
-    useMobilePerformanceMonitor();
-  }
+  // Mobile Performance Monitor - Hook wird immer aufgerufen, aber intern bedingt ausgeführt
+  const debugEnabled = isDebugEnabled('enablePerformanceMonitoring');
+  useMobilePerformanceMonitor(debugEnabled);
   
   // Track initialization to prevent repeated calls
   const isInitialized = useRef(false);

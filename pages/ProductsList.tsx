@@ -194,7 +194,7 @@ export function Products({ preloadedProducts }: ProductsProps) {
               <Button 
                 onClick={() => {
                   setSearchQuery('');
-                  setSelectedCollection('all');
+                  setFilteredByFilterBar([]);
                 }}
                 variant="outline"
                 className="border-black text-black hover:bg-black hover:text-white rounded-none"

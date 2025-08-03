@@ -49,8 +49,8 @@ export function usePremiumScrollEffects() {
       
       // Floating Product Effect - Sinusförmige Bewegung
       const floatPhase = scrollY * 0.002; // Langsame Phase
-      const floatY = Math.sin(floatPhase) * 15; // Max 15px Bewegung
-      const floatRotation = Math.sin(floatPhase * 0.5) * 2; // Max 2° Rotation
+      const floatY = Math.sin(floatPhase) * 10; // Max 10px Bewegung (reduziert)
+      const floatRotation = Math.sin(floatPhase * 0.5) * 1; // Max 1° Rotation (reduziert)
       
       // Shadow intensity basierend auf Float-Position
       const shadowIntensity = 0.2 + (Math.abs(floatY) / 15) * 0.3;
@@ -59,7 +59,7 @@ export function usePremiumScrollEffects() {
       const focusStart = windowHeight * 0.2;
       const focusProgress = Math.max(0, Math.min(1, (scrollY - focusStart) / windowHeight));
       const backgroundBlur = focusProgress * 4; // Max 4px blur
-      const productScale = 1 + (focusProgress * 0.05); // Max 5% zoom
+      const productScale = 1 + (focusProgress * 0.02); // Max 2% zoom (reduziert von 5%)
       const vignetteOpacity = focusProgress * 0.3; // Max 30% vignette
       
       // Glass Morphism für Info-Boxen

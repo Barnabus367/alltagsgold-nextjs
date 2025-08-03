@@ -704,9 +704,12 @@
 /* Premium Image Container */
 .premium-image-container {
   position: relative;
-  overflow: visible;
+  overflow: hidden;
   transform-style: preserve-3d;
   perspective: 1000px;
+  /* Padding to prevent clipping during transforms */
+  padding: 10px;
+  margin: -10px;
 }
 
 .premium-image-wrapper {

@@ -550,7 +550,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
           {/* Links: Produktbild / Galerie */}
           <div className="space-y-6">
             {/* Main Image with Premium Effects */}
-            <div className="premium-image-container aspect-square overflow-hidden bg-gray-50 rounded-lg">
+            <div className="premium-image-container aspect-square bg-gray-50 rounded-lg">
               <div className="premium-glow active" />
               <div 
                 className="premium-image-wrapper floating-product"

@@ -200,7 +200,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       primary: images[0] || null,
       hasMultiple: images.length > 1
     };
-  }, [safeProductData.images, selectedImageIndex, safeProductData.handle]);
+  }, [safeProductData.images, selectedImageIndex]);
 
   // Memoized pricing with safe access
   const safePricing = useMemo(() => {
@@ -340,6 +340,37 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     };
   }, [safeProductData, safeImageData.primary, optimizedContent, safePricing, safeVariantData]);
 
+  // Extract tech details from content - MUST be before early returns
+  const techDetails = useMemo(() => {
+    if (optimizedContent.type === 'native' && optimizedContent.html.includes('Technische Details')) {
+      const techMatch = optimizedContent.html.match(/<h[1-6][^>]*>.*?Technische Details.*?<\/h[1-6]>([\s\S]*?)(?=<h[1-6]|$)/gi);
+      if (techMatch) {
+        const techHtml = techMatch[0].replace(/<h[1-6][^>]*>.*?Technische Details.*?<\/h[1-6]>/gi, '');
+        const listItems = techHtml.match(/<li[^>]*>(.*?)<\/li>/gi) || [];
+        return listItems.map(item => {
+          const text = item.replace(/<[^>]*>/g, '').trim();
+          const [label, ...valueParts] = text.split(':');
+          return {
+            label: label?.trim() || text,
+            value: valueParts.join(':').trim() || ''
+          };
+        });
+      }
+    } else if (optimizedContent.type === 'legacy' && optimizedContent.sections) {
+      const techSection = optimizedContent.sections.find((s: any) => s.title.includes('Technische Details'));
+      if (techSection && Array.isArray(techSection.content)) {
+        return techSection.content.map((item: string) => {
+          const [label, ...valueParts] = item.split(':');
+          return {
+            label: label?.trim() || item,
+            value: valueParts.join(':').trim() || ''
+          };
+        });
+      }
+    }
+    return [];
+  }, [optimizedContent]);
+
   // Hydration fix
   useEffect(() => {
     setIsHydrated(true);
@@ -454,37 +485,6 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   const adjustQuantity = (delta: number) => {
     setQuantity(prev => Math.max(1, prev + delta));
   };
-
-  // Extract tech details from content
-  const techDetails = useMemo(() => {
-    if (optimizedContent.type === 'native' && optimizedContent.html.includes('Technische Details')) {
-      const techMatch = optimizedContent.html.match(/<h[1-6][^>]*>.*?Technische Details.*?<\/h[1-6]>([\s\S]*?)(?=<h[1-6]|$)/gi);
-      if (techMatch) {
-        const techHtml = techMatch[0].replace(/<h[1-6][^>]*>.*?Technische Details.*?<\/h[1-6]>/gi, '');
-        const listItems = techHtml.match(/<li[^>]*>(.*?)<\/li>/gi) || [];
-        return listItems.map(item => {
-          const text = item.replace(/<[^>]*>/g, '').trim();
-          const [label, ...valueParts] = text.split(':');
-          return {
-            label: label?.trim() || text,
-            value: valueParts.join(':').trim() || ''
-          };
-        });
-      }
-    } else if (optimizedContent.type === 'legacy' && optimizedContent.sections) {
-      const techSection = optimizedContent.sections.find((s: any) => s.title.includes('Technische Details'));
-      if (techSection && Array.isArray(techSection.content)) {
-        return techSection.content.map((item: string) => {
-          const [label, ...valueParts] = item.split(':');
-          return {
-            label: label?.trim() || item,
-            value: valueParts.join(':').trim() || ''
-          };
-        });
-      }
-    }
-    return [];
-  }, [optimizedContent]);
 
   return (
     <div className="product-page-wrapper min-h-screen">

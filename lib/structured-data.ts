@@ -421,6 +421,38 @@ export function generateBreadcrumbStructuredData(items: Array<{ name: string; ur
 }
 
 /**
+ * Generiert Collection List Schema für Kategorieseiten
+ */
+export function generateCollectionStructuredData(collection: ShopifyCollection): any {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: collection.title,
+    description: collection.description || `${collection.title} - Premium Produkte bei AlltagsGold`,
+    url: `${SITE_URL}/collections/${collection.handle}`,
+    image: collection.image?.url,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'AlltagsGold',
+      url: SITE_URL
+    },
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: collection.products?.edges?.length || 0,
+      itemListElement: collection.products?.edges?.map((edge, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        item: {
+          '@type': 'Product',
+          name: edge.node.title,
+          url: `${SITE_URL}/products/${edge.node.handle}`
+        }
+      })) || []
+    }
+  };
+}
+
+/**
  * Hilfsfunktion: JSON-LD Script Tag generieren
  */
 export function generateStructuredDataScript(data: any): string {

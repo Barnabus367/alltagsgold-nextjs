@@ -12,6 +12,8 @@ import { getBlogPostBySlug, getAllBlogPosts } from '@/data/blog-posts';
 import type { BlogPost } from '@/data/blog-types';
 import { trackPageView } from '@/lib/analytics';
 import { useEffect } from 'react';
+import { RelatedProducts as BlogRelatedProducts } from '@/components/blog/RelatedProducts';
+import { useProducts } from '@/hooks/useShopify';
 
 interface BlogPostPageProps {
   post: BlogPost;
@@ -20,6 +22,7 @@ interface BlogPostPageProps {
 
 export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) {
   const router = useRouter();
+  const { data: products = [] } = useProducts();
 
   useEffect(() => {
     if (post) {
@@ -229,6 +232,13 @@ export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) 
                   ))}
                 </div>
               </div>
+              
+              {/* Related Products */}
+              <BlogRelatedProducts 
+                category={post.category}
+                products={products}
+                maxProducts={4}
+              />
               
               {/* CTA Section */}
               <div className="mt-12 p-8 bg-gradient-to-r from-amber-50 to-amber-100 rounded-lg text-center">

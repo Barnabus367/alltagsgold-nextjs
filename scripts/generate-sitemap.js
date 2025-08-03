@@ -269,13 +269,46 @@ function getStaticPages() {
 }
 
 /**
- * Get blog pages
+ * Get blog pages including all blog posts
  */
 function getBlogPages() {
+  // Import blog posts data
+  let blogPosts = [];
+  try {
+    // Import all blog post data
+    const blogData = require('../data/blog-posts.js');
+    const phase2 = require('../data/blog-posts-phase2.js');
+    const phase3 = require('../data/blog-posts-phase3.js');
+    const phase4 = require('../data/blog-posts-phase4.js');
+    
+    // Combine all blog posts
+    blogPosts = [
+      ...(blogData.BLOG_POSTS || []),
+      ...(phase2.default || []),
+      ...(phase3.default || []),
+      ...(phase4.default || [])
+    ];
+    
+    console.log(`✅ Found ${blogPosts.length} blog posts`);
+  } catch (error) {
+    console.warn('⚠️  Could not load blog posts:', error.message);
+  }
+
   const blogConfig = SITEMAP_CONFIG.blog;
   const blogPages = [
     { url: '/blog', changefreq: blogConfig.changefreq, priority: blogConfig.priority.toString() }
   ];
+  
+  // Add all blog post URLs
+  blogPosts.forEach(post => {
+    if (post.slug) {
+      blogPages.push({
+        url: `/blog/${post.slug}`,
+        changefreq: 'monthly',
+        priority: '0.7'
+      });
+    }
+  });
 
   return blogPages.map(page => 
     createUrlEntry(`${SITE_URL}${page.url}`, CURRENT_DATE, page.changefreq, page.priority)

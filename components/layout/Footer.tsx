@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useCollections } from '@/hooks/useShopify';
 import { sendEmail, validateEmail } from '@/lib/email';
 import { PaymentMethods } from '@/components/common/PaymentMethods';
+import { InternalLinking } from '@/components/seo/InternalLinking';
 
 export function Footer() {
   const { data: collections = [] } = useCollections();

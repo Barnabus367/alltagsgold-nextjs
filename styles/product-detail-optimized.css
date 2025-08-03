@@ -1,0 +1,248 @@
+/* 
+ * Optimierte Product Detail Styles
+ * Fokus: Seriosität, Eleganz, Performance
+ */
+
+/* ===== 1. REFINED COLOR SYSTEM ===== */
+:root {
+  /* Basis Farben bleiben - sie sind gut! */
+  --product-bg-warm: #FAF8F5;
+  --product-bg-section: #F5F0E8;
+  --product-bg-info: #F9F7F4;
+  --product-accent: #8B7355;
+  --product-text-primary: #2C2825;
+  --product-text-secondary: #5A524A;
+  
+  /* Neue: Subtile Akzente */
+  --product-hover-accent: #9C8468;
+  --product-border-soft: rgba(139, 115, 85, 0.15);
+  --product-shadow-soft: rgba(44, 40, 37, 0.06);
+}
+
+/* ===== 2. REFINED ANIMATIONS ===== */
+
+/* Produktbild: Kein Float, nur Hover-Zoom */
+.premium-image-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: var(--product-bg-section);
+  /* Entfernt: transform-style, perspective */
+}
+
+.premium-image-wrapper {
+  position: relative;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Entfernt: will-change, floating animations */
+}
+
+/* Dezenter Hover-Zoom statt Float */
+.premium-image-container:hover .premium-image-wrapper {
+  transform: scale(1.02);
+}
+
+/* Glow nur bei Hover, sehr subtil */
+.premium-glow {
+  position: absolute;
+  inset: -1px;
+  background: radial-gradient(
+    circle at center,
+    transparent 40%,
+    var(--product-border-soft) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.premium-image-container:hover .premium-glow {
+  opacity: 1;
+}
+
+/* Schatten: Statisch, keine Animation */
+.product-shadow {
+  box-shadow: 
+    0 2px 8px var(--product-shadow-soft),
+    0 8px 24px var(--product-shadow-soft);
+}
+
+/* ===== 3. REFINED INTERACTIONS ===== */
+
+/* Varianten: Weniger Movement */
+.variant-button {
+  border: 2px solid var(--product-border-soft);
+  transition: all 0.2s ease;
+  /* Entfernt: min-height für cleaner look */
+  padding: 0.75rem 1rem;
+}
+
+.variant-button:hover {
+  border-color: var(--product-accent);
+  background: var(--product-bg-info);
+  /* Reduziert: nur 1px statt 2px */
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px var(--product-shadow-soft);
+}
+
+.variant-button:active {
+  transform: translateY(0);
+}
+
+/* ===== 4. CTA REFINEMENT ===== */
+
+.add-to-cart-button {
+  background: var(--product-text-primary);
+  color: white;
+  padding: 1rem 2rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtiler Shine-Effekt statt Wave */
+.add-to-cart-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.add-to-cart-button:hover {
+  background: var(--product-hover-accent);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--product-shadow-soft);
+}
+
+.add-to-cart-button:hover::before {
+  left: 100%;
+}
+
+.add-to-cart-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px var(--product-shadow-soft);
+}
+
+/* ===== 5. CONTENT SECTIONS REFINEMENT ===== */
+
+/* Sanftere Hintergründe */
+.product-description-section {
+  background: var(--product-bg-info);
+  border: 1px solid var(--product-border-soft);
+  /* Entfernt: Gradient background */
+}
+
+/* Tech Details: Cleaner Look */
+.tech-details-box {
+  background: white;
+  border: 1px solid var(--product-border-soft);
+  box-shadow: 0 1px 3px var(--product-shadow-soft);
+}
+
+.tech-detail-item {
+  transition: background-color 0.15s ease;
+}
+
+.tech-detail-item:hover {
+  background-color: var(--product-bg-warm);
+  /* Entfernt: transform */
+}
+
+/* ===== 6. REVEAL ANIMATIONS - REFINED ===== */
+
+/* Nur einmal beim ersten Erscheinen */
+.reveal-once {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease-out;
+}
+
+.reveal-once.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Keine Stagger-Delays über 0.3s */
+.reveal-stagger > *:nth-child(1) { transition-delay: 0.05s; }
+.reveal-stagger > *:nth-child(2) { transition-delay: 0.1s; }
+.reveal-stagger > *:nth-child(3) { transition-delay: 0.15s; }
+.reveal-stagger > *:nth-child(n+4) { transition-delay: 0.2s; }
+
+/* ===== 7. MOBILE OPTIMIZATIONS ===== */
+
+@media (max-width: 768px) {
+  /* Keine Hover-Effekte auf Touch */
+  @media (hover: none) {
+    .variant-button:hover,
+    .tech-detail-item:hover,
+    .add-to-cart-button:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    
+    /* Touch-Feedback stattdessen */
+    .variant-button:active,
+    .add-to-cart-button:active {
+      background-color: var(--product-bg-section);
+      transform: scale(0.98);
+    }
+  }
+  
+  /* Vereinfachte Animationen */
+  .reveal-once {
+    transform: translateY(10px);
+  }
+  
+  .premium-image-container:hover .premium-image-wrapper {
+    transform: none;
+  }
+}
+
+/* ===== 8. PERFORMANCE GUARDS ===== */
+
+/* Limitiere Animationen auf wichtige Elemente */
+.no-animation {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Lazy Animation Loading */
+[data-animation-ready="false"] * {
+  animation-play-state: paused;
+}
+
+/* ===== 9. ACCESSIBILITY FIRST ===== */
+
+/* Fokus-Stile wichtiger als Hover */
+.variant-button:focus-visible,
+.add-to-cart-button:focus-visible {
+  outline: 2px solid var(--product-accent);
+  outline-offset: 2px;
+}
+
+/* Reduce Motion vollständig respektieren */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+  
+  /* Farb-Feedback statt Bewegung */
+  .variant-button:hover {
+    background-color: var(--product-bg-section);
+    border-color: var(--product-accent);
+  }
+}

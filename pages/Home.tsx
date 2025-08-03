@@ -15,11 +15,13 @@ import { TrustSlider } from '@/components/common/TrustSlider';
 import { ReviewWidget } from '@/components/common/ReviewWidget';
 import { USPSection } from '@/components/common/USPSection';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
+import { BlogTeaser } from '@/components/home/BlogTeaser';
 
 interface HomeProps {
   searchQuery?: string;
   preloadedProducts?: ShopifyProduct[];
   preloadedCollections?: ShopifyCollection[];
+  recentPosts?: any[];
 }
 
 // Thematisch passende Icons für jede Kategorie
@@ -53,7 +55,7 @@ const getCategoryIcon = (collectionHandle: string, collectionTitle: string) => {
   }
 };
 
-export function Home({ searchQuery = '', preloadedProducts, preloadedCollections }: HomeProps) {
+export function Home({ searchQuery = '', preloadedProducts, preloadedCollections, recentPosts = [] }: HomeProps) {
   usePageTitle(formatPageTitle('Home'));
   
   const { data: productsData, isLoading: productsLoading, error: productsError } = useProducts(8, {
@@ -293,6 +295,11 @@ export function Home({ searchQuery = '', preloadedProducts, preloadedCollections
           </div>
         </div>
       </section>
+      
+      {/* Blog Teaser Section */}
+      {recentPosts && recentPosts.length > 0 && (
+        <BlogTeaser posts={recentPosts} />
+      )}
     </div>
   );
 }

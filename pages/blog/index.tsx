@@ -11,23 +11,26 @@ import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateBlogListSEO } from '@/lib/seo';
 import type { BlogPost } from '@/data/blog-types';
 
-export default function BlogPage() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
+interface BlogPageProps {
+  posts: BlogPost[];
+  categories: Array<{ name: string; count: number }>;
+  tags: Array<{ name: string; count: number }>;
+}
+
+export default function BlogPage({ posts: initialPosts, categories: initialCategories, tags: initialTags }: BlogPageProps) {
+  const [posts] = useState<BlogPost[]>(initialPosts);
+  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>(initialPosts);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedTag, setSelectedTag] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 9;
 
-  const categories = getAllCategories();
-  const tags = getAllTags();
+  const categories = initialCategories;
+  const tags = initialTags;
 
   useEffect(() => {
     trackPageView('/blog', 'AlltagsGold Blog');
-    const allPosts = getAllBlogPosts();
-    setPosts(allPosts);
-    setFilteredPosts(allPosts);
   }, []);
 
   useEffect(() => {
@@ -353,7 +356,17 @@ export default function BlogPage() {
 
 // Static props for SEO
 export async function getStaticProps() {
+  // Load all blog posts at build time for SEO
+  const allPosts = getAllBlogPosts();
+  const categories = getAllCategories();
+  const tags = getAllTags();
+  
   return {
-    props: {},
+    props: {
+      posts: allPosts,
+      categories,
+      tags,
+    },
+    revalidate: 60 * 60 * 12, // Revalidate every 12 hours
   };
 }

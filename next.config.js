@@ -161,6 +161,14 @@ const nextConfig = {
             value: 'nosniff',
           },
           {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains',
+          },
+          {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },
@@ -189,6 +197,19 @@ const nextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/(.*\\.(jpg|jpeg|png|gif|webp|svg|ico))',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, s-maxage=31536000',
+          },
+          {
+            key: 'Accept-CH',
+            value: 'DPR, Width, Viewport-Width',
           },
         ],
       },

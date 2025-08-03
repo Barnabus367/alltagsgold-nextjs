@@ -5,6 +5,9 @@ import { Minus, Plus, ShoppingCart, Package, Truck, Shield, Clock, Ruler, Palett
 import { useProduct } from '@/hooks/useShopify';
 import { useCart } from '@/hooks/useCart';
 import { ShopifyVariant, ShopifyProduct } from '@/types/shopify';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { RelatedBlogPosts } from '@/components/product/RelatedBlogPosts';
+import { getAllBlogPosts } from '@/data/blog-posts';
 
 // Feature Flag System
 import { getFeatureFlag } from '@/lib/feature-flags';
@@ -23,8 +26,8 @@ import { formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
 import { useProductNavigationCleanup } from '@/lib/navigation-handler';
 import { useScrollProgress } from '@/hooks/useRevealAnimation';
-import { RevealWrapper } from '@/components/product/RevealWrapper';
-import { usePremiumScrollEffects } from '@/hooks/usePremiumScrollEffects';
+import { RevealOnce } from '@/components/product/RevealOnce';
+import { useSubtleScrollEffects, useRevealOnce } from '@/hooks/useSubtleScrollEffects';
 
 interface ProductDetailProps {
   preloadedProduct?: ShopifyProduct | null;
@@ -367,11 +370,10 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     return [];
   }, [optimizedContent]);
 
-  // Scroll Progress - MUST be before early returns
-  const scrollProgress = useScrollProgress();
+  // Scroll effects are now handled by useSubtleScrollEffects
   
-  // Premium Scroll Effects
-  const premiumEffects = usePremiumScrollEffects();
+  // Subtle Scroll Effects
+  const scrollEffects = useSubtleScrollEffects();
 
   // Hydration fix
   useEffect(() => {
@@ -493,7 +495,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       {/* Scroll Progress Indicator */}
       <div 
         className="scroll-progress" 
-        style={{ '--progress': `${scrollProgress}%` } as React.CSSProperties}
+        style={{ '--progress': `${scrollEffects.scrollProgress}%` } as React.CSSProperties}
       />
       
       <NextSEOHead 
@@ -520,28 +522,20 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       {/* Breadcrumb Navigation */}
       <div className="py-4 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex items-center space-x-2 text-sm text-gray-500">
-            <Link href="/" className="hover:text-black transition-colors">
-              Home
-            </Link>
-            <span>/</span>
-            <Link href="/collections" className="hover:text-black transition-colors">
-              Shop
-            </Link>
-            {safeProductData.collections?.edges && safeProductData.collections.edges.length > 0 && (
-              <>
-                <span>/</span>
-                <Link 
-                  href={`/collections/${safeProductData.collections.edges[0]?.node?.handle || ''}`}
-                  className="hover:text-black transition-colors"
-                >
-                  {safeProductData.collections.edges[0]?.node?.title || 'Kollektion'}
-                </Link>
-              </>
-            )}
-            <span>/</span>
-            <span className="text-gray-900 font-medium">{safeProductData.title}</span>
-          </nav>
+          <Breadcrumbs 
+            items={[
+              { name: 'Home', url: '/' },
+              { name: 'Produkte', url: '/products' },
+              ...(safeProductData.collections?.edges && safeProductData.collections.edges.length > 0
+                ? [{
+                    name: safeProductData.collections.edges[0].node.title,
+                    url: `/collections/${safeProductData.collections.edges[0].node.handle}`
+                  }]
+                : []
+              ),
+              { name: safeProductData.title, url: `/products/${safeProductData.handle}` }
+            ]}
+          />
         </div>
       </div>
 
@@ -549,35 +543,19 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Links: Produktbild / Galerie */}
           <div className="space-y-6">
-            {/* Main Image with Premium Effects */}
-            <div className="premium-image-container aspect-square bg-gray-50 rounded-lg">
-              <div className="premium-glow active" />
-              <div 
-                className="premium-image-wrapper floating-product"
-                style={{
-                  transform: `
-                    translateY(${premiumEffects.floatY}px) 
-                    rotateY(${premiumEffects.floatRotation}deg)
-                    scale(${premiumEffects.productScale})
-                  `
-                }}
-              >
-              <PremiumImage
-                src={safeImageData.current?.url || safeImageData.primary?.url || ''}
-                alt={safeImageData.current?.altText || safeProductData.title}
-                className="w-full h-full object-cover"
-                productTitle={safeProductData.title}
-                productId={safeProductData.id ? safeProductData.id.replace('gid://shopify/Product/', '') : undefined}
-                imageIndex={selectedImageIndex}
-                context="detail"
-              />
-              <div 
-                className="floating-shadow"
-                style={{ 
-                  opacity: premiumEffects.shadowIntensity,
-                  transform: `translateX(-50%) scaleX(${1 + Math.abs(premiumEffects.floatY) / 30})`
-                }}
-              />
+            {/* Main Image with Subtle Effects */}
+            <div className="premium-image-container aspect-square bg-gray-50 rounded-lg product-shadow">
+              <div className="premium-glow" />
+              <div className="premium-image-wrapper">
+                <PremiumImage
+                  src={safeImageData.current?.url || safeImageData.primary?.url || ''}
+                  alt={safeImageData.current?.altText || safeProductData.title}
+                  className="w-full h-full object-cover"
+                  productTitle={safeProductData.title}
+                  productId={safeProductData.id ? safeProductData.id.replace('gid://shopify/Product/', '') : undefined}
+                  imageIndex={selectedImageIndex}
+                  context="detail"
+                />
               </div>
             </div>
             
@@ -668,7 +646,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
           {/* Rechts: Product Info */}
           <div className="product-detail space-y-6">
             {/* Name & Preis - Außerhalb der Sticky Box */}
-            <RevealWrapper animation="fade-left" className="space-y-4">
+            <RevealOnce animation="fade-left" className="space-y-4">
               <h1 className="text-3xl font-bold text-gray-900">{safeProductData.title}</h1>
               
               <ProductReviewStars 
@@ -679,10 +657,10 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               
               <div className="product-price-display">{safePricing.formatted}</div>
               <p className="product-price-info">inkl. MwSt. zzgl. Versandkosten</p>
-            </RevealWrapper>
+            </RevealOnce>
 
             {/* Versand & Service Info - Außerhalb der Sticky Box */}
-            <RevealWrapper animation="fade-left" delay={0.1}>
+            <RevealOnce animation="fade-left" delay={0.1}>
               <div className="bg-gray-50 rounded-lg p-4 space-y-3 hover-lift">
               <div className="flex items-center space-x-3 text-sm text-gray-700">
                 <Truck className="h-5 w-5 text-green-600" />
@@ -697,10 +675,10 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                 <span>2 Jahre Garantie</span>
               </div>
               </div>
-            </RevealWrapper>
+            </RevealOnce>
 
             {/* CTA Section - Nur Varianten und Kaufbutton sticky */}
-            <RevealWrapper animation="fade-up" delay={0.2}>
+            <RevealOnce animation="fade-up" delay={0.2}>
               <div className="product-cta-section">
               {/* Preis in der Sticky Box für Mobile */}
               {isMobile && (
@@ -764,7 +742,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               <button 
                 onClick={handleAddToCart}
                 disabled={!safeVariantData.current?.availableForSale || isAddingToCart}
-                className="add-to-cart-button premium-cta"
+                className="add-to-cart-button"
                 aria-label={safeProductData.title ? `${safeProductData.title} in den Warenkorb legen` : 'Produkt in den Warenkorb legen'}
               >
                 {isAddingToCart ? (
@@ -779,7 +757,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                 )}
               </button>
               </div>
-            </RevealWrapper>
+            </RevealOnce>
 
 
             {/* Produktvorteile - Optimiert für bessere Lesbarkeit */}
@@ -842,6 +820,15 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       {/* Verwandte Produkte */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         <RelatedProducts currentProduct={product!} />
+      </div>
+      
+      {/* Related Blog Posts */}
+      <div className="max-w-7xl mx-auto px-6">
+        <RelatedBlogPosts 
+          productCategories={safeProductData.collections?.edges?.map(e => e.node.handle) || []}
+          allPosts={getAllBlogPosts()}
+          maxPosts={3}
+        />
       </div>
       
       {/* Mobile Sticky Add to Cart - Optional, kann aktiviert werden wenn gewünscht */}

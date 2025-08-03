@@ -638,6 +638,145 @@
   transition: opacity 0.3s ease-out;
 }
 
+/* Premium Scroll Effects */
+.floating-product {
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+}
+
+.floating-shadow {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 20px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, transparent 70%);
+  filter: blur(10px);
+  transition: all 0.3s ease-out;
+  pointer-events: none;
+}
+
+/* Dynamic Focus Background */
+.dynamic-focus-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: -1;
+  transition: filter 0.3s ease-out;
+}
+
+.vignette-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.3) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  z-index: 1;
+}
+
+/* Glass Morphism Effects */
+.glass-morphism {
+  backdrop-filter: blur(var(--glass-blur, 8px));
+  -webkit-backdrop-filter: blur(var(--glass-blur, 8px));
+  background: rgba(255, 255, 255, var(--glass-opacity, 0.1));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.07),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease-out;
+}
+
+.glass-morphism:hover {
+  background: rgba(255, 255, 255, calc(var(--glass-opacity, 0.1) + 0.05));
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+/* Premium Image Container */
+.premium-image-container {
+  position: relative;
+  overflow: visible;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.premium-image-wrapper {
+  position: relative;
+  will-change: transform;
+  transition: transform 0.3s ease-out;
+}
+
+/* Subtle Glow Effect */
+.premium-glow {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  background: radial-gradient(circle at center, rgba(139, 115, 85, 0.1) 0%, transparent 70%);
+  filter: blur(20px);
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+  pointer-events: none;
+}
+
+.premium-glow.active {
+  opacity: 1;
+}
+
+/* Premium Button Effects */
+.premium-cta {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--product-text-primary) 0%, #1a1815 100%);
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease-out;
+}
+
+.premium-cta::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg) translateY(100%);
+  transition: transform 0.6s ease-out;
+}
+
+.premium-cta:hover::before {
+  transform: rotate(45deg) translateY(-100%);
+}
+
+.premium-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Smooth Transitions */
+.smooth-transition {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
   .reveal-element,
@@ -645,10 +784,18 @@
   .reveal-stagger > *,
   .hover-lift,
   .card-3d,
-  .parallax-element {
+  .parallax-element,
+  .floating-product,
+  .glass-morphism,
+  .premium-cta {
     animation: none !important;
     transition: none !important;
     transform: none !important;
     opacity: 1 !important;
+  }
+  
+  .dynamic-focus-bg,
+  .vignette-overlay {
+    display: none !important;
   }
 }

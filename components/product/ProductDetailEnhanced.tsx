@@ -1,10 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Minus, Plus, ShoppingCart, ChevronDown, ChevronUp, Package, Truck, Shield, Clock, Ruler, Palette, Zap, Settings } from '@/lib/icons';
-import { Button } from '@/components/ui/button';
-
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Minus, Plus, ShoppingCart, Package, Truck, Shield, Clock, Ruler, Palette, Zap, Settings } from '@/lib/icons';
 import { useProduct } from '@/hooks/useShopify';
 import { useCart } from '@/hooks/useCart';
 import { ShopifyVariant, ShopifyProduct } from '@/types/shopify';
@@ -13,23 +10,21 @@ import { ShopifyVariant, ShopifyProduct } from '@/types/shopify';
 import { getFeatureFlag } from '@/lib/feature-flags';
 
 // Content Processing Systems
-import { generateNativeContent, getCachedNativeContent, NativeContentResult } from '@/lib/native-descriptions';
+import { getCachedNativeContent, NativeContentResult } from '@/lib/native-descriptions';
 import { generateLegacyContent, LegacyContentResult } from '@/lib/legacy-descriptions';
 
-import { ShopifyError } from '@/components/common/ShopifyError';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateProductSEO } from '@/lib/seo';
 import { trackViewContent, trackAddToCart } from '@/lib/analytics';
 import { PremiumImage } from '@/components/common/PremiumImage';
-import { ProductDescription } from '@/components/product/ProductDescription';
 import { ProductReviewStars } from '@/components/common/ProductReviewStars';
 import { RelatedProducts } from '@/components/product/RelatedProducts';
-import { formatPrice } from '@/lib/shopify';
 import { formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
 import { useProductNavigationCleanup } from '@/lib/navigation-handler';
 import { useScrollProgress } from '@/hooks/useRevealAnimation';
 import { RevealWrapper } from '@/components/product/RevealWrapper';
+import { usePremiumScrollEffects } from '@/hooks/usePremiumScrollEffects';
 
 interface ProductDetailProps {
   preloadedProduct?: ShopifyProduct | null;
@@ -374,6 +369,9 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
 
   // Scroll Progress - MUST be before early returns
   const scrollProgress = useScrollProgress();
+  
+  // Premium Scroll Effects
+  const premiumEffects = usePremiumScrollEffects();
 
   // Hydration fix
   useEffect(() => {
@@ -551,8 +549,19 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Links: Produktbild / Galerie */}
           <div className="space-y-6">
-            {/* Main Image */}
-            <div className="aspect-square overflow-hidden bg-gray-50 rounded-lg">
+            {/* Main Image with Premium Effects */}
+            <div className="premium-image-container aspect-square overflow-hidden bg-gray-50 rounded-lg">
+              <div className="premium-glow active" />
+              <div 
+                className="premium-image-wrapper floating-product"
+                style={{
+                  transform: `
+                    translateY(${premiumEffects.floatY}px) 
+                    rotateY(${premiumEffects.floatRotation}deg)
+                    scale(${premiumEffects.productScale})
+                  `
+                }}
+              >
               <PremiumImage
                 src={safeImageData.current?.url || safeImageData.primary?.url || ''}
                 alt={safeImageData.current?.altText || safeProductData.title}
@@ -562,6 +571,14 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                 imageIndex={selectedImageIndex}
                 context="detail"
               />
+              <div 
+                className="floating-shadow"
+                style={{ 
+                  opacity: premiumEffects.shadowIntensity,
+                  transform: `translateX(-50%) scaleX(${1 + Math.abs(premiumEffects.floatY) / 30})`
+                }}
+              />
+              </div>
             </div>
             
             {/* Thumbnail Images */}
@@ -747,7 +764,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               <button 
                 onClick={handleAddToCart}
                 disabled={!safeVariantData.current?.availableForSale || isAddingToCart}
-                className="add-to-cart-button"
+                className="add-to-cart-button premium-cta"
                 aria-label={safeProductData.title ? `${safeProductData.title} in den Warenkorb legen` : 'Produkt in den Warenkorb legen'}
               >
                 {isAddingToCart ? (

@@ -111,6 +111,7 @@ export {
   Beef,
   Wind,
   Waves,
+  Ruler,
   
   // Social Media Icons
   Facebook,

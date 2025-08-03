@@ -28,6 +28,8 @@ import { formatPrice } from '@/lib/shopify';
 import { formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
 import { useProductNavigationCleanup } from '@/lib/navigation-handler';
+import { useScrollProgress } from '@/hooks/useRevealAnimation';
+import { RevealWrapper } from '@/components/product/RevealWrapper';
 
 interface ProductDetailProps {
   preloadedProduct?: ShopifyProduct | null;
@@ -145,7 +147,6 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   const [selectedVariant, setSelectedVariant] = useState<ShopifyVariant | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   // Memoized safe product data - NO direct product access in render
@@ -486,8 +487,17 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     setQuantity(prev => Math.max(1, prev + delta));
   };
 
+  // Scroll Progress
+  const scrollProgress = useScrollProgress();
+
   return (
     <div className="product-page-wrapper min-h-screen">
+      {/* Scroll Progress Indicator */}
+      <div 
+        className="scroll-progress" 
+        style={{ '--progress': `${scrollProgress}%` } as React.CSSProperties}
+      />
+      
       <NextSEOHead 
         seo={seoData || { 
           title: safeProductData.title, 
@@ -641,7 +651,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
           {/* Rechts: Product Info */}
           <div className="product-detail space-y-6">
             {/* Name & Preis - Außerhalb der Sticky Box */}
-            <div className="space-y-4">
+            <RevealWrapper animation="fade-left" className="space-y-4">
               <h1 className="text-3xl font-bold text-gray-900">{safeProductData.title}</h1>
               
               <ProductReviewStars 
@@ -652,10 +662,11 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               
               <div className="product-price-display">{safePricing.formatted}</div>
               <p className="product-price-info">inkl. MwSt. zzgl. Versandkosten</p>
-            </div>
+            </RevealWrapper>
 
             {/* Versand & Service Info - Außerhalb der Sticky Box */}
-            <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+            <RevealWrapper animation="fade-left" delay={0.1}>
+              <div className="bg-gray-50 rounded-lg p-4 space-y-3 hover-lift">
               <div className="flex items-center space-x-3 text-sm text-gray-700">
                 <Truck className="h-5 w-5 text-green-600" />
                 <span>Kostenloser Versand ab CHF 60</span>
@@ -668,10 +679,12 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                 <Shield className="h-5 w-5 text-purple-600" />
                 <span>2 Jahre Garantie</span>
               </div>
-            </div>
+              </div>
+            </RevealWrapper>
 
             {/* CTA Section - Nur Varianten und Kaufbutton sticky */}
-            <div className="product-cta-section">
+            <RevealWrapper animation="fade-up" delay={0.2}>
+              <div className="product-cta-section">
               {/* Preis in der Sticky Box für Mobile */}
               {isMobile && (
                 <div className="mb-4">
@@ -692,7 +705,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                         <button
                           key={variant.id}
                           onClick={() => handleVariantChange(index)}
-                          className={`variant-button ${safeVariantData.current?.id === variant.id ? 'selected' : ''}`}
+                          className={`variant-button hover-lift ${safeVariantData.current?.id === variant.id ? 'selected' : ''}`}
                         >
                           <div 
                             className={`variant-color-dot ${colorKey === 'wood' ? 'pattern' : ''}`}
@@ -748,7 +761,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
                   </>
                 )}
               </button>
-            </div>
+              </div>
+            </RevealWrapper>
 
 
             {/* Produktvorteile - Optimiert für bessere Lesbarkeit */}

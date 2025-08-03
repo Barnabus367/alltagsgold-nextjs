@@ -372,6 +372,9 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
     return [];
   }, [optimizedContent]);
 
+  // Scroll Progress - MUST be before early returns
+  const scrollProgress = useScrollProgress();
+
   // Hydration fix
   useEffect(() => {
     setIsHydrated(true);
@@ -486,9 +489,6 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
   const adjustQuantity = (delta: number) => {
     setQuantity(prev => Math.max(1, prev + delta));
   };
-
-  // Scroll Progress
-  const scrollProgress = useScrollProgress();
 
   return (
     <div className="product-page-wrapper min-h-screen">

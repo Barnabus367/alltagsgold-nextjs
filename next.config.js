@@ -5,7 +5,7 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   
-  webpack: (config, { dev, isServer }) => {
+  webpack: (config, { isServer }) => {
     // Produktions-optimierte Bundle-Aufteilung
     if (!isServer) {
       config.optimization.splitChunks = {
@@ -102,6 +102,9 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Keine zusätzliche Optimierung wenn bereits von Cloudinary optimiert
     unoptimized: false,
+    // Erlaube data: URLs für SVG-Fallbacks
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
   },
   // Experimentelle Features nur für Production
   experimental: {
@@ -118,7 +121,6 @@ const nextConfig = {
       '@radix-ui/react-tabs',
       '@radix-ui/react-tooltip',
       '@tanstack/react-query',
-      'lucide-react',
       'framer-motion'
     ],
     // optimizeCss: true, // Temporär deaktiviert wegen Build-Issues

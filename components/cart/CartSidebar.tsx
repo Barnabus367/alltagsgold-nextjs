@@ -1,4 +1,4 @@
-import { X, Minus, Plus, Trash2 } from 'lucide-react';
+import { X, Minus, Plus, Trash2 } from '@/lib/icons';
 import Image from 'next/image';
 import { useEffect, useRef, useMemo } from 'react';
 import { Button } from '@/components/ui/button';

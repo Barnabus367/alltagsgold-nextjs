@@ -1,7 +1,7 @@
 // Mobile-optimierte Touch-Targets und Responsive Design
 
 import { useState, useEffect } from 'react';
-import { ChevronDown, Filter, X, Search } from 'lucide-react';
+import { ChevronDown, Filter, X, Search } from '@/lib/icons';
 import { Button } from '@/components/ui/button';
 
 interface MobileFilterBarProps {

@@ -6,7 +6,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
-import { X, Menu, ChevronRight, Home, Package, Heart, User, ShoppingBag } from 'lucide-react';
+import { X, Menu, ChevronRight, Home, Package, Heart, User, ShoppingBag } from '@/lib/icons';
 import { cn } from '@/lib/utils';
 import { useMobileUX } from '@/hooks/useMobileUX';
 import { FocusManager, announceToScreenReader } from '@/lib/accessibility';

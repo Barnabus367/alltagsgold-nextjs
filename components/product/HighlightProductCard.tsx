@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import { Heart } from 'lucide-react';
+import { Heart } from '@/lib/icons';
 import { ShopifyProduct } from '@/types/shopify';
 import { formatPrice } from '@/lib/shopify';
 import { useCart } from '@/hooks/useCart';

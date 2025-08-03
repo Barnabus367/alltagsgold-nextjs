@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useState } from 'react';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
-import { Package, Truck, Users, Heart, MapPin, Clock, CreditCard } from 'lucide-react';
+import { Package, Truck, Users, Heart, MapPin, Clock, CreditCard } from '@/lib/icons';
 import Script from 'next/script';
 
 export default function UeberUns() {

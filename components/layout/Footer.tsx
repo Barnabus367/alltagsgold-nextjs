@@ -1,4 +1,4 @@
-import { Instagram } from 'lucide-react';
+import { Instagram } from '@/lib/icons';
 import { SiTiktok } from 'react-icons/si';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useCollections } from '@/hooks/useShopify';
 import { sendEmail, validateEmail } from '@/lib/email';
+import { PaymentMethods } from '@/components/common/PaymentMethods';
 
 export function Footer() {
   const { data: collections = [] } = useCollections();
@@ -161,7 +162,9 @@ export function Footer() {
           </div>
         </div>
         
-        <div className="border-t border-gray-800 mt-16 pt-8 text-center">
+        <PaymentMethods />
+        
+        <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-sm text-gray-400">
             © 2024 <span className="text-white">alltags</span><span style={{ color: '#c9a74d' }}>gold</span> – Alle Rechte vorbehalten.
           </p>

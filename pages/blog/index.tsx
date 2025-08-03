@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Calendar, Clock, Tag, Search, ChevronRight } from 'lucide-react';
+import { Calendar, Clock, Tag, Search, ChevronRight } from '@/lib/icons';
 import { getAllBlogPosts, getAllCategories, getAllTags } from '@/data/blog-posts';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

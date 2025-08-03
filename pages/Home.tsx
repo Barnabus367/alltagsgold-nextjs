@@ -9,10 +9,11 @@ import { useProducts, useCollections } from '@/hooks/useShopify';
 import { formatPrice } from '@/lib/shopify';
 import { ShopifyProduct, ShopifyCollection } from '@/types/shopify';
 import Link from 'next/link';
-import { Home as HomeIcon, ShoppingBag, Heart, Utensils, Shirt, Gamepad2, Monitor, Package, Settings, Fan, Flame, FolderOpen, Lightbulb, Wrench, Grid3X3, Palette, ChefHat, Droplets, Cpu, Beef, Wind, Zap, Waves, Sparkles } from 'lucide-react';
+import { Home as HomeIcon, ShoppingBag, Heart, Utensils, Shirt, Gamepad2, Monitor, Package, Settings, Fan, Flame, FolderOpen, Lightbulb, Wrench, Grid3X3, Palette, ChefHat, Droplets, Cpu, Beef, Wind, Zap, Waves, Sparkles } from '@/lib/icons';
 import { getCategoryImage } from '@/lib/categoryImages';
 import { TrustSlider } from '@/components/common/TrustSlider';
 import { ReviewWidget } from '@/components/common/ReviewWidget';
+import { USPSection } from '@/components/common/USPSection';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
 
 interface HomeProps {
@@ -120,6 +121,9 @@ export function Home({ searchQuery = '', preloadedProducts, preloadedCollections
           </Link>
         </div>
       </section>
+
+      {/* USP Section - Vertrauenselemente */}
+      <USPSection />
 
       {/* Trust Slider - Editorial Marquee */}
       <TrustSlider />

@@ -3,7 +3,7 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
-import { Download, X, Wifi, WifiOff } from 'lucide-react';
+import { Download, X, Wifi, WifiOff } from '@/lib/icons';
 import { Button } from '@/components/ui/button';
 
 interface BeforeInstallPromptEvent extends Event {

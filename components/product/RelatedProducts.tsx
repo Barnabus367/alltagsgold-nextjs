@@ -2,7 +2,7 @@ import { useProducts } from '@/hooks/useShopify';
 import { ProductCard } from './ProductCard';
 import { ShopifyProduct } from '@/types/shopify';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight } from '@/lib/icons';
 
 interface RelatedProductsProps {
   currentProduct: ShopifyProduct;

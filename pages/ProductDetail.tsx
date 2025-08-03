@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Minus, Plus, ShoppingCart, ChevronDown, ChevronUp } from 'lucide-react';
+import { Minus, Plus, ShoppingCart, ChevronDown, ChevronUp } from '@/lib/icons';
 import { Button } from '@/components/ui/button';
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -24,6 +24,9 @@ import { PremiumImage } from '@/components/common/PremiumImage';
 import { ProductDescription } from '@/components/product/ProductDescription';
 import { ProductReviewStars } from '@/components/common/ProductReviewStars';
 import { RelatedProducts } from '@/components/product/RelatedProducts';
+// import { LocalProductGallery } from '@/components/product/LocalProductGallery';
+// import { AuthenticityBadge } from '@/components/product/AuthenticityBadge';
+// import { PersonalProductDescription } from '@/components/product/PersonalProductDescription';
 import { formatPrice } from '@/lib/shopify';
 import { formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
@@ -685,6 +688,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               
               <div className="product-price">{safePricing.formatted}</div>
             </div>
+
 
             {/* 2. Versand & Service - Direkt unter Preis - CHF 60 korrigiert */}
             <div className="bg-gray-50 rounded-lg p-4 space-y-3">

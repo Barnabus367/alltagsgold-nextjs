@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { ChevronDown, X, Filter, SlidersHorizontal, Tag, Palette, Package } from 'lucide-react';
+import { ChevronDown, X, Filter, SlidersHorizontal, Tag, Palette, Package } from '@/lib/icons';
 import { ShopifyProduct } from '@/types/shopify';
 import { getPriceAmountSafe } from '@/lib/type-guards';
 import { Button } from '@/components/ui/button';

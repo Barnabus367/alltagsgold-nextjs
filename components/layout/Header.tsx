@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { SearchBar } from '@/components/common/SearchBar';
 import { CartButton } from '@/components/cart/CartButton';
-import { Menu, Search } from 'lucide-react';
+import { Menu, Search } from '@/lib/icons';
 import { useCollections } from '@/hooks/useShopify';
 import { useMobileUX } from '@/hooks/useMobileUX';
 import { FocusManager, announceToScreenReader } from '@/lib/accessibility';

@@ -199,3 +199,70 @@ Füge einen Link zur neuen Seite /ueber-uns gut sichtbar in die Hauptnavigation 
 
 
 Quellen und ähnliche Inhalte
+
+
+Fehlermeldungen in der Konsole:
+
+
+index.js:629 Uncaught TypeError: Cannot read properties of undefined (reading 'call')
+    at Object.<anonymous> (webpack.js:706:31)
+    at __webpack_require__ (webpack.js:37:33)
+    at fn (webpack.js:362:21)
+    at __barrel_optimize__?names=Heart!=!./node_modules/lucide-react/dist/esm/lucide-react.js (index.js:83:73)
+    at Module.<anonymous> (webpack.js:706:31)
+    at __webpack_require__ (webpack.js:37:33)
+    at fn (webpack.js:362:21)
+    at eval (HighlightProductCard.tsx:11:99)
+    at ./components/product/HighlightProductCard.tsx (index.js:411:1)
+    at Module.<anonymous> (webpack.js:706:31)
+    at __webpack_require__ (webpack.js:37:33)
+    at fn (webpack.js:362:21)
+    at eval (Home.tsx:10:98)
+    at ./pages/Home.tsx (index.js:631:1)
+    at Module.<anonymous> (webpack.js:706:31)
+    at __webpack_require__ (webpack.js:37:33)
+    at fn (webpack.js:362:21)
+    at eval (index.tsx:10:63)
+    at ./pages/index.tsx (index.js:642:1)
+    at Module.<anonymous> (webpack.js:706:31)
+    at __webpack_require__ (webpack.js:37:33)
+    at fn (webpack.js:362:21)
+    at eval (next-client-pages-loader.js?absolutePagePath=%2FUsers%2Fdavid%2FDesktop%2Falltagsgold-nextjs%2Fpages%2Findex.tsx&page=%2F!:5:16)
+    at eval (route-loader.js:213:51)
+(anonymous) @ webpack.js:706
+__webpack_require__ @ webpack.js:37
+fn @ webpack.js:362
+__barrel_optimize__?names=Heart!=!./node_modules/lucide-react/dist/esm/lucide-react.js @ index.js:83
+(anonymous) @ webpack.js:706
+__webpack_require__ @ webpack.js:37
+fn @ webpack.js:362
+eval @ HighlightProductCard.tsx:11
+./components/product/HighlightProductCard.tsx @ index.js:411
+(anonymous) @ webpack.js:706
+__webpack_require__ @ webpack.js:37
+fn @ webpack.js:362
+eval @ Home.tsx:10
+./pages/Home.tsx @ index.js:631
+(anonymous) @ webpack.js:706
+__webpack_require__ @ webpack.js:37
+fn @ webpack.js:362
+eval @ index.tsx:10
+./pages/index.tsx @ index.js:642
+(anonymous) @ webpack.js:706
+__webpack_require__ @ webpack.js:37
+fn @ webpack.js:362
+eval @ next-client-pages-loader.js?absolutePagePath=%2FUsers%2Fdavid%2FDesktop%2Falltagsgold-nextjs%2Fpages%2Findex.tsx&page=%2F!:5
+eval @ route-loader.js:213
+Promise.then
+onEntrypoint @ route-loader.js:213
+register @ index.js:164
+eval @ next-client-pages-loader.js?absolutePagePath=%2FUsers%2Fdavid%2FDesktop%2Falltagsgold-nextjs%2Fpages%2Findex.tsx&page=%2F!:2
+./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?absolutePagePath=%2FUsers%2Fdavid%2FDesktop%2Falltagsgold-nextjs%2Fpages%2Findex.tsx&page=%2F! @ index.js:246
+(anonymous) @ webpack.js:706
+__webpack_require__ @ webpack.js:37
+__webpack_exec__ @ index.js:648
+(anonymous) @ index.js:649
+(anonymous) @ webpack.js:86
+(anonymous) @ index.js:650
+webpackJsonpCallback @ webpack.js:1291
+(anonymous) @ index.js:9

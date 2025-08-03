@@ -300,13 +300,18 @@ export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) 
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = getAllBlogPosts();
+  console.log(`[Blog Build] Found ${posts.length} blog posts`);
+  
   const paths = posts.map((post) => ({
     params: { slug: post.slug },
   }));
+  
+  // Log some slugs for debugging
+  console.log('[Blog Build] First 5 slugs:', paths.slice(0, 5).map(p => p.params.slug));
 
   return {
     paths,
-    fallback: true,
+    fallback: 'blocking',
   };
 };
 

@@ -65,6 +65,9 @@ export {
   BadgeCheck,
   Lock,
   
+  // Sustainability
+  Recycle,
+  
   // Content
   Image,
   FileText,

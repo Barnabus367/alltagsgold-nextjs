@@ -104,3 +104,96 @@ Quellen und ähnliche Inhalte
 
 
 /Users/david/Downloads/sample-productpage.png
+
+Über uns optimieren:
+Draft „Über uns“ – ohne Gesichter, aber mit Substanz
+(Alle Texte sind Ideen. Optimiere falls notwendig.)
+
+1 | Hero
+Headline:
+
+Schweizer Qualität. Direkt geliefert. Ohne Umwege.
+
+Subline:
+
+Bei alltagsgold findest du nur Produkte, die wir selbst getestet, gelagert und sofort aus der Schweiz versenden.
+
+CTA-Button: Jetzt Sortiment entdecken
+
+2 | Was uns unterscheidet – 4-Säulen-Grid (Icons statt Fotos)
+Kuratiertes Sortiment	CH-Lager	Blitzversand	30 Tage Rückgabe
+Wir wählen jede Neuheit nach Nutzen, Langlebigkeit und Design aus.	Alle Artikel liegen in unserem Lager bei Zürich – kein Drop-Shipping.	Bestellungen bis 14 Uhr gehen noch am selben Tag raus, CO₂-kompensiert mit der Post.	Ohne Wenn & Aber. Unbenutzt zurück – Geld zurück.
+
+3 | Unsere Mission
+„Wir machen alltägliche Dinge zu kleinen Goldstücken, die deinen Tag einfacher oder schöner machen.“
+Dafür setzen wir auf drei einfache Prinzipien: Qualität > Transparenz > lokaler Service.
+
+4 | So arbeiten wir (Timeline-Stil)
+Idee & Auswahl
+
+Markt- und Trend-Scans
+
+Prototyp-Tests im eigenen Alltag
+
+Qualitäts-Check
+
+Prüfkatalog (Material, Verarbeitung, Sicherheit)
+
+Nur 1 von 5 Kandidaten schafft es ins Sortiment
+
+Lager & Fulfillment
+
+1’200 m² Lagerfläche in der Schweiz
+
+Barcode-Kontrolle + plastikfreies Verpackungsmaterial
+
+Kundensupport
+
+E-Mail-Antworten < 24 h
+
+Reparatur- oder Ersatzservice direkt aus Zürich
+
+5 | Zahlen & Fakten (Stat-Cards)
+> 25 000 Bestellungen seit 2021
+
+98 % positive Bewertungen*
+
+< 1 % Retourenquote
+*Quelle: interne Kundenzufriedenheits-Umfrage, 2023
+
+6 | Nachhaltigkeit in Kürze
+CO₂-kompensierter Versand (Swiss Climate Zertifikat)
+
+Recycling- und Upcycling-Programm für Elektroartikel
+
+Partnerschaften mit Schweizer Sozialwerkstätten für Verpackung
+
+7 | Servicegebiet & Kontakt (Accordion)
+Versandgebiet: ganze Schweiz + Liechtenstein
+
+Abholungen: Mo–Fr 08–18 Uhr (nach Absprache)
+
+Kontakt: support@alltagsgold.ch | +41 44 000 00 00
+
+(Im Accordion lassen sich Details zeigen/ausblenden, ohne die Seite zu überladen.)
+
+8 | Schluss-CTA
+Bereit, den Unterschied zu erleben?
+Entdecke unsere aktuellen Favoriten – alle auf Lager und in 24-48 h bei dir.
+Button: Zu den Produkten
+
+Warum funktioniert das, ohne euch öffentlich zu zeigen?
+Vertrauen über Prozesse, nicht Personen.
+Klare Qualitäts- und Service-Statements ersetzen Teamfotos.
+
+Fakten schlagen Storytelling-Floskeln.
+Kennzahlen, Lieferversprechen, Rückgaberecht – das sind messbare Belege.
+
+Icons statt Porträts.
+Schafft visuelle Hierarchie, ohne Privatsphäre aufzugeben.
+
+Accordion & Cards halten die Seite kompakt.
+Schnell scannbar, Mobile-First, SEO-freundlich.
+
+Tonfall:
+Präzise, keine Buzzwords, kein Pathos – wirkt seriös und bodenständig.

@@ -640,21 +640,44 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
 
           {/* Rechts: Product Info */}
           <div className="product-detail space-y-6">
-            {/* CTA Section - Sticky on Desktop */}
-            <div className="product-cta-section">
-              {/* Name & Preis */}
-              <div className="space-y-4 mb-6">
-                <h1 className="text-3xl font-bold text-gray-900">{safeProductData.title}</h1>
-                
-                <ProductReviewStars 
-                  rating={0}
-                  reviewCount={0}
-                  size="md"
-                />
-                
-                <div className="product-price-display">{safePricing.formatted}</div>
-                <p className="product-price-info">inkl. MwSt. zzgl. Versandkosten</p>
+            {/* Name & Preis - Außerhalb der Sticky Box */}
+            <div className="space-y-4">
+              <h1 className="text-3xl font-bold text-gray-900">{safeProductData.title}</h1>
+              
+              <ProductReviewStars 
+                rating={0}
+                reviewCount={0}
+                size="md"
+              />
+              
+              <div className="product-price-display">{safePricing.formatted}</div>
+              <p className="product-price-info">inkl. MwSt. zzgl. Versandkosten</p>
+            </div>
+
+            {/* Versand & Service Info - Außerhalb der Sticky Box */}
+            <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+              <div className="flex items-center space-x-3 text-sm text-gray-700">
+                <Truck className="h-5 w-5 text-green-600" />
+                <span>Kostenloser Versand ab CHF 60</span>
               </div>
+              <div className="flex items-center space-x-3 text-sm text-gray-700">
+                <Clock className="h-5 w-5 text-blue-600" />
+                <span>30 Tage Rückgaberecht</span>
+              </div>
+              <div className="flex items-center space-x-3 text-sm text-gray-700">
+                <Shield className="h-5 w-5 text-purple-600" />
+                <span>2 Jahre Garantie</span>
+              </div>
+            </div>
+
+            {/* CTA Section - Nur Varianten und Kaufbutton sticky */}
+            <div className="product-cta-section">
+              {/* Preis in der Sticky Box für Mobile */}
+              {isMobile && (
+                <div className="mb-4">
+                  <div className="product-price-display">{safePricing.formatted}</div>
+                </div>
+              )}
 
               {/* Varianten-Auswahl mit visuellen Elementen */}
               {safeVariantData.hasMultiple && (
@@ -727,29 +750,14 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               </button>
             </div>
 
-            {/* Versand & Service Info */}
-            <div className="bg-gray-50 rounded-lg p-4 space-y-3">
-              <div className="flex items-center space-x-3 text-sm text-gray-700">
-                <Truck className="h-5 w-5 text-green-600" />
-                <span>Kostenloser Versand ab CHF 60</span>
-              </div>
-              <div className="flex items-center space-x-3 text-sm text-gray-700">
-                <Clock className="h-5 w-5 text-blue-600" />
-                <span>30 Tage Rückgaberecht</span>
-              </div>
-              <div className="flex items-center space-x-3 text-sm text-gray-700">
-                <Shield className="h-5 w-5 text-purple-600" />
-                <span>2 Jahre Garantie</span>
-              </div>
-            </div>
 
-            {/* Produktvorteile */}
+            {/* Produktvorteile - Optimiert für bessere Lesbarkeit */}
             {optimizedContent.type === 'native' ? (
               optimizedContent.html.includes('Produktvorteile') && (
-                <div className="space-y-4">
-                  <h3 className="product-section-heading">Produktvorteile</h3>
+                <div className="product-benefits-container">
+                  <h3>Produktvorteile</h3>
                   <div 
-                    className="prose prose-lg max-w-none text-gray-800"
+                    className="prose prose-lg max-w-none"
                     dangerouslySetInnerHTML={{ 
                       __html: optimizedContent.html
                         .match(/<h[1-6][^>]*>.*?Produktvorteile.*?<\/h[1-6]>([\s\S]*?)(?=<h[1-6]|$)/gi)?.[0]
@@ -760,16 +768,16 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
               )
             ) : (
               optimizedContent.benefits && optimizedContent.benefits.length > 0 && (
-                <div className="space-y-4">
-                  <h3 className="product-section-heading">Produktvorteile</h3>
-                  <ul className="space-y-3">
+                <div className="product-benefits-container">
+                  <h3>Produktvorteile</h3>
+                  <div className="product-benefits-list">
                     {optimizedContent.benefits.map((benefit: string, index: number) => (
-                      <li key={index} className="flex items-start space-x-3">
-                        <span className="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0"></span>
-                        <span className="product-bullet-text">{benefit}</span>
-                      </li>
+                      <div key={index} className="product-benefit-item">
+                        <span className="product-benefit-bullet"></span>
+                        <span className="product-benefit-text">{benefit}</span>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               )
             )}
@@ -804,6 +812,29 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       <div className="max-w-7xl mx-auto px-6 py-12">
         <RelatedProducts currentProduct={product!} />
       </div>
+      
+      {/* Mobile Sticky Add to Cart - Optional, kann aktiviert werden wenn gewünscht */}
+      {isMobile && false && ( // Setze auf true um zu aktivieren
+        <div className="mobile-sticky-cta">
+          <div className="mobile-sticky-price">{safePricing.formatted}</div>
+          <button 
+            onClick={handleAddToCart}
+            disabled={!safeVariantData.current?.availableForSale || isAddingToCart}
+            className="add-to-cart-button"
+          >
+            {isAddingToCart ? (
+              'Wird hinzugefügt...'
+            ) : !safeVariantData.current?.availableForSale ? (
+              'Nicht verfügbar'
+            ) : (
+              <>
+                <ShoppingCart className="h-5 w-5" />
+                In den Warenkorb
+              </>
+            )}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -200,9 +200,18 @@
   border-radius: 1rem;
   padding: 2rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  position: sticky;
-  top: 5rem;
-  z-index: 10;
+  /* Sticky nur auf großen Bildschirmen mit genug Platz */
+  position: static;
+  margin-bottom: 2rem;
+}
+
+/* Sticky CTA nur bei ausreichender Viewport-Höhe */
+@media (min-width: 1024px) and (min-height: 900px) {
+  .product-cta-section {
+    position: sticky;
+    top: 5rem;
+    z-index: 10;
+  }
 }
 
 .product-price-display {
@@ -323,16 +332,90 @@
   transform: none;
 }
 
+/* Produktvorteile besser hervorheben */
+.product-benefits-container {
+  background-color: var(--product-bg-info);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(139, 115, 85, 0.1);
+}
+
+.product-benefits-container h3 {
+  color: var(--product-text-primary);
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.product-benefits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.product-benefit-item {
+  display: flex;
+  align-items: start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.product-benefit-item:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: translateX(4px);
+}
+
+.product-benefit-bullet {
+  width: 8px;
+  height: 8px;
+  background-color: var(--product-accent);
+  border-radius: 50%;
+  margin-top: 0.5rem;
+  flex-shrink: 0;
+}
+
+.product-benefit-text {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--product-text-primary);
+}
+
 /* Mobile Optimierungen */
 @media (max-width: 768px) {
   .product-cta-section {
+    /* Auf Mobile nicht fixed, sondern am Ende der Seite */
+    position: static;
+    margin-top: 2rem;
+    border-radius: 1rem;
+    padding: 1.5rem;
+  }
+  
+  /* Optional: Sticky Add-to-Cart Button nur auf Mobile */
+  .mobile-sticky-cta {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    border-radius: 1rem 1rem 0 0;
-    padding: 1.5rem;
+    background: white;
+    padding: 1rem;
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .mobile-sticky-cta .add-to-cart-button {
+    flex: 1;
+  }
+  
+  .mobile-sticky-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--product-text-primary);
   }
   
   .variant-selector {

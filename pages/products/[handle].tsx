@@ -1,6 +1,7 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
-import { ProductDetail } from '../ProductDetail';
+// import { ProductDetail } from '../ProductDetail';
+import { ProductDetail } from '../../components/product/ProductDetailEnhanced';
 import { Layout } from '../../components/layout/Layout';
 import { NextSEOHead } from '../../components/seo/NextSEOHead';
 import { useState, useEffect } from 'react';
@@ -20,7 +21,7 @@ interface ProductDetailPageProps {
 
 export default function ProductDetailPage({ product, handle }: ProductDetailPageProps) {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [_searchQuery, setSearchQuery] = useState('');
 
   // Navigation Diagnostics - Product Page Mount
   useEffect(() => {

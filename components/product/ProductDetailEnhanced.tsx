@@ -825,7 +825,7 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
       {/* Related Blog Posts */}
       <div className="max-w-7xl mx-auto px-6">
         <RelatedBlogPosts 
-          productCategories={safeProductData.collections?.edges?.map(e => e.node.handle) || []}
+          productCategories={safeProductData.collections?.edges?.map((e: any) => e.node.handle) || []}
           allPosts={getAllBlogPosts()}
           maxPosts={3}
         />

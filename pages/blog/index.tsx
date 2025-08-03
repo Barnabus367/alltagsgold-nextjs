@@ -119,16 +119,17 @@ export default function BlogPage({ posts: initialPosts, categories: initialCateg
                         Alle Kategorien ({posts.length})
                       </button>
                       {categories.map((category) => {
-                        const count = posts.filter(p => p.category === category).length;
+                        const categoryName = typeof category === 'string' ? category : category.name;
+                        const count = posts.filter(p => p.category === categoryName).length;
                         return (
                           <button
-                            key={category}
-                            onClick={() => setSelectedCategory(category)}
+                            key={categoryName}
+                            onClick={() => setSelectedCategory(categoryName)}
                             className={`block w-full text-left px-3 py-2 rounded transition-colors ${
-                              selectedCategory === category ? 'bg-amber-100 text-amber-900' : 'hover:bg-gray-100'
+                              selectedCategory === categoryName ? 'bg-amber-100 text-amber-900' : 'hover:bg-gray-100'
                             }`}
                           >
-                            {category} ({count})
+                            {categoryName} ({count})
                           </button>
                         );
                       })}
@@ -139,19 +140,22 @@ export default function BlogPage({ posts: initialPosts, categories: initialCateg
                   <div>
                     <h3 className="text-lg font-medium mb-4 text-gray-900">Beliebte Tags</h3>
                     <div className="flex flex-wrap gap-2">
-                      {tags.slice(0, 15).map((tag) => (
-                        <button
-                          key={tag}
-                          onClick={() => setSelectedTag(selectedTag === tag ? '' : tag)}
-                          className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                            selectedTag === tag
-                              ? 'bg-amber-500 text-white'
-                              : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                          }`}
-                        >
-                          #{tag}
-                        </button>
-                      ))}
+                      {tags.slice(0, 15).map((tag) => {
+                        const tagName = typeof tag === 'string' ? tag : tag.name;
+                        return (
+                          <button
+                            key={tagName}
+                            onClick={() => setSelectedTag(selectedTag === tagName ? '' : tagName)}
+                            className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                              selectedTag === tagName
+                                ? 'bg-amber-500 text-white'
+                                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                            }`}
+                          >
+                            #{tagName}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
 

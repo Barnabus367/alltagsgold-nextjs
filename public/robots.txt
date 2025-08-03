@@ -1,25 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /api/
-Disallow: /cart
-Disallow: /checkout
-Disallow: /account
-Disallow: /*.json$
-Disallow: /*?*sort=
-Disallow: /*?*filter=
-
-# Google Specific
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 0
-
-# Bing Specific  
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
-
 Sitemap: https://www.alltagsgold.ch/sitemap.xml
-Sitemap: https://www.alltagsgold.ch/sitemap-pages.xml
-Sitemap: https://www.alltagsgold.ch/sitemap-products.xml
-Sitemap: https://www.alltagsgold.ch/sitemap-collections.xml
-Sitemap: https://www.alltagsgold.ch/sitemap-blog.xml

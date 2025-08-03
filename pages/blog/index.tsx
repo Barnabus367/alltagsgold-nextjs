@@ -11,15 +11,18 @@ import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateBlogListSEO } from '@/lib/seo';
 import type { BlogPost } from '@/data/blog-types';
 
+// Optimized blog post type without full content
+type OptimizedBlogPost = Omit<BlogPost, 'content' | 'metaDescription' | 'keywords'>;
+
 interface BlogPageProps {
-  posts: BlogPost[];
+  posts: OptimizedBlogPost[];
   categories: Array<{ name: string; count: number }>;
   tags: Array<{ name: string; count: number }>;
 }
 
 export default function BlogPage({ posts: initialPosts, categories: initialCategories, tags: initialTags }: BlogPageProps) {
-  const [posts] = useState<BlogPost[]>(initialPosts);
-  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>(initialPosts);
+  const [posts] = useState<OptimizedBlogPost[]>(initialPosts);
+  const [filteredPosts, setFilteredPosts] = useState<OptimizedBlogPost[]>(initialPosts);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedTag, setSelectedTag] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -365,9 +368,25 @@ export async function getStaticProps() {
   const categories = getAllCategories();
   const tags = getAllTags();
   
+  // Reduce data size by only sending necessary fields
+  const optimizedPosts = allPosts.map(post => ({
+    id: post.id,
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt,
+    date: post.date,
+    author: post.author,
+    category: post.category,
+    tags: post.tags,
+    readTime: post.readTime,
+    featuredImage: post.featuredImage,
+    featuredImageAlt: post.featuredImageAlt,
+    // Exclude full content to reduce page data size
+  }));
+  
   return {
     props: {
-      posts: allPosts,
+      posts: optimizedPosts,
       categories,
       tags,
     },

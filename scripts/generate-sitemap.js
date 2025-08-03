@@ -275,23 +275,29 @@ function getBlogPages() {
   // Import blog posts data
   let blogPosts = [];
   try {
-    // Import all blog post data
-    const blogData = require('../data/blog-posts.js');
-    const phase2 = require('../data/blog-posts-phase2.js');
-    const phase3 = require('../data/blog-posts-phase3.js');
-    const phase4 = require('../data/blog-posts-phase4.js');
-    
-    // Combine all blog posts
-    blogPosts = [
-      ...(blogData.BLOG_POSTS || []),
-      ...(phase2.default || []),
-      ...(phase3.default || []),
-      ...(phase4.default || [])
-    ];
+    // Import TypeScript blog post data
+    const { getAllBlogPosts } = require('../data/blog-posts');
+    blogPosts = getAllBlogPosts();
     
     console.log(`✅ Found ${blogPosts.length} blog posts`);
   } catch (error) {
-    console.warn('⚠️  Could not load blog posts:', error.message);
+    console.warn('⚠️  Could not load blog posts - trying TypeScript compilation');
+    
+    // Fallback: Try to compile TypeScript files first
+    try {
+      const { execSync } = require('child_process');
+      execSync('npx tsc data/blog-posts.ts data/blog-posts-phase*.ts --module commonjs --target es2015 --outDir .temp-blog-data', { stdio: 'ignore' });
+      
+      const { getAllBlogPosts } = require('../.temp-blog-data/blog-posts');
+      blogPosts = getAllBlogPosts();
+      
+      console.log(`✅ Found ${blogPosts.length} blog posts after TypeScript compilation`);
+      
+      // Clean up temp files
+      execSync('rm -rf .temp-blog-data', { stdio: 'ignore' });
+    } catch (compileError) {
+      console.warn('⚠️  Could not compile TypeScript blog posts:', compileError.message);
+    }
   }
 
   const blogConfig = SITEMAP_CONFIG.blog;

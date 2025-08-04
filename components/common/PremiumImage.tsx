@@ -26,7 +26,32 @@ export function PremiumImage({
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  // EINFACH: Verwende nur die ursprünglichen Shopify-URLs
+  // Cloudinary-Transformation für einheitlichen Look
+  const getUnifiedProductImage = (originalUrl: string) => {
+    // Skip wenn bereits Cloudinary URL oder kein gültiger URL
+    if (!originalUrl || originalUrl.includes('res.cloudinary.com') || originalUrl.includes('placeholder')) {
+      return originalUrl;
+    }
+    
+    // Cloudinary Fetch API für externe URLs
+    const cloudinaryBase = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'do7yh4dll'}/image/fetch/`;
+    
+    // Einheitliche Transformation: Warm White Style
+    const transformations = [
+      'b_rgb:FEFAF5',        // Cremefarbener Hintergrund (warm white)
+      'c_pad',               // Padding hinzufügen
+      'w_800',               // Breite
+      'h_800',               // Höhe (quadratisch)
+      'e_trim:10',           // Trimme leere Bereiche
+      'e_improve:indoor',    // Wärmere, natürlichere Farben
+      'e_shadow:25,x_0,y_12', // Subtiler Schatten nach unten
+      'f_auto',              // Auto-Format
+      'q_auto:good'          // Gute Qualität
+    ].join(',');
+    
+    return `${cloudinaryBase}${transformations}/${encodeURIComponent(originalUrl)}`;
+  };
+
   const imageUrl = useMemo(() => {
     console.log('🖼️ PremiumImage received:', { src, context, productTitle });
     
@@ -36,8 +61,14 @@ export function PremiumImage({
       return fallbackSrc || 'https://via.placeholder.com/400x400?text=Kein+Bild';
     }
     
-    console.log('✅ Using original Shopify URL:', src);
-    // KEINE OPTIMIERUNGEN - verwende das ursprüngliche Bild direkt
+    // Nur für Produkt-Cards und Details transformieren
+    if (context === 'card' || context === 'detail') {
+      const transformedUrl = getUnifiedProductImage(src);
+      console.log('🎨 Transformed URL:', transformedUrl);
+      return transformedUrl;
+    }
+    
+    console.log('✅ Using original URL for context:', context);
     return src;
   }, [src, fallbackSrc, context, productTitle]);
   

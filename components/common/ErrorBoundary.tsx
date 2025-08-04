@@ -1,5 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { AlertTriangle, RefreshCw, Home, ArrowLeft } from 'lucide-react';
+import { AlertTriangle, RefreshCw, Home, ArrowLeft } from '@/lib/icons';
 import Link from 'next/link';
 
 interface Props {

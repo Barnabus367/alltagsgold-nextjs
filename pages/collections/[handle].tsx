@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { ShopifyCollection } from '../../types/shopify';
 import { getAllCollectionHandles, getCollectionByHandle } from '../../lib/shopify';
 import { generateCollectionSEO } from '../../lib/seo';
-import { generateBreadcrumbStructuredData } from '../../lib/structured-data';
+import { generateBreadcrumbStructuredData, generateCollectionStructuredData } from '../../lib/structured-data';
 
 interface CollectionDetailPageProps {
   collection: ShopifyCollection | null;
@@ -47,16 +47,20 @@ export default function CollectionDetailPage({ collection, handle }: CollectionD
   // Generate SEO metadata
   const seoData = generateCollectionSEO(collection);
   
-  // Generate Breadcrumb Schema für Collection
+  // Generate structured data für Collection
   const structuredData = [];
   
   if (collection) {
+    // Breadcrumb Schema
     const breadcrumbs = [
       { name: 'Home', url: '/' },
       { name: 'Kategorien', url: '/collections' },
       { name: collection.title, url: `/collections/${handle}` }
     ];
     structuredData.push(generateBreadcrumbStructuredData(breadcrumbs));
+    
+    // Collection Schema with ItemList
+    structuredData.push(generateCollectionStructuredData(collection));
   }
 
   return (

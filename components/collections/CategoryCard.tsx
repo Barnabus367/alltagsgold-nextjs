@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, ShoppingBag, Home, Utensils, Shirt, Heart, Gamepad2, Lightbulb, Coffee, Sofa, Car, Baby } from 'lucide-react';
+import { ArrowRight, ShoppingBag, Home, Utensils, Shirt, Heart, Gamepad2, Lightbulb, Coffee, Sofa, Car, Baby } from '@/lib/icons';
 import { ShopifyCollection } from '../../types/shopify';
 import { getCategoryImage } from '../../lib/categoryImages';
 

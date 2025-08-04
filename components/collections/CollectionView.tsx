@@ -7,7 +7,7 @@ import { ShopifyError } from '@/components/common/ShopifyError';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateCollectionSEO } from '@/lib/seo';
 import { useProductSearch } from '@/hooks/useShopify';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from '@/lib/icons';
 import { getPriceAmountSafe } from '@/lib/type-guards';
 import Link from 'next/link';
 import { trackSearch } from '@/lib/analytics';

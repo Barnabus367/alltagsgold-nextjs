@@ -5,7 +5,7 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   
-  webpack: (config, { dev, isServer }) => {
+  webpack: (config, { isServer }) => {
     // Produktions-optimierte Bundle-Aufteilung
     if (!isServer) {
       config.optimization.splitChunks = {
@@ -102,6 +102,9 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Keine zusätzliche Optimierung wenn bereits von Cloudinary optimiert
     unoptimized: false,
+    // Erlaube data: URLs für SVG-Fallbacks
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
   },
   // Experimentelle Features nur für Production
   experimental: {
@@ -118,8 +121,8 @@ const nextConfig = {
       '@radix-ui/react-tabs',
       '@radix-ui/react-tooltip',
       '@tanstack/react-query',
-      'lucide-react',
-      'framer-motion'
+      'framer-motion',
+      'lucide-react'
     ],
     // optimizeCss: true, // Temporär deaktiviert wegen Build-Issues
   },
@@ -159,6 +162,14 @@ const nextConfig = {
             value: 'nosniff',
           },
           {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains',
+          },
+          {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },
@@ -187,6 +198,19 @@ const nextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/:path*.(jpg|jpeg|png|gif|webp|svg|ico)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, s-maxage=31536000',
+          },
+          {
+            key: 'Accept-CH',
+            value: 'DPR, Width, Viewport-Width',
           },
         ],
       },

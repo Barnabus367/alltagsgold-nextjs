@@ -7,7 +7,7 @@ import { ShopifyError } from '@/components/common/ShopifyError';
 import { ShopifyCollection } from '@/types/shopify';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { HeroVideo } from '@/components/HeroVideo';
-import { ArrowRight, Home as HomeIcon, ShoppingBag, Heart, Utensils, Shirt, Gamepad2, Grid } from 'lucide-react';
+import { ArrowRight, Home as HomeIcon, ShoppingBag, Heart, Utensils, Shirt, Gamepad2, Grid } from '@/lib/icons';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
 import { sendEmail, validateEmail } from '@/lib/email';
 
@@ -38,10 +38,16 @@ interface CollectionsProps {
 export function Collections({ preloadedCollections }: CollectionsProps) {
   usePageTitle(formatPageTitle('Sortimente'));
   
-  const { data: collections = [], isLoading: collectionsLoading, error: collectionsError } = useCollections({
-    enabled: !preloadedCollections,
-    initialData: preloadedCollections,
+  // Use preloaded collections if available, otherwise fetch
+  const shouldFetch = !preloadedCollections || preloadedCollections.length === 0;
+  const { data: fetchedCollections = [], isLoading: collectionsLoading, error: collectionsError } = useCollections({
+    enabled: shouldFetch,
   });
+  
+  // Always use preloaded collections if available to avoid hydration mismatch
+  const collections = preloadedCollections && preloadedCollections.length > 0 
+    ? preloadedCollections 
+    : fetchedCollections;
   const { data: productsData, isLoading: productsLoading } = useProducts(8);
   
   const [newsletterEmail, setNewsletterEmail] = useState('');
@@ -81,14 +87,6 @@ export function Collections({ preloadedCollections }: CollectionsProps) {
 
   return (
     <div className="min-h-screen bg-white pt-16">
-      <NextSEOHead 
-        seo={{
-          title: 'Sortimente - Premium Produktkategorien | AlltagsGold',
-          description: 'Entdecken Sie unsere kuratierten Produktkategorien: Küche, Lifestyle, Design und mehr. Hochwertige Artikel für jeden Bereich Ihres Lebens.',
-          keywords: 'Kategorien, Sortimente, Küche, Lifestyle, Design, Premium, AlltagsGold'
-        }}
-        canonicalUrl="collections"
-      />
       
       {/* Hero Section mit Titel und Intro */}
       <section className="relative h-[50vh] bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center overflow-hidden">

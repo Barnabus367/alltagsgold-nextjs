@@ -1,10 +1,12 @@
 import '../styles/globals.css'
+import '../styles/product-detail.css'
 import { AnalyticsProvider } from '../components/AnalyticsProvider';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '../lib/queryClient';
 import { TooltipProvider } from '../components/ui/tooltip';
 import { ToastProvider } from '../components/ui/toast-system';
 import { useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
 import { forceCloudinaryOptimization } from '../lib/cloudinary';
 import { reportWebVitals } from '../lib/web-vitals';
 import { inter, optimizeFontLoading } from '../lib/fonts-optimized';
@@ -15,15 +17,28 @@ import { loadCriticalCSS } from '../lib/critical-css';
 import { Analytics } from '@vercel/analytics/react';
 import { VercelAnalytics } from '../components/VercelAnalytics';
 import { initializeAnalytics } from '../lib/analytics';
-import { ClickAnalyticsDashboard } from '../components/ClickAnalyticsDashboard';
-import { AnalyticsTestDashboard } from '../components/dev/AnalyticsTestDashboard';
 import { initializeLazyScripts } from '../lib/lazy-load-scripts';
+import { isDebugEnabled, debugLog } from '../lib/debug-config';
 import type { AppProps } from 'next/app';
+
+// Lazy load debug components - nur wenn benötigt
+const ClickAnalyticsDashboard = dynamic(
+  () => import('../components/ClickAnalyticsDashboard').then(mod => mod.ClickAnalyticsDashboard),
+  { ssr: false, loading: () => null }
+);
+
+const AnalyticsTestDashboard = dynamic(
+  () => import('../components/dev/AnalyticsTestDashboard').then(mod => mod.AnalyticsTestDashboard),
+  { ssr: false, loading: () => null }
+);
 
 export default function App({ Component, pageProps }: AppProps) {
   // Performance Optimizations Hook
   useTouchOptimization();
-  useMobilePerformanceMonitor();
+  
+  // Mobile Performance Monitor - Hook wird immer aufgerufen, aber intern bedingt ausgeführt
+  const debugEnabled = isDebugEnabled('enablePerformanceMonitoring');
+  useMobilePerformanceMonitor(debugEnabled);
   
   // Track initialization to prevent repeated calls
   const isInitialized = useRef(false);
@@ -34,7 +49,12 @@ export default function App({ Component, pageProps }: AppProps) {
     
     forceCloudinaryOptimization();
     optimizeFontLoading();
-    initializeWebVitalsMonitoring();
+    
+    // Web Vitals Monitoring nur wenn Debug aktiviert
+    if (isDebugEnabled('enablePerformanceMonitoring')) {
+      initializeWebVitalsMonitoring();
+      debugLog('Web Vitals Monitoring aktiviert');
+    }
     
     // Initialize All Analytics (Meta Pixel + Vercel + Global Click Tracker)
     initializeAnalytics();
@@ -42,11 +62,11 @@ export default function App({ Component, pageProps }: AppProps) {
     // Initialize lazy-loaded third-party scripts
     initializeLazyScripts();
     
-    // Initialize Navigation Diagnostics für SSG/ISR Hydration-Analyse
-    if (typeof window !== 'undefined') {
+    // Navigation Diagnostics nur wenn Debug aktiviert
+    if (typeof window !== 'undefined' && isDebugEnabled('enableNavigationDiagnostics')) {
       import('../lib/navigation-diagnostics').then(({ initializeNavigationDiagnostics }) => {
         initializeNavigationDiagnostics();
-        console.log('🔧 Navigation Diagnostics aktiviert für Hydration-Analyse');
+        debugLog('Navigation Diagnostics aktiviert für Hydration-Analyse');
       }).catch(console.error);
     }
     
@@ -75,8 +95,10 @@ export default function App({ Component, pageProps }: AppProps) {
                 <Component {...pageProps} />
                 <Analytics />
                 <VercelAnalytics />
-                <ClickAnalyticsDashboard />
-                <AnalyticsTestDashboard />
+                
+                {/* Debug Components - nur wenn explizit aktiviert */}
+                {isDebugEnabled('enableClickTracking') && <ClickAnalyticsDashboard />}
+                {isDebugEnabled('enableAnalyticsDashboard') && <AnalyticsTestDashboard />}
               </ToastProvider>
             </TooltipProvider>
           </QueryClientProvider>

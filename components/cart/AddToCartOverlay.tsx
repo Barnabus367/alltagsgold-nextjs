@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Image from 'next/image';
-import { Check, X, ShoppingBag } from 'lucide-react';
+import { Check, X, ShoppingBag } from '@/lib/icons';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/hooks/useCart';
 import { getCloudinaryUrl } from '@/lib/cloudinary-optimized';

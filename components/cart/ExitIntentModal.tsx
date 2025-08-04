@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, ShoppingBag, Percent } from 'lucide-react';
+import { X, ShoppingBag, Percent } from '@/lib/icons';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/hooks/useCart';
 import { formatPrice } from '@/lib/shopify';

@@ -1,0 +1,804 @@
+/* Product Detail Page Styles */
+
+/* 1. Warmes Farbschema */
+:root {
+  --product-bg-warm: #FAF8F5;
+  --product-bg-section: #F5F0E8;
+  --product-bg-info: #F9F7F4;
+  --product-accent: #8B7355;
+  --product-text-primary: #2C2825;
+  --product-text-secondary: #5A524A;
+}
+
+.product-page-wrapper {
+  background-color: var(--product-bg-warm);
+  min-height: 100vh;
+}
+
+/* 3. Content Sections mit visueller Trennung */
+.product-content-section {
+  background-color: var(--product-bg-section);
+  padding: 3rem 2rem;
+  margin: 2rem -2rem;
+  border-radius: 1rem;
+}
+
+.product-content-section:nth-child(even) {
+  background-color: var(--product-bg-info);
+}
+
+.product-description-section {
+  position: relative;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, var(--product-bg-section) 0%, var(--product-bg-info) 100%);
+  border-radius: 1rem;
+  margin-top: 2rem;
+}
+
+.product-description-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--product-accent) 0%, transparent 100%);
+  border-radius: 1rem 1rem 0 0;
+}
+
+/* 4. Varianten als visuelle Elemente */
+.variant-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.variant-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 2px solid #E5E5E5;
+  border-radius: 0.75rem;
+  background: white;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  min-height: 60px;
+}
+
+.variant-button:hover {
+  border-color: var(--product-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.variant-button.selected {
+  border-color: var(--product-text-primary);
+  background-color: var(--product-text-primary);
+  color: white;
+}
+
+.variant-color-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #E5E5E5;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.variant-button.selected .variant-color-dot {
+  border-color: white;
+  box-shadow: 0 0 0 2px var(--product-text-primary);
+}
+
+.variant-color-dot.pattern {
+  background-size: cover;
+  background-position: center;
+}
+
+.variant-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: inherit;
+}
+
+/* Color mappings for common variants */
+.variant-color-dot[data-color="black"] { background-color: #1a1a1a; }
+.variant-color-dot[data-color="white"] { background-color: #ffffff; border-color: #ddd; }
+.variant-color-dot[data-color="red"] { background-color: #DC2626; }
+.variant-color-dot[data-color="blue"] { background-color: #2563EB; }
+.variant-color-dot[data-color="green"] { background-color: #16A34A; }
+.variant-color-dot[data-color="yellow"] { background-color: #FACC15; }
+.variant-color-dot[data-color="pink"] { background-color: #EC4899; }
+.variant-color-dot[data-color="purple"] { background-color: #9333EA; }
+.variant-color-dot[data-color="orange"] { background-color: #F97316; }
+.variant-color-dot[data-color="gray"] { background-color: #6B7280; }
+.variant-color-dot[data-color="brown"] { background-color: #92400E; }
+.variant-color-dot[data-color="beige"] { background-color: #D4A574; }
+.variant-color-dot[data-color="navy"] { background-color: #1E3A8A; }
+.variant-color-dot[data-color="gold"] { background-color: #F59E0B; }
+.variant-color-dot[data-color="silver"] { background-color: #C0C0C0; }
+.variant-color-dot[data-color="wood"] { 
+  background: linear-gradient(45deg, #8B4513 25%, #A0522D 50%, #8B4513 75%);
+}
+
+/* 5. Technische Details als Info-Box */
+.tech-details-box {
+  background-color: var(--product-bg-info);
+  border: 1px solid rgba(139, 115, 85, 0.1);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.tech-details-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--product-text-primary);
+}
+
+.tech-details-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.tech-detail-item {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 1rem;
+  align-items: start;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.tech-detail-item:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.tech-detail-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-radius: 0.5rem;
+  color: var(--product-accent);
+}
+
+.tech-detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tech-detail-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--product-text-secondary);
+}
+
+.tech-detail-value {
+  font-size: 0.9375rem;
+  color: var(--product-text-primary);
+  font-weight: 500;
+}
+
+/* 7. Call-to-Action Bereich optimieren */
+.product-cta-section {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  /* Sticky nur auf großen Bildschirmen mit genug Platz */
+  position: static;
+  margin-bottom: 2rem;
+}
+
+/* Sticky CTA nur bei ausreichender Viewport-Höhe */
+@media (min-width: 1024px) and (min-height: 900px) {
+  .product-cta-section {
+    position: sticky;
+    top: 5rem;
+    z-index: 10;
+  }
+}
+
+.product-price-display {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--product-text-primary);
+  margin-bottom: 1rem;
+}
+
+.product-price-info {
+  font-size: 0.875rem;
+  color: var(--product-text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.quantity-selector-wrapper {
+  background-color: var(--product-bg-warm);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid #E5E5E5;
+}
+
+.quantity-button {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quantity-button:hover:not(:disabled) {
+  background-color: var(--product-bg-warm);
+}
+
+.quantity-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantity-display {
+  min-width: 60px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: var(--product-text-primary);
+}
+
+.add-to-cart-button {
+  width: 100%;
+  padding: 1.25rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+  background-color: var(--product-text-primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-to-cart-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.add-to-cart-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.add-to-cart-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.add-to-cart-button:active {
+  transform: translateY(0);
+}
+
+.add-to-cart-button:disabled {
+  background-color: #E5E5E5;
+  color: #9CA3AF;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Produktvorteile besser hervorheben */
+.product-benefits-container {
+  background-color: var(--product-bg-info);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(139, 115, 85, 0.1);
+}
+
+.product-benefits-container h3 {
+  color: var(--product-text-primary);
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.product-benefits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.product-benefit-item {
+  display: flex;
+  align-items: start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.product-benefit-item:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: translateX(4px);
+}
+
+.product-benefit-bullet {
+  width: 8px;
+  height: 8px;
+  background-color: var(--product-accent);
+  border-radius: 50%;
+  margin-top: 0.5rem;
+  flex-shrink: 0;
+}
+
+.product-benefit-text {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--product-text-primary);
+}
+
+/* Mobile Optimierungen */
+@media (max-width: 768px) {
+  .product-cta-section {
+    /* Auf Mobile nicht fixed, sondern am Ende der Seite */
+    position: static;
+    margin-top: 2rem;
+    border-radius: 1rem;
+    padding: 1.5rem;
+  }
+  
+  /* Optional: Sticky Add-to-Cart Button nur auf Mobile */
+  .mobile-sticky-cta {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 1rem;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .mobile-sticky-cta .add-to-cart-button {
+    flex: 1;
+  }
+  
+  .mobile-sticky-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--product-text-primary);
+  }
+  
+  .variant-selector {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .product-content-section {
+    margin: 1rem -1rem;
+    padding: 2rem 1rem;
+  }
+}
+
+/* Produktvorteile mit Icons */
+.product-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.product-benefit-card {
+  display: flex;
+  align-items: start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 0.75rem;
+  transition: transform 0.2s;
+}
+
+.product-benefit-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.product-benefit-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--product-bg-section);
+  border-radius: 0.5rem;
+  flex-shrink: 0;
+}
+
+.product-benefit-content h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--product-text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.product-benefit-content p {
+  font-size: 0.875rem;
+  color: var(--product-text-secondary);
+  line-height: 1.5;
+}
+
+/* Smooth Reveal Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Reveal Classes */
+.reveal-element {
+  opacity: 0;
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.reveal-element.revealed {
+  opacity: 1;
+}
+
+.reveal-fade-up {
+  transform: translateY(30px);
+}
+
+.reveal-fade-up.revealed {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.reveal-fade-left {
+  transform: translateX(-30px);
+}
+
+.reveal-fade-left.revealed {
+  animation: fadeInLeft 0.8s ease-out forwards;
+}
+
+.reveal-fade-right {
+  transform: translateX(30px);
+}
+
+.reveal-fade-right.revealed {
+  animation: fadeInRight 0.8s ease-out forwards;
+}
+
+.reveal-scale {
+  transform: scale(0.95);
+}
+
+.reveal-scale.revealed {
+  animation: scaleIn 0.8s ease-out forwards;
+}
+
+/* Staggered animations for lists */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.reveal-stagger.revealed > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-stagger.revealed > *:nth-child(1) { transition-delay: 0.1s; }
+.reveal-stagger.revealed > *:nth-child(2) { transition-delay: 0.2s; }
+.reveal-stagger.revealed > *:nth-child(3) { transition-delay: 0.3s; }
+.reveal-stagger.revealed > *:nth-child(4) { transition-delay: 0.4s; }
+.reveal-stagger.revealed > *:nth-child(5) { transition-delay: 0.5s; }
+.reveal-stagger.revealed > *:nth-child(6) { transition-delay: 0.6s; }
+
+/* Parallax Effect for Images */
+.parallax-container {
+  overflow: hidden;
+  position: relative;
+}
+
+.parallax-element {
+  transition: transform 0.3s ease-out;
+  will-change: transform;
+}
+
+/* Hover Depth Effects */
+.hover-lift {
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* 3D Card Effect */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease-out;
+}
+
+.card-3d:hover {
+  transform: perspective(1000px) rotateY(5deg) rotateX(-5deg) scale(1.02);
+}
+
+/* Smooth Sticky Transition */
+.smooth-sticky {
+  transition: all 0.3s ease-out;
+}
+
+.smooth-sticky.scrolled {
+  padding: 1rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.smooth-sticky.scrolled .product-price-display {
+  font-size: 1.5rem;
+}
+
+/* Progress Indicator */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--product-accent) var(--progress), transparent var(--progress));
+  z-index: 100;
+  transition: opacity 0.3s ease-out;
+}
+
+/* Premium Scroll Effects */
+.floating-product {
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+}
+
+.floating-shadow {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 20px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, transparent 70%);
+  filter: blur(10px);
+  transition: all 0.3s ease-out;
+  pointer-events: none;
+}
+
+/* Dynamic Focus Background */
+.dynamic-focus-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: -1;
+  transition: filter 0.3s ease-out;
+}
+
+.vignette-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.3) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  z-index: 1;
+}
+
+/* Glass Morphism Effects */
+.glass-morphism {
+  backdrop-filter: blur(var(--glass-blur, 8px));
+  -webkit-backdrop-filter: blur(var(--glass-blur, 8px));
+  background: rgba(255, 255, 255, var(--glass-opacity, 0.1));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.07),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease-out;
+}
+
+.glass-morphism:hover {
+  background: rgba(255, 255, 255, calc(var(--glass-opacity, 0.1) + 0.05));
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+/* Premium Image Container */
+.premium-image-container {
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  /* Padding to prevent clipping during transforms */
+  padding: 10px;
+  margin: -10px;
+}
+
+.premium-image-wrapper {
+  position: relative;
+  will-change: transform;
+  transition: transform 0.3s ease-out;
+}
+
+/* Subtle Glow Effect */
+.premium-glow {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  background: radial-gradient(circle at center, rgba(139, 115, 85, 0.1) 0%, transparent 70%);
+  filter: blur(20px);
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+  pointer-events: none;
+}
+
+.premium-glow.active {
+  opacity: 1;
+}
+
+/* Premium Button Effects */
+.premium-cta {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--product-text-primary) 0%, #1a1815 100%);
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease-out;
+}
+
+.premium-cta::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg) translateY(100%);
+  transition: transform 0.6s ease-out;
+}
+
+.premium-cta:hover::before {
+  transform: rotate(45deg) translateY(-100%);
+}
+
+.premium-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Smooth Transitions */
+.smooth-transition {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-element,
+  .reveal-element.revealed,
+  .reveal-stagger > *,
+  .hover-lift,
+  .card-3d,
+  .parallax-element,
+  .floating-product,
+  .glass-morphism,
+  .premium-cta {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  
+  .dynamic-focus-bg,
+  .vignette-overlay {
+    display: none !important;
+  }
+}

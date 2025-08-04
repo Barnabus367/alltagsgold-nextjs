@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { Plus, Clock } from '@/lib/icons';
 import { ShopifyProduct } from '@/types/shopify';
 import { formatPrice } from '@/lib/shopify';
 import { formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
@@ -9,6 +9,7 @@ import { useCart } from '@/hooks/useCart';
 import { trackAddToCart } from '@/lib/analytics';
 import { PremiumImage } from '@/components/common/PremiumImage';
 import { ProductReviewStars } from '@/components/common/ProductReviewStars';
+// import { AuthenticityBadge } from '@/components/product/AuthenticityBadge';
 import { announceToScreenReader } from '@/lib/accessibility';
 import { useMobileUX } from '@/hooks/useMobileUX';
 
@@ -111,6 +112,14 @@ export function ProductCard({ product }: ProductCardProps) {
             reviewCount={0}
             size="sm"
           />
+          
+          {/* Lieferzeit-Badge */}
+          {primaryVariant?.availableForSale && (
+            <div className="flex items-center space-x-1 text-xs text-green-700 mt-1">
+              <Clock className="w-3 h-3" strokeWidth={1.5} />
+              <span>1-3 Werktage</span>
+            </div>
+          )}
           
           {/* Preis groß und deutlich */}
           <div className="mb-3">

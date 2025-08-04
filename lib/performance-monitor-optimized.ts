@@ -368,9 +368,14 @@ export function getPerformanceMonitor(): PerformanceMonitor {
   return performanceMonitorInstance;
 }
 
-// Auto-initialize on import if in browser
-if (typeof window !== 'undefined') {
-  getPerformanceMonitor();
+// Auto-initialize nur wenn Debug aktiviert
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+  // Lazy check für Debug-Flag
+  setTimeout(() => {
+    if (process.env.NEXT_PUBLIC_DEBUG_PERFORMANCE === 'true') {
+      getPerformanceMonitor();
+    }
+  }, 0);
 }
 
 // Export for use in other modules

@@ -54,12 +54,10 @@ export const getStaticProps: GetStaticProps<CollectionsPageProps> = async () => 
         height: 600
       } : undefined,
       seo: col.seo,
-      updatedAt: col.updatedAt || new Date().toISOString(),
+      updatedAt: col.updatedAt || '2024-01-01T00:00:00Z', // Fixed date to avoid hydration mismatch
       products: { edges: [] } // Leer, da wir nur Collection-Info brauchen
     }));
 
-    console.log('Loaded collections from cache:', collections.length);
-    console.log('Technik & Gadgets found:', collections.find(c => c.handle === 'technik-gadgets')?.title);
 
     return {
       props: {

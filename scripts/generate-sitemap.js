@@ -269,13 +269,52 @@ function getStaticPages() {
 }
 
 /**
- * Get blog pages
+ * Get blog pages including all blog posts
  */
 function getBlogPages() {
+  // Import blog posts data
+  let blogPosts = [];
+  try {
+    // Import TypeScript blog post data
+    const { getAllBlogPosts } = require('../data/blog-posts');
+    blogPosts = getAllBlogPosts();
+    
+    console.log(`✅ Found ${blogPosts.length} blog posts`);
+  } catch (error) {
+    console.warn('⚠️  Could not load blog posts - trying TypeScript compilation');
+    
+    // Fallback: Try to compile TypeScript files first
+    try {
+      const { execSync } = require('child_process');
+      execSync('npx tsc data/blog-posts.ts data/blog-posts-phase*.ts --module commonjs --target es2015 --outDir .temp-blog-data', { stdio: 'ignore' });
+      
+      const { getAllBlogPosts } = require('../.temp-blog-data/blog-posts');
+      blogPosts = getAllBlogPosts();
+      
+      console.log(`✅ Found ${blogPosts.length} blog posts after TypeScript compilation`);
+      
+      // Clean up temp files
+      execSync('rm -rf .temp-blog-data', { stdio: 'ignore' });
+    } catch (compileError) {
+      console.warn('⚠️  Could not compile TypeScript blog posts:', compileError.message);
+    }
+  }
+
   const blogConfig = SITEMAP_CONFIG.blog;
   const blogPages = [
     { url: '/blog', changefreq: blogConfig.changefreq, priority: blogConfig.priority.toString() }
   ];
+  
+  // Add all blog post URLs
+  blogPosts.forEach(post => {
+    if (post.slug) {
+      blogPages.push({
+        url: `/blog/${post.slug}`,
+        changefreq: 'monthly',
+        priority: '0.7'
+      });
+    }
+  });
 
   return blogPages.map(page => 
     createUrlEntry(`${SITE_URL}${page.url}`, CURRENT_DATE, page.changefreq, page.priority)

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Heart, ShoppingCart, Truck, RotateCcw, Shield, Check } from 'lucide-react';
+import { Heart, ShoppingCart, Truck, RotateCcw, Shield, Check } from '@/lib/icons';
 import { Button } from '@/components/ui/button';
 import { PremiumImage } from '@/components/common/PremiumImage';
 import { ProductDescription } from '@/components/product/ProductDescription';

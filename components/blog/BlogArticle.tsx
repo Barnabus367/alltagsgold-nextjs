@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Calendar, Clock, User, Tag, ArrowLeft, Share2 } from 'lucide-react';
+import { Calendar, Clock, User, Tag, ArrowLeft, Share2 } from '@/lib/icons';
 import { Button } from '@/components/ui/button';
 
 interface BlogArticleProps {

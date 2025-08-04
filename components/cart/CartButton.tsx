@@ -1,4 +1,4 @@
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart } from '@/lib/icons';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

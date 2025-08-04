@@ -206,11 +206,11 @@ export function useTouchOptimization() {
 }
 
 // Mobile Performance Monitor
-export function useMobilePerformanceMonitor() {
+export function useMobilePerformanceMonitor(enabled: boolean = true) {
   const capabilities = useDeviceCapabilities();
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !capabilities.isMobile) return;
+    if (typeof window === 'undefined' || !capabilities.isMobile || !enabled) return;
 
     // Monitor Core Web Vitals specifically for mobile
     const vitalsThresholds = {
@@ -275,7 +275,7 @@ export function useMobilePerformanceMonitor() {
     }
 
     return () => observer.disconnect();
-  }, [capabilities]);
+  }, [capabilities, enabled]);
 }
 
 // Battery-Aware Performance

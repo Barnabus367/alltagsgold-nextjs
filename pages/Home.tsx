@@ -9,16 +9,19 @@ import { useProducts, useCollections } from '@/hooks/useShopify';
 import { formatPrice } from '@/lib/shopify';
 import { ShopifyProduct, ShopifyCollection } from '@/types/shopify';
 import Link from 'next/link';
-import { Home as HomeIcon, ShoppingBag, Heart, Utensils, Shirt, Gamepad2, Monitor, Package, Settings, Fan, Flame, FolderOpen, Lightbulb, Wrench, Grid3X3, Palette, ChefHat, Droplets, Cpu, Beef, Wind, Zap, Waves, Sparkles } from 'lucide-react';
+import { Home as HomeIcon, ShoppingBag, Heart, Utensils, Shirt, Gamepad2, Monitor, Package, Settings, Fan, Flame, FolderOpen, Lightbulb, Wrench, Grid3X3, Palette, ChefHat, Droplets, Cpu, Beef, Wind, Zap, Waves, Sparkles } from '@/lib/icons';
 import { getCategoryImage } from '@/lib/categoryImages';
 import { TrustSlider } from '@/components/common/TrustSlider';
 import { ReviewWidget } from '@/components/common/ReviewWidget';
+import { USPSection } from '@/components/common/USPSection';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
+import { BlogTeaser } from '@/components/home/BlogTeaser';
 
 interface HomeProps {
   searchQuery?: string;
   preloadedProducts?: ShopifyProduct[];
   preloadedCollections?: ShopifyCollection[];
+  recentPosts?: any[];
 }
 
 // Thematisch passende Icons für jede Kategorie
@@ -52,7 +55,7 @@ const getCategoryIcon = (collectionHandle: string, collectionTitle: string) => {
   }
 };
 
-export function Home({ searchQuery = '', preloadedProducts, preloadedCollections }: HomeProps) {
+export function Home({ searchQuery = '', preloadedProducts, preloadedCollections, recentPosts = [] }: HomeProps) {
   usePageTitle(formatPageTitle('Home'));
   
   const { data: productsData, isLoading: productsLoading, error: productsError } = useProducts(8, {
@@ -120,6 +123,9 @@ export function Home({ searchQuery = '', preloadedProducts, preloadedCollections
           </Link>
         </div>
       </section>
+
+      {/* USP Section - Vertrauenselemente */}
+      <USPSection />
 
       {/* Trust Slider - Editorial Marquee */}
       <TrustSlider />
@@ -289,6 +295,11 @@ export function Home({ searchQuery = '', preloadedProducts, preloadedCollections
           </div>
         </div>
       </section>
+      
+      {/* Blog Teaser Section */}
+      {recentPosts && recentPosts.length > 0 && (
+        <BlogTeaser posts={recentPosts} />
+      )}
     </div>
   );
 }

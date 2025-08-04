@@ -29,15 +29,17 @@ export interface SEOMetadata {
 const SEO_TEMPLATES = {
   brand: "Alltagsgold",
   homepage: {
-    title: "Alltagsgold Lifestyle Shop | Haushaltshelfer & Küchenhelfer Schweiz",
-    description: "Premium Haushaltshelfer online kaufen Schweiz ✓ Innovative Küchenhelfer & Alltagsprodukte ✓ Kein Dropshipping ✓ Schneller Versand aus CH-Lager"
+    title: "Alltagsgold: Echte Produkte & Schweizer Qualität | Schneller Versand",
+    description: "Entdecke einzigartige Produkte direkt aus unserem Schweizer Lager. Bei Alltagsgold findest du Qualität statt Dropshipping. Jetzt stöbern und schnell liefern lassen!"
   },
   productTitleSuffix: "kaufen | Alltagsgold Schweiz",
   collectionTitleSuffix: "| Praktische Produkte bei Alltagsgold",
-  productDescriptionTemplate: (productName: string, benefit?: string) => {
-    const base = `${productName} günstig kaufen bei Alltagsgold Schweiz.`;
-    const middle = benefit ? ` ${benefit}.` : ' Premium Qualität für Ihren Alltag.';
-    const suffix = " ✓ Schneller CH-Versand ✓ Kein Dropshipping ✓ 30 Tage Rückgabe";
+  productDescriptionTemplate: (productName: string, benefit?: string, price?: string) => {
+    const priceText = price ? ` für nur CHF ${price}` : '';
+    const base = `${productName}${priceText} bei Alltagsgold kaufen.`;
+    const middle = benefit ? ` ${benefit}.` : '';
+    const shipping = price && parseFloat(price) >= 50 ? " ✓ Gratis Versand" : " ✓ Versand ab CHF 4.90";
+    const suffix = `${shipping} ✓ Schweizer Lager ✓ 1-2 Tage Lieferzeit`;
     return base + middle + suffix;
   },
   collectionDescriptionTemplate: (name: string) => {
@@ -137,16 +139,22 @@ export function generateProductSEO(product: any): SEOMetadata {
   // Neues Title-Schema: [Produktname] kaufen | Alltagsgold Schweiz
   const title = `${productTitle} ${SEO_TEMPLATES.productTitleSuffix}`;
   
+  // Extrahiere Preis
+  const price = product?.priceRange?.minVariantPrice?.amount || 
+                product?.variants?.edges?.[0]?.node?.price?.amount || 
+                null;
+  const priceFormatted = price ? parseFloat(price).toFixed(2) : null;
+  
   // Extrahiere Hauptvorteil aus der Beschreibung (erste 50 Zeichen)
   const baseDescription = product?.description || product?.excerpt || '';
   const cleanDesc = sanitizeDescription(baseDescription, 50);
   const benefit = cleanDesc.length > 20 ? cleanDesc : undefined;
   
-  // Neue Description mit Template
-  let description = SEO_TEMPLATES.productDescriptionTemplate(productTitle, benefit);
+  // Neue Description mit Template und Preis
+  let description = SEO_TEMPLATES.productDescriptionTemplate(productTitle, benefit, priceFormatted || undefined);
   
-  // Kürze auf 150 Zeichen falls nötig
-  description = sanitizeDescription(description, 150);
+  // Kürze auf 160 Zeichen (Google's empfohlene Länge)
+  description = sanitizeDescription(description, 160);
   
   // Fallback falls keine sinnvolle Description erstellt werden kann
   if (!description || description.length < 50) {

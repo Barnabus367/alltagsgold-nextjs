@@ -5,7 +5,7 @@ import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { ProductCard } from '@/components/product/ProductCard';
 import { useWishlist } from '@/hooks/useWishlist';
 import { Button } from '@/components/ui/button';
-import { Heart, ShoppingBag, Trash2 } from 'lucide-react';
+import { Heart, ShoppingBag, Trash2 } from '@/lib/icons';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
 import { generateStaticPageSEO } from '@/lib/seo';
 

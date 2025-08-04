@@ -2,14 +2,14 @@ import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import { useProducts, useCollections } from '@/hooks/useShopify';
 import { ProductCard } from '@/components/product/ProductCard';
-import { ImprovedProductFilterBar } from '@/components/product/ImprovedProductFilterBar';
+import { SimpleProductFilter } from '@/components/product/SimpleProductFilter';
 import { ShopifyError } from '@/components/common/ShopifyError';
 import { useProductSearch, useProductFilter } from '@/hooks/useShopify';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { getPriceAmountSafe } from '@/lib/type-guards';
-import { Search, Filter, Grid, List } from 'lucide-react';
+import { Search, Filter, Grid, List } from '@/lib/icons';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
 import { trackSearch } from '@/lib/analytics';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
@@ -29,7 +29,6 @@ export function Products({ preloadedProducts }: ProductsProps) {
   const { data: collections = [] } = useCollections();
   
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCollection, setSelectedCollection] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('featured');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [filteredByFilterBar, setFilteredByFilterBar] = useState<ShopifyProduct[]>([]);
@@ -41,9 +40,7 @@ export function Products({ preloadedProducts }: ProductsProps) {
   
   // Search and filter products
   const searchResults = useProductSearch(searchQuery, baseProducts);
-  const filteredProducts = useProductFilter(searchResults, {
-    collection: selectedCollection === 'all' ? undefined : selectedCollection
-  });
+  const filteredProducts = searchResults;
 
   // Sort products
   const sortedProducts = useMemo(() => {
@@ -82,10 +79,11 @@ export function Products({ preloadedProducts }: ProductsProps) {
       <section className="relative h-[45vh] bg-gradient-to-br from-blue-900 via-gray-900 to-black flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-black/30 to-black/50 z-10"></div>
         <Image
-      src={"https://res.cloudinary.com/do7yh4dll/image/fetch/w_800,q_auto,f_webp/https://images.unsplash.com/photo-1505740420928-5e560c06d30e"}
-      alt="Alle Produkte"
-      width={600}
-      height={400}
+      src="https://cdn.shopify.com/s/files/1/0918/4575/5223/files/3_86e4db7e-e8d5-4fc2-ba8e-f3c987b97ffa.jpg?v=1737024619"
+      alt="Alle Produkte - AlltagsGold Premium Lifestyle"
+      width={1920}
+      height={1080}
+      priority
       className="absolute inset-0 w-full h-full object-cover"
     />
         <div className="relative z-20 text-center text-white max-w-5xl mx-auto px-6">
@@ -98,17 +96,6 @@ export function Products({ preloadedProducts }: ProductsProps) {
         </div>
       </section>
 
-      {/* Improved Product Filter Bar */}
-      <section className="py-6 bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-6">
-          <ImprovedProductFilterBar 
-            products={products}
-            onFilteredProducts={setFilteredByFilterBar}
-            compact={true}
-            className="shadow-sm"
-          />
-        </div>
-      </section>
 
       {/* Traditional Filters & Search - HULL Style */}
       <section className="py-8 border-b border-gray-100 bg-white sticky top-16 z-40">
@@ -137,20 +124,11 @@ export function Products({ preloadedProducts }: ProductsProps) {
             </div>
 
             <div className="flex items-center gap-4">
-              {/* Collection Filter */}
-              <Select value={selectedCollection} onValueChange={setSelectedCollection}>
-                <SelectTrigger className="w-48 border-gray-300 focus:border-black focus:ring-black rounded-none">
-                  <SelectValue placeholder="Kategorie" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Alle Kategorien</SelectItem>
-                  {collections.map((collection: any) => (
-                    <SelectItem key={collection.id} value={collection.handle}>
-                      {collection.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {/* Simple Filter */}
+              <SimpleProductFilter 
+                products={products}
+                onFilteredProducts={setFilteredByFilterBar}
+              />
 
               {/* Sort */}
               <Select value={sortBy} onValueChange={setSortBy}>
@@ -217,7 +195,7 @@ export function Products({ preloadedProducts }: ProductsProps) {
               <Button 
                 onClick={() => {
                   setSearchQuery('');
-                  setSelectedCollection('all');
+                  setFilteredByFilterBar([]);
                 }}
                 variant="outline"
                 className="border-black text-black hover:bg-black hover:text-white rounded-none"

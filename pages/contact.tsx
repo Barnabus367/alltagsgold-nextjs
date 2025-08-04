@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateContactSEO } from '@/lib/seo';
 
-import { Mail, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, MapPin, CheckCircle, AlertCircle } from '@/lib/icons';
 import { apiRequest } from '@/lib/queryClient';
 import { trackContact } from '@/lib/analytics';
 import { Layout } from '@/components/layout/Layout';

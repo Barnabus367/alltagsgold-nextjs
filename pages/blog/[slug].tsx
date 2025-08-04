@@ -3,15 +3,18 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ReactMarkdown from 'react-markdown';
-import { Calendar, Clock, User, Tag, ArrowLeft, Share2 } from 'lucide-react';
+import { Calendar, Clock, User, Tag, ArrowLeft, Share2 } from '@/lib/icons';
 import { Button } from '@/components/ui/button';
 import { Layout } from '@/components/layout/Layout';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateBlogPostSEO } from '@/lib/seo';
+import { generateBreadcrumbStructuredData } from '@/lib/structured-data';
 import { getBlogPostBySlug, getAllBlogPosts } from '@/data/blog-posts';
 import type { BlogPost } from '@/data/blog-types';
 import { trackPageView } from '@/lib/analytics';
 import { useEffect } from 'react';
+import { RelatedProducts as BlogRelatedProducts } from '@/components/blog/RelatedProducts';
+import { useProducts } from '@/hooks/useShopify';
 
 interface BlogPostPageProps {
   post: BlogPost;
@@ -20,6 +23,8 @@ interface BlogPostPageProps {
 
 export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) {
   const router = useRouter();
+  const { data: productsData } = useProducts();
+  const products = Array.isArray(productsData) ? productsData : [];
 
   useEffect(() => {
     if (post) {
@@ -69,11 +74,20 @@ export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) 
     }
   };
 
+  // Generate Breadcrumb structured data
+  const breadcrumbs = [
+    { name: 'Home', url: 'https://www.alltagsgold.ch/' },
+    { name: 'Blog', url: 'https://www.alltagsgold.ch/blog' },
+    { name: post.title, url: `https://www.alltagsgold.ch/blog/${post.slug}` }
+  ];
+  const breadcrumbSchema = generateBreadcrumbStructuredData(breadcrumbs);
+
   return (
     <>
       <NextSEOHead 
         seo={generateBlogPostSEO(post)}
         canonicalUrl={`blog/${post.slug}`}
+        structuredData={breadcrumbSchema}
       />
       <Layout>
         <article className="min-h-screen bg-white">
@@ -230,6 +244,13 @@ export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) 
                 </div>
               </div>
               
+              {/* Related Products */}
+              <BlogRelatedProducts 
+                category={post.category}
+                products={products}
+                maxProducts={4}
+              />
+              
               {/* CTA Section */}
               <div className="mt-12 p-8 bg-gradient-to-r from-amber-50 to-amber-100 rounded-lg text-center">
                 <h3 className="text-2xl font-light text-gray-900 mb-4">
@@ -290,13 +311,18 @@ export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) 
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = getAllBlogPosts();
+  console.log(`[Blog Build] Found ${posts.length} blog posts`);
+  
   const paths = posts.map((post) => ({
     params: { slug: post.slug },
   }));
+  
+  // Log some slugs for debugging
+  console.log('[Blog Build] First 5 slugs:', paths.slice(0, 5).map(p => p.params.slug));
 
   return {
     paths,
-    fallback: true,
+    fallback: 'blocking',
   };
 };
 

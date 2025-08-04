@@ -1,4 +1,4 @@
-import { Heart } from 'lucide-react';
+import { Heart } from '@/lib/icons';
 import { useWishlist } from '@/hooks/useWishlist';
 import { ShopifyProduct } from '@/types/shopify';
 import { Button } from '@/components/ui/button';

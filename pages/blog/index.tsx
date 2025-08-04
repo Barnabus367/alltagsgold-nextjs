@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Calendar, Clock, Tag, Search, ChevronRight } from 'lucide-react';
+import { Calendar, Clock, Tag, Search, ChevronRight } from '@/lib/icons';
 import { getAllBlogPosts, getAllCategories, getAllTags } from '@/data/blog-posts';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,23 +11,29 @@ import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateBlogListSEO } from '@/lib/seo';
 import type { BlogPost } from '@/data/blog-types';
 
-export default function BlogPage() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
+// Optimized blog post type without full content
+type OptimizedBlogPost = Omit<BlogPost, 'content' | 'metaDescription' | 'keywords'>;
+
+interface BlogPageProps {
+  posts: OptimizedBlogPost[];
+  categories: Array<{ name: string; count: number }>;
+  tags: Array<{ name: string; count: number }>;
+}
+
+export default function BlogPage({ posts: initialPosts, categories: initialCategories, tags: initialTags }: BlogPageProps) {
+  const [posts] = useState<OptimizedBlogPost[]>(initialPosts);
+  const [filteredPosts, setFilteredPosts] = useState<OptimizedBlogPost[]>(initialPosts);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedTag, setSelectedTag] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 9;
 
-  const categories = getAllCategories();
-  const tags = getAllTags();
+  const categories = initialCategories;
+  const tags = initialTags;
 
   useEffect(() => {
     trackPageView('/blog', 'AlltagsGold Blog');
-    const allPosts = getAllBlogPosts();
-    setPosts(allPosts);
-    setFilteredPosts(allPosts);
   }, []);
 
   useEffect(() => {
@@ -47,8 +53,7 @@ export default function BlogPage() {
     if (searchQuery) {
       filtered = filtered.filter(post =>
         post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.content.toLowerCase().includes(searchQuery.toLowerCase())
+        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
@@ -116,16 +121,17 @@ export default function BlogPage() {
                         Alle Kategorien ({posts.length})
                       </button>
                       {categories.map((category) => {
-                        const count = posts.filter(p => p.category === category).length;
+                        const categoryName = typeof category === 'string' ? category : category.name;
+                        const count = posts.filter(p => p.category === categoryName).length;
                         return (
                           <button
-                            key={category}
-                            onClick={() => setSelectedCategory(category)}
+                            key={categoryName}
+                            onClick={() => setSelectedCategory(categoryName)}
                             className={`block w-full text-left px-3 py-2 rounded transition-colors ${
-                              selectedCategory === category ? 'bg-amber-100 text-amber-900' : 'hover:bg-gray-100'
+                              selectedCategory === categoryName ? 'bg-amber-100 text-amber-900' : 'hover:bg-gray-100'
                             }`}
                           >
-                            {category} ({count})
+                            {categoryName} ({count})
                           </button>
                         );
                       })}
@@ -136,19 +142,22 @@ export default function BlogPage() {
                   <div>
                     <h3 className="text-lg font-medium mb-4 text-gray-900">Beliebte Tags</h3>
                     <div className="flex flex-wrap gap-2">
-                      {tags.slice(0, 15).map((tag) => (
-                        <button
-                          key={tag}
-                          onClick={() => setSelectedTag(selectedTag === tag ? '' : tag)}
-                          className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                            selectedTag === tag
-                              ? 'bg-amber-500 text-white'
-                              : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                          }`}
-                        >
-                          #{tag}
-                        </button>
-                      ))}
+                      {tags.slice(0, 15).map((tag) => {
+                        const tagName = typeof tag === 'string' ? tag : tag.name;
+                        return (
+                          <button
+                            key={tagName}
+                            onClick={() => setSelectedTag(selectedTag === tagName ? '' : tagName)}
+                            className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                              selectedTag === tagName
+                                ? 'bg-amber-500 text-white'
+                                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                            }`}
+                          >
+                            #{tagName}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
 
@@ -353,7 +362,33 @@ export default function BlogPage() {
 
 // Static props for SEO
 export async function getStaticProps() {
+  // Load all blog posts at build time for SEO
+  const allPosts = getAllBlogPosts();
+  const categories = getAllCategories();
+  const tags = getAllTags();
+  
+  // Reduce data size by only sending necessary fields
+  const optimizedPosts = allPosts.map(post => ({
+    id: post.id,
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt,
+    date: post.date,
+    author: post.author,
+    category: post.category,
+    tags: post.tags,
+    readTime: post.readTime,
+    featuredImage: post.featuredImage,
+    featuredImageAlt: post.featuredImageAlt,
+    // Exclude full content to reduce page data size
+  }));
+  
   return {
-    props: {},
+    props: {
+      posts: optimizedPosts,
+      categories,
+      tags,
+    },
+    revalidate: 60 * 60 * 12, // Revalidate every 12 hours
   };
 }

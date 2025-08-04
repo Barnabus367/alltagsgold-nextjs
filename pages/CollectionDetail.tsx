@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCollection, useProducts } from '@/hooks/useShopify';
 import { ProductCard } from '@/components/product/ProductCard';
-import { ImprovedProductFilterBar } from '@/components/product/ImprovedProductFilterBar';
 import { ShopifyError } from '@/components/common/ShopifyError';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateCollectionSEO } from '@/lib/seo';
@@ -11,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { getPriceAmountSafe } from '@/lib/type-guards';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Grid, List, ArrowLeft, Package, Tag } from 'lucide-react';
+import { Search, Grid, List, ArrowLeft, Package, Tag } from '@/lib/icons';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
 import { useProductSearch, useProductFilter } from '@/hooks/useShopify';
 import { trackSearch } from '@/lib/analytics';
@@ -120,7 +119,6 @@ export function CollectionDetail({ preloadedCollection }: CollectionDetailProps)
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<string>('featured');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [filteredByFilterBar, setFilteredByFilterBar] = useState<ShopifyProduct[]>([]);
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
 
   usePageTitle(formatPageTitle(collection?.title || 'Kollektion'));
@@ -150,7 +148,7 @@ export function CollectionDetail({ preloadedCollection }: CollectionDetailProps)
   }, [productsData?.products, collection]);
 
   // Use filtered products from ProductFilterBar if available, otherwise use collection products
-  const baseProducts = filteredByFilterBar.length > 0 ? filteredByFilterBar : collectionProducts;
+  const baseProducts = collectionProducts;
 
   // Search and additional filtering
   const searchResults = useProductSearch(searchQuery, baseProducts);
@@ -268,20 +266,9 @@ export function CollectionDetail({ preloadedCollection }: CollectionDetailProps)
         </div>
       </section>
 
-      {/* Collection Filter Bar */}
-      <section className="py-3 bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-6">
-          <ImprovedProductFilterBar 
-            products={collectionProducts}
-            onFilteredProducts={setFilteredByFilterBar}
-            compact={true}
-            className="shadow-sm"
-          />
-        </div>
-      </section>
 
-      {/* Traditional Search & Sort Controls */}
-      <section className="py-2 bg-gray-50 border-b border-gray-200">
+      {/* Streamlined Search & Sort Controls */}
+      <section className="py-4 bg-white border-b border-gray-200 sticky top-16 z-40 shadow-sm">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
             {/* Search */}
@@ -372,16 +359,15 @@ export function CollectionDetail({ preloadedCollection }: CollectionDetailProps)
                 Keine Produkte gefunden
               </h3>
               <p className="text-gray-600 mb-6">
-                {searchQuery || filteredByFilterBar.length > 0 
-                  ? 'Versuchen Sie andere Filter oder Suchbegriffe.'
+                {searchQuery 
+                  ? 'Versuchen Sie andere Suchbegriffe.'
                   : 'Diese Kollektion enthält derzeit keine Produkte.'
                 }
               </p>
-              {(searchQuery || filteredByFilterBar.length > 0) && (
+              {searchQuery && (
                 <Button
                   onClick={() => {
                     setSearchQuery('');
-                    setFilteredByFilterBar([]);
                   }}
                   variant="outline"
                 >

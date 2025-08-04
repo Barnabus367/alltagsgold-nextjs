@@ -47,7 +47,7 @@ export function PremiumImage({
     setImageLoaded(true);
   };
 
-  const handleImageError = () => {
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     console.warn('Image failed to load:', imageUrl);
     setImageError(true);
     setImageLoaded(true);
@@ -79,9 +79,10 @@ export function PremiumImage({
           )}
         </>
       ) : (
-        // Einfacher Fallback
-        <div className={`bg-gray-200 flex items-center justify-center text-gray-500 text-sm ${className}`}>
-          <span>Bild nicht verfügbar</span>
+        // Verbesserter Fallback mit "Bild offline nicht verfügbar"
+        <div className={`bg-gray-200 flex flex-col items-center justify-center rounded-lg ${className}`} style={{ minHeight: '200px' }}>
+          <span className="text-gray-600 text-base font-medium">Bild offline</span>
+          <span className="text-gray-500 text-sm">nicht verfügbar</span>
         </div>
       )}
     </div>

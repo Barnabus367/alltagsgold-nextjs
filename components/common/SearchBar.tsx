@@ -1,5 +1,5 @@
 import { useState, useRef, useId } from 'react';
-import { Search } from 'lucide-react';
+import { Search } from '@/lib/icons';
 import { Input } from '@/components/ui/input';
 import { trackSearch } from '@/lib/analytics';
 import { announceToScreenReader } from '@/lib/accessibility';

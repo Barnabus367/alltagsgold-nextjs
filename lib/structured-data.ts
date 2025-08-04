@@ -34,6 +34,19 @@ export interface Review {
   reviewBody?: string;
 }
 
+export interface BreadcrumbItem {
+  '@type': 'ListItem';
+  position: number;
+  name: string;
+  item?: string;
+}
+
+export interface BreadcrumbList {
+  '@context': 'https://schema.org';
+  '@type': 'BreadcrumbList';
+  itemListElement: BreadcrumbItem[];
+}
+
 export interface Offer {
   '@type': 'Offer';
   url: string;

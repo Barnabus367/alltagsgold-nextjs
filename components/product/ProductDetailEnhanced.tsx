@@ -831,8 +831,8 @@ export function ProductDetail({ preloadedProduct }: ProductDetailProps) {
         />
       </div>
       
-      {/* Mobile Sticky Add to Cart - Optional, kann aktiviert werden wenn gewünscht */}
-      {isMobile && false && ( // Setze auf true um zu aktivieren
+      {/* Mobile Sticky Add to Cart */}
+      {isMobile && (
         <div className="mobile-sticky-cta">
           <div className="mobile-sticky-price">{safePricing.formatted}</div>
           <button 

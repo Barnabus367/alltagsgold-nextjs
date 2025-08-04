@@ -86,6 +86,12 @@ export function NextSEOHead({
       <meta name="twitter:description" content={seo.twitter?.description || seo.description} key="twitter:description" />
       {seo.twitter?.image && <meta name="twitter:image" content={seo.twitter.image} key="twitter:image" />}
       
+      {/* hreflang Tags for DACH Region */}
+      <link rel="alternate" hreflang="de-CH" href={fullCanonicalUrl} key="hreflang-ch" />
+      <link rel="alternate" hreflang="de-DE" href={fullCanonicalUrl} key="hreflang-de" />
+      <link rel="alternate" hreflang="de-AT" href={fullCanonicalUrl} key="hreflang-at" />
+      <link rel="alternate" hreflang="x-default" href={fullCanonicalUrl} key="hreflang-default" />
+      
       {/* Additional SEO Meta Tags mit Keys */}
       <meta name="robots" content="index, follow" key="robots" />
       <meta name="author" content="AlltagsGold" key="author" />

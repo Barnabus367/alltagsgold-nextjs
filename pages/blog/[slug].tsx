@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Layout } from '@/components/layout/Layout';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateBlogPostSEO } from '@/lib/seo';
+import { generateBreadcrumbStructuredData } from '@/lib/structured-data';
 import { getBlogPostBySlug, getAllBlogPosts } from '@/data/blog-posts';
 import type { BlogPost } from '@/data/blog-types';
 import { trackPageView } from '@/lib/analytics';
@@ -73,11 +74,20 @@ export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) 
     }
   };
 
+  // Generate Breadcrumb structured data
+  const breadcrumbs = [
+    { name: 'Home', url: 'https://www.alltagsgold.ch/' },
+    { name: 'Blog', url: 'https://www.alltagsgold.ch/blog' },
+    { name: post.title, url: `https://www.alltagsgold.ch/blog/${post.slug}` }
+  ];
+  const breadcrumbSchema = generateBreadcrumbStructuredData(breadcrumbs);
+
   return (
     <>
       <NextSEOHead 
         seo={generateBlogPostSEO(post)}
         canonicalUrl={`blog/${post.slug}`}
+        structuredData={breadcrumbSchema}
       />
       <Layout>
         <article className="min-h-screen bg-white">

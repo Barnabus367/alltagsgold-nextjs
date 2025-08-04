@@ -189,10 +189,19 @@ export async function getProductsOptimized(first: number = 250): Promise<{ produ
             variants(first: 1) {
               edges {
                 node {
+                  id
                   availableForSale
+                  price {
+                    amount
+                    currencyCode
+                  }
                   compareAtPrice {
                     amount
                     currencyCode
+                  }
+                  selectedOptions {
+                    name
+                    value
                   }
                 }
               }

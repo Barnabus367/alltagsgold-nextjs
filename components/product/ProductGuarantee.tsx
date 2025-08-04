@@ -26,7 +26,7 @@ export function ProductGuarantee() {
     },
     {
       icon: <Truck className="w-6 h-6" />,
-      text: 'Kostenloser Versand ab CHF 50'
+      text: 'Kostenloser Versand ab CHF 60'
     },
     {
       icon: <Shield className="w-6 h-6" />,

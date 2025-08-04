@@ -12,56 +12,111 @@ interface ProductBenefitsProps {
 }
 
 export function ProductBenefits({ product }: ProductBenefitsProps) {
-  // Standard-Benefits die für alle Produkte gelten
-  const defaultBenefits: Benefit[] = [
-    {
-      icon: '🚚',
-      title: 'Schnelle Lieferung',
-      description: 'Versand innerhalb 24h aus unserem Schweizer Lager'
-    },
-    {
-      icon: '✓',
-      title: 'Geprüfte Qualität',
-      description: 'Sorgfältig ausgewählte Produkte für Ihren Alltag'
-    },
-    {
-      icon: '♻️',
-      title: '30 Tage Rückgaberecht',
-      description: 'Kostenlose Rücksendung bei Nichtgefallen'
-    }
-  ];
-
-  // Produktspezifische Benefits (können später aus Produktdaten kommen)
-  const getProductSpecificBenefits = (): Benefit[] => {
-    if (!product) return defaultBenefits;
-    
-    // Hier können wir später produktspezifische Benefits basierend auf Tags/Kategorien generieren
-    const category = product.productType?.toLowerCase() || '';
-    
-    if (category.includes('lampe') || category.includes('licht')) {
+  // Parse Benefits aus Shopify Tags
+  const parseProductBenefits = (): Benefit[] => {
+    if (!product?.tags || product.tags.length === 0) {
+      // Fallback wenn keine Tags vorhanden
       return [
         {
-          icon: '💡',
-          title: 'Energieeffizient',
-          description: 'LED-Technologie für niedrigen Stromverbrauch'
-        },
-        {
-          icon: '🎨',
-          title: 'Vielseitig einstellbar',
-          description: 'Mehrere Helligkeitsstufen und Farbtemperaturen'
-        },
-        {
-          icon: '🏠',
-          title: 'Perfekt für jeden Raum',
-          description: 'Elegantes Design passt zu jedem Einrichtungsstil'
+          icon: '📦',
+          title: 'Produkteigenschaften',
+          description: 'Weitere Details finden Sie in der Produktbeschreibung'
         }
       ];
     }
     
-    return defaultBenefits;
+    // Benefit-Tags erkennen (z.B. "benefit:Energiesparend", "feature:LED", etc.)
+    const benefitTags = product.tags.filter(tag => 
+      tag.toLowerCase().includes('benefit:') || 
+      tag.toLowerCase().includes('feature:') ||
+      tag.toLowerCase().includes('vorteil:')
+    );
+    
+    // Icon-Mapping für häufige Begriffe
+    const iconMap: Record<string, string> = {
+      'energie': '⚡',
+      'led': '💡',
+      'usb': '🔌',
+      'batterie': '🔋',
+      'akku': '🔋',
+      'wasserdicht': '💧',
+      'outdoor': '🏕️',
+      'einstellbar': '🎛️',
+      'timer': '⏰',
+      'fernbedienung': '📱',
+      'smart': '📱',
+      'leise': '🔇',
+      'kompakt': '📏',
+      'faltbar': '📐',
+      'robust': '💪',
+      'premium': '⭐',
+      'garantie': '🛡️',
+      'umweltfreundlich': '🌱',
+      'recycling': '♻️',
+      'sicher': '🔒',
+      'kinder': '👶',
+      'einfach': '👍'
+    };
+    
+    const getIcon = (text: string): string => {
+      const lowerText = text.toLowerCase();
+      for (const [key, icon] of Object.entries(iconMap)) {
+        if (lowerText.includes(key)) return icon;
+      }
+      return '✓'; // Standard-Icon
+    };
+    
+    // Wenn spezifische Benefit-Tags vorhanden sind
+    if (benefitTags.length > 0) {
+      return benefitTags.slice(0, 3).map(tag => {
+        const [prefix, ...valueParts] = tag.split(':');
+        const value = valueParts.join(':').trim();
+        
+        return {
+          icon: getIcon(value),
+          title: value,
+          description: '' // Beschreibung könnte aus weiteren Tags kommen
+        };
+      });
+    }
+    
+    // Alternativ: Alle Tags als Benefits interpretieren (max. 3)
+    const relevantTags = product.tags
+      .filter(tag => 
+        !tag.toLowerCase().includes('hidden') &&
+        !tag.toLowerCase().includes('collection') &&
+        tag.length > 2
+      )
+      .slice(0, 3);
+    
+    if (relevantTags.length === 0) {
+      // Absolute Fallback basierend auf Produkttyp
+      return [{
+        icon: '📦',
+        title: product.productType || 'Qualitätsprodukt',
+        description: 'Sorgfältig ausgewählt für Ihren Alltag'
+      }];
+    }
+    
+    return relevantTags.map(tag => ({
+      icon: getIcon(tag),
+      title: tag.charAt(0).toUpperCase() + tag.slice(1),
+      description: ''
+    }));
   };
 
-  const benefits = getProductSpecificBenefits();
+  const benefits = parseProductBenefits();
+  
+  // Fülle auf 3 Benefits auf wenn weniger vorhanden
+  while (benefits.length < 3) {
+    benefits.push({
+      icon: '✓',
+      title: benefits.length === 1 ? 'Schweizer Qualität' : 'Premium Service',
+      description: benefits.length === 1 
+        ? 'Direkt aus unserem Lager' 
+        : 'Kundenservice auf Deutsch'
+    });
+  }
 
   return (
     <section className="py-16 border-y border-gray-100">

@@ -42,9 +42,21 @@ export function ProductStory({ product }: ProductStoryProps) {
             <h2 className="text-3xl lg:text-4xl font-light text-gray-900">
               {story.title}
             </h2>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              {story.content}
-            </p>
+            <div className="space-y-4">
+              <p className="text-lg text-gray-700 leading-relaxed">
+                {story.content}
+              </p>
+              
+              {/* Vollständige Produktbeschreibung wenn vorhanden */}
+              {product.description && (
+                <div className="prose prose-gray max-w-none pt-4 border-t border-gray-200">
+                  <h3 className="text-lg font-medium mb-2">Produktdetails</h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {product.description}
+                  </p>
+                </div>
+              )}
+            </div>
             
             {/* Feature List */}
             <div className="space-y-3 pt-4">

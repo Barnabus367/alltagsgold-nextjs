@@ -41,11 +41,16 @@ export function ProductVariantSelector({
 
   // Finde Variante basierend auf ausgewählten Optionen
   const findVariantByOptions = (selectedOptions: Record<string, string>) => {
-    return variants.find(variant => 
-      variant.selectedOptions?.every(option => 
+    return variants.find(variant => {
+      // Prüfe ob alle selectedOptions der Variante in unserer Auswahl sind
+      return variant.selectedOptions?.every(option => 
         selectedOptions[option.name] === option.value
-      )
-    );
+      ) && 
+      // Prüfe ob wir nicht mehr Optionen haben als die Variante
+      Object.keys(selectedOptions).every(key =>
+        variant.selectedOptions?.some(opt => opt.name === key)
+      );
+    });
   };
 
   // Aktuelle Auswahl

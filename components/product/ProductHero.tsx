@@ -71,9 +71,8 @@ export function ProductHero({
         
         {/* Kurzbeschreibung */}
         <div className="prose prose-gray max-w-none">
-          <p className="text-gray-700 leading-relaxed">
-            {product.description ? 
-             product.description.slice(0, 150) + '...' : 
+          <p className="text-gray-700 leading-relaxed line-clamp-3">
+            {product.description || 
              'Entdecken Sie unser sorgfältig ausgewähltes Produkt, das Qualität und Design vereint. Perfekt für Ihren Alltag.'}
           </p>
         </div>
@@ -106,7 +105,7 @@ export function ProductHero({
         
         {/* Zusatzinfo */}
         <div className="pt-4 border-t border-gray-200 text-sm text-gray-600 space-y-2">
-          <p>✓ Kostenloser Versand ab CHF 50</p>
+          <p>✓ Kostenloser Versand ab CHF 60</p>
           <p>✓ Direkt aus unserem Schweizer Lager</p>
           <p>✓ Sichere Bezahlung mit SSL-Verschlüsselung</p>
         </div>

@@ -1,7 +1,8 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
 // import { ProductDetail } from '../ProductDetail';
-import { ProductDetail } from '../../components/product/ProductDetailEnhanced';
+// import { ProductDetail } from '../../components/product/ProductDetailEnhanced';
+import { ProductDetailPremium as ProductDetail } from '../../components/product/ProductDetailPremium';
 import { Layout } from '../../components/layout/Layout';
 import { NextSEOHead } from '../../components/seo/NextSEOHead';
 import { useState, useEffect } from 'react';

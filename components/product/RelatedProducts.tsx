@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ProductCard } from '@/components/product/ProductCard';
 import { ShopifyProduct } from '@/types/shopify';
-import { getProductRecommendations, getCollectionProducts } from '@/lib/shopify';
+import { getCollectionByHandle, getProducts } from '@/lib/shopify';
 import { ChevronLeft, ChevronRight } from '@/lib/icons';
 
 interface RelatedProductsProps {
@@ -16,22 +16,29 @@ export function RelatedProducts({ currentProduct }: RelatedProductsProps) {
   useEffect(() => {
     const fetchRelatedProducts = async () => {
       try {
-        // Versuche zuerst Shopify Recommendations
         let products: ShopifyProduct[] = [];
         
-        // Wenn das Produkt einer Collection angehört, hole Produkte aus derselben Collection
+        // Wenn das Produkt einer Collection angehört, hole die Collection
         if (currentProduct.collections?.edges && currentProduct.collections.edges.length > 0) {
           const collectionHandle = currentProduct.collections.edges[0].node.handle;
-          const collectionProducts = await getCollectionProducts(collectionHandle, 8);
+          const collection = await getCollectionByHandle(collectionHandle);
           
-          // Filtere das aktuelle Produkt aus
-          products = collectionProducts.filter(p => p.id !== currentProduct.id);
+          if (collection?.products?.edges) {
+            // Extrahiere Produkte aus der Collection
+            products = collection.products.edges
+              .map(edge => edge.node)
+              .filter((p: ShopifyProduct) => p.id !== currentProduct.id);
+          }
         }
         
-        // Fallback: Hole zufällige Produkte
+        // Fallback: Hole alle Produkte
         if (products.length === 0) {
-          // Hier könntest du eine getAllProducts Funktion implementieren
-          products = [];
+          const allProductsData = await getProducts(12);
+          if (allProductsData?.products) {
+            products = allProductsData.products
+              .filter((p: ShopifyProduct) => p.id !== currentProduct.id)
+              .slice(0, 4);
+          }
         }
         
         setRelatedProducts(products.slice(0, 4));

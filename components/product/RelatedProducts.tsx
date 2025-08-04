@@ -1,125 +1,105 @@
-import { useProducts } from '@/hooks/useShopify';
-import { ProductCard } from './ProductCard';
+import React, { useEffect, useState } from 'react';
+import { ProductCard } from '@/components/product/ProductCard';
 import { ShopifyProduct } from '@/types/shopify';
-import Link from 'next/link';
-import { ArrowRight } from '@/lib/icons';
+import { getProductRecommendations, getCollectionProducts } from '@/lib/shopify';
+import { ChevronLeft, ChevronRight } from '@/lib/icons';
 
 interface RelatedProductsProps {
   currentProduct: ShopifyProduct;
-  maxProducts?: number;
 }
 
-export function RelatedProducts({ currentProduct, maxProducts = 4 }: RelatedProductsProps) {
-  const { data: productsData, isLoading } = useProducts(12);
+export function RelatedProducts({ currentProduct }: RelatedProductsProps) {
+  const [relatedProducts, setRelatedProducts] = useState<ShopifyProduct[]>([]);
+  const [loading, setLoading] = useState(true);
   
-  if (isLoading || !productsData?.products) {
+  useEffect(() => {
+    const fetchRelatedProducts = async () => {
+      try {
+        // Versuche zuerst Shopify Recommendations
+        let products: ShopifyProduct[] = [];
+        
+        // Wenn das Produkt einer Collection angehört, hole Produkte aus derselben Collection
+        if (currentProduct.collections?.edges && currentProduct.collections.edges.length > 0) {
+          const collectionHandle = currentProduct.collections.edges[0].node.handle;
+          const collectionProducts = await getCollectionProducts(collectionHandle, 8);
+          
+          // Filtere das aktuelle Produkt aus
+          products = collectionProducts.filter(p => p.id !== currentProduct.id);
+        }
+        
+        // Fallback: Hole zufällige Produkte
+        if (products.length === 0) {
+          // Hier könntest du eine getAllProducts Funktion implementieren
+          products = [];
+        }
+        
+        setRelatedProducts(products.slice(0, 4));
+      } catch (error) {
+        console.error('Error fetching related products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchRelatedProducts();
+  }, [currentProduct]);
+  
+  if (loading) {
     return (
-      <div className="animate-pulse">
-        <div className="h-8 bg-gray-200 rounded w-48 mb-8"></div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[...Array(maxProducts)].map((_, i) => (
-            <div key={i} className="bg-gray-200 aspect-square rounded-lg"></div>
+      <section className="my-20">
+        <h2 className="text-2xl font-light text-gray-900 mb-8">Ähnliche Produkte</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="bg-gray-100 rounded-lg h-96 animate-pulse"></div>
           ))}
         </div>
-      </div>
+      </section>
     );
   }
   
-  // Finde verwandte Produkte basierend auf Kollektion oder Produkttyp
-  const currentCollections = currentProduct.collections?.edges?.map(e => e.node.id) || [];
-  const currentType = currentProduct.productType?.toLowerCase() || '';
-  
-  const relatedProducts = productsData.products
-    .filter((p: any) => {
-      // Nicht das aktuelle Produkt
-      if (p.id === currentProduct.id) return false;
-      
-      // Gleiche Kollektion?
-      const hasSharedCollection = p.collections?.edges?.some((e: any) => 
-        currentCollections.includes(e.node.id)
-      );
-      
-      // Ähnlicher Produkttyp?
-      const hasSimilarType = p.productType?.toLowerCase().includes(currentType) ||
-        currentType.includes(p.productType?.toLowerCase() || '');
-      
-      return hasSharedCollection || hasSimilarType;
-    })
-    .slice(0, maxProducts);
-  
-  // Wenn nicht genug verwandte Produkte, fülle mit anderen auf
-  if (relatedProducts.length < maxProducts) {
-    const additionalProducts = productsData.products
-      .filter((p: any) => p.id !== currentProduct.id && !relatedProducts.includes(p))
-      .slice(0, maxProducts - relatedProducts.length);
-    
-    relatedProducts.push(...additionalProducts);
+  if (relatedProducts.length === 0) {
+    return null;
   }
   
-  if (relatedProducts.length === 0) return null;
-  
-  // Keywords für interne Links
-  const categoryKeywords = {
-    küche: ['Küchenhelfer', 'Küchengeräte', 'Kochen'],
-    haushalt: ['Haushaltshelfer', 'Reinigung', 'Organisation'],
-    beauty: ['Selbstpflege', 'Beauty', 'Wellness'],
-    technik: ['Gadgets', 'Elektronik', 'Smart Home']
-  };
-  
-  // Finde passende Kategorie
-  const category = Object.entries(categoryKeywords).find(([key, words]) => 
-    words.some(word => currentProduct.title.includes(word) || currentType.includes(key))
-  )?.[0];
-  
   return (
-    <section className="py-12">
-      <div className="mb-8">
-        <h2 className="text-2xl font-light text-gray-900 mb-2">
+    <section className="my-20">
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="text-2xl font-light text-gray-900">
           Ähnliche Produkte
         </h2>
-        <p className="text-gray-600">
-          Entdecken Sie weitere {category ? categoryKeywords[category as keyof typeof categoryKeywords][0] : 'Produkte'} aus unserem Sortiment
-        </p>
+        
+        {/* Optional: Navigation buttons for carousel */}
+        <div className="flex gap-2">
+          <button 
+            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+            aria-label="Vorherige Produkte"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button 
+            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+            aria-label="Nächste Produkte"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
       </div>
       
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-        {relatedProducts.map((product: any) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {relatedProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
       
-      {/* Interne Links zu wichtigen Seiten */}
-      <div className="border-t pt-8">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">
-          Mehr entdecken
-        </h3>
-        <div className="flex flex-wrap gap-4">
-          <Link 
-            href="/collections" 
-            className="flex items-center gap-2 text-amber-600 hover:text-amber-700 transition-colors"
-          >
-            Alle Kategorien ansehen
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-          
-          {currentCollections.length > 0 && (
-            <Link 
-              href={`/collections/${currentProduct.collections?.edges[0]?.node.handle}`}
-              className="flex items-center gap-2 text-amber-600 hover:text-amber-700 transition-colors"
-            >
-              Mehr {currentProduct.collections?.edges[0]?.node.title}
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          )}
-          
-          <Link 
-            href="/blog" 
-            className="flex items-center gap-2 text-amber-600 hover:text-amber-700 transition-colors"
-          >
-            Tipps & Ratgeber
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
+      {/* Call to Action */}
+      <div className="text-center mt-12">
+        <a 
+          href="/products" 
+          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+        >
+          Alle Produkte entdecken
+          <ChevronRight className="w-4 h-4" />
+        </a>
       </div>
     </section>
   );

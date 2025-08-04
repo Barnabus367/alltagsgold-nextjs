@@ -42,14 +42,22 @@ export function ProductVariantSelector({
   // Finde Variante basierend auf ausgewählten Optionen
   const findVariantByOptions = (selectedOptions: Record<string, string>) => {
     return variants.find(variant => {
-      // Prüfe ob alle selectedOptions der Variante in unserer Auswahl sind
-      return variant.selectedOptions?.every(option => 
-        selectedOptions[option.name] === option.value
-      ) && 
-      // Prüfe ob wir nicht mehr Optionen haben als die Variante
-      Object.keys(selectedOptions).every(key =>
-        variant.selectedOptions?.some(opt => opt.name === key)
-      );
+      // Prüfe ob alle ausgewählten Optionen mit der Variante übereinstimmen
+      const variantOptions = variant.selectedOptions || [];
+      
+      // Für jede Option der Variante prüfen
+      for (const variantOption of variantOptions) {
+        // Wenn wir eine Auswahl für diese Option haben
+        if (selectedOptions[variantOption.name]) {
+          // Muss sie übereinstimmen
+          if (selectedOptions[variantOption.name] !== variantOption.value) {
+            return false;
+          }
+        }
+      }
+      
+      // Alle überprüften Optionen stimmen überein
+      return true;
     });
   };
 
@@ -74,35 +82,62 @@ export function ProductVariantSelector({
           <div className="flex flex-wrap gap-3">
             {Array.from(optionData.values).map(value => {
               const isSelected = currentSelection[optionName] === value;
-              const newSelection = { ...currentSelection, [optionName]: value };
-              const variant = findVariantByOptions(newSelection);
-              const isAvailable = variant?.availableForSale;
+              
+              // Erstelle eine neue Auswahl nur mit dieser Option
+              const testSelection: Record<string, string> = { [optionName]: value };
+              
+              // Prüfe ob es überhaupt eine Variante mit dieser Option gibt
+              const hasVariantWithOption = variants.some(v => 
+                v.selectedOptions?.some(opt => 
+                  opt.name === optionName && opt.value === value
+                )
+              );
+              
+              // Prüfe ob mindestens eine Variante mit dieser Option verfügbar ist
+              const hasAvailableVariant = variants.some(v => 
+                v.availableForSale &&
+                v.selectedOptions?.some(opt => 
+                  opt.name === optionName && opt.value === value
+                )
+              );
+              
+              // Finde die erste verfügbare Variante mit dieser Option
+              const firstAvailableVariant = variants.find(v => 
+                v.availableForSale &&
+                v.selectedOptions?.some(opt => 
+                  opt.name === optionName && opt.value === value
+                )
+              );
               
               return (
                 <button
                   key={value}
-                  onClick={() => variant && onVariantChange(variant)}
-                  disabled={!isAvailable}
+                  onClick={() => {
+                    if (firstAvailableVariant) {
+                      onVariantChange(firstAvailableVariant);
+                    }
+                  }}
+                  disabled={!hasAvailableVariant}
                   className={cn(
                     "relative min-w-[100px] px-4 py-3 rounded-xl border-2 transition-all duration-200",
                     "hover:scale-105 hover:shadow-md",
                     isSelected 
                       ? "border-gray-900 bg-gray-900 text-white shadow-lg" 
                       : "border-gray-200 bg-white text-gray-900 hover:border-gray-400",
-                    !isAvailable && "opacity-50 cursor-not-allowed hover:scale-100 hover:shadow-none"
+                    !hasAvailableVariant && "opacity-50 cursor-not-allowed hover:scale-100 hover:shadow-none"
                   )}
                 >
                   <span className="font-medium">{value}</span>
                   
                   {/* Preis-Unterschied anzeigen wenn vorhanden */}
-                  {variant && variant.price.amount !== selectedVariant?.price.amount && (
+                  {firstAvailableVariant && firstAvailableVariant.price.amount !== selectedVariant?.price.amount && (
                     <span className="block text-xs mt-1 opacity-70">
-                      {formatPriceSafe(variant.price)}
+                      {formatPriceSafe(firstAvailableVariant.price)}
                     </span>
                   )}
                   
                   {/* Ausverkauft Badge */}
-                  {!isAvailable && (
+                  {!hasAvailableVariant && (
                     <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
                       Ausverkauft
                     </span>

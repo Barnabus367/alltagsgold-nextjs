@@ -121,7 +121,8 @@ const nextConfig = {
       '@radix-ui/react-tabs',
       '@radix-ui/react-tooltip',
       '@tanstack/react-query',
-      'framer-motion'
+      'framer-motion',
+      'lucide-react'
     ],
     // optimizeCss: true, // Temporär deaktiviert wegen Build-Issues
   },

@@ -151,7 +151,7 @@ export function generateProductSEO(product: any): SEOMetadata {
   const benefit = cleanDesc.length > 20 ? cleanDesc : undefined;
   
   // Neue Description mit Template und Preis
-  let description = SEO_TEMPLATES.productDescriptionTemplate(productTitle, benefit, priceFormatted);
+  let description = SEO_TEMPLATES.productDescriptionTemplate(productTitle, benefit, priceFormatted || undefined);
   
   // Kürze auf 160 Zeichen (Google's empfohlene Länge)
   description = sanitizeDescription(description, 160);

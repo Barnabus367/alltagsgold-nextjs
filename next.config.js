@@ -110,7 +110,6 @@ const nextConfig = {
     unoptimized: false,
     // Erlaube data: URLs für SVG-Fallbacks
     dangerouslyAllowSVG: true,
-    contentDispositionType: 'attachment',
   },
   // Experimentelle Features nur für Production
   experimental: {

@@ -34,7 +34,8 @@ export function PremiumImage({
     }
     
     // Cloudinary Fetch API für externe URLs
-    const cloudinaryBase = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'do7yh4dll'}/image/fetch/`;
+    // Verwende direkt den Cloud Name, da die env Variable manchmal nicht korrekt geladen wird
+    const cloudinaryBase = `https://res.cloudinary.com/do7yh4dll/image/fetch/`;
     
     // Einheitliche Transformation: Warm White Style
     const transformations = [
@@ -78,7 +79,7 @@ export function PremiumImage({
     setImageLoaded(true);
   };
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+  const handleImageError = () => {
     console.warn('Image failed to load:', imageUrl);
     setImageError(true);
     setImageLoaded(true);

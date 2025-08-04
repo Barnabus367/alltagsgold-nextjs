@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { ProductCard } from '@/components/product/ProductCard';
 import { ShopifyProduct } from '@/types/shopify';
 import { getProductRecommendations, getCollectionProducts } from '@/lib/shopify';
@@ -93,13 +94,13 @@ export function RelatedProducts({ currentProduct }: RelatedProductsProps) {
       
       {/* Call to Action */}
       <div className="text-center mt-12">
-        <a 
+        <Link 
           href="/products" 
           className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
         >
           Alle Produkte entdecken
           <ChevronRight className="w-4 h-4" />
-        </a>
+        </Link>
       </div>
     </section>
   );

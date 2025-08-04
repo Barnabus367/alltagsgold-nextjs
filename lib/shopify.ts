@@ -159,6 +159,68 @@ export async function getAllProductHandles(): Promise<string[]> {
   }
 }
 
+export async function getProductsOptimized(first: number = 250): Promise<{ products: ShopifyProduct[] }> {
+  const query = `
+    query getProductsOptimized($first: Int!) {
+      products(first: $first) {
+        edges {
+          node {
+            id
+            title
+            handle
+            images(first: 1) {
+              edges {
+                node {
+                  url
+                  altText
+                }
+              }
+            }
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+              maxVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+            variants(first: 1) {
+              edges {
+                node {
+                  availableForSale
+                  compareAtPrice {
+                    amount
+                    currencyCode
+                  }
+                }
+              }
+            }
+            collections(first: 5) {
+              edges {
+                node {
+                  handle
+                  title
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const data = await shopifyFetch(query, { first });
+    const products = data.products.edges.map((edge: any) => edge.node);
+    return { products };
+  } catch (error) {
+    console.error('Error fetching optimized products:', error);
+    return { products: [] };
+  }
+}
+
 // SSG-compatible function to get all collection handles for getStaticPaths
 export async function getAllCollectionHandles(): Promise<string[]> {
   const query = `

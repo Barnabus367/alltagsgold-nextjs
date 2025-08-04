@@ -11,6 +11,11 @@ interface RelatedProductsProps {
 }
 
 export function RelatedProducts({ category, products, maxProducts = 4 }: RelatedProductsProps) {
+  // Ensure products is an array
+  if (!Array.isArray(products) || products.length === 0) {
+    return null;
+  }
+
   // Map blog categories to product collections
   const categoryMapping: Record<string, string[]> = {
     'Küche & Kochen': ['kuchenhelfer-gadgets', 'haushaltsgerate'],

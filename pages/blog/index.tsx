@@ -53,8 +53,7 @@ export default function BlogPage({ posts: initialPosts, categories: initialCateg
     if (searchQuery) {
       filtered = filtered.filter(post =>
         post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.content.toLowerCase().includes(searchQuery.toLowerCase())
+        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 

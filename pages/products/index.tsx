@@ -4,7 +4,7 @@ import { Layout } from '../../components/layout/Layout';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { useState } from 'react';
 import { ShopifyProduct } from '../../types/shopify'; 
-import { getProducts } from '../../lib/shopify';
+import { getProductsOptimized } from '../../lib/shopify';
 import { generateStaticPageSEO } from '../../lib/seo';
 
 interface ProductsPageProps {
@@ -33,7 +33,7 @@ export default function ProductsPage({ products }: ProductsPageProps) {
 
 export const getStaticProps: GetStaticProps<ProductsPageProps> = async () => {
   try {
-    const { products } = await getProducts(250);
+    const { products } = await getProductsOptimized(250);
 
     return {
       props: {

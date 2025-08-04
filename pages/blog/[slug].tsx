@@ -22,7 +22,8 @@ interface BlogPostPageProps {
 
 export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) {
   const router = useRouter();
-  const { data: products = [] } = useProducts();
+  const { data: productsData } = useProducts();
+  const products = Array.isArray(productsData) ? productsData : [];
 
   useEffect(() => {
     if (post) {

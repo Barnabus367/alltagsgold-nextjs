@@ -79,10 +79,11 @@ export function Products({ preloadedProducts }: ProductsProps) {
       <section className="relative h-[45vh] bg-gradient-to-br from-blue-900 via-gray-900 to-black flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-black/30 to-black/50 z-10"></div>
         <Image
-      src={"https://res.cloudinary.com/do7yh4dll/image/fetch/w_800,q_auto,f_webp/https://images.unsplash.com/photo-1505740420928-5e560c06d30e"}
-      alt="Alle Produkte"
-      width={600}
-      height={400}
+      src="https://cdn.shopify.com/s/files/1/0918/4575/5223/files/3_86e4db7e-e8d5-4fc2-ba8e-f3c987b97ffa.jpg?v=1737024619"
+      alt="Alle Produkte - AlltagsGold Premium Lifestyle"
+      width={1920}
+      height={1080}
+      priority
       className="absolute inset-0 w-full h-full object-cover"
     />
         <div className="relative z-20 text-center text-white max-w-5xl mx-auto px-6">

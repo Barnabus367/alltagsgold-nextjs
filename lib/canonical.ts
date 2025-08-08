@@ -66,9 +66,9 @@ export function generateCanonicalUrl(path: string): string {
   // Entferne führende Slashes und doppelte Slashes
   const cleanPath = path.replace(/^\/+/, '').replace(/\/+/g, '/');
   
-  // Homepage-Spezialfall
-  if (!cleanPath || cleanPath === '/') {
-    return SITE_URL;
+  // Homepage-Spezialfall - WICHTIG: Muss mit trailing slash sein!
+  if (!cleanPath || cleanPath === '/' || cleanPath === 'index') {
+    return `${SITE_URL}/`;
   }
   
   // Vollständige URL zusammenbauen

@@ -29,7 +29,7 @@ export default function HomePage({ featuredProducts, collections, recentPosts }:
     <>
       <NextSEOHead 
         seo={seoData} 
-        canonicalUrl="/" 
+        canonicalUrl="" 
         structuredData={localBusinessSchema}
         includeOrganization={true}
         includeWebSite={true}

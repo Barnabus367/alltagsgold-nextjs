@@ -75,7 +75,7 @@ export default function ProductDetailPage({ product, handle, seoContent }: Produ
         includeOrganization={false} // Nicht bei Produkten, da wir Product Schema haben
         useRouterPath={false} // Explizite Canonical verwenden, ignoriert ?variant=
       />
-      <Layout key={handle} onSearch={setSearchQuery}>
+      <Layout onSearch={setSearchQuery}>
         <SSRSafe>
           <div data-page-type="product" data-handle={handle} data-source={product ? 'ssg' : 'client'}>
             <ProductDetail preloadedProduct={product} seoContent={seoContent || undefined} />

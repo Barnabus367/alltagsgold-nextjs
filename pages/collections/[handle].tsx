@@ -4,6 +4,7 @@ import { CollectionDetail } from '../CollectionDetail';
 import { Layout } from '../../components/layout/Layout';
 import { NextSEOHead } from '../../components/seo/NextSEOHead';
 import { useState, useEffect } from 'react';
+import { devLog } from '../../lib/dev-utils';
 import { ShopifyCollection } from '../../types/shopify';
 import { getAllCollectionHandles, getCollectionByHandle } from '../../lib/shopify';
 import { generateCollectionSEO } from '../../lib/seo';
@@ -18,10 +19,10 @@ export default function CollectionDetailPage({ collection, handle }: CollectionD
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Navigation Diagnostics - Collection Page Mount
+  // Navigation Diagnostics - Collection Page Mount (nur in Dev)
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      console.log('🏷️ Collection Page Mount:', {
+      devLog('🏷️ Collection Page Mount:', {
         handle,
         collection: collection?.title,
         timestamp: new Date().toISOString(),
@@ -72,7 +73,7 @@ export default function CollectionDetailPage({ collection, handle }: CollectionD
         includeOrganization={true}
         useRouterPath={true} // Dynamische Canonical mit erlaubten Parametern
       />
-      <Layout key={handle} onSearch={setSearchQuery}>
+      <Layout onSearch={setSearchQuery}>
         <div data-page-type="collection" data-handle={handle} data-source={collection ? 'ssg' : 'client'}>
           <CollectionDetail preloadedCollection={collection} />
         </div>

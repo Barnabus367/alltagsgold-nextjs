@@ -144,31 +144,48 @@ const scriptLoader = new LazyScriptLoader();
 export function initializeMetaPixel(): void {
   if (process.env.NODE_ENV !== 'production') return;
 
-  scriptLoader.loadWhenIdle({
-    id: 'facebook-pixel',
-    innerHTML: `
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      try {
-        fbq('init', '1408203506889853');
-        fbq('track', 'PageView');
-      } catch(e) {
-        console.warn('Facebook Pixel failed to initialize:', e);
+  // Wrap in try-catch to handle Ad-Blocker scenarios
+  try {
+    scriptLoader.loadWhenIdle({
+      id: 'facebook-pixel',
+      innerHTML: `
+        try {
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          
+          if (typeof fbq !== 'undefined') {
+            fbq('init', '1408203506889853');
+            fbq('track', 'PageView');
+          }
+        } catch(e) {
+          // Silently fail if blocked by Ad-Blocker
+          if (!e.message?.includes('ERR_BLOCKED_BY_CLIENT')) {
+            console.warn('Facebook Pixel initialization issue:', e.message);
+          }
+        }
+      `,
+      onLoad: () => {
+        // Success logged only in debug mode
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Meta Pixel loaded successfully');
+        }
+      },
+      onError: (error) => {
+        // Only log non-Ad-Blocker errors
+        if (!error.message?.includes('ERR_BLOCKED_BY_CLIENT')) {
+          console.warn('Meta Pixel loading issue:', error.message);
+        }
       }
-    `,
-    onLoad: () => {
-      console.log('Meta Pixel loaded successfully');
-    },
-    onError: (error) => {
-      console.error('Failed to load Meta Pixel:', error);
-    }
-  });
+    });
+  } catch (error) {
+    // Silently fail - likely Ad-Blocker
+  }
 }
 
 /**

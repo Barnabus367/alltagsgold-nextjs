@@ -19,6 +19,7 @@ export function OptimizedProductCard({ product, className }: OptimizedProductCar
   return (
     <Link 
       href={`/products/${product.handle}`}
+      prefetch={true}
       className={cn(
         'group block bg-white rounded-lg overflow-hidden',
         'transition-all duration-300 ease-out',

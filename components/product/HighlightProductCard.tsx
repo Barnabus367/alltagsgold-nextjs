@@ -77,7 +77,7 @@ export function HighlightProductCard({ product }: HighlightProductCardProps) {
   };
 
   return (
-    <Link href={`/products/${product.handle}`}>
+    <Link href={`/products/${product.handle}`} prefetch={true}>
       <div 
         className="bg-white rounded-xl p-8 cursor-pointer transition-all duration-300 hover:bg-gray-50 md:hover:scale-[1.02]"
         style={{

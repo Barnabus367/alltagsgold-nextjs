@@ -6,6 +6,7 @@ import { queryClient } from '../lib/queryClient';
 import { TooltipProvider } from '../components/ui/tooltip';
 import { ToastProvider } from '../components/ui/toast-system';
 import { useEffect, useRef } from 'react';
+import { useRouter } from 'next/router';
 // dynamic import nicht mehr benötigt nach Cleanup
 import { forceCloudinaryOptimization } from '../lib/cloudinary';
 import { reportWebVitals } from '../lib/web-vitals';
@@ -25,6 +26,8 @@ import type { AppProps } from 'next/app';
 // Dev-Components wurden entfernt für Production
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  
   // Performance Optimizations - Hooks müssen immer aufgerufen werden
   const isProduction = process.env.NODE_ENV === 'production';
   
@@ -37,6 +40,48 @@ export default function App({ Component, pageProps }: AppProps) {
   
   // Track initialization to prevent repeated calls
   const isInitialized = useRef(false);
+  
+  // Zentraler Router Event Handler (einziger Ort für Router-Events)
+  useEffect(() => {
+    const handleRouteChangeStart = (url: string) => {
+      // Optional: Progress indicator starten
+      // NProgress.start();
+    };
+    
+    const handleRouteChangeDone = () => {
+      // Optional: Progress indicator stoppen
+      // NProgress.done();
+      // Scroll to top nach Navigation (nur bei neuer Seite)
+      if (typeof window !== 'undefined') {
+        window.scrollTo(0, 0);
+      }
+    };
+    
+    const handleRouteChangeError = (err: any, url: string) => {
+      // Ignoriere Abbruch-Fehler
+      if (err?.cancelled || err?.message?.includes('Abort fetching component')) {
+        // Silently ignore - das ist normal bei schneller Navigation
+        return;
+      }
+      // Log nur echte Fehler in Dev
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Navigation error:', err, url);
+      }
+      handleRouteChangeDone();
+    };
+    
+    // Registriere Events
+    router.events.on('routeChangeStart', handleRouteChangeStart);
+    router.events.on('routeChangeComplete', handleRouteChangeDone);
+    router.events.on('routeChangeError', handleRouteChangeError);
+    
+    // Cleanup
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChangeStart);
+      router.events.off('routeChangeComplete', handleRouteChangeDone);
+      router.events.off('routeChangeError', handleRouteChangeError);
+    };
+  }, [router.events]);
 
   // Aktiviere globale Optimierungen nur einmal
   useEffect(() => {
@@ -57,12 +102,14 @@ export default function App({ Component, pageProps }: AppProps) {
     // Initialize lazy-loaded third-party scripts
     initializeLazyScripts();
     
-    // Navigation Diagnostics nur wenn Debug aktiviert
-    if (typeof window !== 'undefined' && isDebugEnabled('enableNavigationDiagnostics')) {
-      import('../lib/navigation-diagnostics').then(({ initializeNavigationDiagnostics }) => {
+    // Development-only diagnostics (synchron geladen für Stabilität)
+    if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
+      // Nur in Dev-Umgebung laden, synchron für Race-Condition-Vermeidung
+      if (isDebugEnabled('enableNavigationDiagnostics')) {
+        const { initializeNavigationDiagnostics } = require('../lib/navigation-diagnostics');
         initializeNavigationDiagnostics();
         debugLog('Navigation Diagnostics aktiviert für Hydration-Analyse');
-      }).catch(console.error);
+      }
     }
     
     // Load Critical CSS based on initial route only - safe browser check

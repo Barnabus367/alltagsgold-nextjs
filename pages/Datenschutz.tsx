@@ -1,15 +1,13 @@
-
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
+import { generateStaticPageSEO } from '@/lib/seo';
+import { Layout } from '@/components/layout/Layout';
 
-export function Datenschutz() {
+function Datenschutz() {
+  const seoData = generateStaticPageSEO('datenschutz');
   return (
     <div className="min-h-screen bg-white pt-16">
       <NextSEOHead 
-        seo={{
-          title: 'Datenschutz | AlltagsGold',
-          description: 'Datenschutzerklärung von AlltagsGold. Erfahren Sie, wie wir Ihre Daten schützen und verarbeiten.',
-          keywords: 'Datenschutz, Privatsphäre, AlltagsGold'
-        }}
+        seo={seoData}
         canonicalUrl="datenschutz" 
       />
       
@@ -174,4 +172,10 @@ export function Datenschutz() {
   );
 }
 
-export default Datenschutz;
+export default function DatenschutzPage() {
+  return (
+    <Layout>
+      <Datenschutz />
+    </Layout>
+  );
+}

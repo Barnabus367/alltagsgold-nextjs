@@ -1,5 +1,6 @@
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateStaticPageSEO } from '../lib/seo';
+import { Layout } from '@/components/layout/Layout';
 
 export function AGB() {
   // Generate SEO metadata for AGB page
@@ -8,11 +9,7 @@ export function AGB() {
   return (
     <div className="min-h-screen bg-white pt-16">
       <NextSEOHead 
-        seo={{
-          title: 'AGB - Allgemeine Geschäftsbedingungen | AlltagsGold',
-          description: 'Lesen Sie unsere allgemeinen Geschäftsbedingungen für den Einkauf bei AlltagsGold.',
-          keywords: 'AGB, Geschäftsbedingungen, AlltagsGold'
-        }}
+        seo={seoData}
         canonicalUrl="agb" 
       />
 
@@ -168,5 +165,9 @@ export function AGB() {
 
 // Default export for Next.js routing
 export default function AGBPage() {
-  return <AGB />;
+  return (
+    <Layout>
+      <AGB />
+    </Layout>
+  );
 }

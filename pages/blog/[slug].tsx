@@ -2,8 +2,12 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import ReactMarkdown from 'react-markdown';
+import dynamic from 'next/dynamic';
 import { Calendar, Clock, User, Tag, ArrowLeft, Share2 } from '@/lib/icons';
+
+const ReactMarkdown = dynamic(() => import('react-markdown'), {
+  loading: () => <div className="animate-pulse bg-gray-100 h-96 rounded"></div>
+});
 import { Button } from '@/components/ui/button';
 import { Layout } from '@/components/layout/Layout';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';

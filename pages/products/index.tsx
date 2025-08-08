@@ -13,15 +13,12 @@ interface ProductsPageProps {
 
 export default function ProductsPage({ products }: ProductsPageProps) {
   const [searchQuery, setSearchQuery] = useState('');
+  const seoData = generateStaticPageSEO('products');
 
   return (
     <>
       <NextSEOHead 
-        seo={{
-          title: 'Alle Produkte - Premium Lifestyle | AlltagsGold',
-          description: 'Entdecken Sie innovative Produkte für den Alltag. Premium Qualität und schweizerische Standards für besondere Momente.',
-          keywords: 'Produkte, Premium, Lifestyle, Schweiz, AlltagsGold'
-        }}
+        seo={seoData}
         canonicalUrl="products" 
       />
       <Layout onSearch={setSearchQuery}>

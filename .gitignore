@@ -27,6 +27,24 @@ tmp/
 .vscode/
 .idea/
 
+# Bundle analysis artifacts
+build-analyze-*.log
+bundle-baseline.json
+bundle-optimization-report.md
+analyze-bundles.js
+.next/analyze/
+
+# Audit reports
+audit-report.json
+npm-audit-*.json
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# SWC cache
+.swc/
+
 # Runtime data
 pids
 *.pid

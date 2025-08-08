@@ -96,7 +96,7 @@ export function HighlightProductCard({ product }: HighlightProductCardProps) {
           {primaryImage?.url ? (
             <PremiumImage
               src={primaryImage.url}
-              alt={primaryImage.altText || product.title}
+              alt={primaryImage.altText || `${product.title} kaufen - AlltagsGold Schweiz`}
               className="w-full h-full object-cover"
               productTitle={product.title}
               productId={product.id ? product.id.replace('gid://shopify/Product/', '') : undefined}

@@ -4,9 +4,10 @@
  */
 
 // Robuste SITE_URL Konfiguration mit Fallback
-// Priorität: 1. Env Variable, 2. Vercel URL, 3. Fallback
+// Priorität: 1. Env Variable, 2. Production Check, 3. Fallback
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 
-                       (process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : null) ||
+                       (process.env.VERCEL_ENV === 'production' ? 'https://www.alltagsgold.ch' : 
+                        process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : null) ||
                        'https://www.alltagsgold.ch';
 
 /**

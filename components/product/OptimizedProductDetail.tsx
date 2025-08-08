@@ -291,13 +291,10 @@ export const OptimizedProductDetail: React.FC<OptimizedProductDetailProps> = ({
           {/* ERWEITERTE BESCHREIBUNG */}
           <div className="mt-12 border-t border-gray-200 pt-8">
             <ProductDescription 
-              html={optimizedContent.html || optimizedContent.description || product.descriptionHtml}
-              loading={optimizedContent.loading}
-              isEmpty={optimizedContent.isEmpty}
-              collapsible={true}
-              truncateLines={4}
-              previewLines={2}
-              className="bg-white"
+              product={{
+                ...product,
+                description: optimizedContent.html || optimizedContent.description || product.descriptionHtml
+              }}
             />
           </div>
         </div>

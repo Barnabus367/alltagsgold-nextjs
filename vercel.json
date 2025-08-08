@@ -29,6 +29,14 @@
         {
           "key": "X-Robots-Tag",
           "value": "all"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
         }
       ]
     },
@@ -46,6 +54,10 @@
         {
           "key": "X-Robots-Tag",
           "value": "all"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
         }
       ]
     },
@@ -63,6 +75,10 @@
         {
           "key": "X-Robots-Tag",
           "value": "all"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
         }
       ]
     },

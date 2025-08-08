@@ -372,14 +372,14 @@ export function generateHomeSEO(): SEOMetadata {
     openGraph: {
       title,
       description,
-      image: 'https://www.alltagsgold.ch/og-home.jpg',
+      image: 'https://www.alltagsgold.ch/logo-alltagsgold.png',
       url: '/'
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      image: '/og-home.jpg'
+      image: 'https://www.alltagsgold.ch/logo-alltagsgold.png'
     }
   };
 }

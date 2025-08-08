@@ -337,7 +337,7 @@ export function generateOrganizationStructuredData(): OrganizationStructuredData
     '@type': 'Organization',
     name: 'AlltagsGold',
     url: SITE_URL,
-    logo: `${SITE_URL}/alltagsgold-logo.png`,
+    logo: `${SITE_URL}/logo-alltagsgold.png`,
     description: 'Premium Haushaltshelfer online kaufen Schweiz. Innovative Küchenhelfer & Alltagsprodukte direkt aus CH-Lager.',
     address: {
       '@type': 'PostalAddress',
@@ -366,7 +366,7 @@ export function generateLocalBusinessStructuredData(): LocalBusinessStructuredDa
     '@id': `${SITE_URL}/#business`,
     name: 'AlltagsGold - Haushaltshelfer & Lifestyle Shop',
     url: SITE_URL,
-    logo: `${SITE_URL}/alltagsgold-logo.png`,
+    logo: `${SITE_URL}/logo-alltagsgold.png`,
     description: 'Haushaltsware online shop Zürich. Küchenhelfer Lieferung Basel, Bern. Lifestyle Produkte Versand ganze Deutschschweiz.',
     address: {
       '@type': 'PostalAddress',

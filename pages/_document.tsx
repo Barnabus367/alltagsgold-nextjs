@@ -32,8 +32,7 @@ export default function Document() {
         {/* Critical CSS Variables */}
         <style dangerouslySetInnerHTML={{ __html: fontVariables }} />
 
-        {/* Emergency Production Fix */}
-        <script async src="/emergency-fix.js" type="text/javascript"></script>
+        {/* Emergency fix script removed - no longer needed */}
 
         {/* Meta Pixel noscript fallback - Only in production */}
         {process.env.NODE_ENV === 'production' && (

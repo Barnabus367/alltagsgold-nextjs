@@ -6,7 +6,7 @@ import { queryClient } from '../lib/queryClient';
 import { TooltipProvider } from '../components/ui/tooltip';
 import { ToastProvider } from '../components/ui/toast-system';
 import { useEffect, useRef } from 'react';
-import dynamic from 'next/dynamic';
+// dynamic import nicht mehr benötigt nach Cleanup
 import { forceCloudinaryOptimization } from '../lib/cloudinary';
 import { reportWebVitals } from '../lib/web-vitals';
 import { inter, optimizeFontLoading } from '../lib/fonts-optimized';
@@ -22,15 +22,7 @@ import { isDebugEnabled, debugLog } from '../lib/debug-config';
 import type { AppProps } from 'next/app';
 
 // Lazy load debug components - nur wenn benötigt
-const ClickAnalyticsDashboard = dynamic(
-  () => import('../components/ClickAnalyticsDashboard').then(mod => mod.ClickAnalyticsDashboard),
-  { ssr: false, loading: () => null }
-);
-
-const AnalyticsTestDashboard = dynamic(
-  () => import('../components/dev/AnalyticsTestDashboard').then(mod => mod.AnalyticsTestDashboard),
-  { ssr: false, loading: () => null }
-);
+// Dev-Components wurden entfernt für Production
 
 export default function App({ Component, pageProps }: AppProps) {
   // Performance Optimizations Hook
@@ -96,9 +88,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 <Analytics />
                 <VercelAnalytics />
                 
-                {/* Debug Components - nur wenn explizit aktiviert */}
-                {isDebugEnabled('enableClickTracking') && <ClickAnalyticsDashboard />}
-                {isDebugEnabled('enableAnalyticsDashboard') && <AnalyticsTestDashboard />}
+                {/* Debug Components wurden für Production entfernt */}
               </ToastProvider>
             </TooltipProvider>
           </QueryClientProvider>

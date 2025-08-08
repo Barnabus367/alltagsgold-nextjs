@@ -63,11 +63,8 @@ export function PremiumImage({
   };
 
   const imageUrl = useMemo(() => {
-    console.log('🖼️ PremiumImage received:', { src, context, productTitle });
-    
     // Wenn kein src vorhanden, verwende Fallback
     if (!src || src.includes('placeholder') || src.trim() === '') {
-      console.log('❌ No valid src, using fallback');
       return fallbackSrc || 'https://via.placeholder.com/400x400?text=Kein+Bild';
     }
     
@@ -76,11 +73,9 @@ export function PremiumImage({
     if ((context === 'card' || context === 'detail' || context === 'thumbnail') && 
         src.includes('cdn.shopify.com')) {
       const transformedUrl = getUnifiedProductImage(src);
-      console.log('🎨 Transformed Shopify product image:', transformedUrl);
       return transformedUrl;
     }
     
-    console.log('✅ Using original URL (non-product image):', context);
     return src;
   }, [src, fallbackSrc, context, productTitle]);
   
@@ -91,7 +86,7 @@ export function PremiumImage({
   };
 
   const handleImageError = () => {
-    console.warn('Image failed to load:', imageUrl);
+    // Image load error handled silently
     setImageError(true);
     setImageLoaded(true);
   };

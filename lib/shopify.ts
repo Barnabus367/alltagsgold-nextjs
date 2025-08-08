@@ -22,29 +22,20 @@ async function shopifyFetch(query: string, variables: Record<string, any> = {}) 
     });
 
     if (!response.ok) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error(`Shopify API error: ${response.status} ${response.statusText}`);
-      }
+      // Error handling ohne Logging für bessere Performance
       throw new Error('SHOPIFY_API_ERROR');
     }
 
     const { data, errors } = await response.json();
     
     if (errors) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error('GraphQL errors:', errors);
-      }
+      // GraphQL errors werden intern behandelt
       throw new Error('SHOPIFY_GRAPHQL_ERROR');
     }
 
     return data;
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Shopify fetch error:', error);
-      console.error('API URL:', STOREFRONT_API_URL);
-      console.error('Domain:', SHOPIFY_STORE_DOMAIN);
-      console.error('Token length:', SHOPIFY_STOREFRONT_ACCESS_TOKEN?.length || 0);
-    }
+    // Fehler wird weitergegeben ohne sensitive Daten zu loggen
     throw error;
   }
 }

@@ -1,25 +1,53 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Button } from '@/components/ui/button';
 import { PremiumImage } from '@/components/common/PremiumImage';
+import { CompactVariantSelector } from './CompactVariantSelector';
 import { ShopifyProduct, ShopifyVariant } from '@/types/shopify';
 import { formatPriceSafe } from '@/lib/type-guards';
 import { ShoppingCart, Truck, Shield, Clock } from '@/lib/icons';
+import { cn } from '@/lib/utils';
 
 interface ProductHeroProps {
   product: ShopifyProduct;
-  selectedVariant: ShopifyVariant;
+  selectedVariant: ShopifyVariant | null;
+  variants: ShopifyVariant[];
   onAddToCart: () => void;
+  onVariantChange: (variant: ShopifyVariant) => void;
   isAddingToCart: boolean;
 }
 
 export function ProductHero({ 
   product, 
-  selectedVariant, 
-  onAddToCart, 
+  selectedVariant,
+  variants,
+  onAddToCart,
+  onVariantChange,
   isAddingToCart 
 }: ProductHeroProps) {
-  const price = formatPriceSafe(selectedVariant.price);
-  const primaryImage = product.images.edges[0]?.node;
+  const router = useRouter();
+  const price = selectedVariant ? formatPriceSafe(selectedVariant.price) : 'CHF --';
+  
+  // Dynamisches Bild basierend auf Variante
+  const currentImage = selectedVariant?.image || product.images.edges[0]?.node;
+  
+  // URL-Parameter setzen wenn Variante gewählt wird
+  useEffect(() => {
+    if (selectedVariant?.id) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('variant', selectedVariant.id);
+      router.push(url.pathname + url.search, undefined, { shallow: true });
+    }
+  }, [selectedVariant, router]);
+  
+  // Button-Text basierend auf Zustand
+  const getButtonText = () => {
+    if (!selectedVariant) return 'Bitte Variante wählen';
+    if (isAddingToCart) return 'Wird hinzugefügt...';
+    return 'In den Warenkorb';
+  };
+  
+  const isButtonDisabled = !selectedVariant || isAddingToCart;
 
   return (
     <section className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 mb-16">
@@ -27,8 +55,8 @@ export function ProductHero({
       <div className="lg:col-span-3">
         <div className="bg-gray-50 rounded-2xl p-8 lg:p-12 aspect-square flex items-center justify-center">
           <PremiumImage
-            src={primaryImage?.url || ''}
-            alt={primaryImage?.altText || product.title}
+            src={currentImage?.url || ''}
+            alt={currentImage?.altText || product.title}
             className="w-full h-full object-contain"
             productTitle={product.title}
             context="detail"
@@ -69,26 +97,28 @@ export function ProductHero({
           {price}
         </div>
         
-        {/* Kurzbeschreibung */}
-        <div className="prose prose-gray max-w-none">
-          <p className="text-gray-700 leading-relaxed line-clamp-3">
-            {product.description || 
-             'Entdecken Sie unser sorgfältig ausgewähltes Produkt, das Qualität und Design vereint. Perfekt für Ihren Alltag.'}
-          </p>
-        </div>
+        {/* Kompakte Varianten-Auswahl - NEU HIER */}
+        {variants.length > 1 && (
+          <div className="pb-4 mb-4 border-b border-gray-200">
+            <CompactVariantSelector
+              variants={variants}
+              selectedVariant={selectedVariant}
+              onVariantChange={onVariantChange}
+            />
+          </div>
+        )}
         
-        {/* Verfügbarkeit */}
-        <div className="flex items-center gap-2 text-green-600">
-          <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse"></div>
-          <span className="font-medium">Auf Lager - Versand innerhalb 24h</span>
-        </div>
-        
-        {/* CTA Button */}
+        {/* CTA Button mit dynamischem Text */}
         <Button
           onClick={onAddToCart}
-          disabled={!selectedVariant?.availableForSale || isAddingToCart}
+          disabled={isButtonDisabled}
           size="lg"
-          className="w-full h-14 text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+          className={cn(
+            "w-full h-14 text-lg font-medium rounded-xl shadow-lg transition-all duration-300",
+            !selectedVariant 
+              ? "bg-gray-400 hover:bg-gray-500" 
+              : "bg-emerald-600 hover:bg-emerald-700 hover:shadow-xl"
+          )}
         >
           {isAddingToCart ? (
             <div className="flex items-center gap-2">
@@ -98,10 +128,26 @@ export function ProductHero({
           ) : (
             <div className="flex items-center gap-2">
               <ShoppingCart className="w-5 h-5" />
-              <span>In den Warenkorb</span>
+              <span>{getButtonText()}</span>
             </div>
           )}
         </Button>
+        
+        {/* Verfügbarkeit & Lieferzeit */}
+        {selectedVariant && (
+          <div className="flex items-center gap-2 text-green-600">
+            <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse"></div>
+            <span className="font-medium">Auf Lager - Versand innerhalb 24h</span>
+          </div>
+        )}
+        
+        {/* Kurzbeschreibung */}
+        <div className="prose prose-gray max-w-none">
+          <p className="text-gray-700 leading-relaxed line-clamp-3">
+            {product.description || 
+             'Entdecken Sie unser sorgfältig ausgewähltes Produkt, das Qualität und Design vereint. Perfekt für Ihren Alltag.'}
+          </p>
+        </div>
         
         {/* Zusatzinfo */}
         <div className="pt-4 border-t border-gray-200 text-sm text-gray-600 space-y-2">

@@ -24,17 +24,11 @@ export default function ProductDetailPage({ product, handle }: ProductDetailPage
   const router = useRouter();
   const [_searchQuery, setSearchQuery] = useState('');
 
-  // Navigation Diagnostics - Product Page Mount
+  // Navigation Diagnostics - nur in Production
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      console.log('🛍️ Product Page Mount:', {
-        handle,
-        product: product?.title,
-        timestamp: new Date().toISOString(),
-        fromSSG: !!product, // Preloaded data indicates SSG
-        routerReady: router.isReady,
-        referrer: document.referrer
-      });
+    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
+      // Logging nur in Production für Debugging
+      // console.log deaktiviert für Development
     }
   }, [handle, product, router.isReady]);
 
@@ -91,7 +85,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       params: { handle },
     }));
 
-    console.log(`SSG: Generating ${paths.length} product pages statically`);
+    // SSG: Generating product pages statically
 
     // Generate all products at build time, only fallback for new products
     return {

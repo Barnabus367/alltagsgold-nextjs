@@ -19,6 +19,7 @@ import { ProductVariantSelector } from './ProductVariantSelector';
 import { ProductTechnicalDetails } from './ProductTechnicalDetails';
 import { ProductGuarantee } from './ProductGuarantee';
 import { RelatedProducts } from './RelatedProducts';
+import { MobileStickyBuyBar } from './MobileStickyBuyBar';
 
 // Content Processing Systems
 import { getCachedNativeContent } from '@/lib/native-descriptions';
@@ -58,10 +59,26 @@ export function ProductDetailPremium({ preloadedProduct }: ProductDetailPremiumP
     return { all: variants, current };
   }, [product, selectedVariant]);
   
-  // Set initial variant
+  // Set initial variant from URL or default
   useEffect(() => {
-    if (safeVariantData.all.length > 0 && !selectedVariant) {
-      setSelectedVariant(safeVariantData.all[0]);
+    if (safeVariantData.all.length > 0) {
+      // Check URL for variant parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const variantId = urlParams.get('variant');
+      
+      if (variantId && !selectedVariant) {
+        // Try to find variant by ID from URL
+        const variantFromUrl = safeVariantData.all.find((v: ShopifyVariant) => v.id === variantId);
+        if (variantFromUrl) {
+          setSelectedVariant(variantFromUrl);
+          return;
+        }
+      }
+      
+      // Fallback to first variant if none selected
+      if (!selectedVariant) {
+        setSelectedVariant(safeVariantData.all[0]);
+      }
     }
   }, [safeVariantData.all, selectedVariant]);
   
@@ -162,11 +179,13 @@ export function ProductDetailPremium({ preloadedProduct }: ProductDetailPremiumP
       
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Hero Section */}
+        {/* Hero Section mit integrierter Varianten-Auswahl */}
         <ProductHero
           product={product}
-          selectedVariant={safeVariantData.current!}
+          selectedVariant={safeVariantData.current}
+          variants={safeVariantData.all}
           onAddToCart={handleAddToCart}
+          onVariantChange={setSelectedVariant}
           isAddingToCart={isAddingToCart}
         />
         
@@ -176,13 +195,15 @@ export function ProductDetailPremium({ preloadedProduct }: ProductDetailPremiumP
         {/* Story Section */}
         <ProductStory product={product} />
         
-        {/* Variant Selector */}
-        <ProductVariantSelector
-          product={product}
-          variants={safeVariantData.all}
-          selectedVariant={safeVariantData.current}
-          onVariantChange={setSelectedVariant}
-        />
+        {/* Erweiterte Varianten-Ansicht (Optional - nur wenn viele Varianten) */}
+        {safeVariantData.all.length > 4 && (
+          <ProductVariantSelector
+            product={product}
+            variants={safeVariantData.all}
+            selectedVariant={safeVariantData.current}
+            onVariantChange={setSelectedVariant}
+          />
+        )}
         
         {/* Technical Details */}
         <ProductTechnicalDetails product={product} />
@@ -193,6 +214,13 @@ export function ProductDetailPremium({ preloadedProduct }: ProductDetailPremiumP
         {/* Related Products */}
         <RelatedProducts currentProduct={product} />
       </div>
+      
+      {/* Mobile Sticky Buy-Bar */}
+      <MobileStickyBuyBar
+        selectedVariant={safeVariantData.current}
+        onAddToCart={handleAddToCart}
+        isAddingToCart={isAddingToCart}
+      />
     </div>
     </>
   );

@@ -25,12 +25,14 @@ import type { AppProps } from 'next/app';
 // Dev-Components wurden entfernt für Production
 
 export default function App({ Component, pageProps }: AppProps) {
-  // Performance Optimizations Hook
-  useTouchOptimization();
-  
-  // Mobile Performance Monitor - Hook wird immer aufgerufen, aber intern bedingt ausgeführt
-  const debugEnabled = isDebugEnabled('enablePerformanceMonitoring');
-  useMobilePerformanceMonitor(debugEnabled);
+  // Performance Optimizations - nur in Production aktivieren
+  if (process.env.NODE_ENV === 'production') {
+    useTouchOptimization();
+    
+    // Mobile Performance Monitor - nur in Production
+    const debugEnabled = isDebugEnabled('enablePerformanceMonitoring');
+    useMobilePerformanceMonitor(debugEnabled);
+  }
   
   // Track initialization to prevent repeated calls
   const isInitialized = useRef(false);

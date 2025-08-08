@@ -372,7 +372,7 @@ export function generateHomeSEO(): SEOMetadata {
     openGraph: {
       title,
       description,
-      image: '/og-home.jpg',
+      image: 'https://www.alltagsgold.ch/og-home.jpg',
       url: '/'
     },
     twitter: {

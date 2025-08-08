@@ -141,12 +141,20 @@ export function ProductHero({
           </div>
         )}
         
-        {/* Kurzbeschreibung */}
-        <div className="prose prose-gray max-w-none">
-          <p className="text-gray-700 leading-relaxed line-clamp-3">
-            {product.description || 
-             'Entdecken Sie unser sorgfältig ausgewähltes Produkt, das Qualität und Design vereint. Perfekt für Ihren Alltag.'}
-          </p>
+        {/* Kurze Produkt-Highlights statt Beschreibung */}
+        <div className="space-y-2">
+          <div className="flex items-start gap-2">
+            <span className="text-emerald-600 mt-0.5">✓</span>
+            <span className="text-gray-700">Premium Qualität aus sorgfältiger Auswahl</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <span className="text-emerald-600 mt-0.5">✓</span>
+            <span className="text-gray-700">Getestet für den Schweizer Alltag</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <span className="text-emerald-600 mt-0.5">✓</span>
+            <span className="text-gray-700">Hervorragendes Preis-Leistungs-Verhältnis</span>
+          </div>
         </div>
         
         {/* Zusatzinfo */}

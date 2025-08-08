@@ -14,7 +14,7 @@ import { usePageTitle } from '@/hooks/usePageTitle';
 // Import neue Premium-Komponenten
 import { ProductHero } from './ProductHero';
 import { ProductBenefits } from './ProductBenefits';
-import { ProductStory } from './ProductStory';
+import { ProductDescription } from './ProductDescription';
 import { ProductVariantSelector } from './ProductVariantSelector';
 import { ProductTechnicalDetails } from './ProductTechnicalDetails';
 import { ProductGuarantee } from './ProductGuarantee';
@@ -204,8 +204,8 @@ export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDe
         {/* Benefits Section */}
         <ProductBenefits product={product} />
         
-        {/* Story Section */}
-        <ProductStory product={product} />
+        {/* Produktbeschreibung - Neu positioniert */}
+        <ProductDescription product={product} />
         
         {/* Erweiterte Varianten-Ansicht (Optional - nur wenn viele Varianten) */}
         {safeVariantData.all.length > 4 && (

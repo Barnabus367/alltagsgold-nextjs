@@ -1,5 +1,5 @@
-import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateContactSEO } from '@/lib/seo';

@@ -54,11 +54,7 @@ export default function WishlistPage() {
   return (
     <>
       <NextSEOHead 
-        seo={{
-          title: 'Wunschliste | AlltagsGold',
-          description: 'Ihre persönliche Wunschliste bei AlltagsGold. Merken Sie sich Ihre Lieblingsprodukte.',
-          keywords: 'Wunschliste, Favoriten, AlltagsGold'
-        }}
+        seo={seoData}
         canonicalUrl="wishlist" 
       />
       <Layout>

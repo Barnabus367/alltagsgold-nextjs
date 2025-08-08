@@ -11,9 +11,11 @@ import { getCloudinaryUrl } from '@/lib/cloudinary-optimized';
 import { trackViewCart, trackInitiateCheckout } from '@/lib/analytics';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { Layout } from '@/components/layout/Layout';
+import { generateStaticPageSEO } from '@/lib/seo';
 
 function Cart() {
   const [mounted, setMounted] = useState(false);
+  const seoData = generateStaticPageSEO('cart');
 
   // Verhindert Hydration-Fehler durch client-only rendering
   useEffect(() => {
@@ -123,11 +125,7 @@ function Cart() {
   return (
     <>
       <NextSEOHead 
-        seo={{
-          title: 'Warenkorb | AlltagsGold',
-          description: 'Ihr Warenkorb bei alltagsgold. Überprüfen Sie Ihre Artikel und schließen Sie Ihre Bestellung sicher ab.',
-          keywords: 'Warenkorb, Einkauf, AlltagsGold'
-        }}
+        seo={seoData}
         canonicalUrl="cart" 
       />
       <div className="min-h-screen bg-white pt-16">
@@ -461,10 +459,8 @@ function Cart() {
 }
 
 export default function CartPage() {
-  const [searchQuery, setSearchQuery] = useState('');
-
   return (
-    <Layout onSearch={setSearchQuery}>
+    <Layout>
       <Cart />
     </Layout>
   );

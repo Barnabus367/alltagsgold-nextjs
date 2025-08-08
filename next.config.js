@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
 const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
@@ -34,7 +38,21 @@ const nextConfig = {
             test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
             name: 'radix',
             chunks: 'all',
+            priority: 25,
+          },
+          // Analytics & Monitoring
+          analytics: {
+            test: /[\\/]node_modules[\\/](@vercel\/analytics|web-vitals)[\\/]/,
+            name: 'analytics',
+            chunks: 'async',
             priority: 20,
+          },
+          // Heavy libraries
+          heavy: {
+            test: /[\\/]node_modules[\\/](framer-motion|react-markdown|@tanstack\/react-query)[\\/]/,
+            name: 'heavy',
+            chunks: 'async',
+            priority: 15,
           },
           // All other vendor code
           vendor: {
@@ -241,4 +259,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+module.exports = withBundleAnalyzer(nextConfig)

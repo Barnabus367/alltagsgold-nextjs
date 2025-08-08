@@ -9,10 +9,8 @@ import { useProducts, useCollections } from '@/hooks/useShopify';
 import { formatPrice } from '@/lib/shopify';
 import { ShopifyProduct, ShopifyCollection } from '@/types/shopify';
 import Link from 'next/link';
-import { Home as HomeIcon, ShoppingBag, Heart, Utensils, Shirt, Gamepad2, Monitor, Package, Settings, Fan, Flame, FolderOpen, Lightbulb, Wrench, Grid3X3, Palette, ChefHat, Droplets, Cpu, Beef, Wind, Zap, Waves, Sparkles } from '@/lib/icons';
 import { getCategoryImage } from '@/lib/categoryImages';
 import { TrustSlider } from '@/components/common/TrustSlider';
-import { ReviewWidget } from '@/components/common/ReviewWidget';
 import { USPSection } from '@/components/common/USPSection';
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
 import { BlogTeaser } from '@/components/home/BlogTeaser';
@@ -24,38 +22,8 @@ interface HomeProps {
   recentPosts?: any[];
 }
 
-// Thematisch passende Icons für jede Kategorie
-const getCategoryIcon = (collectionHandle: string, collectionTitle: string) => {
-  const handle = collectionHandle.toLowerCase();
-  const title = collectionTitle.toLowerCase();
-  
-  // Spezifische thematische Icon-Zuordnung
-  if (handle === 'haushaltsgerate' || title.includes('haushalt')) {
-    return Settings; // Zahnrad für Haushaltsgeräte
-  } else if (handle === 'reinigungsgerate' || title.includes('reinigung')) {
-    return Sparkles; // Funkeln für Reinigung
-  } else if (handle === 'luftreiniger-luftbefeuchter' || title.includes('luft')) {
-    return Droplets; // Wassertropfen für Luftbefeuchter
-  } else if (handle === 'technik-gadgets' || title.includes('technik') || title.includes('gadget')) {
-    return Cpu; // Mikrochip für Technik
-  } else if (handle === 'kuchengerate-1' || title.includes('küche') || title.includes('kitchen')) {
-    return ChefHat; // Kochmütze für Küchengeräte
-  } else if (handle === 'bbq-grill' || title.includes('grill') || title.includes('bbq')) {
-    return Beef; // Steak-Symbol für BBQ & Grill
-  } else if (handle === 'aufbewahrung-organisation' || title.includes('aufbewahrung') || title.includes('organisation')) {
-    return FolderOpen; // Ordner für Organisation
-  } else if (handle === 'selfcare-beauty' || title.includes('beauty') || title.includes('selfcare')) {
-    return Heart; // Herz für Beauty & Selfcare
-  } else if (handle === 'dekoration' || title.includes('dekoration') || title.includes('deko')) {
-    return Palette; // Farbpalette für Dekoration
-  } else if (handle === 'beleuchtung' || title.includes('beleuchtung') || title.includes('licht')) {
-    return Lightbulb; // Glühbirne für Beleuchtung
-  } else {
-    return Package; // Standard-Fallback
-  }
-};
 
-export function Home({ searchQuery = '', preloadedProducts, preloadedCollections, recentPosts = [] }: HomeProps) {
+export function Home({ preloadedProducts, preloadedCollections, recentPosts = [] }: HomeProps) {
   usePageTitle(formatPageTitle('Home'));
   
   const { data: productsData, isLoading: productsLoading, error: productsError } = useProducts(8, {
@@ -130,12 +98,6 @@ export function Home({ searchQuery = '', preloadedProducts, preloadedCollections
       {/* Trust Slider - Editorial Marquee */}
       <TrustSlider />
       
-      {/* Review Widget Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-6">
-          <ReviewWidget platform="trustpilot" />
-        </div>
-      </section>
 
       {/* Hero-Style Sortimente Section */}
       <section className="py-24 bg-white">

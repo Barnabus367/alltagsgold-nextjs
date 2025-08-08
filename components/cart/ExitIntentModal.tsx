@@ -189,7 +189,7 @@ export function ExitIntentModal() {
 
         {/* Trust Signals */}
         <div className="mt-6 text-center text-xs text-gray-500">
-          🔒 Sichere Zahlung • 🚚 Schneller Versand • ⭐ 4.8/5 Bewertungen
+          🔒 Sichere Zahlung • 🚚 Schneller Versand • 🇨🇭 Schweizer Qualität
         </div>
       </div>
     </div>

@@ -86,7 +86,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="relative aspect-square overflow-hidden bg-white mb-4 rounded-md">
           <PremiumImage
             src={primaryImage?.url || 'https://via.placeholder.com/400x400?text=No+Image'}
-            alt={primaryImage?.altText || product.title}
+            alt={primaryImage?.altText || `${product.title} - Premium Produkt bei AlltagsGold Schweiz`}
             className="product-image w-full h-full object-cover"
             productTitle={product.title}
             context="card"

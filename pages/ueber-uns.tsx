@@ -3,7 +3,12 @@ import { Layout } from '@/components/layout/Layout';
 import Link from 'next/link';
 import { Package, Truck, RotateCcw, CheckCircle, Mail, Phone, MapPin, ArrowRight, Shield, Recycle, Heart, ChevronDown, ChevronUp, Clock, Award } from '@/lib/icons';
 import { useState } from 'react';
-import { RevealWrapper } from '@/components/product/RevealWrapper';
+import dynamic from 'next/dynamic';
+
+const RevealWrapper = dynamic(() => import('@/components/product/RevealWrapper').then(mod => mod.RevealWrapper), {
+  ssr: true,
+  loading: () => <div />
+});
 import { usePageTitle, formatPageTitle } from '@/hooks/usePageTitle';
 import { generateStaticPageSEO } from '@/lib/seo';
 import Script from 'next/script';

@@ -8,11 +8,7 @@ export function Impressum() {
   return (
     <div className="min-h-screen bg-white pt-16">
       <NextSEOHead 
-        seo={{
-          title: 'Impressum | AlltagsGold',
-          description: 'Impressum und rechtliche Informationen zu AlltagsGold - Ihrem Partner für Premium Lifestyle-Produkte.',
-          keywords: 'Impressum, Rechtliches, AlltagsGold'
-        }}
+        seo={seoData}
         canonicalUrl="impressum" 
       />
 

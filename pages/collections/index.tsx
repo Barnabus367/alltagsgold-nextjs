@@ -20,11 +20,7 @@ export default function CollectionsPage({ collections }: CollectionsPageProps) {
   return (
     <>
       <NextSEOHead 
-        seo={{
-          title: 'Kollektionen - Premium Produktkategorien | AlltagsGold',
-          description: 'Entdecken Sie unsere kuratierten Produktkategorien: Küche, Lifestyle, Design und mehr.',
-          keywords: 'Kollektionen, Kategorien, Premium, AlltagsGold'
-        }}
+        seo={seoData}
         canonicalUrl="collections" 
       />
       <Layout onSearch={setSearchQuery}>

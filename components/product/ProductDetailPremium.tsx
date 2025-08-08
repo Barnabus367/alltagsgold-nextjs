@@ -20,6 +20,7 @@ import { ProductTechnicalDetails } from './ProductTechnicalDetails';
 import { ProductGuarantee } from './ProductGuarantee';
 import { RelatedProducts } from './RelatedProducts';
 import { MobileStickyBuyBar } from './MobileStickyBuyBar';
+import { ProductSEOContent } from './ProductSEOContent';
 
 // Content Processing Systems
 import { getCachedNativeContent } from '@/lib/native-descriptions';
@@ -28,9 +29,20 @@ import { getFeatureFlag } from '@/lib/feature-flags';
 
 interface ProductDetailPremiumProps {
   preloadedProduct?: ShopifyProduct | null;
+  seoContent?: {
+    ourOpinion?: string;
+    useCases?: Array<{
+      title: string;
+      description: string;
+    }>;
+    faqs?: Array<{
+      question: string;
+      answer: string;
+    }>;
+  } | null;
 }
 
-export function ProductDetailPremium({ preloadedProduct }: ProductDetailPremiumProps) {
+export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDetailPremiumProps) {
   const router = useRouter();
   const { handle } = router.query;
   const productQuery = useProduct(handle as string);
@@ -207,6 +219,15 @@ export function ProductDetailPremium({ preloadedProduct }: ProductDetailPremiumP
         
         {/* Technical Details */}
         <ProductTechnicalDetails product={product} />
+        
+        {/* SEO Content - Meinungen, Use Cases, FAQs */}
+        {seoContent && (
+          <ProductSEOContent 
+            ourOpinion={seoContent.ourOpinion}
+            useCases={seoContent.useCases}
+            faqs={seoContent.faqs}
+          />
+        )}
         
         {/* Guarantee Section */}
         <ProductGuarantee />

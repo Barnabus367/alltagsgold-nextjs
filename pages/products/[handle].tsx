@@ -16,9 +16,20 @@ import { SSRSafe } from '../../hooks/useHydrationSafe';
 interface ProductDetailPageProps {
   product: ShopifyProduct | null;
   handle: string;
+  seoContent: {
+    ourOpinion?: string;
+    useCases?: Array<{
+      title: string;
+      description: string;
+    }>;
+    faqs?: Array<{
+      question: string;
+      answer: string;
+    }>;
+  } | null;
 }
 
-export default function ProductDetailPage({ product, handle }: ProductDetailPageProps) {
+export default function ProductDetailPage({ product, handle, seoContent }: ProductDetailPageProps) {
   const router = useRouter();
   const [_searchQuery, setSearchQuery] = useState('');
 
@@ -67,7 +78,7 @@ export default function ProductDetailPage({ product, handle }: ProductDetailPage
       <Layout key={handle} onSearch={setSearchQuery}>
         <SSRSafe>
           <div data-page-type="product" data-handle={handle} data-source={product ? 'ssg' : 'client'}>
-            <ProductDetail preloadedProduct={product} />
+            <ProductDetail preloadedProduct={product} seoContent={seoContent || undefined} />
           </div>
         </SSRSafe>
       </Layout>
@@ -149,10 +160,24 @@ export const getStaticProps: GetStaticProps<ProductDetailPageProps> = async ({ p
       };
     }
 
+    // Load SEO content from JSON file
+    let seoContent = undefined;
+    try {
+      const seoData = await import('../../data/product-seo-content.json');
+      const seoDataTyped = seoData.default as Record<string, any>;
+      if (seoDataTyped && seoDataTyped[handle]) {
+        seoContent = seoDataTyped[handle];
+      }
+    } catch (seoError) {
+      // SEO content is optional, continue without it
+      console.log(`No SEO content found for ${handle}`);
+    }
+
     return {
       props: {
         product,
         handle,
+        seoContent: seoContent || null,
       },
       revalidate: 60 * 60 * 24, // Revalidate every 24 hours (products change less frequently)
     };

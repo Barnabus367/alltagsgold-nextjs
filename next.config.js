@@ -9,6 +9,13 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   
+  // Deaktiviert wegen Build-Fehlern mit Icon-Aliases
+  // modularizeImports: {
+  //   'lucide-react': {
+  //     transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}',
+  //   },
+  // },
+  
   webpack: (config, { isServer }) => {
     // Produktions-optimierte Bundle-Aufteilung
     if (!isServer) {

@@ -6,38 +6,68 @@ const SHOPIFY_STOREFRONT_ACCESS_TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRO
 
 const STOREFRONT_API_URL = `https://${SHOPIFY_STORE_DOMAIN}/api/2023-10/graphql.json`;
 
-async function shopifyFetch(query: string, variables: Record<string, any> = {}) {
+// Hilfsfunktion für Retry mit Exponential Backoff
+async function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function shopifyFetch(query: string, variables: Record<string, any> = {}, maxRetries: number = 3) {
   if (!SHOPIFY_STOREFRONT_ACCESS_TOKEN) {
     throw new Error('SHOPIFY_CONFIG_MISSING');
   }
 
-  try {
-    const response = await fetch(STOREFRONT_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_ACCESS_TOKEN,
-      },
-      body: JSON.stringify({ query, variables }),
-    });
+  let lastError: Error | null = null;
+  
+  // Retry-Logik mit Exponential Backoff
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const response = await fetch(STOREFRONT_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+        },
+        body: JSON.stringify({ query, variables }),
+      });
 
-    if (!response.ok) {
-      // Error handling ohne Logging für bessere Performance
-      throw new Error('SHOPIFY_API_ERROR');
+      if (!response.ok) {
+        throw new Error(`SHOPIFY_API_ERROR_${response.status}`);
+      }
+
+      const { data, errors } = await response.json();
+      
+      if (errors) {
+        // GraphQL errors sind nicht retry-würdig
+        throw new Error('SHOPIFY_GRAPHQL_ERROR');
+      }
+
+      return data;
+    } catch (error) {
+      lastError = error as Error;
+      
+      // Keine Retries für GraphQL-Fehler oder Config-Fehler
+      if (lastError.message === 'SHOPIFY_GRAPHQL_ERROR' || 
+          lastError.message === 'SHOPIFY_CONFIG_MISSING') {
+        throw lastError;
+      }
+      
+      // Wenn noch Versuche übrig sind
+      if (attempt < maxRetries - 1) {
+        const delay = Math.min(250 * Math.pow(2, attempt), 1000); // 250ms, 500ms, 1000ms
+        const jitter = Math.random() * 100; // 0-100ms Jitter
+        
+        // Nur während Build loggen
+        if (process.env.NODE_ENV !== 'production' || process.env.CI) {
+          console.warn(`⚠️ Shopify API Retry ${attempt + 1}/${maxRetries} nach ${delay}ms - ${variables.handle || 'batch fetch'}`);
+        }
+        
+        await sleep(delay + jitter);
+      }
     }
-
-    const { data, errors } = await response.json();
-    
-    if (errors) {
-      // GraphQL errors werden intern behandelt
-      throw new Error('SHOPIFY_GRAPHQL_ERROR');
-    }
-
-    return data;
-  } catch (error) {
-    // Fehler wird weitergegeben ohne sensitive Daten zu loggen
-    throw error;
   }
+  
+  // Nach allen Versuchen fehlgeschlagen
+  throw new Error(`Shopify API nicht erreichbar nach ${maxRetries} Versuchen: ${lastError?.message}`);
 }
 
 export async function getProducts(first: number = 250, after?: string): Promise<{ products: ShopifyProduct[]; hasNextPage: boolean; endCursor?: string }> {

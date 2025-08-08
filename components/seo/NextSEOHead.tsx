@@ -4,8 +4,9 @@
  */
 
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { SEOMetadata } from '../../lib/seo';
-import { generateCanonicalUrl, SITE_URL } from '../../lib/canonical';
+import { generateCanonicalUrl, SITE_URL, cleanCanonicalPath } from '../../lib/canonical';
 import { 
   generateOrganizationStructuredData, 
   generateWebSiteStructuredData,
@@ -14,10 +15,11 @@ import {
 
 interface NextSEOHeadProps {
   seo: SEOMetadata;
-  canonicalUrl?: string;
+  canonicalUrl?: string; // Kann override sein oder automatisch aus router.asPath
   structuredData?: any | any[]; // Zusätzliche Schema.org Daten (z.B. Product, Breadcrumb)
   includeOrganization?: boolean; // Standard Organization Schema inkludieren
   includeWebSite?: boolean; // Standard WebSite Schema inkludieren
+  useRouterPath?: boolean; // Nutze router.asPath für dynamische Canonicals (default: true)
 }
 
 export function NextSEOHead({ 
@@ -25,12 +27,29 @@ export function NextSEOHead({
   canonicalUrl, 
   structuredData, 
   includeOrganization = true, 
-  includeWebSite = false 
+  includeWebSite = false,
+  useRouterPath = true 
 }: NextSEOHeadProps) {
-  // Generiere optimierte Canonical URL
-  const fullCanonicalUrl = canonicalUrl 
-    ? generateCanonicalUrl(canonicalUrl.startsWith('/') ? canonicalUrl.slice(1) : canonicalUrl)
-    : SITE_URL;
+  const router = useRouter();
+  
+  // Intelligente Canonical URL Generierung
+  let fullCanonicalUrl: string;
+  
+  if (canonicalUrl) {
+    // Explizit übergebene Canonical URL verwenden
+    fullCanonicalUrl = generateCanonicalUrl(
+      canonicalUrl.startsWith('/') ? canonicalUrl.slice(1) : canonicalUrl
+    );
+  } else if (useRouterPath && router.asPath) {
+    // Dynamisch aus router.asPath generieren (entfernt Varianten-Parameter etc.)
+    const cleanPath = cleanCanonicalPath(router.asPath);
+    fullCanonicalUrl = generateCanonicalUrl(
+      cleanPath.startsWith('/') ? cleanPath.slice(1) : cleanPath
+    );
+  } else {
+    // Fallback zu Homepage
+    fullCanonicalUrl = SITE_URL;
+  }
 
   // Sammle alle Structured Data
   const allStructuredData = [];

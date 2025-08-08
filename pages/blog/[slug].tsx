@@ -86,8 +86,9 @@ export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) 
     <>
       <NextSEOHead 
         seo={generateBlogPostSEO(post)}
-        canonicalUrl={`blog/${post.slug}`}
+        canonicalUrl={`blog/${post.slug}`} // Statische Canonical für Blog
         structuredData={breadcrumbSchema}
+        useRouterPath={false} // Keine dynamischen Parameter bei Blog-Posts
       />
       <Layout>
         <article className="min-h-screen bg-white">

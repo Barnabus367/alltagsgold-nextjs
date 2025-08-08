@@ -67,9 +67,10 @@ export default function CollectionDetailPage({ collection, handle }: CollectionD
     <>
       <NextSEOHead 
         seo={seoData} 
-        canonicalUrl={`/collections/${handle}`}
+        // Nutzt automatisch router.asPath und behält sort/filter Parameter
         structuredData={structuredData}
         includeOrganization={true}
+        useRouterPath={true} // Dynamische Canonical mit erlaubten Parametern
       />
       <Layout key={handle} onSearch={setSearchQuery}>
         <div data-page-type="collection" data-handle={handle} data-source={collection ? 'ssg' : 'client'}>

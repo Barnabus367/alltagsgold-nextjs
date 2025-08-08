@@ -185,7 +185,7 @@ export interface BreadcrumbListStructuredData extends StructuredDataBase {
     '@type': 'ListItem';
     position: number;
     name: string;
-    item: string;
+    item?: string; // Optional für letztes Element (current page)
   }>;
 }
 
@@ -225,7 +225,7 @@ export function generateProductStructuredData(product: ShopifyProduct): ProductS
       '@type': 'OfferShippingDetails',
       shippingRate: {
         '@type': 'MonetaryAmount',
-        value: price >= '50' ? '0' : '4.90',
+        value: parseFloat(price) >= 60 ? '0' : '4.90',
         currency: 'CHF'
       },
       shippingDestination: {
@@ -418,18 +418,76 @@ export function generateWebSiteStructuredData(): WebSiteStructuredData {
 }
 
 /**
- * Generiert Breadcrumb Schema
+ * Generiert Breadcrumb Schema mit absoluten URLs für Google Search Console
+ * Konvertiert relative URLs automatisch zu absoluten URLs
  */
 export function generateBreadcrumbStructuredData(items: Array<{ name: string; url: string }>): BreadcrumbListStructuredData {
+  // Filtere ungültige Items raus und konvertiere zu absoluten URLs
+  const validItems = items
+    .filter(item => item.name && item.name.trim()) // Name muss vorhanden sein
+    .map((item, index) => {
+      let absoluteUrl: string;
+      
+      // Wenn keine URL oder leere URL, skip das letzte Item (current page)
+      // Breadcrumbs ohne URL sind nach Schema.org für das letzte Element erlaubt
+      if (!item.url || item.url.trim() === '') {
+        // Letztes Element darf ohne URL sein (current page indicator)
+        if (index === items.length - 1) {
+          return {
+            '@type': 'ListItem' as const,
+            position: index + 1,
+            name: item.name
+            // Kein 'item' Feld für current page ist Schema.org konform
+          };
+        }
+        // Andere Elemente müssen URL haben
+        return null;
+      }
+      
+      // Wenn bereits absolute URL, verwende sie direkt
+      if (item.url.startsWith('http://') || item.url.startsWith('https://')) {
+        absoluteUrl = item.url;
+      } else {
+        // Nutze URL Constructor für sauberes Joining (verhindert doppelte Slashes)
+        try {
+          // Stelle sicher dass relative URLs mit / beginnen für korrektes Joining
+          const relativePath = item.url.startsWith('/') ? item.url : `/${item.url}`;
+          absoluteUrl = new URL(relativePath, SITE_URL).toString();
+        } catch (error) {
+          console.error(`Invalid URL in breadcrumb: ${item.url}`, error);
+          // Fallback zu SITE_URL wenn URL ungültig
+          absoluteUrl = SITE_URL;
+        }
+      }
+      
+      return {
+        '@type': 'ListItem' as const,
+        position: index + 1,
+        name: item.name,
+        item: absoluteUrl
+      };
+    })
+    .filter(Boolean) as Array<{
+      '@type': 'ListItem';
+      position: number;
+      name: string;
+      item?: string;
+    }>;
+  
+  // Nur Breadcrumb generieren wenn mindestens 1 valides Item vorhanden
+  if (validItems.length === 0) {
+    console.warn('No valid breadcrumb items provided');
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: []
+    };
+  }
+  
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: items.map((item, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      name: item.name,
-      item: item.url
-    }))
+    itemListElement: validItems
   };
 }
 

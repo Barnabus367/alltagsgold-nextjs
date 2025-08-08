@@ -1,7 +1,5 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
-// import { ProductDetail } from '../ProductDetail';
-// import { ProductDetail } from '../../components/product/ProductDetailEnhanced';
 import { ProductDetailPremium as ProductDetail } from '../../components/product/ProductDetailPremium';
 import { Layout } from '../../components/layout/Layout';
 import { NextSEOHead } from '../../components/seo/NextSEOHead';
@@ -61,9 +59,10 @@ export default function ProductDetailPage({ product, handle }: ProductDetailPage
     <>
       <NextSEOHead 
         seo={seoData} 
-        canonicalUrl={`/products/${handle}`}
+        canonicalUrl={`/products/${handle}`} // Statische Canonical ohne Varianten
         structuredData={structuredData}
         includeOrganization={false} // Nicht bei Produkten, da wir Product Schema haben
+        useRouterPath={false} // Explizite Canonical verwenden, ignoriert ?variant=
       />
       <Layout key={handle} onSearch={setSearchQuery}>
         <SSRSafe>
@@ -80,20 +79,51 @@ export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const productHandles = await getAllProductHandles();
     
-    // Generate paths for ALL products (E-Commerce Best Practice)
-    const paths = productHandles.map((handle) => ({
-      params: { handle },
-    }));
+    // Validiere jeden Handle, um sicherzustellen dass das Produkt existiert
+    const validPaths = [];
+    const invalidHandles = [];
+    
+    // Prüfe Produkte parallel für bessere Performance (in Batches von 10)
+    const batchSize = 10;
+    for (let i = 0; i < productHandles.length; i += batchSize) {
+      const batch = productHandles.slice(i, i + batchSize);
+      const batchResults = await Promise.allSettled(
+        batch.map(async (handle) => {
+          const product = await getProductByHandle(handle);
+          return { handle, product };
+        })
+      );
+      
+      for (const result of batchResults) {
+        if (result.status === 'fulfilled' && result.value.product) {
+          const { handle, product } = result.value;
+          if (product.id && product.title && product.images?.edges?.length > 0) {
+            validPaths.push({ params: { handle } });
+          } else {
+            invalidHandles.push(handle);
+            console.warn(`⚠️ Überspringe Produkt ohne vollständige Daten: ${handle}`);
+          }
+        } else if (result.status === 'rejected' || !result.value?.product) {
+          const handle = result.status === 'fulfilled' ? result.value.handle : 'unknown';
+          invalidHandles.push(handle);
+          console.warn(`⚠️ Fehler beim Validieren von Produkt: ${handle}`);
+        }
+      }
+    }
+    
+    console.log(`✅ SSG Build Report: ${validPaths.length} valide Produkte, ${invalidHandles.length} übersprungen`);
+    
+    if (invalidHandles.length > 0) {
+      console.log(`📋 Übersprungene Handles: ${invalidHandles.slice(0, 5).join(', ')}${invalidHandles.length > 5 ? '...' : ''}`);
+    }
 
-    // SSG: Generating product pages statically
-
-    // Generate all products at build time, only fallback for new products
+    // Generate all valid products at build time, only fallback for new products
     return {
-      paths,
+      paths: validPaths,
       fallback: 'blocking', // Only for new products added after build
     };
   } catch (error) {
-    console.error('Error in getStaticPaths:', error);
+    console.error('❌ Kritischer Fehler beim Abrufen der Produkte:', error);
     return {
       paths: [],
       fallback: 'blocking',

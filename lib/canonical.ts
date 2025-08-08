@@ -3,7 +3,11 @@
  * Entfernt Query-Parameter und stellt konsistente Domain sicher
  */
 
-export const SITE_URL = 'https://www.alltagsgold.ch';
+// Robuste SITE_URL Konfiguration mit Fallback
+// Priorität: 1. Env Variable, 2. Vercel URL, 3. Fallback
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 
+                       (process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : null) ||
+                       'https://www.alltagsgold.ch';
 
 /**
  * Bereinigt URL von SEO-schädlichen Query-Parametern
@@ -16,7 +20,9 @@ export function cleanUrl(url: string): string {
     const parametersToRemove = [
       'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
       'ref', 'source', 'fbclid', 'gclid', 'msclkid', 'mc_cid', 'mc_eid',
-      '_ga', '_gl', 'igshid', 'campaign', 'adgroup', 'keyword'
+      '_ga', '_gl', 'igshid', 'campaign', 'adgroup', 'keyword',
+      // Varianten-Parameter für Canonical entfernen
+      'variant', 'variantId', 'selectedVariant'
     ];
     
     // Entferne alle problematischen Parameter
@@ -87,9 +93,52 @@ export function getCleanPathFromUrl(url?: string): string {
 
 /**
  * Generiert Canonical URL für Produktseiten
+ * Entfernt automatisch Varianten-Parameter
  */
 export function generateProductCanonical(handle: string): string {
   return generateCanonicalUrl(`products/${handle}`);
+}
+
+/**
+ * Bereinigt einen Pfad von Query-Parametern für Canonical-Verwendung
+ * Nutzt Next.js router.asPath und entfernt unerwünschte Parameter
+ */
+export function cleanCanonicalPath(asPath: string): string {
+  // Wenn kein asPath, return root
+  if (!asPath) return '/';
+  
+  // Extrahiere Basis-Pfad und Query-String
+  const [basePath, queryString] = asPath.split('?');
+  
+  // Wenn keine Query-Parameter, return Basis-Pfad
+  if (!queryString) return basePath;
+  
+  // Parse Query-Parameter
+  const params = new URLSearchParams(queryString);
+  
+  // Entferne unerwünschte Parameter (inkl. Varianten)
+  const parametersToRemove = [
+    'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
+    'ref', 'source', 'fbclid', 'gclid', 'msclkid', 'mc_cid', 'mc_eid',
+    '_ga', '_gl', 'igshid', 'campaign', 'adgroup', 'keyword',
+    'variant', 'variantId', 'selectedVariant'
+  ];
+  
+  parametersToRemove.forEach(param => params.delete(param));
+  
+  // Behalte nur erlaubte Parameter (z.B. sort, filter für Collections)
+  const allowedParams = ['sort', 'filter', 'category'];
+  const cleanParams = new URLSearchParams();
+  
+  allowedParams.forEach(param => {
+    if (params.has(param)) {
+      cleanParams.set(param, params.get(param)!);
+    }
+  });
+  
+  // Baue sauberen Pfad zusammen
+  const cleanQuery = cleanParams.toString();
+  return cleanQuery ? `${basePath}?${cleanQuery}` : basePath;
 }
 
 /**

@@ -74,41 +74,63 @@ console.log('STORE_DOMAIN:', SHOPIFY_STORE_DOMAIN);
 console.log('ACCESS_TOKEN:', SHOPIFY_STOREFRONT_ACCESS_TOKEN ? '***set***' : 'missing');
 
 /**
- * Shopify API fetch function (compatible with lib/shopify.ts)
+ * Sleep helper for retry logic
  */
-async function shopifyFetch(query, variables = {}) {
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Shopify API fetch function with retry logic (compatible with lib/shopify.ts)
+ */
+async function shopifyFetch(query, variables = {}, maxRetries = 3) {
   if (!SHOPIFY_STOREFRONT_ACCESS_TOKEN || !SHOPIFY_STORE_DOMAIN) {
     console.warn('⚠️  Shopify credentials missing - generating sitemap without products/collections');
     return null;
   }
 
   const STOREFRONT_API_URL = `https://${SHOPIFY_STORE_DOMAIN}/api/2023-10/graphql.json`;
+  let lastError = null;
 
-  try {
-    const response = await fetch(STOREFRONT_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_ACCESS_TOKEN,
-      },
-      body: JSON.stringify({ query, variables }),
-    });
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const response = await fetch(STOREFRONT_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+        },
+        body: JSON.stringify({ query, variables }),
+      });
 
-    if (!response.ok) {
-      throw new Error(`Shopify API error: ${response.status} ${response.statusText}`);
+      if (!response.ok) {
+        throw new Error(`Shopify API error: ${response.status} ${response.statusText}`);
+      }
+
+      const { data, errors } = await response.json();
+      
+      if (errors) {
+        // GraphQL errors sind nicht retry-würdig
+        console.warn(`⚠️  Shopify GraphQL error: ${JSON.stringify(errors)}`);
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      lastError = error;
+      
+      // Bei Netzwerkfehlern retry mit Backoff
+      if (attempt < maxRetries - 1) {
+        const delay = Math.min(250 * Math.pow(2, attempt), 1000); // 250ms, 500ms, 1000ms
+        const jitter = Math.random() * 100; // 0-100ms Jitter
+        console.warn(`⚠️  Shopify API Retry ${attempt + 1}/${maxRetries} nach ${delay}ms - ${variables.after ? 'pagination' : 'initial fetch'}`);
+        await sleep(delay + jitter);
+      }
     }
-
-    const { data, errors } = await response.json();
-    
-    if (errors) {
-      throw new Error(`GraphQL errors: ${JSON.stringify(errors)}`);
-    }
-
-    return data;
-  } catch (error) {
-    console.warn(`⚠️  Shopify API error: ${error.message}`);
-    return null;
   }
+  
+  console.error(`❌ Shopify API nicht erreichbar nach ${maxRetries} Versuchen: ${lastError?.message}`);
+  return null;
 }
 
 /**
@@ -150,14 +172,29 @@ async function fetchShopifyProducts() {
     
     if (!data) break;
     
-    const products = data.products.edges.map(edge => edge.node);
+    // Filtere nur Produkte mit vollständigen Daten (synchron mit SSG)
+    const products = data.products.edges
+      .map(edge => edge.node)
+      .filter(product => {
+        // Validierung identisch mit getStaticPaths
+        const hasValidData = product.handle && 
+                            product.title && 
+                            product.images?.edges?.length > 0;
+        
+        if (!hasValidData) {
+          console.warn(`⚠️  Sitemap: Überspringe Produkt ohne vollständige Daten: ${product.handle || 'unknown'}`);
+        }
+        
+        return hasValidData;
+      });
+    
     allProducts = allProducts.concat(products);
     
     hasNextPage = data.products.pageInfo.hasNextPage;
     cursor = data.products.pageInfo.endCursor;
   }
 
-  console.log(`✅ Fetched ${allProducts.length} products from Shopify`);
+  console.log(`✅ Fetched ${allProducts.length} valide Produkte von Shopify`);
   return allProducts;
 }
 
@@ -183,9 +220,22 @@ async function fetchShopifyCollections() {
   
   if (!data) return [];
   
-  const collections = data.collections.edges.map(edge => edge.node);
-  console.log(`✅ Fetched ${collections.length} collections from Shopify`);
-  return collections;
+  // Filtere nur Collections mit validen Daten
+  const allCollections = data.collections.edges.map(edge => edge.node);
+  const validCollections = allCollections.filter(collection => {
+    const hasValidData = collection.handle && collection.title;
+    
+    if (!hasValidData) {
+      console.warn(`⚠️  Sitemap: Überspringe Collection ohne Daten: ${collection.handle || 'unknown'}`);
+      return false;
+    }
+    
+    return true;
+  });
+  
+  const skippedCount = allCollections.length - validCollections.length;
+  console.log(`✅ Fetched ${validCollections.length} Collections von Shopify${skippedCount > 0 ? ` (${skippedCount} übersprungen)` : ''}`);
+  return validCollections;
 }
 
 // Sitemap file paths

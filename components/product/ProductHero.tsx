@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { PremiumImage } from '@/components/common/PremiumImage';
 import { CompactVariantSelector } from './CompactVariantSelector';
@@ -25,22 +24,25 @@ export function ProductHero({
   onVariantChange,
   isAddingToCart 
 }: ProductHeroProps) {
-  const router = useRouter();
   const price = selectedVariant ? formatPriceSafe(selectedVariant.price) : 'CHF --';
   
   // Dynamisches Bild basierend auf Variante
   const currentImage = selectedVariant?.image || product.images.edges[0]?.node;
   
-  // URL-Parameter setzen wenn Variante gewählt wird
-  useEffect(() => {
-    if (selectedVariant?.id) {
+  // URL-Parameter setzen wenn Variante gewählt wird (nur bei User-Interaktion, nicht Initial)
+  const handleVariantChange = (variant: any) => {
+    onVariantChange(variant);
+    
+    // Update URL nur bei expliziter Varianten-Auswahl durch User
+    if (variant?.id) {
       // Extrahiere numerische ID aus GraphQL ID (gid://shopify/ProductVariant/123456)
-      const numericId = selectedVariant.id.split('/').pop() || selectedVariant.id;
+      const numericId = variant.id.split('/').pop() || variant.id;
       const url = new URL(window.location.href);
       url.searchParams.set('variant', numericId);
-      router.push(url.pathname + url.search, undefined, { shallow: true });
+      // Nutze replaceState statt push um History nicht zu überladen
+      window.history.replaceState({}, '', url.pathname + url.search);
     }
-  }, [selectedVariant, router]);
+  };
   
   // Button-Text basierend auf Zustand
   const getButtonText = () => {
@@ -105,7 +107,7 @@ export function ProductHero({
             <CompactVariantSelector
               variants={variants}
               selectedVariant={selectedVariant}
-              onVariantChange={onVariantChange}
+              onVariantChange={handleVariantChange}
             />
           </div>
         )}

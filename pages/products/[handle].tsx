@@ -128,16 +128,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
       console.log(`📋 Übersprungene Handles: ${invalidHandles.slice(0, 5).join(', ')}${invalidHandles.length > 5 ? '...' : ''}`);
     }
 
-    // Generate all valid products at build time, only fallback for new products
+    // Generate all valid products at build time, no fallback needed
     return {
       paths: validPaths,
-      fallback: 'blocking', // Only for new products added after build
+      fallback: false, // Alle Produkte sind bereits generiert, kein Fallback nötig
     };
   } catch (error) {
     console.error('❌ Kritischer Fehler beim Abrufen der Produkte:', error);
     return {
       paths: [],
-      fallback: 'blocking',
+      fallback: false,
     };
   }
 };

@@ -16,7 +16,6 @@ import { useProductSearch, useProductFilter } from '@/hooks/useShopify';
 import { trackSearch } from '@/lib/analytics';
 import { ShopifyProduct, ShopifyCollection } from '@/types/shopify';
 import { getCategoryImage } from '@/lib/categoryImages';
-import { useCollectionNavigationReset } from '@/lib/navigation-handler';
 import Link from 'next/link';
 
 // Collection Headlines and Subheadlines
@@ -122,9 +121,6 @@ export function CollectionDetail({ preloadedCollection }: CollectionDetailProps)
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
 
   usePageTitle(formatPageTitle(collection?.title || 'Kollektion'));
-  
-  // Navigation Handler für Back-Button-Problem
-  useCollectionNavigationReset();
 
   // Hide scroll indicator when user scrolls
   useEffect(() => {

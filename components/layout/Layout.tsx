@@ -4,7 +4,6 @@ import { Footer } from './Footer';
 import { CartSidebar } from '@/components/cart/CartSidebar';
 import { AddToCartOverlay } from '@/components/cart/AddToCartOverlay';
 import { TrustBanner } from '@/components/common/TrustBanner';
-import { useNavigationHandler } from '@/lib/navigation-handler';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -13,9 +12,6 @@ interface LayoutProps {
 }
 
 export function Layout({ children, onSearch = () => {}, showTrustBanner = true }: LayoutProps) {
-  // Navigation Handler für Back-Button-Problem
-  const { resetComponentState } = useNavigationHandler();
-  
   return (
     <div className="min-h-screen flex flex-col">
       <Header onSearch={onSearch} />

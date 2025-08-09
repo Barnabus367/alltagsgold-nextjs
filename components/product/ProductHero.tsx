@@ -34,8 +34,10 @@ export function ProductHero({
   // URL-Parameter setzen wenn Variante gewählt wird
   useEffect(() => {
     if (selectedVariant?.id) {
+      // Extrahiere numerische ID aus GraphQL ID (gid://shopify/ProductVariant/123456)
+      const numericId = selectedVariant.id.split('/').pop() || selectedVariant.id;
       const url = new URL(window.location.href);
-      url.searchParams.set('variant', selectedVariant.id);
+      url.searchParams.set('variant', numericId);
       router.push(url.pathname + url.search, undefined, { shallow: true });
     }
   }, [selectedVariant, router]);

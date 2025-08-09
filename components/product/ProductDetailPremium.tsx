@@ -80,7 +80,11 @@ export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDe
       
       if (variantId && !selectedVariant) {
         // Try to find variant by ID from URL
-        const variantFromUrl = safeVariantData.all.find((v: ShopifyVariant) => v.id === variantId);
+        // URL hat numerische ID, Varianten haben GraphQL ID (gid://shopify/ProductVariant/123)
+        const variantFromUrl = safeVariantData.all.find((v: ShopifyVariant) => {
+          const variantNumericId = v.id.split('/').pop();
+          return variantNumericId === variantId || v.id === variantId;
+        });
         if (variantFromUrl) {
           setSelectedVariant(variantFromUrl);
           return;

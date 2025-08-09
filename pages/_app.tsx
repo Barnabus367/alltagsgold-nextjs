@@ -43,17 +43,26 @@ export default function App({ Component, pageProps }: AppProps) {
   
   // Zentraler Router Event Handler (einziger Ort für Router-Events)
   useEffect(() => {
+    let previousPath = router.pathname;
+    
     const handleRouteChangeStart = (url: string) => {
       // Optional: Progress indicator starten
       // NProgress.start();
     };
     
-    const handleRouteChangeDone = () => {
+    const handleRouteChangeDone = (url: string) => {
       // Optional: Progress indicator stoppen
       // NProgress.done();
-      // Scroll to top nach Navigation (nur bei neuer Seite)
-      if (typeof window !== 'undefined') {
+      
+      // Parse die neue URL um Pfad von Query-Parametern zu trennen
+      const urlObj = new URL(url, window.location.origin);
+      const newPath = urlObj.pathname;
+      
+      // Scroll nur wenn sich der PFAD ändert, nicht bei Query-Parameter-Änderungen
+      // (z.B. nicht bei Varianten-Wechsel auf Produktseiten)
+      if (typeof window !== 'undefined' && newPath !== previousPath) {
         window.scrollTo(0, 0);
+        previousPath = newPath;
       }
     };
     
@@ -67,7 +76,7 @@ export default function App({ Component, pageProps }: AppProps) {
       if (process.env.NODE_ENV !== 'production') {
         console.error('Navigation error:', err, url);
       }
-      handleRouteChangeDone();
+      // Kein handleRouteChangeDone hier - würde zu doppeltem Scroll führen
     };
     
     // Registriere Events

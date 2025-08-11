@@ -17,6 +17,7 @@ import { trackSearch } from '@/lib/analytics';
 import { ShopifyProduct, ShopifyCollection } from '@/types/shopify';
 import { getCategoryImage } from '@/lib/categoryImages';
 import Link from 'next/link';
+// (duplicate import removed)
 
 // Collection Headlines and Subheadlines
 function getCollectionHeadline(title: string, handle: string): string {
@@ -202,11 +203,11 @@ export function CollectionDetail({ preloadedCollection }: CollectionDetailProps)
 
       {/* Sticky Back Button */}
       <div className="fixed top-20 left-4 z-50">
-        <Link href="/collections">
-          <button className="w-12 h-12 bg-white/80 backdrop-blur-sm hover:bg-white/90 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110">
+        <Button asChild className="w-12 h-12 bg-white/80 backdrop-blur-sm hover:bg-white/90 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110">
+          <Link href="/collections">
             <ArrowLeft className="w-5 h-5 text-gray-700" />
-          </button>
-        </Link>
+          </Link>
+        </Button>
       </div>
 
       {/* Swiss Premium Collection Hero */}

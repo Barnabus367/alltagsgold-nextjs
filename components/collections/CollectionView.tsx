@@ -10,6 +10,7 @@ import { useProductSearch } from '@/hooks/useShopify';
 import { ArrowLeft } from '@/lib/icons';
 import { getPriceAmountSafe } from '@/lib/type-guards';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 import { trackSearch } from '@/lib/analytics';
 
 export function CollectionView() {
@@ -62,12 +63,12 @@ export function CollectionView() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Back to collections */}
           <div className="mb-8">
-            <Link href="/collections">
-              <button className="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+            <Button asChild variant="link" className="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors p-0 h-auto">
+              <Link href="/collections" aria-label="Zurück zu den Kategorien">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Zurück zu den Kategorien
-              </button>
-            </Link>
+              </Link>
+            </Button>
           </div>
           
           <div className="text-center">

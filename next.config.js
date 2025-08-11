@@ -142,7 +142,6 @@ const nextConfig = {
       '@radix-ui/react-accordion',
       '@radix-ui/react-dialog',
       '@radix-ui/react-dropdown-menu',
-      '@radix-ui/react-icons',
       '@radix-ui/react-label',
       '@radix-ui/react-popover',
       '@radix-ui/react-select',

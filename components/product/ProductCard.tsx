@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Plus, Clock } from '@/lib/icons';
@@ -23,6 +24,8 @@ export function ProductCard({ product }: ProductCardProps) {
   const { addItemToCart, isAddingToCart } = useCart();
   const { capabilities, getTouchClasses, validateTouchTarget } = useMobileUX();
   const cardRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const handleLinkHref = `/products/${product.handle}`;
 
   const primaryImage = product.images.edges[0]?.node;
   const primaryVariant = product.variants.edges[0]?.node;
@@ -73,18 +76,32 @@ export function ProductCard({ product }: ProductCardProps) {
     <article 
       ref={cardRef}
       className={`product-card group bg-white rounded-lg border border-gray-100 transition-all duration-300 hover:shadow-lg hover:shadow-gray-200/50 hover:border-gray-200 ${getTouchClasses()}`}
-      role="group"
       aria-labelledby={`product-title-${product.id}`}
       aria-describedby={`product-price-${product.id}`}
+    onClick={(e) => {
+        // Wenn der Klick nicht vom CTA kommt, navigieren
+        const target = e.target as HTMLElement;
+        const isButtonClick = target.closest('button');
+        if (!isButtonClick) {
+      router.push(handleLinkHref);
+        }
+      }}
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+      router.push(handleLinkHref);
+        }
+      }}
     >
       <Link 
-        href={`/products/${product.handle}`}
+        href={handleLinkHref}
         prefetch={true}
         className="block p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
         aria-label={`${product.title} - Produktdetails anzeigen`}
       >
         {/* Produktbild mit Cloudinary-Optimierung */}
-        <div className="relative aspect-square overflow-hidden bg-white mb-4 rounded-md">
+  <div className="relative aspect-square overflow-hidden bg-white mb-4 rounded-md">
           <PremiumImage
             src={primaryImage?.url || 'https://via.placeholder.com/400x400?text=No+Image'}
             alt={primaryImage?.altText || `${product.title} - Premium Produkt bei AlltagsGold Schweiz`}
@@ -143,7 +160,7 @@ export function ProductCard({ product }: ProductCardProps) {
       </Link>
       
       {/* CTA-Button außerhalb des Links - Mobile-optimiert */}
-      <div className="px-4 pb-4">
+  <div className="px-4 pb-4">
         <Button
           onClick={handleAddToCart}
           disabled={!primaryVariant?.availableForSale || isAddingToCart}

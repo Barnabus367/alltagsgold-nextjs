@@ -14,10 +14,9 @@ export function isValidPrice(price: any): price is { amount: number | string; cu
 }
 
 export const isValidVariant = (variant: any): variant is ShopifyProductVariant => {
+  if (!variant || typeof variant !== 'object') return false as any;
   return (
-    variant &&
-    typeof variant === 'object' &&
-    typeof variant.id === 'string' &&
+  typeof variant.id === 'string' && variant.id.length > 0 &&
     isValidPrice(variant.price) &&
     typeof variant.availableForSale === 'boolean'
   );

@@ -81,14 +81,9 @@ export function Home({ preloadedProducts, preloadedCollections, recentPosts = []
           </p>
           
           {/* CTA Button */}
-          <Link href="/collections">
-            <button 
-              className="bg-black hover:bg-neutral-900 text-white px-8 py-4 rounded-lg text-lg font-medium transition-colors duration-300 shadow-lg hover:shadow-xl"
-              aria-label="Jetzt entdecken - Zu den Produktkategorien"
-            >
-              Jetzt entdecken
-            </button>
-          </Link>
+          <Button asChild className="bg-black hover:bg-neutral-900 text-white px-8 py-4 rounded-lg text-lg font-medium transition-colors duration-300 shadow-lg hover:shadow-xl" aria-label="Jetzt entdecken - Zu den Produktkategorien">
+            <Link href="/collections">Jetzt entdecken</Link>
+          </Button>
         </div>
       </section>
 

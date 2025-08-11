@@ -96,7 +96,7 @@ export function OptimizedImage({
     <div className={`relative ${fill ? 'w-full h-full' : ''}`}>
       {!isLoaded && (
         <div 
-          className="absolute inset-0 bg-gray-200 animate-pulse rounded"
+          className="absolute inset-0 bg-gray-200 animate-pulse rounded pointer-events-none"
           style={!fill ? { width, height } : {}}
         />
       )}
@@ -164,7 +164,7 @@ export function ProductImage({
         </div>
       )}
       
-      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 rounded-lg" />
+  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 rounded-lg pointer-events-none" />
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import { Instagram } from '@/lib/icons';
-import { SiTiktok } from 'react-icons/si';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
@@ -155,7 +154,18 @@ export function Footer() {
                   aria-label="AlltagsGold auf TikTok folgen"
                 >
                   <Button variant="ghost" size="sm" className="p-2 text-gray-300 hover:text-white hover:bg-white/10">
-                    <SiTiktok className="h-4 w-4" />
+                    <svg
+                      className="h-4 w-4"
+                      viewBox="0 0 256 256"
+                      aria-hidden="true"
+                      focusable="false"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M168.7 32c8.7 17.3 23.7 31 41.9 37.7v33.4c-15.5-1.4-30.4-6.3-43.8-14.2v57.4c0 37.5-30.4 68-68 68s-68-30.5-68-68 30.5-68 68-68c3.8 0 7.5.3 11.1 1v35.3a32.9 32.9 0 0 0-11.1-2c-18.3 0-33.1 14.8-33.1 33.1s14.8 33.1 33.1 33.1 33.1-14.8 33.1-33.1V32h36.8z"
+                      />
+                    </svg>
                   </Button>
                 </a>
               </div>

@@ -86,7 +86,6 @@ describe('ProductCard', () => {
     
     expect(screen.getByText('Test Product')).toBeInTheDocument()
     expect(screen.getByText('CHF 29.99')).toBeInTheDocument()
-    expect(screen.getByText('CHF 39.99')).toBeInTheDocument()
   })
 
   it('displays image with correct alt text', () => {
@@ -97,11 +96,10 @@ describe('ProductCard', () => {
     expect(image).toHaveAttribute('src', expect.stringContaining('test-image.jpg'))
   })
 
-  it('shows discount badge when compareAtPrice exists', () => {
+  it('does not show discount badge or compare-at price UI', () => {
     render(<ProductCard product={mockProduct} />, { wrapper: createWrapper() })
-    
-    const discountBadge = screen.getByText('-25%')
-    expect(discountBadge).toBeInTheDocument()
+    expect(screen.queryByText('-25%')).not.toBeInTheDocument()
+    expect(screen.queryByText('CHF 39.99')).not.toBeInTheDocument()
   })
 
   it('handles click events', () => {
@@ -127,11 +125,11 @@ describe('ProductCard', () => {
     
     render(<ProductCard product={productWithoutImages} />, { wrapper: createWrapper() })
     
-    const placeholder = screen.getByAltText(expect.stringContaining('Test Product'))
+    const placeholder = screen.getByAltText(/Test Product/i)
     expect(placeholder).toBeInTheDocument()
   })
 
-  it('displays "Ausverkauft" when not available', () => {
+  it('displays "Nicht verfügbar" when not available', () => {
     const soldOutProduct = {
       ...mockProduct,
       variants: {
@@ -147,7 +145,6 @@ describe('ProductCard', () => {
     }
     
     render(<ProductCard product={soldOutProduct} />, { wrapper: createWrapper() })
-    
-    expect(screen.getByText('Ausverkauft')).toBeInTheDocument()
+    expect(screen.getByText('Nicht verfügbar')).toBeInTheDocument()
   })
 })

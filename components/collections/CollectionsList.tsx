@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useCollections, useProducts } from '@/hooks/useShopify';
 import { ProductCard } from '@/components/product/ProductCard';
@@ -203,12 +204,12 @@ export function Collections({ preloadedCollections }: CollectionsProps) {
                   <p className="text-gray-600 mb-6">
                     Entdecken Sie unser vollständiges Sortiment mit erweiterten Filtermöglichkeiten
                   </p>
-                  <Link href="/products">
-                    <button className="inline-flex items-center bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                      Zu den Produkten
+                  <Button asChild className="inline-flex items-center bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                    <Link href="/products">
+                      <span>Zu den Produkten</span>
                       <ArrowRight className="ml-2 h-5 w-5" />
-                    </button>
-                  </Link>
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </>
@@ -250,12 +251,12 @@ export function Collections({ preloadedCollections }: CollectionsProps) {
           )}
 
           <div className="text-center mt-12">
-            <Link href="/products">
-              <button className="inline-flex items-center text-black hover:text-gray-600 transition-colors text-lg font-light">
-                Alle Produkte ansehen
+            <Button variant="link" asChild className="inline-flex items-center text-black hover:text-gray-600 transition-colors text-lg font-light p-0 h-auto">
+              <Link href="/products">
+                <span>Alle Produkte ansehen</span>
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </button>
-            </Link>
+              </Link>
+            </Button>
           </div>
         </div>
       </section>

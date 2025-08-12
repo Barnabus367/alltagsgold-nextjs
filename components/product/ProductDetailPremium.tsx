@@ -5,8 +5,7 @@ import { ShopifyVariant, ShopifyProduct } from '@/types/shopify';
 import { useProduct } from '@/hooks/useShopify';
 import { useCart } from '@/hooks/useCart';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
-import { NextSEOHead } from '@/components/seo/NextSEOHead';
-import { generateProductSEO } from '@/lib/seo';
+// Head is rendered by the page; avoid duplicate head tags here
 import { trackViewContent, trackAddToCart } from '@/lib/analytics';
 import { formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
 import { usePageTitle } from '@/hooks/usePageTitle';
@@ -45,7 +44,10 @@ interface ProductDetailPremiumProps {
 export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDetailPremiumProps) {
   const router = useRouter();
   const { handle } = router.query;
-  const productQuery = useProduct(handle as string);
+  const productQuery = useProduct(handle as string, {
+    enabled: !preloadedProduct && !!handle,
+    initialData: preloadedProduct,
+  });
   const fetchedProduct = productQuery.data;
   const loading = productQuery.isLoading;
   const error = productQuery.error;
@@ -122,7 +124,6 @@ export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDe
   }, [product, safeVariantData.current]);
   
   // SEO setup
-  const seoData = useMemo(() => generateProductSEO(product), [product]);
   usePageTitle(product?.title || 'Produkt');
   
   // Handle add to cart
@@ -153,7 +154,7 @@ export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDe
     await addItemToCart(safeVariantData.current.id || '', 1, productData);
   };
   
-  if (loading) {
+  if (loading && !preloadedProduct) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
@@ -175,12 +176,7 @@ export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDe
   }
   
   return (
-    <>
-      <NextSEOHead 
-        seo={seoData} 
-        canonicalUrl={`/products/${product.handle}`}
-      />
-      <div className="min-h-screen bg-white">
+  <div className="min-h-screen bg-white">
       
       {/* Breadcrumbs */}
       <div className="border-b border-gray-100">
@@ -255,7 +251,6 @@ export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDe
         onAddToCart={handleAddToCart}
         isAddingToCart={isAddingToCart}
       />
-    </div>
-    </>
+  </div>
   );
 }

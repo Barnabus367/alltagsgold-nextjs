@@ -52,7 +52,6 @@ export interface Offer {
   url: string;
   priceCurrency: string;
   price: string;
-  priceValidUntil?: string;
   availability: string;
   seller: {
     '@type': 'Organization';
@@ -88,6 +87,20 @@ export interface Offer {
   };
 }
 
+export interface AggregateOffer {
+  '@type': 'AggregateOffer';
+  lowPrice: string;
+  highPrice: string;
+  priceCurrency: string;
+  offerCount?: number;
+  availability?: string;
+  url?: string;
+  seller?: {
+    '@type': 'Organization';
+    name: string;
+  };
+}
+
 export interface ProductStructuredData extends StructuredDataBase {
   '@type': 'Product';
   name: string;
@@ -106,7 +119,7 @@ export interface ProductStructuredData extends StructuredDataBase {
   category?: string;
   aggregateRating?: AggregateRating;
   review?: Review[];
-  offers: Offer | Offer[];
+  offers: Offer | Offer[] | AggregateOffer;
 }
 
 export interface OrganizationStructuredData extends StructuredDataBase {
@@ -199,71 +212,90 @@ export function generateProductStructuredData(product: ShopifyProduct): ProductS
   const mainImage = product.featuredImage?.url || images[0] || `${SITE_URL}/placeholder-product.jpg`;
   
   // Preis und Verfügbarkeit
-  const price = product.priceRange.minVariantPrice.amount;
+  const minPrice = parseFloat(product.priceRange.minVariantPrice.amount);
+  const maxPrice = parseFloat(product.priceRange.maxVariantPrice?.amount || product.priceRange.minVariantPrice.amount);
   const currency = product.priceRange.minVariantPrice.currencyCode;
-  const availability = product.availableForSale ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
+  const hasInStockVariant = Array.isArray(product?.variants?.edges)
+    ? product.variants.edges.some((edge: any) => edge?.node?.availableForSale)
+    : false;
+  const availability = hasInStockVariant ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
   
-  // Generiere realistische Bewertungen basierend auf Produkttyp
-  const rating = generateProductRating(product);
   
   // Kategorie aus Collections ableiten
   const category = product.collections?.edges?.[0]?.node?.title || product.productType || 'Haushaltsware';
   
-  const offer: Offer = {
-    '@type': 'Offer',
-    url: productUrl,
-    priceCurrency: currency,
-    price: price,
-    priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 30 Tage
-    availability,
-    seller: {
-      '@type': 'Organization',
-      name: 'AlltagsGold'
+  // Build Offer or AggregateOffer
+  const baseShippingDetails = {
+    '@type': 'OfferShippingDetails' as const,
+    shippingRate: {
+      '@type': 'MonetaryAmount' as const,
+      value: minPrice >= 60 ? '0' : '4.90',
+      currency: 'CHF'
     },
-    condition: 'https://schema.org/NewCondition',
-    shippingDetails: {
-      '@type': 'OfferShippingDetails',
-      shippingRate: {
-        '@type': 'MonetaryAmount',
-        value: parseFloat(price) >= 60 ? '0' : '4.90',
-        currency: 'CHF'
+    shippingDestination: {
+      '@type': 'DefinedRegion' as const,
+      addressCountry: 'CH'
+    },
+    deliveryTime: {
+      '@type': 'ShippingDeliveryTime' as const,
+      handlingTime: {
+        '@type': 'QuantitativeValue' as const,
+        minValue: 1,
+        maxValue: 2,
+        unitCode: 'DAY'
       },
-      shippingDestination: {
-        '@type': 'DefinedRegion',
-        addressCountry: 'CH'
-      },
-      deliveryTime: {
-        '@type': 'ShippingDeliveryTime',
-        handlingTime: {
-          '@type': 'QuantitativeValue',
-          minValue: 1,
-          maxValue: 2,
-          unitCode: 'DAY'
-        },
-        transitTime: {
-          '@type': 'QuantitativeValue',
-          minValue: 1,
-          maxValue: 3,
-          unitCode: 'DAY'
-        }
+      transitTime: {
+        '@type': 'QuantitativeValue' as const,
+        minValue: 1,
+        maxValue: 3,
+        unitCode: 'DAY'
       }
     }
   };
+
+  const hasMultiplePrices = maxPrice > minPrice;
+  const offer: any = hasMultiplePrices
+    ? {
+        '@type': 'AggregateOffer',
+        lowPrice: minPrice.toFixed(2),
+        highPrice: maxPrice.toFixed(2),
+        priceCurrency: currency,
+        offerCount: product?.variants?.edges?.length || 1,
+        offers: undefined,
+        availability,
+        url: productUrl,
+        seller: {
+          '@type': 'Organization',
+          name: 'AlltagsGold'
+        }
+      }
+    : {
+        '@type': 'Offer',
+        url: productUrl,
+        priceCurrency: currency,
+        price: minPrice.toFixed(2),
+        availability,
+        seller: {
+          '@type': 'Organization',
+          name: 'AlltagsGold'
+        },
+        condition: 'https://schema.org/NewCondition',
+        shippingDetails: baseShippingDetails
+      };
 
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.title,
     description: product.description || `${product.title} günstig kaufen bei AlltagsGold`,
-    image: images.length > 1 ? images : mainImage,
+  image: images.length > 0 ? images : [mainImage],
     url: productUrl,
     sku: product.id,
     brand: {
       '@type': 'Brand',
       name: product.vendor || 'AlltagsGold'
     },
-    category,
-    aggregateRating: rating,
+  category,
     offers: offer
   };
 }
@@ -271,62 +303,7 @@ export function generateProductStructuredData(product: ShopifyProduct): ProductS
 /**
  * Generiert realistische Produktbewertungen basierend auf Produkttyp und Preis
  */
-function generateProductRating(product: ShopifyProduct): AggregateRating {
-  const price = parseFloat(product.priceRange.minVariantPrice.amount);
-  const productType = (product.productType || '').toLowerCase();
-  
-  // Basis-Rating basierend auf Produktkategorie
-  let baseRating = 4.5;
-  let reviewCount = 15;
-  
-  // Elektronik und Technik: höhere Bewertungen, mehr Reviews
-  if (productType.includes('technik') || productType.includes('elektronik')) {
-    baseRating = 4.7;
-    reviewCount = 25;
-  }
-  
-  // Küchenware: sehr hohe Bewertungen
-  if (productType.includes('küche') || productType.includes('kochen')) {
-    baseRating = 4.8;
-    reviewCount = 35;
-  }
-  
-  // Reinigung: gute Bewertungen
-  if (productType.includes('reinigung') || productType.includes('putzen')) {
-    baseRating = 4.6;
-    reviewCount = 20;
-  }
-  
-  // Preis-basierte Anpassung
-  if (price > 100) {
-    baseRating += 0.1; // Teurere Produkte = höhere Erwartungen erfüllt
-    reviewCount += 10;
-  } else if (price < 20) {
-    baseRating -= 0.1; // Günstige Produkte = etwas niedrigere Bewertung
-    reviewCount += 5; // Aber mehr Reviews
-  }
-  
-  // Tags berücksichtigen (safe check)
-  if (product.tags && Array.isArray(product.tags)) {
-    if (product.tags.some(tag => tag.toLowerCase().includes('bestseller'))) {
-      baseRating += 0.1;
-      reviewCount += 15;
-    }
-  }
-  
-  // Zufällige Variation für Authentizität
-  const variation = (Math.random() - 0.5) * 0.2; // ±0.1
-  const finalRating = Math.max(4.0, Math.min(5.0, baseRating + variation));
-  const finalReviewCount = Math.max(5, reviewCount + Math.floor(Math.random() * 10));
-  
-  return {
-    '@type': 'AggregateRating',
-    ratingValue: Math.round(finalRating * 10) / 10, // 1 Dezimalstelle
-    reviewCount: finalReviewCount,
-    bestRating: 5,
-    worstRating: 1
-  };
-}
+// AggregateRating intentionally omitted unless real review data is available
 
 /**
  * Generiert Organization Schema für AlltagsGold
@@ -514,9 +491,8 @@ export function generateCollectionStructuredData(collection: ShopifyCollection):
         '@type': 'ListItem',
         position: index + 1,
         item: {
-          '@type': 'Product',
-          name: edge.node.title,
-          url: `${SITE_URL}/products/${edge.node.handle}`
+          '@id': `${SITE_URL}/products/${edge.node.handle}`,
+          name: edge.node.title
         }
       })) || []
     }

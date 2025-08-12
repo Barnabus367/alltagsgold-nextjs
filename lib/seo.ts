@@ -14,6 +14,7 @@ export interface SEOMetadata {
     description: string;
     image?: string;
     url?: string;
+  type?: string;
   };
   twitter?: {
     card: 'summary' | 'summary_large_image';
@@ -171,7 +172,8 @@ export function generateProductSEO(product: any): SEOMetadata {
       title,
       description,
       image: imageUrl,
-      url: `/products/${product?.handle}`
+  url: `/products/${product?.handle}`,
+  type: 'product'
     },
     twitter: {
       card: imageUrl ? 'summary_large_image' : 'summary',

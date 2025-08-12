@@ -11,7 +11,7 @@ import {
   generateProductStructuredData, 
   generateBreadcrumbStructuredData 
 } from '../../lib/structured-data';
-import { SSRSafe } from '../../hooks/useHydrationSafe';
+// SSRSafe intentionally not used at page scope to keep SSR output visible
 
 interface ProductDetailPageProps {
   product: ShopifyProduct | null;
@@ -76,12 +76,10 @@ export default function ProductDetailPage({ product, handle, seoContent }: Produ
         useRouterPath={false} // Explizite Canonical verwenden, ignoriert ?variant=
       />
       <Layout onSearch={setSearchQuery}>
-        <SSRSafe>
-          <div data-page-type="product" data-handle={handle} data-source={product ? 'ssg' : 'client'}>
-            {/* Force remount on handle change to avoid any stale UI (e.g., images) across product transitions */}
-            <ProductDetail key={handle} preloadedProduct={product} seoContent={seoContent || undefined} />
-          </div>
-        </SSRSafe>
+        <div data-page-type="product" data-handle={handle} data-source={product ? 'ssg' : 'client'}>
+          {/* Force remount on handle change to avoid any stale UI (e.g., images) across product transitions */}
+          <ProductDetail key={handle} preloadedProduct={product} seoContent={seoContent || undefined} />
+        </div>
       </Layout>
     </>
   );
@@ -129,16 +127,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
       console.log(`📋 Übersprungene Handles: ${invalidHandles.slice(0, 5).join(', ')}${invalidHandles.length > 5 ? '...' : ''}`);
     }
 
-    // Generate all valid products at build time, no fallback needed
+    // Prebuild valid products, but allow blocking fallback for new long-tail products
     return {
       paths: validPaths,
-      fallback: false, // Alle Produkte sind bereits generiert, kein Fallback nötig
+      fallback: 'blocking', // Neue Produkte werden on-demand generiert
     };
   } catch (error) {
     console.error('❌ Kritischer Fehler beim Abrufen der Produkte:', error);
     return {
       paths: [],
-      fallback: false,
+      fallback: 'blocking',
     };
   }
 };

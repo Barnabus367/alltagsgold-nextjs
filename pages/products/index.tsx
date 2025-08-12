@@ -1,7 +1,8 @@
 import { GetStaticProps } from 'next';
-import { Products } from '../ProductsList';
+import Products from '@/components/pages/ProductsList';
 import { Layout } from '../../components/layout/Layout';
 import { NextSEOHead } from '@/components/seo/NextSEOHead';
+import { SITE_URL } from '@/lib/canonical';
 import { useState } from 'react';
 import { ShopifyProduct } from '../../types/shopify'; 
 import { getProductsOptimized } from '../../lib/shopify';
@@ -14,12 +15,26 @@ interface ProductsPageProps {
 export default function ProductsPage({ products }: ProductsPageProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const seoData = generateStaticPageSEO('products');
+  const itemListStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    numberOfItems: products.length,
+    itemListElement: products.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@id': `${SITE_URL}/products/${p.handle}`,
+        name: p.title
+      },
+    })),
+  } as const;
 
   return (
     <>
       <NextSEOHead 
         seo={seoData}
-        canonicalUrl="products" 
+        canonicalUrl="/products"
+        structuredData={itemListStructuredData}
       />
       <Layout onSearch={setSearchQuery}>
         <Products preloadedProducts={products} />

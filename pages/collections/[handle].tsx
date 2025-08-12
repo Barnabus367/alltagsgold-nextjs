@@ -1,6 +1,6 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
-import { CollectionDetail } from '../CollectionDetail';
+import CollectionDetail from '../../components/pages/CollectionDetail';
 import { Layout } from '../../components/layout/Layout';
 import { NextSEOHead } from '../../components/seo/NextSEOHead';
 import { useState, useEffect } from 'react';
@@ -68,10 +68,9 @@ export default function CollectionDetailPage({ collection, handle }: CollectionD
     <>
       <NextSEOHead 
         seo={seoData} 
-        // Nutzt automatisch router.asPath und behält sort/filter Parameter
         structuredData={structuredData}
         includeOrganization={true}
-        useRouterPath={true} // Dynamische Canonical mit erlaubten Parametern
+        useRouterPath={true}
       />
       <Layout onSearch={setSearchQuery}>
         <div data-page-type="collection" data-handle={handle} data-source={collection ? 'ssg' : 'client'}>
@@ -93,13 +92,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
     return {
       paths,
-      fallback: false, // Alle Collections sind bereits generiert, kein Fallback nötig
+      fallback: 'blocking', // Neue Collections werden on-demand generiert
     };
   } catch (error) {
     console.error('Error in getStaticPaths:', error);
     return {
       paths: [],
-      fallback: false,
+      fallback: 'blocking',
     };
   }
 };

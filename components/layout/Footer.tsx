@@ -123,12 +123,12 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/datenschutz" className="text-gray-300 hover:text-white transition-colors">
+                <Link href="/Datenschutz" className="text-gray-300 hover:text-white transition-colors">
                   Datenschutz
                 </Link>
               </li>
               <li>
-                <Link href="/agb" className="text-gray-300 hover:text-white transition-colors">
+                <Link href="/AGB" className="text-gray-300 hover:text-white transition-colors">
                   AGB
                 </Link>
               </li>

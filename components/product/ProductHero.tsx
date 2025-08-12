@@ -26,8 +26,9 @@ export function ProductHero({
 }: ProductHeroProps) {
   const price = selectedVariant ? formatPriceSafe(selectedVariant.price) : 'CHF --';
   
-  // Dynamisches Bild basierend auf Variante
+  // Dynamisches Bild basierend auf Variante - mit key für Force-Refresh
   const currentImage = selectedVariant?.image || product.images.edges[0]?.node;
+  const imageKey = `${product.id}-${selectedVariant?.id || 'default'}`;
   
   // URL-Parameter setzen wenn Variante gewählt wird (nur bei User-Interaktion, nicht Initial)
   const handleVariantChange = (variant: any) => {
@@ -59,6 +60,7 @@ export function ProductHero({
       <div className="lg:col-span-3">
         <div className="bg-gray-50 rounded-2xl p-8 lg:p-12 aspect-square flex items-center justify-center">
           <PremiumImage
+            key={imageKey}
             src={currentImage?.url || ''}
             alt={currentImage?.altText || product.title}
             className="w-full h-full object-contain"

@@ -67,9 +67,18 @@ export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDe
   
   const safeVariantData = useMemo(() => {
     const variants = product?.variants?.edges?.map((edge: any) => edge.node) || [];
-    const current = selectedVariant || variants[0] || null;
+  // Ensure the selectedVariant belongs to the current product; otherwise fall back
+  const isValidSelected = selectedVariant && variants.some((v: ShopifyVariant) => v.id === selectedVariant.id);
+  const current = (isValidSelected ? selectedVariant : null) || variants[0] || null;
     return { all: variants, current };
   }, [product, selectedVariant]);
+  
+  // Reset variant when product changes to avoid stale selection from previous product
+  useEffect(() => {
+    if (product?.id) {
+      setSelectedVariant(null);
+    }
+  }, [product?.id]);
   
   // Set initial variant from URL or default
   useEffect(() => {

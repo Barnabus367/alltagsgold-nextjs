@@ -2,7 +2,7 @@ import { NextSEOHead } from '@/components/seo/NextSEOHead';
 import { generateStaticPageSEO } from '@/lib/seo';
 import { Layout } from '@/components/layout/Layout';
 
-export function AGB() {
+function AGB() {
   const seoData = generateStaticPageSEO('agb');
  
   return (

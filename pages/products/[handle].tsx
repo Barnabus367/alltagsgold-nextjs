@@ -78,7 +78,8 @@ export default function ProductDetailPage({ product, handle, seoContent }: Produ
       <Layout onSearch={setSearchQuery}>
         <SSRSafe>
           <div data-page-type="product" data-handle={handle} data-source={product ? 'ssg' : 'client'}>
-            <ProductDetail preloadedProduct={product} seoContent={seoContent || undefined} />
+            {/* Force remount on handle change to avoid any stale UI (e.g., images) across product transitions */}
+            <ProductDetail key={handle} preloadedProduct={product} seoContent={seoContent || undefined} />
           </div>
         </SSRSafe>
       </Layout>

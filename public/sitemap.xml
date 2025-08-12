@@ -2,6 +2,7 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>https://www.alltagsgold.ch/sitemap-pages.xml</loc>
+<<<<<<< Updated upstream
     <lastmod>2025-08-08</lastmod>
   </sitemap>
   <sitemap>
@@ -15,5 +16,20 @@
   <sitemap>
     <loc>https://www.alltagsgold.ch/sitemap-products.xml</loc>
     <lastmod>2025-08-08</lastmod>
+=======
+    <lastmod>2025-08-12</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.alltagsgold.ch/sitemap-blog.xml</loc>
+    <lastmod>2025-08-12</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.alltagsgold.ch/sitemap-collections.xml</loc>
+    <lastmod>2025-08-12</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.alltagsgold.ch/sitemap-products.xml</loc>
+    <lastmod>2025-08-12</lastmod>
+>>>>>>> Stashed changes
   </sitemap>
 </sitemapindex>

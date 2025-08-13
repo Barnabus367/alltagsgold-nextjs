@@ -500,6 +500,62 @@ export function generateCollectionStructuredData(collection: ShopifyCollection):
 }
 
 /**
+ * FAQ Schema für Produktseiten mit Google Rich Results Support
+ */
+export interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+export interface FAQPageStructuredData extends StructuredDataBase {
+  '@type': 'FAQPage';
+  mainEntity: Array<{
+    '@type': 'Question';
+    name: string;
+    acceptedAnswer: {
+      '@type': 'Answer';
+      text: string;
+    };
+  }>;
+}
+
+/**
+ * Generiert FAQ Schema für Produktseiten
+ * Ermöglicht Rich Snippets mit aufklappbaren FAQs in Google Suchergebnissen
+ */
+export function generateFAQStructuredData(faqs: FAQItem[]): FAQPageStructuredData | null {
+  // Mindestens 1 FAQ erforderlich für valides Schema
+  if (!faqs || faqs.length === 0) {
+    return null;
+  }
+
+  // Filtere leere oder ungültige FAQs
+  const validFAQs = faqs.filter(faq => 
+    faq.question && 
+    faq.question.trim().length > 0 && 
+    faq.answer && 
+    faq.answer.trim().length > 0
+  );
+
+  if (validFAQs.length === 0) {
+    return null;
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: validFAQs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question.trim(),
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer.trim()
+      }
+    }))
+  };
+}
+
+/**
  * Hilfsfunktion: JSON-LD Script Tag generieren
  */
 export function generateStructuredDataScript(data: any): string {

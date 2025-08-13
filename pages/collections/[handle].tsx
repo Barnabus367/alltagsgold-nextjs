@@ -8,14 +8,22 @@ import { devLog } from '../../lib/dev-utils';
 import { ShopifyCollection } from '../../types/shopify';
 import { getAllCollectionHandles, getCollectionByHandle } from '../../lib/shopify';
 import { generateCollectionSEO } from '../../lib/seo';
-import { generateBreadcrumbStructuredData, generateCollectionStructuredData } from '../../lib/structured-data';
+import { generateBreadcrumbStructuredData, generateCollectionStructuredData, generateFAQStructuredData } from '../../lib/structured-data';
 
 interface CollectionDetailPageProps {
   collection: ShopifyCollection | null;
   handle: string;
+  seoContent: {
+    metaTitle?: string;
+    metaDescription?: string;
+    faqs?: Array<{
+      question: string;
+      answer: string;
+    }>;
+  } | null;
 }
 
-export default function CollectionDetailPage({ collection, handle }: CollectionDetailPageProps) {
+export default function CollectionDetailPage({ collection, handle, seoContent }: CollectionDetailPageProps) {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -45,8 +53,18 @@ export default function CollectionDetailPage({ collection, handle }: CollectionD
     return <div>Loading...</div>;
   }
 
-  // Generate SEO metadata
-  const seoData = generateCollectionSEO(collection);
+  // Generate SEO metadata with enhanced content
+  let seoData = generateCollectionSEO(collection);
+  
+  // Override with custom SEO content if available
+  if (seoContent) {
+    if (seoContent.metaTitle) {
+      seoData.title = `${seoContent.metaTitle} | Alltagsgold Schweiz`;
+    }
+    if (seoContent.metaDescription) {
+      seoData.description = seoContent.metaDescription;
+    }
+  }
   
   // Generate structured data für Collection
   const structuredData = [];
@@ -62,6 +80,14 @@ export default function CollectionDetailPage({ collection, handle }: CollectionD
     
     // Collection Schema with ItemList
     structuredData.push(generateCollectionStructuredData(collection));
+    
+    // FAQ Schema - NEU: Füge FAQ Rich Snippets hinzu wenn SEO Content vorhanden
+    if (seoContent?.faqs && seoContent.faqs.length > 0) {
+      const faqSchema = generateFAQStructuredData(seoContent.faqs);
+      if (faqSchema) {
+        structuredData.push(faqSchema);
+      }
+    }
   }
 
   return (
@@ -121,10 +147,24 @@ export const getStaticProps: GetStaticProps<CollectionDetailPageProps> = async (
       };
     }
 
+    // Load SEO content from JSON file
+    let seoContent = undefined;
+    try {
+      const seoData = await import('../../data/collection-seo-content.json');
+      const seoDataTyped = seoData.default as Record<string, any>;
+      if (seoDataTyped && seoDataTyped[handle]) {
+        seoContent = seoDataTyped[handle];
+      }
+    } catch (seoError) {
+      // SEO content is optional, continue without it
+      console.log(`No SEO content found for collection ${handle}`);
+    }
+
     return {
       props: {
         collection,
         handle,
+        seoContent: seoContent || null,
       },
       revalidate: 60 * 60 * 12, // Revalidate every 12 hours (collections change moderately)
     };

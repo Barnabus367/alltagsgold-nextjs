@@ -9,7 +9,8 @@ import { getAllProductHandles, getProductByHandle } from '../../lib/shopify';
 import { generateProductSEO } from '../../lib/seo';
 import { 
   generateProductStructuredData, 
-  generateBreadcrumbStructuredData 
+  generateBreadcrumbStructuredData,
+  generateFAQStructuredData 
 } from '../../lib/structured-data';
 // SSRSafe intentionally not used at page scope to keep SSR output visible
 
@@ -64,6 +65,14 @@ export default function ProductDetailPage({ product, handle, seoContent }: Produ
       { name: product.title, url: `/products/${handle}` }
     ];
     structuredData.push(generateBreadcrumbStructuredData(breadcrumbs));
+    
+    // FAQ Schema - NEU: Füge FAQ Rich Snippets hinzu wenn SEO Content vorhanden
+    if (seoContent?.faqs && seoContent.faqs.length > 0) {
+      const faqSchema = generateFAQStructuredData(seoContent.faqs);
+      if (faqSchema) {
+        structuredData.push(faqSchema);
+      }
+    }
   }
 
   return (

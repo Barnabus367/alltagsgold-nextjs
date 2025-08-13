@@ -16,6 +16,10 @@ import { trackSearch } from '@/lib/analytics';
 import { ShopifyCollection } from '@/types/shopify';
 import { getCategoryImage } from '@/lib/categoryImages';
 import Link from 'next/link';
+import { CollectionFAQ } from '@/components/collection/CollectionFAQ';
+
+// Import collection SEO content
+import collectionSEOContent from '@/data/collection-seo-content.json';
 
 function getCollectionHeadline(title: string, handle: string): string {
 	const headlines: Record<string, string> = {
@@ -170,6 +174,9 @@ export default function CollectionDetail({ preloadedCollection }: CollectionDeta
 
 	const categoryImage = getCategoryImage(collection.title, collection.handle, collection.image?.url);
 
+	// Get SEO content for this collection
+	const seoContent = (collectionSEOContent as any)[collection.handle];
+
 	return (
 		<div className="min-h-screen bg-white pt-16">
 			<div className="fixed top-20 left-4 z-50">
@@ -308,6 +315,35 @@ export default function CollectionDetail({ preloadedCollection }: CollectionDeta
 					)}
 				</div>
 			</section>
+
+			{/* FAQ Section - NEU: Sichtbare FAQ-Sektion wie bei Produktseiten */}
+			{seoContent?.faqs && seoContent.faqs.length > 0 && (
+				<CollectionFAQ 
+					faqs={seoContent.faqs} 
+					title={`Häufige Fragen zu ${collection.title}`}
+				/>
+			)}
+
+			{/* Buying Guide Section - Optional */}
+			{seoContent?.buyingGuide && (
+				<section className="py-12 bg-white">
+					<div className="max-w-4xl mx-auto px-6">
+						<h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+							{seoContent.buyingGuide.title}
+						</h2>
+						<div className="bg-gray-50 rounded-lg p-6">
+							<ul className="space-y-3">
+								{seoContent.buyingGuide.tips.map((tip: string, index: number) => (
+									<li key={index} className="flex items-start">
+										<span className="text-yellow-500 mr-3 mt-1">✓</span>
+										<span className="text-gray-700">{tip}</span>
+									</li>
+								))}
+							</ul>
+						</div>
+					</div>
+				</section>
+			)}
 		</div>
 	);
 }

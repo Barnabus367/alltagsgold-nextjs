@@ -1,0 +1,437 @@
+{
+  "kueche": {
+    "metaTitle": "Küche & Küchenhelfer",
+    "metaDescription": "Innovative Küchenhelfer und praktische Küchengeräte für jeden Haushalt. Entdecken Sie zeitsparende Lösungen für Ihre Küche bei Alltagsgold.",
+    "headline": "Clevere Küchenhelfer für mehr Freude beim Kochen",
+    "subheadline": "Entdecken Sie durchdachte Produkte, die Ihre Zeit in der Küche effizienter und angenehmer gestalten.",
+    "faqs": [
+      {
+        "question": "Welche Küchenhelfer sind besonders praktisch für kleine Küchen?",
+        "answer": "Für kleine Küchen eignen sich besonders platzsparende Multifunktionsgeräte, stapelbare Aufbewahrungslösungen und klappbare Küchenhelfer. Achten Sie auf Produkte, die mehrere Funktionen in einem Gerät vereinen."
+      },
+      {
+        "question": "Wie pflege ich meine Küchengeräte richtig?",
+        "answer": "Die meisten modernen Küchenhelfer sind spülmaschinenfest. Für eine lange Lebensdauer empfiehlt sich regelmässige Reinigung nach jedem Gebrauch und die Beachtung der Pflegehinweise des Herstellers."
+      },
+      {
+        "question": "Welche Materialien sind für Küchenhelfer am besten geeignet?",
+        "answer": "Hochwertige Materialien wie Edelstahl, Silikon und BPA-freier Kunststoff sind ideal. Sie sind langlebig, hygienisch und leicht zu reinigen. Die Wahl hängt vom jeweiligen Verwendungszweck ab."
+      }
+    ],
+    "buyingGuide": {
+      "title": "Ratgeber: Die richtigen Küchenhelfer finden",
+      "tips": [
+        "Überlegen Sie, welche Aufgaben Sie am häufigsten in der Küche erledigen",
+        "Achten Sie auf hochwertige Materialien und gute Verarbeitung",
+        "Prüfen Sie die Reinigungsmöglichkeiten der Produkte",
+        "Berücksichtigen Sie den verfügbaren Stauraum in Ihrer Küche"
+      ]
+    }
+  },
+  "technik-gadgets": {
+    "metaTitle": "Technik & Gadgets",
+    "metaDescription": "Smarte Technik-Gadgets und innovative Elektronik für Ihren Alltag. Praktische Tech-Lösungen und clevere Gadgets bei Alltagsgold entdecken.",
+    "headline": "Innovative Technik für Ihren digitalen Alltag",
+    "subheadline": "Moderne Gadgets und smarte Lösungen, die Ihr Leben einfacher machen.",
+    "faqs": [
+      {
+        "question": "Worauf sollte ich bei Tech-Gadgets achten?",
+        "answer": "Wichtig sind Kompatibilität mit Ihren bestehenden Geräten, intuitive Bedienung und ein gutes Preis-Leistungs-Verhältnis. Achten Sie auch auf Kundenbewertungen und die Garantiebedingungen."
+      },
+      {
+        "question": "Sind die Technik-Produkte mit gängigen Systemen kompatibel?",
+        "answer": "Die meisten unserer Tech-Gadgets sind universell einsetzbar und mit gängigen Systemen wie iOS, Android und Windows kompatibel. Detaillierte Kompatibilitätsinformationen finden Sie in der jeweiligen Produktbeschreibung."
+      },
+      {
+        "question": "Wie lange ist die Lebensdauer von Tech-Gadgets?",
+        "answer": "Bei sachgemässer Nutzung und Pflege können hochwertige Tech-Gadgets mehrere Jahre zuverlässig funktionieren. Die Lebensdauer hängt von der Qualität, Nutzungshäufigkeit und Pflege ab."
+      }
+    ],
+    "buyingGuide": {
+      "title": "Tech-Gadgets clever auswählen",
+      "tips": [
+        "Prüfen Sie die Kompatibilität mit Ihren vorhandenen Geräten",
+        "Lesen Sie Nutzerbewertungen für praktische Erfahrungen",
+        "Achten Sie auf zukunftssichere Technologien und Standards",
+        "Berücksichtigen Sie den tatsächlichen Nutzen im Alltag"
+      ]
+    }
+  },
+  "selfcare-beauty": {
+    "metaTitle": "Selfcare & Beauty",
+    "metaDescription": "Wellness und Beauty-Produkte für Ihre persönliche Auszeit. Hochwertige Selfcare-Artikel für Entspannung und Pflege bei Alltagsgold.",
+    "headline": "Zeit für sich selbst - Wellness & Beauty",
+    "subheadline": "Gönnen Sie sich Momente der Entspannung mit hochwertigen Selfcare-Produkten.",
+    "faqs": [
+      {
+        "question": "Welche Selfcare-Produkte eignen sich für die tägliche Routine?",
+        "answer": "Für die tägliche Routine eignen sich besonders zeitsparende und effektive Produkte wie elektrische Gesichtsbürsten, Massagegeräte oder praktische Beauty-Organizer. Wählen Sie Produkte, die zu Ihrem Lebensstil passen."
+      },
+      {
+        "question": "Sind die Beauty-Produkte für alle Hauttypen geeignet?",
+        "answer": "Unsere Beauty-Tools sind grundsätzlich für alle Hauttypen konzipiert. Bei empfindlicher Haut empfiehlt sich eine sanfte Anwendung. Beachten Sie die jeweiligen Produkthinweise für optimale Ergebnisse."
+      },
+      {
+        "question": "Wie integriere ich Wellness-Produkte in meinen Alltag?",
+        "answer": "Beginnen Sie mit kleinen Ritualen und festen Zeiten. Schon wenige Minuten täglich können einen grossen Unterschied machen. Wählen Sie Produkte, die sich leicht in Ihre bestehende Routine einbauen lassen."
+      }
+    ],
+    "buyingGuide": {
+      "title": "Der Weg zu Ihrer persönlichen Wellness-Routine",
+      "tips": [
+        "Definieren Sie Ihre persönlichen Wellness-Ziele",
+        "Starten Sie mit wenigen, hochwertigen Produkten",
+        "Achten Sie auf hautfreundliche Materialien",
+        "Wählen Sie Produkte, die zu Ihrem Zeitbudget passen"
+      ]
+    }
+  },
+  "haushaltsgerate": {
+    "metaTitle": "Haushaltsgeräte",
+    "metaDescription": "Praktische Haushaltsgeräte für effizientes Wohnen. Moderne Haushaltshelfer und innovative Geräte für jeden Bereich bei Alltagsgold.",
+    "headline": "Smarte Haushaltsgeräte für modernes Wohnen",
+    "subheadline": "Effiziente Lösungen, die Ihnen mehr Zeit für die wichtigen Dinge im Leben schenken.",
+    "faqs": [
+      {
+        "question": "Welche Haushaltsgeräte sparen am meisten Zeit?",
+        "answer": "Besonders zeitsparend sind Multifunktionsgeräte, automatische Reinigungshelfer und intelligente Organisationssysteme. Die Wahl hängt von Ihren individuellen Bedürfnissen und Prioritäten ab."
+      },
+      {
+        "question": "Wie finde ich energieeffiziente Haushaltsgeräte?",
+        "answer": "Achten Sie auf moderne Technologien und effiziente Funktionsweisen. Viele innovative Geräte sind heute so konzipiert, dass sie ressourcenschonend arbeiten und trotzdem optimale Ergebnisse liefern."
+      },
+      {
+        "question": "Lohnen sich innovative Haushaltsgeräte?",
+        "answer": "Innovative Haushaltsgeräte können den Alltag erheblich erleichtern und langfristig Zeit und Mühe sparen. Der Nutzen zeigt sich besonders bei regelmässiger Verwendung und wenn die Geräte zu Ihren Bedürfnissen passen."
+      }
+    ],
+    "buyingGuide": {
+      "title": "Haushaltsgeräte gezielt auswählen",
+      "tips": [
+        "Analysieren Sie Ihre täglichen Haushaltsaufgaben",
+        "Setzen Sie Prioritäten bei der Anschaffung",
+        "Achten Sie auf Qualität und Langlebigkeit",
+        "Berücksichtigen Sie den verfügbaren Platz"
+      ]
+    }
+  },
+  "reinigungsgerate": {
+    "metaTitle": "Reinigungsgeräte",
+    "metaDescription": "Effektive Reinigungsgeräte für saubere Ergebnisse. Moderne Reinigungshelfer und praktische Putzhilfen für jeden Haushalt bei Alltagsgold.",
+    "headline": "Effiziente Reinigung leicht gemacht",
+    "subheadline": "Moderne Reinigungsgeräte für mühelose Sauberkeit in Ihrem Zuhause.",
+    "faqs": [
+      {
+        "question": "Welche Reinigungsgeräte sind am vielseitigsten?",
+        "answer": "Multifunktionale Reinigungsgeräte, die verschiedene Oberflächen reinigen können, bieten die grösste Flexibilität. Dampfreiniger und moderne Wischsysteme sind besonders vielseitig einsetzbar."
+      },
+      {
+        "question": "Wie pflege ich meine Reinigungsgeräte optimal?",
+        "answer": "Regelmässige Reinigung nach jedem Gebrauch, das Entleeren von Behältern und das Austauschen von Verschleissteilen nach Herstellerangaben sorgen für lange Lebensdauer und optimale Leistung."
+      },
+      {
+        "question": "Sind moderne Reinigungsgeräte umweltfreundlich?",
+        "answer": "Viele moderne Reinigungsgeräte arbeiten ohne oder mit wenig Chemie, nutzen die Kraft von Dampf oder Mikrofaser und sind damit umweltschonender als traditionelle Methoden."
+      }
+    ],
+    "buyingGuide": {
+      "title": "Das richtige Reinigungsgerät finden",
+      "tips": [
+        "Berücksichtigen Sie die Grösse Ihrer Wohnfläche",
+        "Denken Sie an verschiedene Oberflächen in Ihrem Zuhause",
+        "Achten Sie auf ergonomische Handhabung",
+        "Prüfen Sie die Verfügbarkeit von Ersatzteilen"
+      ]
+    }
+  },
+  "luftreiniger-luftbefeuchter": {
+    "metaTitle": "Luftreiniger & Luftbefeuchter",
+    "metaDescription": "Luftreiniger und Luftbefeuchter für gesundes Raumklima. Moderne Geräte für saubere Luft und optimale Luftfeuchtigkeit bei Alltagsgold.",
+    "headline": "Gesundes Raumklima für Ihr Wohlbefinden",
+    "subheadline": "Moderne Luftreiniger und Luftbefeuchter für frische, saubere Luft in Ihren Räumen.",
+    "faqs": [
+      {
+        "question": "Wann ist ein Luftreiniger sinnvoll?",
+        "answer": "Luftreiniger sind besonders in städtischen Gebieten, bei Allergien oder in Räumen mit wenig Luftzirkulation sinnvoll. Sie filtern Staub, Pollen und andere Partikel aus der Luft."
+      },
+      {
+        "question": "Wie erkenne ich die optimale Luftfeuchtigkeit?",
+        "answer": "Die ideale Luftfeuchtigkeit liegt zwischen 40% und 60%. Zu trockene Luft kann zu Reizungen führen, zu feuchte Luft begünstigt Schimmelbildung. Ein Hygrometer hilft bei der Kontrolle."
+      },
+      {
+        "question": "Wie oft müssen Filter gewechselt werden?",
+        "answer": "Die Wechselintervalle hängen von der Nutzungsintensität und Luftqualität ab. Befolgen Sie die Herstellerangaben und achten Sie auf Wartungshinweise des Geräts."
+      }
+    ],
+    "buyingGuide": {
+      "title": "Luftqualität gezielt verbessern",
+      "tips": [
+        "Bestimmen Sie die Raumgrösse für die richtige Geräteleistung",
+        "Achten Sie auf den Geräuschpegel für den Einsatz im Schlafzimmer",
+        "Prüfen Sie die Folgekosten für Filter und Wartung",
+        "Wählen Sie Geräte mit passenden Funktionen für Ihre Bedürfnisse"
+      ]
+    }
+  },
+  "aufbewahrung-organisation": {
+    "metaTitle": "Aufbewahrung & Organisation",
+    "metaDescription": "Clevere Aufbewahrungslösungen und Organizer für mehr Ordnung. Praktische Systeme für jeden Raum Ihres Zuhauses bei Alltagsgold.",
+    "headline": "Ordnung schaffen mit System",
+    "subheadline": "Durchdachte Aufbewahrungslösungen für ein aufgeräumtes und organisiertes Zuhause.",
+    "faqs": [
+      {
+        "question": "Wie schaffe ich dauerhaft Ordnung?",
+        "answer": "Der Schlüssel liegt in passenden Aufbewahrungssystemen für jeden Gegenstand. Wenn alles seinen festen Platz hat, fällt das Aufräumen leichter und die Ordnung bleibt bestehen."
+      },
+      {
+        "question": "Welche Organizer eignen sich für kleine Räume?",
+        "answer": "Für kleine Räume sind vertikale Lösungen, stapelbare Boxen und multifunktionale Möbel ideal. Nutzen Sie jeden verfügbaren Raum effizient, auch Türrückseiten und Wandflächen."
+      },
+      {
+        "question": "Wie organisiere ich meinen Kleiderschrank optimal?",
+        "answer": "Teilen Sie den Schrank in Zonen ein, nutzen Sie Organizer für Kleinteile und sortieren Sie nach Kategorien. Regelmässiges Aussortieren schafft zusätzlichen Platz."
+      }
+    ],
+    "buyingGuide": {
+      "title": "Aufbewahrung clever planen",
+      "tips": [
+        "Messen Sie verfügbare Flächen genau aus",
+        "Wählen Sie erweiterbare und flexible Systeme",
+        "Achten Sie auf robuste Materialien",
+        "Kombinieren Sie verschiedene Aufbewahrungslösungen"
+      ]
+    }
+  },
+  "dekoration": {
+    "metaTitle": "Dekoration & Wohnaccessoires",
+    "metaDescription": "Stilvolle Dekoration und Wohnaccessoires für Ihr Zuhause. Moderne Deko-Artikel und praktische Accessoires bei Alltagsgold entdecken.",
+    "headline": "Persönlichkeit für Ihre vier Wände",
+    "subheadline": "Dekorative Akzente, die Ihrem Zuhause Charakter und Wärme verleihen.",
+    "faqs": [
+      {
+        "question": "Wie finde ich den passenden Dekorationsstil?",
+        "answer": "Orientieren Sie sich an Ihrem persönlichen Geschmack und der vorhandenen Einrichtung. Beginnen Sie mit wenigen ausgewählten Stücken und entwickeln Sie Ihren Stil schrittweise weiter."
+      },
+      {
+        "question": "Wie dekoriere ich ohne zu überladen?",
+        "answer": "Weniger ist oft mehr. Setzen Sie gezielt Akzente, schaffen Sie Ruhepunkte fürs Auge und gruppieren Sie ähnliche Objekte. Achten Sie auf ein ausgewogenes Gesamtbild."
+      },
+      {
+        "question": "Welche Deko-Elemente sind zeitlos?",
+        "answer": "Natürliche Materialien, klassische Formen und neutrale Farben sind meist zeitlos. Pflanzen, hochwertige Textilien und schöne Beleuchtung passen zu fast jedem Stil."
+      }
+    ],
+    "buyingGuide": {
+      "title": "Dekoration mit Konzept",
+      "tips": [
+        "Definieren Sie Ihren persönlichen Stil",
+        "Achten Sie auf Farbharmonie im Raum",
+        "Mischen Sie verschiedene Texturen und Materialien",
+        "Setzen Sie saisonale Akzente für Abwechslung"
+      ]
+    }
+  },
+  "beleuchtung": {
+    "metaTitle": "Beleuchtung & Lampen",
+    "metaDescription": "Moderne Beleuchtung und stilvolle Lampen für jeden Raum. LED-Leuchten und innovative Lichtlösungen bei Alltagsgold.",
+    "headline": "Licht schafft Atmosphäre",
+    "subheadline": "Entdecken Sie moderne Beleuchtungslösungen für stimmungsvolles Ambiente.",
+    "faqs": [
+      {
+        "question": "Welche Beleuchtung eignet sich für welchen Raum?",
+        "answer": "Jeder Raum hat unterschiedliche Anforderungen: Helles Arbeitslicht in der Küche, gemütliches Warmweiss im Wohnzimmer, flexibles Licht im Arbeitszimmer. Die Kombination verschiedener Lichtquellen schafft optimale Bedingungen."
+      },
+      {
+        "question": "Was sind die Vorteile von LED-Beleuchtung?",
+        "answer": "LED-Lampen sind energieeffizient, langlebig und in verschiedenen Farbtemperaturen erhältlich. Sie entwickeln wenig Wärme und bieten sofort volle Helligkeit ohne Aufwärmphase."
+      },
+      {
+        "question": "Wie schaffe ich gemütliche Beleuchtung?",
+        "answer": "Kombinieren Sie verschiedene Lichtquellen auf unterschiedlichen Höhen. Verwenden Sie warmweisses Licht, dimmbare Lampen und indirekte Beleuchtung für eine behagliche Atmosphäre."
+      }
+    ],
+    "buyingGuide": {
+      "title": "Die richtige Beleuchtung wählen",
+      "tips": [
+        "Planen Sie verschiedene Lichtebenen ein",
+        "Achten Sie auf die passende Farbtemperatur",
+        "Berücksichtigen Sie dimmbare Optionen",
+        "Wählen Sie energieeffiziente Leuchtmittel"
+      ]
+    }
+  },
+  "haustierbedarf-alles-fuer-dein-haustier": {
+    "metaTitle": "Haustierbedarf",
+    "metaDescription": "Hochwertiger Haustierbedarf für Hund, Katze und mehr. Praktisches Tierzubehör und clevere Lösungen für Haustierbesitzer bei Alltagsgold.",
+    "headline": "Alles für Ihre vierbeinigen Lieblinge",
+    "subheadline": "Durchdachte Produkte für das Wohlbefinden Ihrer Haustiere.",
+    "faqs": [
+      {
+        "question": "Welches Zubehör ist für Haustiere wirklich wichtig?",
+        "answer": "Grundausstattung umfasst Futter- und Wassernäpfe, Schlafplätze, Spielzeug und Pflegeprodukte. Die spezifischen Bedürfnisse variieren je nach Tierart, Grösse und Alter des Tieres."
+      },
+      {
+        "question": "Wie wähle ich sicheres Spielzeug für mein Haustier?",
+        "answer": "Achten Sie auf robuste Materialien ohne verschluckbare Kleinteile. Das Spielzeug sollte zur Grösse und Kraft Ihres Tieres passen. Prüfen Sie regelmässig auf Beschädigungen."
+      },
+      {
+        "question": "Wie halte ich die Wohnung mit Haustieren sauber?",
+        "answer": "Praktische Helfer wie Fellbürsten, spezielle Reinigungsprodukte und hygienische Unterlagen erleichtern die Sauberkeit. Regelmässige Pflegeroutinen sind der Schlüssel."
+      }
+    ],
+    "buyingGuide": {
+      "title": "Haustierbedarf sinnvoll auswählen",
+      "tips": [
+        "Berücksichtigen Sie Grösse und Aktivitätslevel Ihres Tieres",
+        "Wählen Sie pflegeleichte und hygienische Materialien",
+        "Achten Sie auf Sicherheit und Ungiftigkeit",
+        "Investieren Sie in langlebige Qualitätsprodukte"
+      ]
+    }
+  },
+  "wellness-entspannung": {
+    "metaTitle": "Wellness & Entspannung",
+    "metaDescription": "Wellness-Produkte für pure Entspannung zuhause. Massagegeräte, Aromatherapie und Entspannungshelfer bei Alltagsgold.",
+    "headline": "Ihre persönliche Wellness-Oase",
+    "subheadline": "Verwandeln Sie Ihr Zuhause in einen Ort der Entspannung und Erholung.",
+    "faqs": [
+      {
+        "question": "Wie schaffe ich eine Wellness-Atmosphäre zuhause?",
+        "answer": "Kombinieren Sie entspannende Düfte, gedämpftes Licht und beruhigende Klänge. Schaffen Sie einen festen Rückzugsort und nehmen Sie sich bewusst Zeit für Entspannung."
+      },
+      {
+        "question": "Welche Wellness-Produkte eignen sich für Anfänger?",
+        "answer": "Beginnen Sie mit einfachen Produkten wie Aromalampen, Massagebällen oder Entspannungskissen. Diese sind leicht anzuwenden und zeigen schnell positive Wirkung."
+      },
+      {
+        "question": "Wie integriere ich Wellness in einen stressigen Alltag?",
+        "answer": "Schon kurze Wellness-Momente können helfen. Nutzen Sie Pausen für Atemübungen, gönnen Sie sich abends ein Fussbad oder starten Sie den Tag mit einer kurzen Meditation."
+      }
+    ],
+    "buyingGuide": {
+      "title": "Wellness-Produkte gezielt einsetzen",
+      "tips": [
+        "Identifizieren Sie Ihre persönlichen Entspannungsbedürfnisse",
+        "Beginnen Sie mit wenigen, hochwertigen Produkten",
+        "Schaffen Sie feste Wellness-Rituale",
+        "Achten Sie auf natürliche und hautfreundliche Materialien"
+      ]
+    }
+  },
+  "auto-zubehoer": {
+    "metaTitle": "Auto-Zubehör",
+    "metaDescription": "Praktisches Auto-Zubehör für mehr Komfort und Sicherheit. Clevere Gadgets und nützliche Helfer für Ihr Fahrzeug bei Alltagsgold.",
+    "headline": "Clever unterwegs mit dem richtigen Zubehör",
+    "subheadline": "Praktische Lösungen für mehr Komfort und Organisation in Ihrem Fahrzeug.",
+    "faqs": [
+      {
+        "question": "Welches Auto-Zubehör erhöht die Sicherheit?",
+        "answer": "Wichtig sind Warnwesten, Erste-Hilfe-Sets und Pannenhilfe-Ausrüstung. Zusätzlich erhöhen Organizer und rutschfeste Unterlagen die Sicherheit durch bessere Ordnung im Fahrzeug."
+      },
+      {
+        "question": "Wie halte ich mein Auto ordentlich?",
+        "answer": "Auto-Organizer, Müllbehälter und Sitztaschen schaffen Stauraum. Regelmässiges Aufräumen und feste Plätze für wichtige Gegenstände helfen, die Ordnung zu bewahren."
+      },
+      {
+        "question": "Welches Zubehör macht lange Fahrten angenehmer?",
+        "answer": "Nackenkissen, Getränkehalter, Sonnenschutz und Smartphone-Halterungen erhöhen den Komfort. Auch Lufterfrischer und ergonomische Sitzkissen verbessern das Fahrerlebnis."
+      }
+    ],
+    "buyingGuide": {
+      "title": "Auto-Zubehör sinnvoll auswählen",
+      "tips": [
+        "Prüfen Sie die Kompatibilität mit Ihrem Fahrzeugmodell",
+        "Achten Sie auf einfache Montage und Handhabung",
+        "Wählen Sie robuste Materialien für lange Haltbarkeit",
+        "Berücksichtigen Sie Ihre häufigsten Fahrsituationen"
+      ]
+    }
+  },
+  "led-produkte": {
+    "metaTitle": "LED-Produkte",
+    "metaDescription": "Energieeffiziente LED-Produkte und moderne Lichtlösungen. Innovative LED-Technik für verschiedene Anwendungen bei Alltagsgold.",
+    "headline": "Moderne LED-Technik für Ihr Zuhause",
+    "subheadline": "Energieeffiziente und langlebige Beleuchtungslösungen mit LED-Technologie.",
+    "faqs": [
+      {
+        "question": "Warum sind LED-Produkte nachhaltiger?",
+        "answer": "LEDs verbrauchen bis zu 80% weniger Energie als herkömmliche Glühbirnen und haben eine deutlich längere Lebensdauer. Das schont Ressourcen und reduziert Abfall."
+      },
+      {
+        "question": "Welche Farbtemperatur ist die richtige?",
+        "answer": "Warmweiss (2700-3000K) für gemütliche Räume, Neutralweiss (4000K) für Arbeitsbereiche, Tageslichtweiss (5000-6500K) für konzentriertes Arbeiten. Die Wahl hängt vom Verwendungszweck ab."
+      },
+      {
+        "question": "Sind alle LED-Lampen dimmbar?",
+        "answer": "Nicht alle LED-Lampen sind dimmbar. Achten Sie auf die Produktbeschreibung und verwenden Sie bei dimmbaren LEDs einen kompatiblen Dimmer für optimale Ergebnisse."
+      }
+    ],
+    "buyingGuide": {
+      "title": "LED-Produkte richtig auswählen",
+      "tips": [
+        "Achten Sie auf die passende Helligkeit (Lumen)",
+        "Wählen Sie die richtige Farbtemperatur für den Einsatzort",
+        "Prüfen Sie die Kompatibilität mit vorhandenen Fassungen",
+        "Berücksichtigen Sie spezielle Features wie Dimmbarkeit"
+      ]
+    }
+  },
+  "badezimmeraccessoires-und-textilien": {
+    "metaTitle": "Badezimmer-Accessoires",
+    "metaDescription": "Stilvolle Badezimmer-Accessoires und hochwertige Textilien. Praktische Bad-Ausstattung für mehr Komfort bei Alltagsgold.",
+    "headline": "Badezimmer-Komfort neu definiert",
+    "subheadline": "Hochwertige Accessoires und Textilien für Ihr persönliches Spa-Erlebnis.",
+    "faqs": [
+      {
+        "question": "Welche Materialien eignen sich fürs Badezimmer?",
+        "answer": "Feuchtigkeitsbeständige Materialien wie Edelstahl, Keramik und schnelltrocknende Textilien sind ideal. Sie sind hygienisch, pflegeleicht und langlebig in der feuchten Umgebung."
+      },
+      {
+        "question": "Wie schaffe ich mehr Stauraum im Bad?",
+        "answer": "Nutzen Sie Wandflächen mit Regalen und Haken, verwenden Sie Organizer in Schränken und setzen Sie auf multifunktionale Accessoires. Auch über der Toilette ist oft ungenutzter Raum."
+      },
+      {
+        "question": "Wie pflege ich Badtextilien richtig?",
+        "answer": "Waschen Sie Handtücher regelmässig bei mindestens 60 Grad, lassen Sie sie gut trocknen und wechseln Sie sie häufig. Verwenden Sie wenig Weichspüler, um die Saugfähigkeit zu erhalten."
+      }
+    ],
+    "buyingGuide": {
+      "title": "Badezimmer-Ausstattung planen",
+      "tips": [
+        "Messen Sie verfügbare Flächen genau aus",
+        "Wählen Sie feuchtigkeitsbeständige Materialien",
+        "Achten Sie auf rutschfeste Eigenschaften",
+        "Koordinieren Sie Farben und Stile für ein harmonisches Gesamtbild"
+      ]
+    }
+  },
+  "bbq-grill": {
+    "metaTitle": "BBQ & Grill",
+    "metaDescription": "BBQ-Zubehör und Grill-Accessories für perfekte Grillabende. Praktische Grillhelfer und clevere Lösungen bei Alltagsgold.",
+    "headline": "Grillen wie die Profis",
+    "subheadline": "Hochwertiges Zubehör für unvergessliche Grillmomente mit Familie und Freunden.",
+    "faqs": [
+      {
+        "question": "Welches Grillzubehör ist unverzichtbar?",
+        "answer": "Eine gute Grillzange, Thermometer für perfekte Garpunkte, Grillbürste zur Reinigung und hitzebeständige Handschuhe sind die Basis. Je nach Grillstil kommen spezielle Tools dazu."
+      },
+      {
+        "question": "Wie reinige ich Grillzubehör richtig?",
+        "answer": "Reinigen Sie Grillwerkzeuge direkt nach Gebrauch mit warmem Wasser und Spülmittel. Hartnäckige Verschmutzungen lassen sich mit speziellen Grillreinigern entfernen. Edelstahl-Tools sind meist spülmaschinenfest."
+      },
+      {
+        "question": "Welche Materialien sind für Grillzubehör am besten?",
+        "answer": "Edelstahl ist robust und hygienisch, Silikon hitzebeständig und flexibel, Holz traditionell aber pflegeintensiv. Die Wahl hängt vom persönlichen Stil und den Anforderungen ab."
+      }
+    ],
+    "buyingGuide": {
+      "title": "Grillzubehör clever zusammenstellen",
+      "tips": [
+        "Beginnen Sie mit der Grundausstattung",
+        "Wählen Sie hitzebeständige Materialien",
+        "Achten Sie auf ergonomische Griffe",
+        "Ergänzen Sie nach Bedarf mit Spezialzubehör"
+      ]
+    }
+  }
+}

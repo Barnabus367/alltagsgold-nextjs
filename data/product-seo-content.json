@@ -3962,5 +3962,1055 @@
     ],
     "generatedAt": "2024-01-15",
     "version": 1
+  },
+  "3d-acryl-lampe-1": {
+    "ourOpinion": "Diese personalisierbare 3D-Acryl-Lampe ist ein echter Hingucker, den wir hier in Thun getestet haben. Die Möglichkeit, eigene Fotos in warmes LED-Licht zu verwandeln, macht sie zu einem sehr persönlichen Geschenk. Die Gravur-Qualität ist scharf und detailliert, auch bei komplexeren Motiven. Allerdings solltest du hochauflösende Bilder verwenden - bei schlechter Bildqualität sieht auch die Gravur entsprechend aus. Der USB-Anschluss ist praktisch, ein Netzteil wäre aber schön gewesen. Für CHF 21.90 ein faires Angebot für personalisierte Geschenke. Versand erfolgt prompt aus unserem Schweizer Lager.",
+    "useCases": [
+      "Hochzeitsgeschenk in Interlaken: Das frisch vermählte Paar freut sich über ihre beleuchtete Hochzeitsfoto-Erinnerung auf dem Nachttisch.",
+      "Kinderzimmer-Deko: Der kleine Luca aus Olten schläft besser ein, seit sein Lieblings-Superheld als sanftes Nachtlicht leuchtet.",
+      "Büro-Highlight: Im Home-Office in Aarau sorgt das gravierte Familienfoto für gute Stimmung bei langen Arbeitstagen."
+    ],
+    "faqs": [
+      {
+        "q": "Welche Bildformate kann ich verwenden?",
+        "a": "JPG und PNG funktionieren am besten. Mindestens 1000x1000 Pixel für scharfe Gravur empfohlen."
+      },
+      {
+        "q": "Wie lange dauert die Personalisierung?",
+        "a": "Nach Bildübermittlung 1-2 Werktage für die Gravur, dann sofortiger Versand."
+      },
+      {
+        "q": "Kann ich das Motiv nachträglich ändern?",
+        "a": "Nein, die Gravur ist permanent im Acrylglas. Aber du kannst mehrere Platten bestellen."
+      },
+      {
+        "q": "Wie hell leuchtet die Lampe?",
+        "a": "Angenehm warm, perfekt als Stimmungslicht. Nicht hell genug zum Lesen."
+      },
+      {
+        "q": "Ist ein Netzteil dabei?",
+        "a": "USB-Kabel ist dabei, Netzteil musst du separat besorgen oder USB-Port nutzen."
+      }
+    ]
+  },
+  "3in1-led-nachtlicht": {
+    "ourOpinion": "Das App-gesteuerte LED-Nachtlicht hat uns in Lausanne überzeugt - wenn man technikaffin ist. Die App bietet unzählige Farben, Timer und sogar Musiksynchronisation. Super für Partys oder als smartes Kinderzimmer-Licht. Die Bluetooth-Verbindung ist stabil, aber die App könnte intuitiver sein. Für CHF 39.90 nicht günstig, aber du bekommst viel Technik fürs Geld. Ein Nachteil: Ohne Smartphone kannst du nur die Grundfunktionen nutzen. Die Verarbeitung ist solide, made in China, aber wir liefern schnell aus Zürich.",
+    "useCases": [
+      "Party-Beleuchtung in Bern: Die WG-Party wird mit musiksynchronen Lichteffekten zum Highlight des Semesters.",
+      "Baby-Schlafhilfe: In Luzern dimmt die App das Licht langsam runter, während das Baby einschläft.",
+      "Gaming-Setup: Der Gamer aus Winterthur synchronisiert die Farben mit seinem RGB-PC für maximale Immersion."
+    ],
+    "faqs": [
+      {
+        "q": "Funktioniert es mit iPhone und Android?",
+        "a": "Ja, die App gibt's für beide Systeme. Ab iOS 12 und Android 8.0."
+      },
+      {
+        "q": "Kann ich mehrere Lampen gleichzeitig steuern?",
+        "a": "Ja, bis zu 6 Lampen lassen sich in der App gruppieren und synchron steuern."
+      },
+      {
+        "q": "Was passiert bei Stromausfall?",
+        "a": "Die Einstellungen bleiben gespeichert, die Lampe startet mit der letzten Konfiguration."
+      },
+      {
+        "q": "Wie laut ist der eingebaute Lautsprecher?",
+        "a": "Zimmerlautstärke ist okay, für Partys brauchst du aber externe Boxen."
+      },
+      {
+        "q": "Brauche ich WLAN?",
+        "a": "Nein, läuft über Bluetooth. WLAN nur für Firmware-Updates nötig."
+      }
+    ]
+  },
+  "led-schreibtischlampe-touch-dimmer": {
+    "ourOpinion": "Diese LED-Schreibtischlampe macht auf meinem Schreibtisch in St. Gallen eine gute Figur. Der Touch-Dimmer reagiert präzise und stufenlos - kein nerviges Klicken mehr. Das schwenkbare Design ist durchdacht, der Schwanenhals bleibt stabil in jeder Position. Die Lichtfarbe lässt sich von warmweiss bis kaltweiss einstellen, ideal fürs Home-Office. Einziger Kritikpunkt: Der Standfuss könnte schwerer sein, bei heftigem Tippen wackelt die Lampe etwas. Für CHF 34.90 trotzdem ein solides Arbeitsgerät. Direkt ab Lager Schweiz verfügbar.",
+    "useCases": [
+      "Nachtschicht in Basel: Die Studentin arbeitet an ihrer Bachelor-Arbeit ohne ihre Mitbewohnerin mit grellem Licht zu stören.",
+      "Detailarbeit im Atelier: Der Uhrmacher aus Grenchen schätzt das helle, fokussierte Licht für Feinmechanik.",
+      "Leseecke zuhause: Abends auf dem Sofa in Chur mit warmweissem Licht entspannt schmökern."
+    ],
+    "faqs": [
+      {
+        "q": "Wie viele Helligkeitsstufen gibt es?",
+        "a": "Stufenlos dimmbar durch Touch-Steuerung, plus 3 Farbtemperaturen wählbar."
+      },
+      {
+        "q": "Merkt sich die Lampe die letzte Einstellung?",
+        "a": "Ja, die Memory-Funktion speichert Helligkeit und Farbtemperatur."
+      },
+      {
+        "q": "Wie lange hält die LED?",
+        "a": "Etwa 50.000 Stunden, das sind bei 8 Stunden täglich über 17 Jahre."
+      },
+      {
+        "q": "Ist sie augenschonend?",
+        "a": "Ja, flimmerfrei und blendfrei, TÜV-zertifiziert für Augenschutz."
+      },
+      {
+        "q": "Wie lang ist das Stromkabel?",
+        "a": "1,5 Meter, reicht für die meisten Schreibtisch-Setups aus."
+      }
+    ]
+  },
+  "led-sensorleuchte": {
+    "ourOpinion": "Diese LED-Sensorleuchte für CHF 13.90 ist ein praktischer Helfer, den wir in unserem Testhaushalt in Frauenfeld nicht mehr missen möchten. Der Bewegungsmelder reagiert zuverlässig auf 3 Meter Distanz, perfekt für dunkle Flure oder Treppen. Die Montage ist kinderleicht - Klebestreifen oder Schrauben, beides liegt bei. Die 6 LEDs sind hell genug für Orientierung, aber nicht störend grell. Schwachpunkt: Die 3 AAA-Batterien halten nur etwa 2 Monate bei häufiger Nutzung. Trotzdem ein super Preis-Leistungs-Verhältnis. Sofort lieferbar aus der Schweiz.",
+    "useCases": [
+      "Nachts zur Toilette: In der Wohnung in Zug findet man den Weg ohne die Familie zu wecken.",
+      "Kleiderschrank-Beleuchtung: Morgens um 6 in Solothurn das richtige Outfit finden ohne Deckenlicht.",
+      "Kellertreppe: Der Rentner aus Schaffhausen hat endlich sicheren Tritt auf der steilen Kellertreppe."
+    ],
+    "faqs": [
+      {
+        "q": "Wie wird die Leuchte befestigt?",
+        "a": "Wahlweise mit beiliegenden Klebestreifen oder Schrauben und Dübeln."
+      },
+      {
+        "q": "Wie lange leuchtet sie nach Aktivierung?",
+        "a": "Etwa 20 Sekunden, bei weiterer Bewegung verlängert sich die Zeit automatisch."
+      },
+      {
+        "q": "Funktioniert der Sensor auch tagsüber?",
+        "a": "Es gibt einen Dämmerungssensor, bei Helligkeit aktiviert sie sich nicht."
+      },
+      {
+        "q": "Welche Batterien brauche ich?",
+        "a": "3x AAA Batterien, nicht im Lieferumfang enthalten."
+      },
+      {
+        "q": "Ist sie wasserdicht?",
+        "a": "Spritzwassergeschützt (IP44), für überdachte Aussenbereiche geeignet."
+      }
+    ]
+  },
+  "mini-led-tischlampe": {
+    "ourOpinion": "Für CHF 59.90 bekommst du hier eine Premium-Tischlampe, die wir in unserem Büro in Lugano ausgiebig getestet haben. Der magnetische Schalter ist ein cleveres Feature - die Kugel schwebt förmlich und dimmt das Licht beim Anheben. Das Design ist minimalistisch und edel, passt in jedes moderne Ambiente. Die Akkulaufzeit von 8 Stunden bei voller Helligkeit ist okay, könnte aber besser sein. Schade: Für den Preis hätte ein USB-C Ladekabel statt Micro-USB drin sein können. Trotzdem eine stilvolle Lampe für Designliebhaber. Express-Versand aus Basel möglich.",
+    "useCases": [
+      "Restaurant-Tisch in Genf: Das Sternelokal nutzt sie für stimmungsvolle Tischbeleuchtung ohne Kabel.",
+      "Designer-Wohnung: Im Loft in Zürich-West ist sie das perfekte Accessoire auf dem Sideboard.",
+      "Nachttisch-Highlight: Die schwebende Kugel fasziniert Gäste im Hotel in Davos."
+    ],
+    "faqs": [
+      {
+        "q": "Wie funktioniert der magnetische Schalter?",
+        "a": "Die Kugel wird magnetisch gehalten. Anheben dimmt, komplett entfernen schaltet aus."
+      },
+      {
+        "q": "Wie lange dauert das Aufladen?",
+        "a": "Etwa 3-4 Stunden für eine volle Ladung via Micro-USB."
+      },
+      {
+        "q": "Kann ich sie während des Ladens nutzen?",
+        "a": "Ja, funktioniert auch während des Ladevorgangs problemlos."
+      },
+      {
+        "q": "Wie schwer ist die Lampe?",
+        "a": "Etwa 350g, stabil genug dass sie nicht umkippt, aber noch portabel."
+      },
+      {
+        "q": "Gibt es verschiedene Farben?",
+        "a": "Aktuell nur in Schwarz und Weiss erhältlich."
+      }
+    ]
+  },
+  "moderne-led-tischlampe": {
+    "ourOpinion": "Diese moderne LED-Tischlampe für CHF 42.90 vereint Stil und Funktion, wie wir in Neuenburg feststellen konnten. Die verschiedenen Lichtmodi (Lesen, Arbeiten, Entspannen) sind wirklich durchdacht und per Touch-Control easy zu bedienen. Der flexible Arm lässt sich in alle Richtungen biegen und behält seine Position. Die Qi-Ladefläche im Sockel ist ein nettes Extra für moderne Smartphones. Minuspunkt: Die glänzende Oberfläche zieht Fingerabdrücke magisch an. Insgesamt aber eine elegante Lampe für den modernen Arbeitsplatz. Liegt bereit in unserem Schweizer Lager.",
+    "useCases": [
+      "Home-Office in Biel: Der Grafiker nutzt das kaltweisse Licht für präzise Farbarbeiten am Bildschirm.",
+      "Schlafzimmer-Upgrade: Das Paar aus Thun lädt nachts ihre Handys kabellos während die Lampe sanft dimmt.",
+      "Empfangsbereich: In der Arztpraxis in Aarau macht sie einen professionellen Eindruck."
+    ],
+    "faqs": [
+      {
+        "q": "Welche Handys kann ich kabellos laden?",
+        "a": "Alle Qi-fähigen Geräte, also iPhone 8+, Samsung Galaxy S6+ und viele mehr."
+      },
+      {
+        "q": "Wie viele Lichtmodi gibt es?",
+        "a": "5 Helligkeitsstufen und 3 Farbtemperaturen, also 15 Kombinationen."
+      },
+      {
+        "q": "Ist der Arm stabil?",
+        "a": "Ja, Aluminium-Konstruktion mit stabilen Gelenken, hält jede Position."
+      },
+      {
+        "q": "Wie gross ist die Reichweite des Lichts?",
+        "a": "Beleuchtet problemlos eine A3-Fläche gleichmässig aus."
+      },
+      {
+        "q": "Wird die Ladestation warm?",
+        "a": "Leicht warm beim Laden, aber völlig im normalen Bereich."
+      }
+    ]
+  },
+  "mond-lampe-bluetooth": {
+    "ourOpinion": "Die schwebende Mondlampe für CHF 99.90 ist definitiv ein Luxus-Gadget, das wir in Sion getestet haben. Der Schwebeeffekt durch Magnettechnik ist beeindruckend - Besucher sind immer fasziniert. Der integrierte Bluetooth-Speaker klingt überraschend gut für die Grösse, ersetzt aber keine richtige Musikanlage. Die Montage der Basis braucht Fingerspitzengefühl, bis der Mond stabil schwebt. Grosser Nachteil: Bei Stromausfall fällt der Mond runter - nichts für Haushalte mit Katzen. Für Technik-Fans und als Gesprächsstarter aber genial. Versand aus unserem Lager in der Schweiz.",
+    "useCases": [
+      "Meditation-Raum in Luzern: Die schwebende Kugel mit sanfter Musik schafft perfekte Zen-Atmosphäre.",
+      "Teenager-Zimmer: Der 16-Jährige aus Wil beeindruckt Freunde mit dem schwebenden Mond und Spotify-Sound.",
+      "Büro-Deko: In der Werbeagentur in Basel ist sie der absolute Hingucker im Meetingraum."
+    ],
+    "faqs": [
+      {
+        "q": "Wie gross ist der schwebende Mond?",
+        "a": "Durchmesser etwa 14cm, schwebt 2-3cm über der Basis."
+      },
+      {
+        "q": "Kann er wirklich 24/7 schweben?",
+        "a": "Ja, solange Strom da ist. Verbraucht nur etwa 12 Watt."
+      },
+      {
+        "q": "Wie gut ist der Bluetooth-Sound?",
+        "a": "5W Speaker, reicht für Zimmerlautstärke, Bass fehlt natürlich etwas."
+      },
+      {
+        "q": "Was passiert bei Stromausfall?",
+        "a": "Der Mond fällt auf die Basis. Ist aus robustem Material, geht normalerweise nicht kaputt."
+      },
+      {
+        "q": "Ist die Installation kompliziert?",
+        "a": "Die ersten Male braucht es Geduld, mit etwas Übung schwebt er in 30 Sekunden."
+      }
+    ]
+  },
+  "ringlicht-selfies": {
+    "ourOpinion": "Das Ringlicht für CHF 23.90 ist ein Must-have für Content Creator, wie wir in Fribourg festgestellt haben. Die gleichmässige Ausleuchtung eliminiert harte Schatten im Gesicht - deine Zoom-Calls sehen sofort professioneller aus. Der flexible Schwanenhals hält bombenfest, auch mit schwerem Smartphone. Drei Lichtfarben und zehn Helligkeitsstufen bieten genug Optionen. Kritikpunkt: Der Akku fehlt, es braucht immer USB-Stromversorgung. Die Handyhalterung könnte auch stabiler sein bei grossen Phones. Trotzdem top Preis-Leistung für Hobby-Influencer. Schneller Versand aus der Schweiz.",
+    "useCases": [
+      "YouTube-Videos in Zürich: Die Beauty-Bloggerin hat endlich gleichmässiges Licht für ihre Makeup-Tutorials.",
+      "Online-Unterricht: Die Lehrerin aus Bern sieht in Video-Calls professionell ausgeleuchtet aus.",
+      "Produktfotos: Der Kleinunternehmer aus Chur fotografiert seinen Schmuck in perfektem Licht."
+    ],
+    "faqs": [
+      {
+        "q": "Passt jedes Smartphone in die Halterung?",
+        "a": "Handys von 6-9cm Breite, also iPhone 6 bis iPhone 15 Pro Max und ähnliche."
+      },
+      {
+        "q": "Wie gross ist der Ring-Durchmesser?",
+        "a": "26cm Aussendurchmesser, gross genug für gute Ausleuchtung."
+      },
+      {
+        "q": "Kann ich eine Kamera statt Handy verwenden?",
+        "a": "Mit zusätzlichem Adapter ja, ist aber primär für Smartphones konzipiert."
+      },
+      {
+        "q": "Wie lang ist das USB-Kabel?",
+        "a": "2 Meter, reicht für die meisten Setups aus."
+      },
+      {
+        "q": "Flimmert das Licht bei Videos?",
+        "a": "Nein, flimmerfreie LEDs, auch bei Slowmotion keine Probleme."
+      }
+    ]
+  },
+  "solar-led-treppenlicht": {
+    "ourOpinion": "Diese Solar-LED-Treppenlichter für CHF 14.90 haben unseren Aussenbereich in Bellinzona verschönert. Die RGB-Farben schaffen abends eine tolle Atmosphäre, und dank Solarpanel keine Stromkosten. Die Installation ist simpel - einfach in die Erde stecken oder anschrauben. Nach einem Sonnentag leuchten sie etwa 6-8 Stunden. Schwachstelle: Im Winter bei wenig Sonne wird's schnell dunkel. Die Verarbeitung ist für den Preis okay, aber nach einem Jahr zeigen sich erste Altersspuren. Für Sommerpartys und milde Abende trotzdem empfehlenswert. Ab Lager Schweiz erhältlich.",
+    "useCases": [
+      "Gartenparty in Uster: Die bunten Lichter entlang des Gartenwegs sorgen für Festival-Stimmung.",
+      "Sicherheit in Wettingen: Die Treppe zum Hauseingang ist nachts endlich gut sichtbar.",
+      "Pool-Beleuchtung: Rund um den Pool in Locarno schaffen sie mediterranes Ambiente."
+    ],
+    "faqs": [
+      {
+        "q": "Wie viele Lichter sind im Set?",
+        "a": "4 Stück pro Packung, für längere Strecken mehrere Sets kombinierbar."
+      },
+      {
+        "q": "Sind sie wirklich wetterfest?",
+        "a": "IP65 zertifiziert, halten Regen und Schnee aus, aber nicht zum Untertauchen."
+      },
+      {
+        "q": "Kann ich die Farbe fest einstellen?",
+        "a": "Ja, Farbwechsel-Modus oder eine Farbe fixieren ist möglich."
+      },
+      {
+        "q": "Wie lange dauert das Aufladen?",
+        "a": "Bei voller Sonne etwa 6-8 Stunden für komplette Ladung."
+      },
+      {
+        "q": "Funktionieren sie auch im Winter?",
+        "a": "Ja, aber deutlich kürzere Leuchtdauer wegen weniger Sonnenstunden."
+      }
+    ]
+  },
+  "abflusskorb-kueche": {
+    "ourOpinion": "Dieser Abflusskorb für CHF 27.90 löst ein alltägliches Problem elegant, wie wir in unserer Testküche in Rapperswil festgestellt haben. Das feinmaschige Edelstahl-Sieb fängt wirklich alles auf - von Reiskörnern bis zu Gemüseresten. Der erhöhte Rand verhindert, dass Essensreste daneben landen. Die Reinigung ist dank der glatten Oberfläche ein Kinderspiel. Einziger Wermutstropfen: Bei sehr feinen Partikeln wie Kaffeesatz kann es trotzdem verstopfen. Die Universalgrösse passt in die meisten Schweizer Spülbecken. Praktisch und langlebig - einmal installiert, will man ihn nicht mehr missen. Schnellversand aus unserem Lager.",
+    "useCases": [
+      "Familienküche in Wädenswil: Nach dem Sonntagsbrunch bleiben alle Brotkrümel im Korb statt im Abfluss.",
+      "WG-Küche in Bern: Endlich keine Diskussionen mehr über verstopfte Abflüsse nach dem gemeinsamen Kochen.",
+      "Restaurant-Spülküche: Der Koch aus Montreux schätzt die schnelle Entleerung zwischen den Gängen."
+    ],
+    "faqs": [
+      {
+        "q": "Passt er in jedes Spülbecken?",
+        "a": "Für Standard-Abflüsse 70-114mm. Miss vorher deinen Abfluss-Durchmesser."
+      },
+      {
+        "q": "Läuft das Wasser noch gut ab?",
+        "a": "Ja, die Löcher sind optimal dimensioniert. Nur bei sehr viel Fett kann es langsamer werden."
+      },
+      {
+        "q": "Wie oft muss ich ihn leeren?",
+        "a": "Je nach Kochverhalten 1-2x täglich. Bei viel Gemüseputzen öfter."
+      },
+      {
+        "q": "Rostet der Edelstahl?",
+        "a": "Nein, 304er Edelstahl ist rostfrei. Auch nach Jahren noch wie neu."
+      },
+      {
+        "q": "Kann ich ihn in die Spülmaschine?",
+        "a": "Ja, absolut spülmaschinenfest. Empfehlen aber kurzes Abspülen vorher."
+      }
+    ]
+  },
+  "haengeregal-kueche": {
+    "ourOpinion": "Das Hängeregal für CHF 19.90 schafft wertvollen Stauraum in unserer kleinen Küche in Emmen. Die Installation unter Hängeschränken ist genial einfach - keine Bohrungen nötig, einfach einhängen. Die zwei Ebenen bieten Platz für Gewürze, Tassen oder kleine Küchenhelfer. Das Metall ist stabil verarbeitet und hält locker 5kg pro Ebene. Nachteil: Bei sehr niedrigen Hängeschränken kann es beim Kochen stören. Die schwarze Beschichtung ist kratzfest und pflegeleicht. Für kleine Schweizer Küchen eine echte Platzwunder-Lösung. Direkt ab Lager lieferbar.",
+    "useCases": [
+      "Studio-Wohnung in Zürich: Endlich Platz für Gewürze ohne wertvolle Arbeitsfläche zu verlieren.",
+      "Altbau-Küche in Basel: Die hohen Schränke werden mit dem Zusatzregal optimal genutzt.",
+      "Ferienwohnung in Grindelwald: Schnelle Lösung für mehr Stauraum ohne Bohren."
+    ],
+    "faqs": [
+      {
+        "q": "Wie breit ist das Regal?",
+        "a": "35cm breit, passt unter die meisten Standard-Hängeschränke."
+      },
+      {
+        "q": "Brauche ich Werkzeug?",
+        "a": "Nein, einfach über die Schranktür hängen. Fertig in 10 Sekunden."
+      },
+      {
+        "q": "Hält es auch schwere Tassen?",
+        "a": "Ja, bis 5kg pro Ebene. Locker 6-8 gefüllte Kaffeetassen."
+      },
+      {
+        "q": "Beschädigt es die Schranktür?",
+        "a": "Nein, Gummi-Puffer schützen die Türoberfläche."
+      },
+      {
+        "q": "Passt es bei jeder Schrankdicke?",
+        "a": "Für Türen bis 2.5cm Dicke geeignet."
+      }
+    ]
+  },
+  "knoblauchhacker-usb": {
+    "ourOpinion": "Der USB-Knoblauchhacker für CHF 21.90 ist ein witziges Gadget, das in Locarno für Gesprächsstoff sorgt. Mit 250ml Fassungsvermögen hackt er nicht nur Knoblauch, sondern auch Zwiebeln, Nüsse und Kräuter. Der Motor ist erstaunlich kraftvoll - 3 Sekunden und alles ist fein gehackt. Kein Gestank mehr an den Händen! Der USB-Akku hält für etwa 40 Hackvorgänge. Kritikpunkt: Die Reinigung der Messer braucht Vorsicht, und bei harten Nüssen kommt er an seine Grenzen. Trotzdem praktisch für alle, die oft mit Knoblauch kochen. Versandbereit aus der Schweiz.",
+    "useCases": [
+      "Italienische Küche in Mendrisio: Für die Pasta-Sauce werden 10 Knoblauchzehen in Sekunden gehackt.",
+      "Pesto-Produktion: Die Hobbyköchin aus Luzern hackt Pinienkerne und Basilikum perfekt klein.",
+      "Babynahrung: In Uster werden gekochte Gemüse schnell zu Brei verarbeitet."
+    ],
+    "faqs": [
+      {
+        "q": "Wie fein wird gehackt?",
+        "a": "Von grob bis sehr fein, je nach Dauer. 1-5 Sekunden reichen meist."
+      },
+      {
+        "q": "Kann ich auch Eis crushen?",
+        "a": "Nein, dafür ist er nicht stark genug. Nur weiche bis mittelharte Zutaten."
+      },
+      {
+        "q": "Wie lange hält der Akku?",
+        "a": "Etwa 40 Hackvorgänge, Aufladen via USB dauert 2 Stunden."
+      },
+      {
+        "q": "Sind die Teile spülmaschinenfest?",
+        "a": "Der Behälter ja, den Motoraufsatz nur feucht abwischen."
+      },
+      {
+        "q": "Wie laut ist er?",
+        "a": "Etwa wie ein Stabmixer, für wenige Sekunden absolut erträglich."
+      }
+    ]
+  },
+  "oelsprueher-flasche-550ml": {
+    "ourOpinion": "Dieser 2-in-1 Ölsprüher für CHF 21.90 hat unsere Küche in Kriens revolutioniert. 550ml Fassungsvermögen bedeutet seltener nachfüllen. Das Geniale: Sprühen für den Salat, feiner Nebel für die Pfanne - beides mit einem Gerät. Der Pumpmechanismus baut ordentlich Druck auf für gleichmässiges Sprühen. Die Skala zeigt genau, wieviel noch drin ist. Einziger Haken: Nach einigen Monaten kann die Düse verkleben, wenn man sie nicht regelmässig reinigt. Spart aber massiv Öl beim Braten und macht Schluss mit Wegwerf-Sprays. Sofort ab Lager Schweiz lieferbar.",
+    "useCases": [
+      "Grillparty in Thun: Das Grillgut wird gleichmässig mit Olivenöl benebelt, nichts klebt mehr an.",
+      "Fitness-Küche in St. Gallen: Exakte Ölkontrolle für kalorienarmes Kochen ohne Verzicht auf Geschmack.",
+      "Bäckerei zuhause: In Sion werden Backbleche perfekt eingefettet für knusprige Gipfeli."
+    ],
+    "faqs": [
+      {
+        "q": "Welche Öle kann ich verwenden?",
+        "a": "Alle flüssigen Öle. Bei sehr dickflüssigen wie Leinöl kann es hakeln."
+      },
+      {
+        "q": "Wie fein ist der Sprühnebel?",
+        "a": "Sehr fein bei vollem Pumpdruck, perfekt für gleichmässige Verteilung."
+      },
+      {
+        "q": "Ist es dicht?",
+        "a": "Ja, auslaufsicher. Kann bedenkenlos im Schrank liegen."
+      },
+      {
+        "q": "Wie reinige ich die Düse?",
+        "a": "Mit heissem Wasser durchspülen, bei Bedarf mit Zahnstocher säubern."
+      },
+      {
+        "q": "Kann ich auch Essig einfüllen?",
+        "a": "Ja, auch für Essig-Öl-Mischungen geeignet. Danach gut ausspülen."
+      }
+    ]
+  },
+  "praktisches-kuechenregal": {
+    "ourOpinion": "Dieses Küchenregal für CHF 21.90 ist der Ordnungshelfer, den unsere Testküche in Brugg gebraucht hat. Die drei Ebenen bieten überraschend viel Stauraum auf kleiner Grundfläche. Das Bambusholz sieht nicht nur schick aus, es ist auch nachhaltig und pflegeleicht. Die Montage dauert keine 10 Minuten - alles dabei, gut durchdacht. Einziges Manko: Bei schweren Töpfen biegt sich die mittlere Ebene leicht durch. Für Gewürze, Öle und leichtere Sachen aber perfekt. Das zeitlose Design passt in jede Küche. Versand erfolgt umgehend aus unserem Schweizer Lager.",
+    "useCases": [
+      "Gewürzsammlung in Aarau: Alle 30 Gewürzdosen sind endlich übersichtlich sortiert und griffbereit.",
+      "Kaffeebar zuhause: In Nyon stehen Kaffeemaschine, Mühle und Zubehör platzsparend übereinander.",
+      "Vorratshaltung: Die Familie aus Schwyz nutzt es für Konserven und Trockenvorräte."
+    ],
+    "faqs": [
+      {
+        "q": "Wie viel Gewicht trägt es?",
+        "a": "Bis 10kg pro Ebene, insgesamt maximal 25kg."
+      },
+      {
+        "q": "Ist das Bambusholz behandelt?",
+        "a": "Ja, lebensmittelechte Versiegelung, abwischbar und hygienisch."
+      },
+      {
+        "q": "Welche Masse hat das Regal?",
+        "a": "40cm breit, 30cm tief, 65cm hoch. Passt auf jede Arbeitsplatte."
+      },
+      {
+        "q": "Kann ich die Höhe verstellen?",
+        "a": "Nein, die Ebenen sind fix. Aber der Abstand ist gut durchdacht."
+      },
+      {
+        "q": "Wackelt es?",
+        "a": "Nein, sehr stabil durch Kreuzverstrebung hinten."
+      }
+    ]
+  },
+  "wandhalterung-deckel": {
+    "ourOpinion": "Diese Deckelhalterung für CHF 8.90 ist ein simpler Problemlöser, der in unserer Küche in Rheinfelden Wunder wirkt. Endlich liegen keine Topfdeckel mehr chaotisch in Schubladen rum. Die Montage ist idiotensicher - zwei Schrauben, fertig. Das verzinkte Metall hält auch schwere Gusseisendeckel problemlos. Pro Halterung passen 3-4 Deckel verschiedener Grössen. Der Preis ist unschlagbar für die gewonnene Ordnung. Einziger Nachteil: Man muss halt Löcher in die Wand bohren. Aber einmal montiert, möchte man sie nicht mehr missen. Express-Versand aus Basel.",
+    "useCases": [
+      "Kleine Küche in Genf: Die Schranktür-Innenseite wird zum Deckel-Parkplatz umfunktioniert.",
+      "Kochinsel-Organisation: In Küsnacht hängen die Deckel griffbereit neben dem Herd.",
+      "Camping-Bus: Der umgebaute Bus nutzt jeden Zentimeter mit cleveren Halterungen."
+    ],
+    "faqs": [
+      {
+        "q": "Wie viele Deckel passen drauf?",
+        "a": "3-4 Stück, je nach Grösse. Von 16cm bis 32cm Durchmesser."
+      },
+      {
+        "q": "Hält es auch Glasdeckel?",
+        "a": "Ja, auch schwere Glasdeckel sind kein Problem."
+      },
+      {
+        "q": "Kann ich es in Schränke montieren?",
+        "a": "Ja, perfekt für Schranktür-Innenseiten. Achte auf die Türdicke."
+      },
+      {
+        "q": "Ist Montagematerial dabei?",
+        "a": "Ja, Schrauben und Dübel sind im Lieferumfang."
+      },
+      {
+        "q": "Kratzen die Deckel aneinander?",
+        "a": "Minimal, aber Gummi-Puffer kann man selbst anbringen."
+      }
+    ]
+  },
+  "zwiebelhacker-16cm": {
+    "ourOpinion": "Der Zwiebelhacker für CHF 12.90 ist der Tränenretter in unserer Küche in Steffisburg. Mit 16cm Durchmesser hat er die perfekte Grösse für normale Zwiebeln. Die Edelstahlklingen sind rasiermesserscharf und schneiden butterweich durch Zwiebeln, Tomaten und sogar Mozzarella. Der Drehmechanismus ist robust und liegt gut in der Hand. Nach 50 Zwiebeln immer noch scharf! Kleiner Kritikpunkt: Bei sehr harten Sachen wie rohen Karotten braucht es mehr Kraft. Die Reinigung unter fliessendem Wasser ist simpel. Für den Preis ein absolutes Schnäppchen. Sofortversand aus der Schweiz.",
+    "useCases": [
+      "Zwiebelkuchen-Produktion in Murten: 10 Zwiebeln in 5 Minuten gehackt - ohne eine Träne.",
+      "Salsa-Abend: Die WG in Winterthur hackt Tomaten, Zwiebeln und Chili im Akkord.",
+      "Babybrei: In Liestal werden gekochte Gemüse schnell zur gewünschten Konsistenz verarbeitet."
+    ],
+    "faqs": [
+      {
+        "q": "Wie fein hackt er?",
+        "a": "Von grob (1x drehen) bis sehr fein (10x drehen), du bestimmst."
+      },
+      {
+        "q": "Funktioniert er auch bei Knoblauch?",
+        "a": "Ja, aber bei kleinen Mengen etwas mühsam. Besser mehrere Zehen gleichzeitig."
+      },
+      {
+        "q": "Sind die Klingen austauschbar?",
+        "a": "Nein, aber bei normaler Nutzung halten sie jahrelang."
+      },
+      {
+        "q": "Spülmaschinenfest?",
+        "a": "Ja, komplett zerlegbar und spülmaschinenfest."
+      },
+      {
+        "q": "Wie gross dürfen die Stücke sein?",
+        "a": "Maximal 4x4cm, grössere Stücke vorher halbieren."
+      }
+    ]
+  },
+  "moderne-abfallbehaelter": {
+    "ourOpinion": "Diese modernen Abfallbehälter für CHF 34.90 haben unsere Küche in Dietikon aufgewertet. Das schlichte Design in Anthrazit passt perfekt zur modernen Einrichtung. Mit 30 Litern Volumen ideal für Kleinfamilien - der Müll muss etwa 2x pro Woche raus. Der Soft-Close-Deckel ist ein Segen, kein lautes Knallen mehr. Der herausnehmbare Inneneimer macht das Säubern einfach. Schwachpunkt: Der Tretmechanismus könnte robuster sein, nach einem Jahr etwas hakelig. Trotzdem ein schicker Mülleimer, der nicht versteckt werden muss. Prompte Lieferung aus unserem Lager.",
+    "useCases": [
+      "Offene Küche in Zug: Der elegante Abfalleimer muss nicht mehr im Schrank versteckt werden.",
+      "Büro-Küche: In der Agentur in Zürich macht er einen professionellen Eindruck.",
+      "Recycling-Station: Die Familie aus Baden nutzt zwei Stück für Müll und Wertstoffe."
+    ],
+    "faqs": [
+      {
+        "q": "Welche Müllbeutel passen?",
+        "a": "Standard 30-35 Liter Beutel. Die Schweizer 35L passen perfekt."
+      },
+      {
+        "q": "Ist er geruchsdicht?",
+        "a": "Der Deckel schliesst gut, aber nicht 100% luftdicht. Für Biomüll empfehlen wir häufiges Leeren."
+      },
+      {
+        "q": "Wie schwer ist er?",
+        "a": "Etwa 2.5kg leer, steht dadurch sehr stabil."
+      },
+      {
+        "q": "Gibt es Ersatzteile?",
+        "a": "Ja, Inneneimer und Deckel sind als Ersatzteile erhältlich."
+      },
+      {
+        "q": "Hinterlässt er Spuren auf dem Boden?",
+        "a": "Nein, Gummifüsse schützen den Boden und verhindern Rutschen."
+      }
+    ]
+  },
+  "oelsprueher-aus-glas": {
+    "ourOpinion": "Dieser Glas-Ölsprüher für CHF 14.90 ist die nachhaltige Alternative zu Sprühdosen, wie wir in Glarus testen konnten. Das Borosilikatglas ist hitzebeständig und geschmacksneutral - perfekt für hochwertiges Olivenöl. Der Pumpsprüher erzeugt einen feinen Nebel, der Pfannen und Salate gleichmässig benetzt. 100ml Fassungsvermögen ist kompakt aber ausreichend. Nachteil: Glas kann natürlich zerbrechen, und die Pumpe braucht nach einigen Monaten eventuell Ersatz. Dafür sieht man immer, wieviel Öl noch drin ist. Für bewusste Köche eine gute Investition. Versand aus der Schweiz.",
+    "useCases": [
+      "BBQ in Chur: Das Grillgut wird hauchfein mit Kräuteröl benebelt für extra Geschmack.",
+      "Diät-Küche in Davos: Präzise Ölkontrolle hilft beim Kalorienzählen ohne Verzicht.",
+      "Brotbacken: Der Hobbybäcker aus Appenzell besprüht Teige für die perfekte Kruste."
+    ],
+    "faqs": [
+      {
+        "q": "Wie viel fasst die Flasche?",
+        "a": "100ml, reicht für etwa 200-300 Sprühstösse."
+      },
+      {
+        "q": "Kann ich auch Essig verwenden?",
+        "a": "Ja, für alle flüssigen Würzmittel geeignet. Nach Essig gut ausspülen."
+      },
+      {
+        "q": "Wie fein ist der Sprühnebel?",
+        "a": "Sehr fein, vergleichbar mit gekauften Sprays."
+      },
+      {
+        "q": "Ist es spülmaschinenfest?",
+        "a": "Das Glas ja, den Sprühkopf besser von Hand reinigen."
+      },
+      {
+        "q": "Wie lange hält die Pumpe?",
+        "a": "Bei täglicher Nutzung etwa 6-12 Monate, Ersatzpumpen verfügbar."
+      }
+    ]
+  },
+  "pizzaschieber-holz-griff": {
+    "ourOpinion": "Der Pizzaschieber für CHF 29.90 macht dich zum Pizzaiolo, wie wir in Lugano festgestellt haben. Die Aluminiumschaufel gleitet mühelos unter den Teig, der Holzgriff bleibt auch bei heissem Ofen kühl. In drei Grössen erhältlich - wir empfehlen die mittlere für Heimöfen. Die Verarbeitung ist solide, keine scharfen Kanten. Nach 20 Pizzen noch wie neu! Einziger Kritikpunkt: Für sehr grosse Pizzen könnte er breiter sein. Die gelochte Variante lässt überschüssiges Mehl durchfallen - clever! Perfekt für alle Pizza-Fans mit Ambition. Schnellversand aus unserem Lager.",
+    "useCases": [
+      "Pizza-Abend in Bellinzona: Die selbstgemachte Pizza landet elegant im heissen Ofen.",
+      "Flammkuchen-Party: In Muttenz werden die hauchdünnen Flammkuchen sicher transportiert.",
+      "Brotbacken: Der Hobbybäcker aus Solothurn schiebt seine Sauerteigbrote in den Ofen."
+    ],
+    "faqs": [
+      {
+        "q": "Welche Grösse soll ich wählen?",
+        "a": "Klein (25cm) für normale Öfen, Mittel (30cm) universal, Gross (35cm) für Pizzaöfen."
+      },
+      {
+        "q": "Brennt der Holzgriff an?",
+        "a": "Nein, der Griff ist lang genug und bleibt ausserhalb der Hitze."
+      },
+      {
+        "q": "Klebt der Teig nicht daran?",
+        "a": "Mit etwas Mehl oder Griess auf der Schaufel gleitet alles perfekt."
+      },
+      {
+        "q": "Wie reinige ich ihn?",
+        "a": "Einfach mit feuchtem Tuch abwischen, nicht in die Spülmaschine."
+      },
+      {
+        "q": "Hält er das Gewicht einer belegten Pizza?",
+        "a": "Locker! Auch Family-Size Pizzen sind kein Problem."
+      }
+    ]
+  },
+  "perforierte-grillpfanne": {
+    "ourOpinion": "Diese perforierte Grillpfanne für CHF 34.90 ist der Geheimtipp für Gemüse-Grillen, den wir in Ascona entdeckt haben. Die Löcher lassen Rauch durch für echtes Grillaroma, aber nichts fällt durch. Der klappbare Griff spart Platz und macht das Handling sicher. Die Antihaftbeschichtung funktioniert tadellos - selbst Käse klebt nicht an. Gross genug für 4 Portionen Gemüse. Nachteil: Bei sehr fettigem Grillgut tropft es durch die Löcher. Aber für Gemüse, Fisch und Meeresfrüchte unschlagbar. Auch auf dem Herd verwendbar! Sofort verfügbar aus unserem Schweizer Depot.",
+    "useCases": [
+      "Vegi-Grillen in Biel: Zucchini, Peperoni und Pilze bekommen perfekte Grillstreifen ohne durchzufallen.",
+      "Fischgrillen am Bodensee: Die Felchenfilets werden schonend gegrillt ohne zu zerbrechen.",
+      "Wok-Gemüse outdoor: In Interlaken wird asiatisches Gemüse auf dem Gasgrill zubereitet."
+    ],
+    "faqs": [
+      {
+        "q": "Für welche Grills geeignet?",
+        "a": "Für alle Grills bis 35cm Breite, auch Gasgrill und Herd."
+      },
+      {
+        "q": "Wie gross sind die Löcher?",
+        "a": "Etwa 5mm, klein genug für Erbsen, gross genug für Raucharoma."
+      },
+      {
+        "q": "Ist die Beschichtung giftig?",
+        "a": "Nein, PFOA-frei und bis 260°C hitzebeständig."
+      },
+      {
+        "q": "Kann ich sie in die Spülmaschine?",
+        "a": "Ja, aber Handwäsche verlängert die Lebensdauer der Beschichtung."
+      },
+      {
+        "q": "Wie schwer ist sie?",
+        "a": "Etwa 450g, leicht genug zum einhändigen Schwenken."
+      }
+    ]
+  },
+  "feuchtigkeitsmaske-frucht": {
+    "ourOpinion": "Diese Frucht-Feuchtigkeitsmaske für CHF 11.90 ist ein kleiner Wellness-Moment, den wir in Yverdon getestet haben. Die Maske ist gut getränkt mit Serum und riecht angenehm fruchtig, nicht künstlich. Nach 15 Minuten fühlt sich die Haut tatsächlich praller und hydratisierter an. Der Effekt hält etwa 2 Tage. Allerdings: Für empfindliche Haut könnte der Duft zu intensiv sein. Das Preis-Leistungs-Verhältnis ist top - vergleichbare Masken kosten in der Drogerie das Doppelte. Perfekt für einen Spa-Abend zuhause. Schneller Versand aus unserem Lager in der Schweiz.",
+    "useCases": [
+      "Mädelsabend in Bern: Die Freundinnen gönnen sich eine Maskenpause beim Netflix-Marathon.",
+      "Vor dem Date: Die Zürcherin frischt ihre Haut 30 Minuten vorher nochmal auf.",
+      "Nach dem Skifahren: In Verbier beruhigt die Maske die von Sonne und Wind strapazierte Haut."
+    ],
+    "faqs": [
+      {
+        "q": "Für welchen Hauttyp geeignet?",
+        "a": "Für normale bis trockene Haut ideal. Bei fettiger Haut kann es zu viel sein."
+      },
+      {
+        "q": "Wie oft kann ich sie verwenden?",
+        "a": "1-2x pro Woche optimal. Täglich wäre Verschwendung."
+      },
+      {
+        "q": "Muss ich danach noch cremen?",
+        "a": "Nicht unbedingt, das Serum zieht gut ein. Bei sehr trockener Haut evtl. nachcremen."
+      },
+      {
+        "q": "Sind die Inhaltsstoffe natürlich?",
+        "a": "Hauptsächlich ja, mit Fruchtextrakten. Aber auch Konservierungsstoffe enthalten."
+      },
+      {
+        "q": "Wie lange ist sie haltbar?",
+        "a": "Ungeöffnet 2 Jahre. Nach Öffnung sofort verwenden."
+      }
+    ]
+  },
+  "mildes-reinigungsgel-hyaluronsaeure": {
+    "ourOpinion": "Das milde Reinigungsgel mit Hyaluronsäure für CHF 13.90 überzeugt in unserem Test in Nyon. Die gelförmige Textur schäumt sanft auf und entfernt Make-up und Schmutz gründlich, ohne die Haut auszutrocknen. Die 100ml reichen bei zweimal täglicher Anwendung etwa 6 Wochen. Die Hyaluronsäure spendet schon beim Waschen Feuchtigkeit - clever! Einziger Minuspunkt: Wasserfestes Augen-Make-up kriegt es nicht ganz weg. Der neutrale Duft ist angenehm dezent. Für empfindliche Haut bestens geeignet. Direkt aus unserem Schweizer Lager lieferbar.",
+    "useCases": [
+      "Morgenroutine in Basel: Das Gesicht wird sanft von Nachtcreme und Hautschüppchen befreit.",
+      "Nach dem Sport: In Lausanne erfrischt das Gel verschwitzte Haut ohne zu reizen.",
+      "Teenager-Hautpflege: Der 15-Jährige aus Wil mag die unkomplizierte Anwendung."
+    ],
+    "faqs": [
+      {
+        "q": "Ist es für Problemhaut geeignet?",
+        "a": "Ja, sehr mild und nicht komedogen. Verstopft keine Poren."
+      },
+      {
+        "q": "Entfernt es wasserfestes Make-up?",
+        "a": "Nur teilweise. Dafür besser einen separaten Make-up-Entferner nutzen."
+      },
+      {
+        "q": "Trocknet es die Haut aus?",
+        "a": "Nein, die Hyaluronsäure wirkt dem entgegen. Haut fühlt sich weich an."
+      },
+      {
+        "q": "Wie ergiebig ist es?",
+        "a": "Sehr! Ein Pump reicht fürs ganze Gesicht."
+      },
+      {
+        "q": "Ist es parfümfrei?",
+        "a": "Fast, nur ein ganz dezenter, sauberer Duft."
+      }
+    ]
+  },
+  "naehrende-gesichtsmaske": {
+    "ourOpinion": "Diese nährende Gesichtsmaske für CHF 15.90 ist unser Geheimtipp aus Fribourg für gestresste Winterhaut. Die cremige Textur ist reichhaltig ohne zu kleben. Nach 20 Minuten Einwirkzeit ist die Haut sichtbar genährt und kleine Trockenheitsfältchen gemildert. Der Effekt hält gut 3 Tage an. Nachteil: Für fettige Haut definitiv zu reichhaltig. Der dezente Rosenduft ist angenehm, könnte aber Allergiker stören. Die 50ml Tube reicht für etwa 15 Anwendungen. Im Winter ein Must-have für trockene Haut. Versandbereit aus unserem Lager.",
+    "useCases": [
+      "Winterpflege in Davos: Nach dem Skifahren rettet die Maske spannende Gesichtshaut.",
+      "Anti-Aging-Routine: Die Dame aus Lugano schwört auf die wöchentliche Intensivpflege.",
+      "Nachtschicht-Rettung: Die Krankenschwester aus Aarau bekämpft damit müde Haut."
+    ],
+    "faqs": [
+      {
+        "q": "Wie oft sollte ich sie anwenden?",
+        "a": "1-2x wöchentlich reicht. Bei sehr trockener Haut auch 3x."
+      },
+      {
+        "q": "Muss ich sie abwaschen?",
+        "a": "Ja, nach 20 Minuten mit lauwarmem Wasser. Reste einmassieren."
+      },
+      {
+        "q": "Kann ich sie über Nacht drauflassen?",
+        "a": "Besser nicht, sie ist zu reichhaltig. Kann Poren verstopfen."
+      },
+      {
+        "q": "Für welches Alter geeignet?",
+        "a": "Ab 25+ wenn die Haut erste Trockenheit zeigt."
+      },
+      {
+        "q": "Enthält sie Parabene?",
+        "a": "Nein, parabenfrei. Aber andere Konservierungsstoffe sind drin."
+      }
+    ]
+  },
+  "pore-care-cream": {
+    "ourOpinion": "Die Pore Care Cream für CHF 14.90 hat in Zug gemischte Gefühle hinterlassen. Die leichte Gel-Creme mattiert tatsächlich und verfeinert optisch die Poren - perfekt als Make-up-Base. Die Haut fühlt sich den ganzen Tag weniger ölig an. Allerdings: Bei sehr verstopften Poren wirkt sie keine Wunder, da braucht es stärkere Mittel. Der Duft ist medizinisch-frisch, nicht jedermanns Sache. Die 30ml sind sparsam in der Anwendung, halten etwa 2 Monate. Für Mischhaut im Sommer ideal. Schnelle Lieferung aus der Schweiz garantiert.",
+    "useCases": [
+      "Büro-Look in Zürich: Die glänzende T-Zone bleibt den ganzen Arbeitstag matt.",
+      "Festival-Vorbereitung: In Montreux hält das Make-up trotz Hitze und Tanzen.",
+      "Teenager-Hautpflege: Der Gymnasiast aus Thun mag den nicht-fettenden Effekt."
+    ],
+    "faqs": [
+      {
+        "q": "Verstopft sie die Poren?",
+        "a": "Nein, ist nicht komedogen getestet. Lässt Haut atmen."
+      },
+      {
+        "q": "Hilft sie gegen Mitesser?",
+        "a": "Etwas, aber ist keine Behandlung. Mehr präventiv."
+      },
+      {
+        "q": "Kann ich sie unter Make-up tragen?",
+        "a": "Perfekt dafür! Wirkt wie ein Primer."
+      },
+      {
+        "q": "Trocknet sie die Haut aus?",
+        "a": "Bei Mischhaut nein, bei trockener Haut evtl. zu mattierend."
+      },
+      {
+        "q": "Wie lange dauert es bis man Resultate sieht?",
+        "a": "Sofort-Effekt beim Mattieren, Porenverfeinerung nach 2-3 Wochen."
+      }
+    ]
+  },
+  "tiefenwirksame-peelingcreme": {
+    "ourOpinion": "Diese Peelingcreme für CHF 17.90 ist der Frischekick, den unsere Haut in Schaffhausen gebraucht hat. Die feinen Peeling-Partikel sind sanft aber effektiv - keine Mikro-Kratzer wie bei billigen Produkten. Die Haut fühlt sich danach babyweich an und Pflegeprodukte ziehen besser ein. Der Effekt hält etwa eine Woche. Vorsicht: Bei empfindlicher Haut nur 1x wöchentlich verwenden, sonst wird's zu viel. Der Zitrusduft erfrischt, könnte aber dezenter sein. 75ml reichen für 3-4 Monate. Definitiv sein Geld wert. Express-Versand möglich.",
+    "useCases": [
+      "Sonntagsritual in Bern: Das wöchentliche Peeling gehört zur festen Routine.",
+      "Vor wichtigen Anlässen: Die Braut aus St. Gallen sorgt für strahlenden Teint.",
+      "Männerpflege: Der Banker aus Zürich schwört auf das glatte Rasiergefühl danach."
+    ],
+    "faqs": [
+      {
+        "q": "Wie oft darf ich es verwenden?",
+        "a": "Normal 2x wöchentlich, empfindliche Haut nur 1x."
+      },
+      {
+        "q": "Sind die Partikel umweltfreundlich?",
+        "a": "Ja, natürliche Partikel, kein Mikroplastik."
+      },
+      {
+        "q": "Kann ich es am ganzen Körper verwenden?",
+        "a": "Theoretisch ja, ist aber für's Gesicht optimiert und daher teuer für den Körper."
+      },
+      {
+        "q": "Hilft es gegen eingewachsene Haare?",
+        "a": "Ja, regelmässiges Peeling beugt dem vor."
+      },
+      {
+        "q": "Brennt es auf der Haut?",
+        "a": "Leichtes Kribbeln ist normal, sollte aber nicht brennen."
+      }
+    ]
+  },
+  "sanfte-reinigung-hauttyp": {
+    "ourOpinion": "Diese sanfte Reinigungsbürste für CHF 16.90 hat unsere Gesichtspflege in Martigny revolutioniert. Die weichen Silikonborsten massieren sanft und reinigen porentief, ohne zu kratzen. Wasserdicht und hygienisch - Bakterien haben keine Chance. Die verschiedenen Geschwindigkeitsstufen passen sich jedem Hauttyp an. Der Akku hält beeindruckende 2 Monate bei täglicher Nutzung. Einziger Wermutstropfen: Bei starkem Make-up braucht es trotzdem Vorreinigung. Aber für die tägliche Reinigung unschlagbar. Das Hautbild verbessert sich sichtbar. Sofort aus der Schweiz lieferbar.",
+    "useCases": [
+      "Abend-Routine in Genf: Die gründliche Reinigung entfernt alle Umweltbelastungen des Tages.",
+      "Problemhaut-Pflege: Der Teenager aus Wil sieht nach 2 Wochen weniger Unreinheiten.",
+      "Wellness zuhause: In Luzern wird die Massage-Funktion zur täglichen Mini-Spa-Behandlung."
+    ],
+    "faqs": [
+      {
+        "q": "Ist sie für empfindliche Haut geeignet?",
+        "a": "Ja, die Silikonborsten sind super sanft. Niedrigste Stufe wählen."
+      },
+      {
+        "q": "Wie reinige ich die Bürste selbst?",
+        "a": "Einfach mit Seife abwaschen. Einmal wöchentlich desinfizieren."
+      },
+      {
+        "q": "Ersetzt sie die Handreinigung komplett?",
+        "a": "Fast, aber bei schwerem Make-up vorher grob abnehmen."
+      },
+      {
+        "q": "Wie lange hält der Akku?",
+        "a": "Bei 2x täglich je 1 Minute etwa 60 Tage."
+      },
+      {
+        "q": "Ist sie laut?",
+        "a": "Nein, leises Summen, stört niemanden im Bad."
+      }
+    ]
+  },
+  "silikon-eisroller": {
+    "ourOpinion": "Der Silikon-Eisroller für CHF 9.90 ist der Geheimtipp aus Sion gegen morgendliche Schwellungen. Einfach mit Wasser füllen, einfrieren und über's Gesicht rollen - Augenringe und Puffiness verschwinden in Minuten. Das Silikon fühlt sich angenehm auf der Haut an, nicht wie hartes Eis. Der Effekt hält etwa 2-3 Stunden, perfekt für den Start in den Tag. Nachteil: Man muss dran denken, ihn rechtzeitig einzufrieren. Die Grösse ist handlich und passt in jedes Gefrierfach. Für den Preis ein geniales Beauty-Tool. Versand aus unserem Schweizer Lager.",
+    "useCases": [
+      "Montag-Morgen-Rettung: Nach dem Wochenende in Zürich sind die Augen wieder frisch.",
+      "Vor dem Fotoshooting: Das Model aus Basel schwört auf den Sofort-Lifting-Effekt.",
+      "Kopfschmerz-Linderung: In Chur hilft das Rollen auf der Stirn gegen Spannungskopfschmerz."
+    ],
+    "faqs": [
+      {
+        "q": "Wie lange muss er ins Gefrierfach?",
+        "a": "Mindestens 4 Stunden, am besten über Nacht."
+      },
+      {
+        "q": "Kann ich auch Serum einfüllen?",
+        "a": "Theoretisch ja, aber Wasser funktioniert am besten."
+      },
+      {
+        "q": "Wie lange kann ich rollen?",
+        "a": "5-10 Minuten maximal, sonst wird's zu kalt für die Haut."
+      },
+      {
+        "q": "Hilft es wirklich gegen Falten?",
+        "a": "Temporär strafft es, aber keine dauerhafte Anti-Aging-Wirkung."
+      },
+      {
+        "q": "Ist er hygienisch?",
+        "a": "Ja, Silikon ist antibakteriell. Trotzdem regelmässig reinigen."
+      }
+    ]
+  },
+  "wassermelonen-schlafcreme": {
+    "ourOpinion": "Die Wassermelonen-Schlafcreme für CHF 17.90 ist unser Sommerfavorit aus Locarno. Die leichte Gel-Textur zieht schnell ein und hinterlässt keinen Film auf dem Kopfkissen. Der fruchtige Duft ist dezent und natürlich. Am Morgen ist die Haut prall und erfrischt - der Wassermelonen-Extrakt hydratisiert wirklich gut. Allerdings: Für sehr trockene Winterhaut könnte sie zu leicht sein. Die 50ml reichen bei sparsamer Anwendung 2 Monate. Perfekt für alle, die keine schweren Nachtcremes mögen. Prompte Lieferung aus der Schweiz.",
+    "useCases": [
+      "Sommernächte in Lugano: Die leichte Textur klebt nicht bei heissen Temperaturen.",
+      "Nach dem Sonnenbad: In Ascona beruhigt die Creme sonnengestresste Haut über Nacht.",
+      "Mischhaut-Pflege: Die Zürcherin mag, dass nur trockene Stellen genährt werden."
+    ],
+    "faqs": [
+      {
+        "q": "Ist sie für alle Hauttypen geeignet?",
+        "a": "Besonders für normale bis Mischhaut. Sehr trockene Haut braucht mehr."
+      },
+      {
+        "q": "Riecht sie stark nach Wassermelone?",
+        "a": "Dezent fruchtig, nicht künstlich. Verfliegt nach wenigen Minuten."
+      },
+      {
+        "q": "Kann ich sie auch tagsüber verwenden?",
+        "a": "Ja, aber sie ist für die Nacht optimiert. Tags besser mit SPF."
+      },
+      {
+        "q": "Verstopft sie die Poren?",
+        "a": "Nein, sehr leichte Formel, nicht komedogen."
+      },
+      {
+        "q": "Wie lange ist sie haltbar?",
+        "a": "Nach Öffnung 6 Monate, steht auf der Tube."
+      }
+    ]
+  },
+  "auto-ablagebox": {
+    "ourOpinion": "Die Mittelkonsolen-Organizer für CHF 19.90 hat das Chaos in unserem Testauto in Baar beendet. Endlich haben Handy, Münzen und Parktickets einen festen Platz. Die flexible Grösse passt in die meisten Mittelkonsolen - einfach zusammendrücken oder auseinanderziehen. Das Material ist robust und pflegeleicht. Der Getränkehalter-Einsatz ist genial für Coffee-to-go. Einziger Nachteil: Bei sehr schmalen Konsolen passt er nicht. Die Montage dauert 10 Sekunden - reinlegen, fertig. Für Vielfahrer ein absolutes Must-have. Sofortversand aus unserem Lager.",
+    "useCases": [
+      "Pendler-Alltag Zürich-Bern: Kaffee, Handy und Mauttickets sind immer griffbereit.",
+      "Familienausflug: Im Van aus Winterthur hat jedes Kleinteil seinen Platz.",
+      "Taxi-Fahrer: Der Profi aus Basel organisiert Wechselgeld und Quittungen perfekt."
+    ],
+    "faqs": [
+      {
+        "q": "Passt er in jedes Auto?",
+        "a": "In 90% der Autos. Miss vorher deine Konsole: 15-25cm Breite ideal."
+      },
+      {
+        "q": "Rutscht er während der Fahrt?",
+        "a": "Nein, Gummifüsse und Passform halten ihn stabil."
+      },
+      {
+        "q": "Wie viele Fächer hat er?",
+        "a": "4 Hauptfächer plus 2 Getränkehalter."
+      },
+      {
+        "q": "Ist er waschbar?",
+        "a": "Ja, einfach mit feuchtem Tuch auswischen oder ausschütteln."
+      },
+      {
+        "q": "Hält er auch grosse Kaffeebecher?",
+        "a": "Ja, bis zu 0.5L Becher passen rein."
+      }
+    ]
+  },
+  "auto-aufbewahrungstasche": {
+    "ourOpinion": "Diese Auto-Aufbewahrungstasche für CHF 27.90 ist der Raumwunder, den wir in Luzern getestet haben. Mit mehreren Fächern und Netztaschen organisiert sie den ganzen Kleinkram, der sonst im Auto rumfliegt. Die Befestigung an der Rückenlehne ist stabil - nichts wackelt oder klimpert. Das wasserabweisende Material ist top für verschüttete Getränke. Die Grösse ist optimal - nicht zu wuchtig aber genug Stauraum. Schwachpunkt: Die Reissverschlüsse könnten hochwertiger sein. Trotzdem eine super Lösung für Ordnung im Auto. Direkt aus der Schweiz lieferbar.",
+    "useCases": [
+      "Familien-Van in Kriens: Spielzeug, Snacks und Feuchttücher sind sortiert verstaut.",
+      "Geschäftsreisen: Der Aussendienstler aus Zug hat alle Unterlagen griffbereit.",
+      "Camping-Trip: Im Wohnmobil wird jeder Zentimeter Stauraum optimal genutzt."
+    ],
+    "faqs": [
+      {
+        "q": "Wie wird sie befestigt?",
+        "a": "Elastische Gurte um die Kopfstütze, hält bombenfest."
+      },
+      {
+        "q": "Stört sie die Mitfahrer hinten?",
+        "a": "Nein, sehr flach, nimmt kaum Beinfreiheit weg."
+      },
+      {
+        "q": "Wie viele Fächer hat sie?",
+        "a": "6 Fächer verschiedener Grössen plus 2 Netztaschen."
+      },
+      {
+        "q": "Passt ein Tablet rein?",
+        "a": "Ja, bis 10 Zoll Tablets passen ins Hauptfach."
+      },
+      {
+        "q": "Ist sie abnehmbar?",
+        "a": "Ja, in 30 Sekunden ab- und wieder angebracht."
+      }
+    ]
+  },
+  "bildschirmreiniger-unterwegs": {
+    "ourOpinion": "Dieser portable Bildschirmreiniger für CHF 11.90 ist der Retter für alle Bildschirm-Junkies, wie wir in Fribourg festgestellt haben. Die 2-in-1 Lösung mit Spray und Mikrofasertuch in einem ist genial für unterwegs. Das Spray ist alkoholfrei und hinterlässt keine Streifen - endlich wieder klare Sicht! Der Tank reicht für etwa 100 Reinigungen. Das Mikrofasertuch ist waschbar und bleibt lange flauschig. Einziger Kritikpunkt: Der Sprühmechanismus könnte präziser sein. Trotzdem super praktisch für Laptop, Handy und Tablet. Sofort verfügbar aus unserem Lager.",
+    "useCases": [
+      "Zug-Pendeln: Zwischen Bern und Zürich wird das Laptop-Display wieder fingerprintfrei.",
+      "Smartphone-Hygiene: Der Arzt aus Chur desinfiziert sein Handy zwischen Patienten.",
+      "Gaming-Setup: Der Gamer aus Winterthur hält seine Monitore kristallklar."
+    ],
+    "faqs": [
+      {
+        "q": "Ist er für alle Bildschirme geeignet?",
+        "a": "Ja, für LCD, LED, OLED, auch für Brillen und Kameras."
+      },
+      {
+        "q": "Greift er Beschichtungen an?",
+        "a": "Nein, speziell entwickelt für empfindliche Oberflächen."
+      },
+      {
+        "q": "Wie oft kann ich das Tuch waschen?",
+        "a": "Etwa 200x bei 40°C, ohne Weichspüler."
+      },
+      {
+        "q": "Wie gross ist er?",
+        "a": "12cm lang, passt in jede Tasche."
+      },
+      {
+        "q": "Kann ich ihn nachfüllen?",
+        "a": "Ja, mit destilliertem Wasser und etwas Spülmittel."
+      }
+    ]
+  },
+  "lenkrad-tablett": {
+    "ourOpinion": "Das Lenkrad-Tablett für CHF 24.90 macht dein Auto zum mobilen Büro, wie wir in Thun getestet haben. Die Befestigung am Lenkrad ist stabil und wackelt nicht. Die Oberfläche bietet genug Platz für Laptop oder Essen. Die kleine Ablage für Handy und Stifte ist durchdacht. Das Material ist robust und abwischbar. Wichtig: Nur bei stehendem Auto verwenden! Der Auf- und Abbau dauert 20 Sekunden. Für alle, die oft im Auto warten oder essen müssen, ein praktisches Tool. Express-Versand aus der Schweiz möglich.",
+    "useCases": [
+      "Mittagspause im Auto: Der Handwerker aus Olten kann endlich bequem im Auto essen.",
+      "Mobile Office: Zwischen Terminen in Zürich wird das Auto zum Arbeitsplatz.",
+      "Wartezeit nutzen: Eltern in Baden arbeiten während der Kinder-Fussballtrainings."
+    ],
+    "faqs": [
+      {
+        "q": "Passt es auf jedes Lenkrad?",
+        "a": "Ja, universelle Grösse für alle gängigen PKW-Lenkräder."
+      },
+      {
+        "q": "Wie viel Gewicht hält es?",
+        "a": "Bis 5kg, locker genug für Laptop und Essen."
+      },
+      {
+        "q": "Stört es beim Fahren?",
+        "a": "Muss vor dem Fahren abgenommen werden! Nicht während der Fahrt nutzen."
+      },
+      {
+        "q": "Ist die Oberfläche rutschfest?",
+        "a": "Ja, gummierte Oberfläche, nichts rutscht runter."
+      },
+      {
+        "q": "Passt ein 15-Zoll Laptop drauf?",
+        "a": "Ja, bis 15 Zoll problemlos."
+      }
+    ]
+  },
+  "leuchtende-rose-balloon": {
+    "ourOpinion": "Die leuchtende LED-Rose für CHF 15.90 ist das romantische Geschenk, das in Montreux für Herzschmelzen sorgte. Die Rose in der transparenten Kugel sieht edel aus, die LED-Beleuchtung schafft magische Atmosphäre. Die Batterie hält etwa 48 Stunden Dauerlicht. Das Material ist robust - kein billiger Plastik-Look. Perfekt als Deko oder Last-Minute-Geschenk. Einziger Nachteil: Die Batterien sind nicht wiederaufladbar. Trotzdem ein schönes Geschenk für romantische Anlässe. Liegt bereit in unserem Schweizer Lager.",
+    "useCases": [
+      "Valentinstag in Genf: Die ewige Rose ersetzt den vergänglichen Blumenstrauss.",
+      "Heiratsantrag: In Interlaken schafft sie die perfekte romantische Stimmung.",
+      "Geburtstagsüberraschung: Die Teenagerin aus Aarau ist begeistert vom leuchtenden Geschenk."
+    ],
+    "faqs": [
+      {
+        "q": "Wie lange leuchtet sie?",
+        "a": "Mit frischen Batterien etwa 48 Stunden durchgehend."
+      },
+      {
+        "q": "Kann ich die Batterien wechseln?",
+        "a": "Ja, 3x AAA Batterien, leicht zugänglich."
+      },
+      {
+        "q": "Ist die Rose echt?",
+        "a": "Nein, hochwertige Kunstrose, sieht aber täuschend echt aus."
+      },
+      {
+        "q": "Wie gross ist sie?",
+        "a": "Gesamthöhe etwa 22cm, Kugel-Durchmesser 12cm."
+      },
+      {
+        "q": "Gibt es verschiedene Farben?",
+        "a": "Ja, Rot, Rosa und Weiss verfügbar."
+      }
+    ]
+  },
+  "magnetische-grillleuchte-led-bbq-licht-mit-flex-arm": {
+    "ourOpinion": "Diese magnetische Grillleuchte für CHF 11.90 ist der Game-Changer für Abendgrillereien, den wir in Liestal getestet haben. Der starke Magnet haftet bombenfest am Grill, der flexible Arm lässt sich perfekt ausrichten. Die 10 LEDs sind hell genug, um das ganze Grillgut zu beleuchten. Batteriebetrieben und hitzebeständig - genau richtig für draussen. Der Flex-Arm könnte etwas länger sein für grosse Grills. Die Batterielaufzeit von 15 Stunden ist top. Für den Preis ein absolutes Muss für Grillmeister. Schnellversand aus der Schweiz.",
+    "useCases": [
+      "Wintergrillen in Davos: Auch nach 17 Uhr sieht man, ob das Steak perfekt ist.",
+      "Camping-Grill: Am Vierwaldstättersee wird bis spät in die Nacht gegrillt.",
+      "Balkon-BBQ: In der Stadtwohnung in Basel ist endlich genug Licht am Grill."
+    ],
+    "faqs": [
+      {
+        "q": "Hält der Magnet auf allen Grills?",
+        "a": "Auf allen Metallgrills. Bei Keramikgrills Klemme verwenden."
+      },
+      {
+        "q": "Wie hitzebeständig ist sie?",
+        "a": "Bis 80°C, Abstand zum Grillgut halten."
+      },
+      {
+        "q": "Welche Batterien braucht sie?",
+        "a": "3x AAA Batterien, nicht im Lieferumfang."
+      },
+      {
+        "q": "Ist sie wasserdicht?",
+        "a": "Spritzwassergeschützt, kurzer Regen ist kein Problem."
+      },
+      {
+        "q": "Wie lang ist der Schwanenhals?",
+        "a": "30cm, flexibel in alle Richtungen biegbar."
+      }
+    ]
+  },
+  "magnetisches-datenkabel": {
+    "ourOpinion": "Das magnetische Datenkabel für CHF 13.90 löst das nervige Kabel-Chaos, wie wir in Uster festgestellt haben. Die magnetische Verbindung schnappt automatisch ein - perfekt für's Laden im Dunkeln. Mit Adaptern für iPhone und Android ist es universal einsetzbar. Die Ladeleistung ist gut, Fast-Charging funktioniert. Die Adapter schützen die Ladebuchse vor Verschleiss. Nachteil: Die kleinen Adapter gehen leicht verloren. Das geflochtene Kabel ist robust und verheddert nicht. Für Haushalte mit verschiedenen Handys ideal. Direkt aus unserem Schweizer Lager lieferbar.",
+    "useCases": [
+      "Auto-Ladung: Beim Einsteigen in Zürich schnappt das Handy automatisch ans Ladekabel.",
+      "Familien-Chaos: In Luzern laden iPhone und Android mit demselben Kabel.",
+      "Nachttisch: Im Dunkeln findet das Kabel in Bern von selbst zum Handy."
+    ],
+    "faqs": [
+      {
+        "q": "Funktioniert Fast-Charging?",
+        "a": "Ja, bis 3A Ladestrom, unterstützt Quick Charge."
+      },
+      {
+        "q": "Kann ich Daten übertragen?",
+        "a": "Ja, USB 2.0 Geschwindigkeit für Datentransfer."
+      },
+      {
+        "q": "Passen die Adapter durch Handyhüllen?",
+        "a": "Bei dünnen Hüllen ja, dicke Cases müssen evtl. entfernt werden."
+      },
+      {
+        "q": "Wie stark ist der Magnet?",
+        "a": "Stark genug zum Halten, löst sich aber bei Zug."
+      },
+      {
+        "q": "Verliere ich die kleinen Adapter nicht?",
+        "a": "Können im Handy bleiben, stören kaum."
+      }
+    ]
   }
 }

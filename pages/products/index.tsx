@@ -20,6 +20,23 @@ interface ProductsPageProps {
 export default function ProductsPage({ products, page, totalPages }: ProductsPageProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const seoData = generateStaticPageSEO('products');
+  // Align og:url with canonical for paginated pages
+  const seoWithPageOg = {
+    ...seoData,
+    openGraph: {
+      title: seoData.openGraph?.title || seoData.title,
+      description: seoData.openGraph?.description || seoData.description,
+      image: seoData.openGraph?.image,
+      url: page > 1 ? `/products?page=${page}` : (seoData.openGraph?.url || '/products'),
+      type: seoData.openGraph?.type || 'website'
+    },
+    twitter: {
+      card: seoData.twitter?.card || 'summary',
+      title: seoData.twitter?.title || seoData.title,
+      description: seoData.twitter?.description || seoData.description,
+      image: seoData.twitter?.image
+    }
+  };
   const itemListStructuredData = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
@@ -51,7 +68,7 @@ export default function ProductsPage({ products, page, totalPages }: ProductsPag
         )}
       </Head>
       <NextSEOHead 
-        seo={seoData}
+        seo={seoWithPageOg}
         structuredData={itemListStructuredData}
       />
       <SEOEnhancer totalPages={totalPages} />

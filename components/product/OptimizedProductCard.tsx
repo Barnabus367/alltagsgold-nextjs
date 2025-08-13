@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { useImageLoader } from '@/hooks/useSubtleScrollEffects';
-import { PremiumImage } from '@/components/common/PremiumImage';
 import { formatPriceSafe } from '@/lib/type-guards';
 import { cn } from '@/lib/utils';
 
@@ -11,7 +10,7 @@ interface OptimizedProductCardProps {
 }
 
 export function OptimizedProductCard({ product, className }: OptimizedProductCardProps) {
-  const { imgRef, isLoaded } = useImageLoader();
+  const [isLoaded, setIsLoaded] = useState(false);
   
   const primaryImage = product.images?.edges?.[0]?.node;
   const price = product.priceRange?.minVariantPrice || product.variants?.edges?.[0]?.node?.price;
@@ -33,13 +32,17 @@ export function OptimizedProductCard({ product, className }: OptimizedProductCar
           'w-full h-full transition-opacity duration-500',
           isLoaded ? 'opacity-100' : 'opacity-0'
         )}>
-          <img
-            ref={imgRef as React.RefObject<HTMLImageElement>}
-            src={primaryImage?.url || ''}
-            alt={primaryImage?.altText || product.title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            loading="lazy"
-          />
+          <div className="relative w-full h-full">
+            <Image
+              src={primaryImage?.url || ''}
+              alt={primaryImage?.altText || product.title}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              priority={false}
+                onLoadingComplete={() => setIsLoaded(true)}
+            />
+          </div>
         </div>
         {!isLoaded && (
           <div className="absolute inset-0 skeleton" />

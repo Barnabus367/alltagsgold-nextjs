@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import Image from 'next/image';
 import { ShopifyVariant } from '@/types/shopify';
 import { cn } from '@/lib/utils';
 
@@ -122,10 +123,12 @@ export function CompactVariantSelector({
                       )}>
                         {image ? (
                           // Verwende Produktbild wenn vorhanden
-                          <img 
+                          <Image 
                             src={image} 
                             alt={value}
-                            className="w-full h-full object-cover"
+                            fill
+                            sizes="48px"
+                            className="object-cover"
                           />
                         ) : (
                           // Fallback auf Farbe

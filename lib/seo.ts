@@ -4,6 +4,7 @@
  */
 
 import type { BlogPost } from '@/data/blog-posts';
+import { SITE_URL } from './canonical';
 
 export interface SEOMetadata {
   title: string;
@@ -162,7 +163,11 @@ export function generateProductSEO(product: any): SEOMetadata {
     description = SEO_TEMPLATES.fallbacks.products;
   }
 
-  const imageUrl = product?.image?.url || product?.featuredImage?.url;
+  // Resolve primary image robustly: featuredImage -> first gallery image -> brand fallback
+  const galleryImages: string[] = Array.isArray(product?.images?.edges)
+    ? product.images.edges.map((e: any) => e?.node?.url).filter(Boolean)
+    : [];
+  const imageUrl = product?.featuredImage?.url || galleryImages[0] || `${SITE_URL}/logo-alltagsgold.png`;
   
   return {
     title,
@@ -176,7 +181,7 @@ export function generateProductSEO(product: any): SEOMetadata {
   type: 'product'
     },
     twitter: {
-      card: imageUrl ? 'summary_large_image' : 'summary',
+  card: imageUrl ? 'summary_large_image' : 'summary',
       title,
       description,
       image: imageUrl

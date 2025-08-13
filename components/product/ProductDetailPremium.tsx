@@ -74,6 +74,16 @@ export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDe
   const current = (isValidSelected ? selectedVariant : null) || variants[0] || null;
     return { all: variants, current };
   }, [product, selectedVariant]);
+
+  // Stable primitives for tracking deps
+  const productId = product?.id;
+  const productTitleSafe = product?.title || 'Produkt';
+  const productTypeSafe = product?.productType || 'uncategorized';
+  const currentVariant = safeVariantData.current;
+  const variantId = currentVariant?.id;
+  const variantCurrency = currentVariant?.price?.currencyCode || 'CHF';
+  const variantAmount = currentVariant?.price?.amount;
+  const variantValue = getPriceAmountSafe(currentVariant?.price);
   
   // Reset variant when product changes to avoid stale selection from previous product
   useEffect(() => {
@@ -109,19 +119,16 @@ export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDe
     }
   }, [safeVariantData.all, selectedVariant]);
   
-  // Track product view
+  // Track product view with stable primitive dependencies
   useEffect(() => {
-    if (product && safeVariantData.current) {
-      const eventData = {
-        content_ids: [product.id],
-        content_name: product.title,
-        content_category: product.productType || 'uncategorized',
-        value: getPriceAmountSafe(safeVariantData.current.price),
-        currency: safeVariantData.current.price?.currencyCode || 'CHF'
-      };
-      trackViewContent(eventData);
-    }
-  }, [product, safeVariantData.current]);
+    if (!productId || !variantId) return;
+    trackViewContent({
+      content_id: productId,
+      content_name: productTitleSafe,
+      value: variantValue,
+      currency: variantCurrency,
+    });
+  }, [productId, productTitleSafe, productTypeSafe, variantId, variantCurrency, variantValue]);
   
   // SEO setup
   usePageTitle(product?.title || 'Produkt');

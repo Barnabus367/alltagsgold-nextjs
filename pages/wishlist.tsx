@@ -27,7 +27,13 @@ export default function WishlistPage() {
   // Zeige Loading während der Hydration um Fehler zu vermeiden
   if (!mounted) {
     return (
-      <Layout>
+      <>
+        <NextSEOHead 
+          seo={seoData}
+          canonicalUrl="/wishlist"
+          robots="noindex, nofollow"
+        />
+        <Layout>
         <div className="min-h-screen bg-gray-50 pt-16">
           <div className="max-w-7xl mx-auto px-6 py-12">
             <div className="animate-pulse space-y-8">
@@ -47,7 +53,8 @@ export default function WishlistPage() {
             </div>
           </div>
         </div>
-      </Layout>
+        </Layout>
+      </>
     );
   }
 
@@ -55,7 +62,8 @@ export default function WishlistPage() {
     <>
       <NextSEOHead 
         seo={seoData}
-        canonicalUrl="wishlist" 
+  canonicalUrl="/wishlist" 
+  robots="noindex, nofollow"
       />
       <Layout>
         <div className="min-h-screen bg-gray-50 pt-16">

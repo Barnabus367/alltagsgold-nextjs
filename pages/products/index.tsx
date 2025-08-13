@@ -100,7 +100,15 @@ export const getServerSideProps: GetServerSideProps<ProductsPageProps> = async (
     const raw = Array.isArray(ctx.query.page) ? ctx.query.page[0] : ctx.query.page;
     const page = Math.max(1, parseInt(raw || '1', 10) || 1);
 
-    const { products: all } = await getProductsOptimized(250);
+    let { products: all } = await getProductsOptimized(250);
+    // Minimale Resilienz: Bei leeren Ergebnissen einmal kurz retryen (ohne Strukturwechsel)
+    if (!all || all.length === 0) {
+      await new Promise((r) => setTimeout(r, 200));
+      const retry = await getProductsOptimized(250);
+      if (retry.products?.length) {
+        all = retry.products;
+      }
+    }
     const total = all.length;
     const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 

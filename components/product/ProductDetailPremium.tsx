@@ -128,7 +128,7 @@ export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDe
       value: variantValue,
       currency: variantCurrency,
     });
-  }, [productId, productTitleSafe, productTypeSafe, variantId, variantCurrency, variantValue]);
+  }, [productId, productTitleSafe, variantId, variantCurrency, variantValue]);
   
   // SEO setup
   usePageTitle(product?.title || 'Produkt');

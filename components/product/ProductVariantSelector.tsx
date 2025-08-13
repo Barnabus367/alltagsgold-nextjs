@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { ShopifyVariant, ShopifyProduct } from '@/types/shopify';
 import { formatPriceSafe } from '@/lib/type-guards';
 import { cn } from '@/lib/utils';
@@ -172,10 +173,12 @@ export function ProductVariantSelector({
                       : "border-gray-200 hover:border-gray-400"
                   )}
                 >
-                  <img
+                  <Image
                     src={variant.image.url}
                     alt={variant.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 640px) 25vw, (max-width: 1024px) 12vw, 8vw"
+                    className="object-cover"
                   />
                   {!variant.availableForSale && (
                     <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">

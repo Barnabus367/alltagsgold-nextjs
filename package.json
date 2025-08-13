@@ -11,7 +11,7 @@
     "build:analyze": "cross-env ANALYZE=true npm run build",
     "build:clean": "rm -rf .next node_modules/.cache",
     "clean": "rm -rf .next node_modules package-lock.json && npm install",
-    "start": "next start",
+  "start": "[ -f .next/standalone/server.js ] && node .next/standalone/server.js || next start",
     "check": "tsc",
     "db:push": "drizzle-kit push",
     "lint": "next lint",

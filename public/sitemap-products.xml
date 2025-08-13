@@ -112,7 +112,7 @@
   </url>
   <url>
     <loc>https://www.alltagsgold.ch/products/nackenmassager-6-rollen</loc>
-    <lastmod>2025-08-11</lastmod>
+    <lastmod>2025-08-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1218,6 +1218,26 @@
     <image:image>
       <image:loc>https://cdn.shopify.com/s/files/1/0918/4575/5223/files/650641111209.jpg?v=1753503529</image:loc>
       <image:title>Wand‑Zahnpastaspender</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.alltagsgold.ch/products/nachtlicht-hase</loc>
+    <lastmod>2025-08-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://cdn.shopify.com/s/files/1/0918/4575/5223/files/2b4e7f77-a3aa-44a5-8eaa-324e4f71a452.jpg?v=1754977708</image:loc>
+      <image:title>Nachtlicht Hase</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.alltagsgold.ch/products/wiederaufladbare-led-tischlampe-warmweiss-kabellos</loc>
+    <lastmod>2025-08-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://cdn.shopify.com/s/files/1/0918/4575/5223/files/b895f1b6-442b-4319-ac66-2ffe0ef21faa_trans.jpg?v=1754978504</image:loc>
+      <image:title>Wiederaufladbare LED-Tischlampe – warmweiss &amp; kabellos</image:title>
     </image:image>
   </url>
 </urlset>

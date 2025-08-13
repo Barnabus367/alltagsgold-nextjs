@@ -50,9 +50,10 @@ const SITEMAP_CONFIG = {
     '/ueber-uns': { priority: 0.7, changefreq: 'monthly' },
     '/blog': { priority: 0.7, changefreq: 'weekly' },
     '/contact': { priority: 0.6, changefreq: 'monthly' },
-    '/impressum': { priority: 0.3, changefreq: 'yearly' },
-    '/datenschutz': { priority: 0.3, changefreq: 'yearly' },
-    '/agb': { priority: 0.3, changefreq: 'yearly' }
+  // NOTE: These routes are case-sensitive and must match file-based routes
+  '/Impressum': { priority: 0.3, changefreq: 'yearly' },
+  '/Datenschutz': { priority: 0.3, changefreq: 'yearly' },
+  '/AGB': { priority: 0.3, changefreq: 'yearly' }
   },
   products: { priority: 0.8, changefreq: 'weekly' },
   collections: { priority: 0.9, changefreq: 'weekly' },

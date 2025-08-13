@@ -20,6 +20,8 @@ interface NextSEOHeadProps {
   includeOrganization?: boolean; // Standard Organization Schema inkludieren
   includeWebSite?: boolean; // Standard WebSite Schema inkludieren
   useRouterPath?: boolean; // Nutze router.asPath für dynamische Canonicals (default: true)
+  robots?: string; // Optional override robots content
+  hreflangAlternates?: Array<{ hrefLang: string; href: string }>; // Optional: nur rendern, wenn echte Alternates existieren
 }
 
 export function NextSEOHead({ 
@@ -28,7 +30,9 @@ export function NextSEOHead({
   structuredData, 
   includeOrganization = true, 
   includeWebSite = false,
-  useRouterPath = true 
+  useRouterPath = true,
+  robots,
+  hreflangAlternates
 }: NextSEOHeadProps) {
   const router = useRouter();
   
@@ -86,7 +90,7 @@ export function NextSEOHead({
       {/* Open Graph Tags mit Keys */}
       <meta property="og:title" content={seo.openGraph?.title || seo.title} key="og:title" />
       <meta property="og:description" content={seo.openGraph?.description || seo.description} key="og:description" />
-      <meta property="og:type" content="website" key="og:type" />
+  <meta property="og:type" content={seo.openGraph?.type || 'website'} key="og:type" />
       <meta property="og:url" content={seo.openGraph?.url ? generateCanonicalUrl(seo.openGraph.url) : fullCanonicalUrl} key="og:url" />
       <meta property="og:site_name" content="AlltagsGold" key="og:site_name" />
       <meta property="og:locale" content="de_CH" key="og:locale" />
@@ -105,14 +109,15 @@ export function NextSEOHead({
       <meta name="twitter:description" content={seo.twitter?.description || seo.description} key="twitter:description" />
       {seo.twitter?.image && <meta name="twitter:image" content={seo.twitter.image} key="twitter:image" />}
       
-      {/* hreflang Tags for DACH Region */}
-      <link rel="alternate" hrefLang="de-CH" href={fullCanonicalUrl} key="hreflang-ch" />
-      <link rel="alternate" hrefLang="de-DE" href={fullCanonicalUrl} key="hreflang-de" />
-      <link rel="alternate" hrefLang="de-AT" href={fullCanonicalUrl} key="hreflang-at" />
-      <link rel="alternate" hrefLang="x-default" href={fullCanonicalUrl} key="hreflang-default" />
+      {/* hreflang Alternates (opt-in) */}
+      {Array.isArray(hreflangAlternates) && hreflangAlternates.length > 0 && (
+        hreflangAlternates.map((alt, i) => (
+          <link rel="alternate" hrefLang={alt.hrefLang} href={alt.href} key={`hreflang-${alt.hrefLang}-${i}`} />
+        ))
+      )}
       
       {/* Additional SEO Meta Tags mit Keys */}
-      <meta name="robots" content="index, follow" key="robots" />
+  <meta name="robots" content={robots || 'index, follow'} key="robots" />
       <meta name="author" content="AlltagsGold" key="author" />
       <meta name="language" content="de" key="language" />
       <meta name="geo.region" content="CH" key="geo:region" />

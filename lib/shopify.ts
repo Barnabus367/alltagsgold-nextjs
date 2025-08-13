@@ -10,6 +10,35 @@ const STOREFRONT_API_URL = `https://${SHOPIFY_STORE_DOMAIN}/api/2023-10/graphql.
 async function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+// Kleine, interne In-Memory-Response-Cache (stale-while-revalidate)
+type CacheEntry = { ts: number; data: any };
+const RESPONSE_CACHE = new Map<string, CacheEntry>();
+const CACHE_TTL_MS = parseInt(process.env.SHOPIFY_CACHE_TTL_MS || '120000', 10); // 2min
+
+function getOperationName(query: string): string {
+  const m = query.match(/\b(query|mutation)\s+([A-Za-z0-9_]+)/);
+  return m?.[2] || 'anonymous';
+}
+
+function getCacheKey(query: string, variables: Record<string, any>): string {
+  const op = getOperationName(query);
+  // Nur stabile Variablen ins Key aufnehmen
+  const vars = JSON.stringify(variables ?? {});
+  return `${op}:${vars}`;
+}
+
+function getCachedData(query: string, variables: Record<string, any>): any | undefined {
+  const key = getCacheKey(query, variables);
+  const hit = RESPONSE_CACHE.get(key);
+  if (!hit) return undefined;
+  if (Date.now() - hit.ts <= CACHE_TTL_MS) return hit.data; // frisch
+  return hit.data; // stale okay (SWr)
+}
+
+function setCachedData(query: string, variables: Record<string, any>, data: any) {
+  const key = getCacheKey(query, variables);
+  RESPONSE_CACHE.set(key, { ts: Date.now(), data });
+}
 
 async function shopifyFetch(query: string, variables: Record<string, any> = {}, maxRetries: number = 3) {
   if (!SHOPIFY_STOREFRONT_ACCESS_TOKEN) {
@@ -17,10 +46,17 @@ async function shopifyFetch(query: string, variables: Record<string, any> = {}, 
   }
 
   let lastError: Error | null = null;
+  const opName = getOperationName(query);
+  const baseTimeout = parseInt(process.env.SHOPIFY_TIMEOUT_MS || '3500', 10); // Basis-Timeout pro Versuch
   
   // Retry-Logik mit Exponential Backoff
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
+      // Per-Versuch Timeout anpassen (z. B. 3.5s, 5s, 7s)
+      const timeoutMs = Math.min(baseTimeout * (1 + attempt * 0.5), 8000);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
       const response = await fetch(STOREFRONT_API_URL, {
         method: 'POST',
         headers: {
@@ -28,10 +64,20 @@ async function shopifyFetch(query: string, variables: Record<string, any> = {}, 
           'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_ACCESS_TOKEN,
         },
         body: JSON.stringify({ query, variables }),
+        signal: controller.signal,
       });
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
-        throw new Error(`SHOPIFY_API_ERROR_${response.status}`);
+        const status = response.status;
+        // 429/5xx als retry-würdig behandeln
+        const err = new Error(`SHOPIFY_API_ERROR_${status}`);
+        // Bei 4xx (außer 429) direkt abbrechen
+        if (status >= 400 && status < 500 && status !== 429) {
+          throw err;
+        }
+        // Sonst in den catch-Block -> Retry
+        throw err;
       }
 
       const { data, errors } = await response.json();
@@ -41,9 +87,12 @@ async function shopifyFetch(query: string, variables: Record<string, any> = {}, 
         throw new Error('SHOPIFY_GRAPHQL_ERROR');
       }
 
+      // Erfolg: im Cache ablegen
+      try { setCachedData(query, variables, data); } catch {}
       return data;
     } catch (error) {
       lastError = error as Error;
+      const isAbort = (lastError as any)?.name === 'AbortError';
       
       // Keine Retries für GraphQL-Fehler oder Config-Fehler
       if (lastError.message === 'SHOPIFY_GRAPHQL_ERROR' || 
@@ -53,15 +102,17 @@ async function shopifyFetch(query: string, variables: Record<string, any> = {}, 
       
       // Wenn noch Versuche übrig sind
       if (attempt < maxRetries - 1) {
-        const delay = Math.min(250 * Math.pow(2, attempt), 1000); // 250ms, 500ms, 1000ms
+        // Leicht längeres Backoff, Timeout-Fehler bevorzugt schnell retryen
+        const delay = isAbort ? 200 : Math.min(300 * Math.pow(2, attempt), 1200); // 300ms, 600ms, 1200ms
         const jitter = Math.random() * 100; // 0-100ms Jitter
         
         // Nur während Build loggen
         if (process.env.NODE_ENV !== 'production' || process.env.CI) {
-          console.warn(`⚠️ Shopify API Retry ${attempt + 1}/${maxRetries} nach ${delay}ms - ${variables.handle || 'batch fetch'}`);
+          console.warn(`⚠️ Shopify API Retry ${attempt + 1}/${maxRetries} in ${delay}ms [${opName}]`);
         }
         
         await sleep(delay + jitter);
+        continue;
       }
     }
   }
@@ -246,6 +297,17 @@ export async function getProductsOptimized(first: number = 250): Promise<{ produ
     const products = data.products.edges.map((edge: any) => edge.node);
     return { products };
   } catch (error) {
+    // Netzwerk-/Timeout-Fehler: auf zuletzt bekannte (stale) Daten zurückfallen, wenn vorhanden
+    const cached = getCachedData(query, { first });
+    if (cached?.products?.edges?.length) {
+      if (process.env.NODE_ENV !== 'production' || process.env.CI) {
+        console.warn(`↩️ Verwende stale Cache für getProductsOptimized(first=${first})`);
+      }
+      try {
+        const products = cached.products.edges.map((edge: any) => edge.node);
+        return { products };
+      } catch {}
+    }
     console.error('Error fetching optimized products:', error);
     return { products: [] };
   }

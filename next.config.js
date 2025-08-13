@@ -259,6 +259,25 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/ProductsList',
+        destination: '/products',
+        permanent: true,
+      },
+      {
+        source: '/CollectionDetail',
+        destination: '/collections',
+        permanent: true,
+      },
+      {
+        source: '/Home',
+        destination: '/',
+        permanent: true,
+      },
+    ];
+  },
 }
 
 module.exports = withBundleAnalyzer(nextConfig)

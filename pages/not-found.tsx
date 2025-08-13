@@ -12,7 +12,8 @@ export default function NotFound() {
           title: 'Seite nicht gefunden - 404 | AlltagsGold',
           description: 'Die gesuchte Seite konnte nicht gefunden werden. Entdecken Sie stattdessen unsere Premium-Produktkategorien.',
           keywords: '404, Not Found, AlltagsGold'
-        }}
+  }}
+  robots="noindex, nofollow"
       />
       <Card className="w-full max-w-md mx-4">
         <CardContent className="pt-6">

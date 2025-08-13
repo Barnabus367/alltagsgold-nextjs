@@ -5,8 +5,7 @@ import { ShopifyVariant, ShopifyProduct } from '@/types/shopify';
 import { useProduct } from '@/hooks/useShopify';
 import { useCart } from '@/hooks/useCart';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
-import { NextSEOHead } from '@/components/seo/NextSEOHead';
-import { generateProductSEO } from '@/lib/seo';
+// Head is rendered by the page; avoid duplicate head tags here
 import { trackViewContent, trackAddToCart } from '@/lib/analytics';
 import { formatPriceSafe, getPriceAmountSafe } from '@/lib/type-guards';
 import { usePageTitle } from '@/hooks/usePageTitle';
@@ -45,7 +44,10 @@ interface ProductDetailPremiumProps {
 export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDetailPremiumProps) {
   const router = useRouter();
   const { handle } = router.query;
-  const productQuery = useProduct(handle as string);
+  const productQuery = useProduct(handle as string, {
+    enabled: !preloadedProduct && !!handle,
+    initialData: preloadedProduct,
+  });
   const fetchedProduct = productQuery.data;
   const loading = productQuery.isLoading;
   const error = productQuery.error;
@@ -72,6 +74,16 @@ export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDe
   const current = (isValidSelected ? selectedVariant : null) || variants[0] || null;
     return { all: variants, current };
   }, [product, selectedVariant]);
+
+  // Stable primitives for tracking deps
+  const productId = product?.id;
+  const productTitleSafe = product?.title || 'Produkt';
+  const productTypeSafe = product?.productType || 'uncategorized';
+  const currentVariant = safeVariantData.current;
+  const variantId = currentVariant?.id;
+  const variantCurrency = currentVariant?.price?.currencyCode || 'CHF';
+  const variantAmount = currentVariant?.price?.amount;
+  const variantValue = getPriceAmountSafe(currentVariant?.price);
   
   // Reset variant when product changes to avoid stale selection from previous product
   useEffect(() => {
@@ -107,22 +119,18 @@ export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDe
     }
   }, [safeVariantData.all, selectedVariant]);
   
-  // Track product view
+  // Track product view with stable primitive dependencies
   useEffect(() => {
-    if (product && safeVariantData.current) {
-      const eventData = {
-        content_ids: [product.id],
-        content_name: product.title,
-        content_category: product.productType || 'uncategorized',
-        value: getPriceAmountSafe(safeVariantData.current.price),
-        currency: safeVariantData.current.price?.currencyCode || 'CHF'
-      };
-      trackViewContent(eventData);
-    }
-  }, [product, safeVariantData.current]);
+    if (!productId || !variantId) return;
+    trackViewContent({
+      content_id: productId,
+      content_name: productTitleSafe,
+      value: variantValue,
+      currency: variantCurrency,
+    });
+  }, [productId, productTitleSafe, variantId, variantCurrency, variantValue]);
   
   // SEO setup
-  const seoData = useMemo(() => generateProductSEO(product), [product]);
   usePageTitle(product?.title || 'Produkt');
   
   // Handle add to cart
@@ -153,7 +161,7 @@ export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDe
     await addItemToCart(safeVariantData.current.id || '', 1, productData);
   };
   
-  if (loading) {
+  if (loading && !preloadedProduct) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
@@ -175,12 +183,7 @@ export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDe
   }
   
   return (
-    <>
-      <NextSEOHead 
-        seo={seoData} 
-        canonicalUrl={`/products/${product.handle}`}
-      />
-      <div className="min-h-screen bg-white">
+  <div className="min-h-screen bg-white">
       
       {/* Breadcrumbs */}
       <div className="border-b border-gray-100">
@@ -255,7 +258,6 @@ export function ProductDetailPremium({ preloadedProduct, seoContent }: ProductDe
         onAddToCart={handleAddToCart}
         isAddingToCart={isAddingToCart}
       />
-    </div>
-    </>
+  </div>
   );
 }

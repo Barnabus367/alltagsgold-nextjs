@@ -31,12 +31,29 @@ export function cleanUrl(url: string): string {
       urlObj.searchParams.delete(param);
     });
     
-    // Entferne Pagination für Canonical (außer bei legitimen Paginationen)
+    // Canonical-Pagination: nur erlaubte Routen; page=1 entfernen, page>1 behalten
     const page = urlObj.searchParams.get('page');
-    if (page && !isLegitimatePageParameter(urlObj.pathname)) {
-      urlObj.searchParams.delete('page');
+    if (page) {
+      if (!isLegitimatePageParameter(urlObj.pathname)) {
+        urlObj.searchParams.delete('page');
+      } else if (page === '1') {
+        urlObj.searchParams.delete('page');
+      }
     }
+
+    // Whitelist nur notwendiger Query-Parameter (sort, filter, page)
+    const allowed = new Set(['sort', 'filter', 'page']);
+    const toDelete: string[] = [];
+    urlObj.searchParams.forEach((_, key) => {
+      if (!allowed.has(key)) toDelete.push(key);
+    });
+    toDelete.forEach(k => urlObj.searchParams.delete(k));
     
+    // Trailing slash Vereinheitlichung: Root hat '/', andere ohne trailing '/'
+    if (urlObj.pathname !== '/' && urlObj.pathname.endsWith('/')) {
+      urlObj.pathname = urlObj.pathname.replace(/\/+$/, '');
+    }
+
     return urlObj.toString();
   } catch (error) {
     // Fallback bei invaliden URLs
@@ -127,8 +144,8 @@ export function cleanCanonicalPath(asPath: string): string {
   
   parametersToRemove.forEach(param => params.delete(param));
   
-  // Behalte nur erlaubte Parameter (z.B. sort, filter für Collections)
-  const allowedParams = ['sort', 'filter', 'category'];
+  // Behalte nur erlaubte Parameter
+  const allowedParams = ['sort', 'filter', 'page'];
   const cleanParams = new URLSearchParams();
   
   allowedParams.forEach(param => {
@@ -138,8 +155,15 @@ export function cleanCanonicalPath(asPath: string): string {
   });
   
   // Baue sauberen Pfad zusammen
+  // Pagination: page=1 entfernen
+  if (cleanParams.get('page') === '1') {
+    cleanParams.delete('page');
+  }
+
   const cleanQuery = cleanParams.toString();
-  return cleanQuery ? `${basePath}?${cleanQuery}` : basePath;
+  // Trailing slash Konsistenz: Basis-Pfade ohne trailing slash (außer root)
+  const normalizedBase = basePath !== '/' && basePath.endsWith('/') ? basePath.replace(/\/+$/, '') : basePath;
+  return cleanQuery ? `${normalizedBase}?${cleanQuery}` : normalizedBase;
 }
 
 /**

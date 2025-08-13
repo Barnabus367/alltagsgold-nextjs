@@ -1,6 +1,6 @@
 import { GetStaticProps } from 'next';
 import { useState } from 'react';
-import { Home } from './Home';
+import Home from '../components/pages/Home';
 import { Layout } from '../components/layout/Layout';
 import { NextSEOHead } from '../components/seo/NextSEOHead';
 import { ShopifyProduct, ShopifyCollection } from '../types/shopify';

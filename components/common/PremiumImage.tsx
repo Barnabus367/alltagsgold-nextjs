@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import Image from 'next/image';
 
 interface PremiumImageProps {
@@ -27,7 +27,7 @@ export function PremiumImage({
   const [imageLoaded, setImageLoaded] = useState(false);
 
   // Cloudinary-Transformation für einheitlichen Look
-  const getUnifiedProductImage = (originalUrl: string) => {
+  const getUnifiedProductImage = useCallback((originalUrl: string) => {
     // Skip wenn bereits Cloudinary URL oder kein gültiger URL
     if (!originalUrl || originalUrl.includes('res.cloudinary.com') || originalUrl.includes('placeholder')) {
       return originalUrl;
@@ -60,7 +60,7 @@ export function PremiumImage({
     ].join(',');
     
     return `${cloudinaryBase}${transformations}/${encodeURIComponent(originalUrl)}`;
-  };
+  }, [context]);
 
   const imageUrl = useMemo(() => {
     // Wenn kein src vorhanden, verwende Fallback
@@ -77,7 +77,7 @@ export function PremiumImage({
     }
     
     return src;
-  }, [src, fallbackSrc, context, productTitle]);
+  }, [src, fallbackSrc, context, getUnifiedProductImage]);
   
   const isValidUrl = imageUrl && !imageError;
 

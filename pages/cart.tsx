@@ -101,6 +101,12 @@ function Cart() {
   // Zeige Loading während der Hydration um Fehler zu vermeiden
   if (!mounted || isCartLoading) {
     return (
+      <>
+        <NextSEOHead 
+          seo={seoData}
+          canonicalUrl="/cart"
+          robots="noindex, nofollow"
+        />
       <div className="min-h-screen bg-white pt-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="animate-pulse space-y-8">
@@ -119,6 +125,7 @@ function Cart() {
           </div>
         </div>
       </div>
+      </>
     );
   }
 
@@ -126,7 +133,8 @@ function Cart() {
     <>
       <NextSEOHead 
         seo={seoData}
-        canonicalUrl="cart" 
+        canonicalUrl="/cart"
+        robots="noindex, nofollow"
       />
       <div className="min-h-screen bg-white pt-16">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">

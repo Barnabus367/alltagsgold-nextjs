@@ -490,10 +490,8 @@ export function generateCollectionStructuredData(collection: ShopifyCollection):
       itemListElement: collection.products?.edges?.map((edge, index) => ({
         '@type': 'ListItem',
         position: index + 1,
-        item: {
-          '@id': `${SITE_URL}/products/${edge.node.handle}`,
-          name: edge.node.title
-        }
+        // Use plain URL string to avoid any Product object interpretation by Google
+        item: `${SITE_URL}/products/${edge.node.handle}`
       })) || []
     }
   };

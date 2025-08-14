@@ -44,10 +44,8 @@ export default function ProductsPage({ products, page, totalPages }: ProductsPag
     itemListElement: products.map((p, i) => ({
       '@type': 'ListItem',
       position: (page - 1) * PAGE_SIZE + i + 1,
-      item: {
-        '@id': `${SITE_URL}/products/${p.handle}`,
-        name: p.title
-      },
+  // Use plain URL string to avoid any Product object misinterpretation
+  item: `${SITE_URL}/products/${p.handle}`,
     })),
   } as const;
 
